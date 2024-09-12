@@ -1,19 +1,18 @@
-// App.tsx
 import React from "react";
-import { Canvas } from "@react-three/fiber";
-import { Box } from "@react-three/drei";
+import { Routes, Route } from "react-router-dom";
+import LandingPage from "./LandingPage";
+import GamePage from "./GamePage ";
+import AnalysisPage from "./AnalysisPage ";
 
 const App: React.FC = () => {
   return (
-    <div style={{ height: "100vh" }}>
-      <Canvas>
-        <ambientLight />
-        <pointLight position={[10, 10, 10]} />
-        <Box position={[0, 0, 0]}>
-          <meshStandardMaterial attach="material" color="orange" />
-        </Box>
-      </Canvas>
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/game" element={<GamePage />} />
+        <Route path="/analysis" element={<AnalysisPage />} />
+      </Routes>
+    </>
   );
 };
 
