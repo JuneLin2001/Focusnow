@@ -1,9 +1,10 @@
 import * as THREE from "three";
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, ThreeElements } from "@react-three/fiber";
 import Stats from "stats.js";
+import { PerspectiveCamera } from "@react-three/drei";
 
-const GamePage: React.FC = () => {
+const GamePage = () => {
   // 使用 useEffect 來初始化 Stats
   useEffect(() => {
     const stats = new Stats();
@@ -55,6 +56,7 @@ const GamePage: React.FC = () => {
   return (
     <>
       <Canvas>
+        <PerspectiveCamera makeDefault fov={75} position={[0, 0, 5]} />
         <ambientLight intensity={Math.PI / 2} />
         <spotLight
           position={[10, 10, 10]}
