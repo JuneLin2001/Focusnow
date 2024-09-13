@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-three/drei": "^9.112.0",
     "@react-three/fiber": "^8.17.7",
+    "firebase": "^10.13.1",
     "glsl-random": "^0.0.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
