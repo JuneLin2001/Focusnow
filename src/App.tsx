@@ -1,16 +1,20 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import LandingPage from "./LandingPage";
-import GamePage from "./GamePage";
-import AnalysisPage from "./AnalysisPage";
+import LandingPage from "./pages/LandingPage/LandingPage";
+import GamePage from "./pages/GamePage/GamePage";
+import AanalyticsPage from "./pages/AnalyticsPage/AnalyticsPage";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
 
 const App: React.FC = () => {
   return (
     <>
+      <Header />
+      <Sidebar />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/game" element={<GamePage />} />
-        <Route path="/analysis" element={<AnalysisPage />} />
+        <Route path="/analytics" element={<AanalyticsPage />} />
       </Routes>
     </>
   );
