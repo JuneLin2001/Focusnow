@@ -2,26 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  height: 100%;
-}
-
-#root {
-  position: relative;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0 auto;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  justify-content: center;
-}
-
 li {
   list-style-type: none;
   cursor: pointer;
@@ -31,4 +11,21 @@ li {
 button {
   border: 0px solid transparent;
   cursor: pointer;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: white;
 }

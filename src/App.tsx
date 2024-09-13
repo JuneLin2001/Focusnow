@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import LandingPage from "./LandingPage";
-import GamePage from "./GamePage ";
-import AnalysisPage from "./AnalysisPage ";
+import GamePage from "./GamePage";
+import AnalysisPage from "./AnalysisPage";
 
 const App: React.FC = () => {
   return (
