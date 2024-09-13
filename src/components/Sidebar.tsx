@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
-import useSidebarStore from "../store/SidebarStore";
+import useSidebarStore from "../store/sidebarStore";
+import useAuthStore from "../store/authStore";
+import LoginButton from "./LoginButton";
 
 const Sidebar = () => {
+  const { user } = useAuthStore();
   const { isOpen, toggleSidebar } = useSidebarStore();
 
   return (
@@ -19,6 +22,28 @@ const Sidebar = () => {
         }`}
       >
         <div className="flex-1 flex flex-col justify-center">
+          <LoginButton />
+          {user ? (
+            <div className="mb-4">
+              <div className="flex items-center mb-4">
+                {user.photoURL && (
+                  <img
+                    src={user.photoURL}
+                    alt="User Photo"
+                    className="w-12 h-12 rounded-full mr-4"
+                  />
+                )}
+                <div>
+                  <div className="text-xl font-semibold">
+                    {user.displayName}
+                  </div>
+                  <div className="text-gray-600">{user.email}</div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="mb-4 text-gray-600">Not logged in</div>
+          )}
           <Link to="/" className="text-black mb-4 text-xl hover:text-gray-400">
             Homepage
           </Link>

@@ -5,8 +5,6 @@ import { devtools, persist } from "zustand/middleware";
 interface SidebarState {
   isOpen: boolean;
   toggleSidebar: () => void;
-  closeSidebar: () => void;
-  openSidebar: () => void;
 }
 
 // 創建 Zustand store
@@ -16,8 +14,6 @@ const useSidebarStore = create<SidebarState>()(
       (set) => ({
         isOpen: true, // 初始狀態
         toggleSidebar: () => set((state) => ({ isOpen: !state.isOpen })),
-        closeSidebar: () => set({ isOpen: false }),
-        openSidebar: () => set({ isOpen: true }),
       }),
       {
         name: "sidebar-storage", // 用於存儲到本地存儲的 key
