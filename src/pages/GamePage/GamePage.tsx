@@ -1,6 +1,6 @@
-import React, { useRef, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import React, { useRef, useState, useEffect } from "react";
+import { Canvas, useFrame, ThreeElements } from "@react-three/fiber";
 import Stats from "stats.js";
 
 const GamePage: React.FC = () => {
@@ -31,17 +31,23 @@ const GamePage: React.FC = () => {
     };
   }, []);
 
-  function Box() {
-    const ref = useRef<THREE.Mesh>(null!);
-    useFrame(() => {
-      ref.current.rotation.x += 0.01;
-      ref.current.rotation.y += 0.01;
-    });
+  function Box(props: ThreeElements["mesh"]) {
+    const meshRef = useRef<THREE.Mesh>(null!);
+    const [hovered, setHover] = useState(false);
+    const [active, setActive] = useState(false);
+    useFrame((_state, delta) => (meshRef.current.rotation.x += delta));
 
     return (
-      <mesh ref={ref} position={[0, 0, 0]}>
+      <mesh
+        {...props}
+        ref={meshRef}
+        scale={active ? 1.5 : 1}
+        onClick={(_event) => setActive(!active)}
+        onPointerOver={(_event) => setHover(true)}
+        onPointerOut={(_event) => setHover(false)}
+      >
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="orange" />
+        <meshStandardMaterial color={hovered ? "hotpink" : "#2f74c0"} />
       </mesh>
     );
   }
@@ -49,9 +55,17 @@ const GamePage: React.FC = () => {
   return (
     <>
       <Canvas>
-        <ambientLight />
-        <pointLight position={[10, 10, 10]} />
-        <Box />
+        <ambientLight intensity={Math.PI / 2} />
+        <spotLight
+          position={[10, 10, 10]}
+          angle={0.15}
+          penumbra={1}
+          decay={0}
+          intensity={Math.PI}
+        />
+        <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+        <Box position={[-1.2, 0, 0]} />
+        <Box position={[1.2, 0, 0]} />
       </Canvas>
     </>
   );
