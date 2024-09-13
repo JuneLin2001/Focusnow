@@ -1,12 +1,8 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import useSidebarStore from "../store/SidebarStore";
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+  const { isOpen, toggleSidebar } = useSidebarStore();
 
   return (
     <div className="relative flex">
@@ -23,24 +19,18 @@ const Sidebar = () => {
         }`}
       >
         <div className="flex-1 flex flex-col justify-center">
-          <Link
-            to="/"
-            className="text-black mb-4 text-xl hover:text-gray-400"
-            onClick={() => setIsOpen(false)}
-          >
+          <Link to="/" className="text-black mb-4 text-xl hover:text-gray-400">
             Homepage
           </Link>
           <Link
             to="/game"
             className="text-black mb-4 text-xl hover:text-gray-400"
-            onClick={() => setIsOpen(false)}
           >
             Game
           </Link>
           <Link
             to="/analytics"
             className="text-black text-xl hover:text-gray-400"
-            onClick={() => setIsOpen(false)}
           >
             Analytics
           </Link>
