@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-li {
-  list-style-type: none;
-  cursor: pointer;
-  display: inline;
-}
-
 button {
   border: 0px solid transparent;
   cursor: pointer;
