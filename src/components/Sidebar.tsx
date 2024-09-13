@@ -22,7 +22,6 @@ const Sidebar = () => {
         }`}
       >
         <div className="flex-1 flex flex-col justify-center">
-          <LoginButton />
           {user ? (
             <div className="mb-4">
               <div className="flex items-center mb-4">
@@ -44,6 +43,7 @@ const Sidebar = () => {
           ) : (
             <div className="mb-4 text-gray-600">Not logged in</div>
           )}
+          <LoginButton />
           <Link to="/" className="text-black mb-4 text-xl hover:text-gray-400">
             Homepage
           </Link>

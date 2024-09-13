@@ -26,10 +26,10 @@ const LoginButton = () => {
 
   return (
     <button
-      onClick={user ? handleLogout : handleLogin} // 根據登入狀態決定點擊事件
+      onClick={user ? handleLogout : handleLogin}
       className="bg-blue-500 text-white p-2 rounded"
     >
-      {user ? "Logout" : "Login with Google"} {/* 根據登入狀態顯示文字 */}
+      {user ? "Logout" : "Login with Google"}
     </button>
   );
 };
