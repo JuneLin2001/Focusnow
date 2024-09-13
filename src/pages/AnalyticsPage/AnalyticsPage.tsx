@@ -67,11 +67,11 @@ const AanalyticsPage: React.FC = () => {
   }, [user]);
 
   if (!user) {
-    return <div className="pl-96">Please login to see analytics.</div>;
+    return <div className="p-96">Please login to see analytics.</div>;
   }
 
   return (
-    <div className="pl-96">
+    <div className="p-96">
       {analytics ? (
         <div>
           <p>
