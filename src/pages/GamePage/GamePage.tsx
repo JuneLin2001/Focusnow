@@ -4,18 +4,13 @@ import { OrbitControls } from "@react-three/drei";
 import { Perf } from "r3f-perf";
 import MovingBox from "./MovingBox";
 
-const NUM_BOXES = 3; // 修改為顯示的模型數量為 3
-
 const GamePage = () => {
-  // 生成每個模型的隨機初始位置
-  const positions: [number, number, number][] = Array.from(
-    { length: NUM_BOXES },
-    () => [
-      Math.random() * 7.5 - 7.5, // X 位置在平面寬度內
-      1, // Y 位置（固定在平面上方）
-      Math.random() * 5 - 5, // Z 位置在平面深度內
-    ]
-  );
+  // 生成單一模型的初始位置
+  const position: [number, number, number] = [
+    Math.random() * 7.5 - 7.5, // X 位置在平面寬度內
+    1, // Y 位置（固定在平面上方）
+    Math.random() * 5 - 5, // Z 位置在平面深度內
+  ];
 
   return (
     <Canvas camera={{ position: [5, 5, 10] }}>
@@ -28,9 +23,7 @@ const GamePage = () => {
         <meshStandardMaterial color="aqua" />
       </mesh>
 
-      {positions.map((position, index) => (
-        <MovingBox key={index} position={position} />
-      ))}
+      <MovingBox position={position} />
 
       <OrbitControls />
     </Canvas>
