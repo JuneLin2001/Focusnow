@@ -6,7 +6,7 @@ interface TimerState {
   mode: "work" | "break";
   setTimer: (minutes: number) => void; // 新增設定計時器時間的函數
   startTimer: () => void;
-  breakTimer: () => void;
+  resetTimer: () => void;
   tick: () => void;
   addFiveMinutes: () => void;
   minusFiveMinutes: () => void;
@@ -21,7 +21,7 @@ export const useTimerStore = create<TimerState>((set) => ({
     set({ isPaused: false });
     console.log("startTimer");
   },
-  breakTimer: () => set({ isPaused: true, secondsLeft: 25 * 60 }), // 重置為 25 分鐘
+  resetTimer: () => set({ isPaused: true, secondsLeft: 25 * 60 }), // 重置為 25 分鐘
   tick: () =>
     set((state) => ({
       secondsLeft: Math.max(0, state.secondsLeft - 1),

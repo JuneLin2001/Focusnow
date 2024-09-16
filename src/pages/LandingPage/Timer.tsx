@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import {
-  CircularProgressbarWithChildren,
-  buildStyles,
-} from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
+import { Timestamp } from "firebase/firestore";
+import { saveTaskData } from "../../firebase/firebaseService";
+import useAuthStore from "../../store/authStore";
 import { useTimerStore } from "../../store/timerStore";
+import LoginButton from "../../components/LoginButton";
 import {
   DefaultButton,
   ResetButton,
   AddOrSubtractButton,
 } from "../../components/Button";
-import { saveTaskData } from "../../firebase/firebaseService";
-import { Timestamp } from "firebase/firestore";
-import useAuthStore from "../../store/authStore";
-import LoginButton from "../../components/LoginButton";
+import {
+  CircularProgressbarWithChildren,
+  buildStyles,
+} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 const Timer = () => {
   const {
@@ -21,7 +21,7 @@ const Timer = () => {
     isPaused,
     mode,
     startTimer,
-    breakTimer: resetTimer,
+    resetTimer,
     tick,
     setTimer,
     addFiveMinutes,
@@ -32,46 +32,67 @@ const Timer = () => {
   const [inputMinutes, setInputMinutes] = useState(25);
   const [taskSaved, setTaskSaved] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [startTime, setStartTime] = useState<Date | null>(null); // Add state to store start time
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (!isPaused) {
+    let interval: number;
+
+    if (!isPaused && secondsLeft >= 0) {
+      interval = window.setInterval(() => {
         tick();
+        console.log(secondsLeft);
 
-        if (secondsLeft <= 0) {
+        if (secondsLeft === 1 && !taskSaved) {
           if (user) {
-            // Save data if user is logged in
-            const endTime = new Date();
-            const startTime = new Date(); // Adjust according to your logic
-            const focusDuration = inputMinutes;
-            const pomodoroCompleted = mode === "work";
+            const endTime = new Date(); // Capture end time when task completes
 
-            const taskData = {
-              endTime: Timestamp.fromDate(endTime),
-              focusDuration,
-              pomodoroCompleted,
-              startTime: Timestamp.fromDate(startTime),
-            };
+            if (startTime) {
+              const focusDuration = inputMinutes;
+              const pomodoroCompleted = mode === "work";
 
-            // 保存至 Firestore 的 users/{userId}/analytics 子集合中
-            saveTaskData(user, taskData)
-              .then(() => {
-                setTaskSaved(true); // 標記任務已保存
-                console.log("Task data saved successfully");
-              })
-              .catch((error) => {
-                console.error("Error saving task data: ", error);
-              });
+              const taskData = {
+                startTime: Timestamp.fromDate(startTime),
+                endTime: Timestamp.fromDate(endTime),
+                focusDuration,
+                pomodoroCompleted,
+              };
+
+              saveTaskData(user, taskData)
+                .then(() => {
+                  setTaskSaved(true); // Mark task as saved
+                  console.log("Task data saved successfully");
+                })
+                .catch((error) => {
+                  console.error("Error saving task data: ", error);
+                });
+            } else {
+              console.error("Start time is not set");
+            }
           } else {
-            // 如果未登入，顯示登入提示
-            setShowLogin(true);
+            setShowLogin(true); // Show login prompt if not logged in
           }
         }
-      }
-    }, 1000);
+      }, 1000);
+    }
 
-    return () => clearInterval(interval);
-  }, [tick, isPaused, secondsLeft, taskSaved, mode, inputMinutes, user]);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [
+    tick,
+    isPaused,
+    secondsLeft,
+    taskSaved,
+    mode,
+    inputMinutes,
+    user,
+    startTime,
+  ]);
+
+  const handleStartTimer = () => {
+    setStartTime(new Date()); // Set start time when starting the timer
+    startTimer();
+  };
 
   const totalSeconds = mode === "work" ? secondsLeft : 5 * 60;
   const percentage = Math.round((secondsLeft / totalSeconds) * 100);
@@ -106,7 +127,7 @@ const Timer = () => {
       <div className="mt-5">
         {isPaused ? (
           <>
-            <DefaultButton onClick={startTimer}>Start</DefaultButton>
+            <DefaultButton onClick={handleStartTimer}>Start</DefaultButton>
             <input
               type="number"
               value={inputMinutes}
