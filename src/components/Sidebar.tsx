@@ -11,7 +11,7 @@ const Sidebar = () => {
     <div className="relative flex">
       <button
         onClick={toggleSidebar}
-        className="absolute top-96 left-4 z-20 bg-blue-500 text-white p-2 rounded"
+        className="absolute top-96 left-80 z-20 bg-blue-500 text-white p-2 rounded"
       >
         {isOpen ? "Close" : "Open"}
       </button>

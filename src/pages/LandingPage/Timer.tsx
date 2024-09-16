@@ -131,7 +131,8 @@ const Timer = () => {
   }, [user]);
 
   const handleStartTimer = () => {
-    setStartTime(new Date()); // Set start time when starting the timer
+    setStartTime(new Date());
+    console.log(startTime);
     startTimer();
   };
 

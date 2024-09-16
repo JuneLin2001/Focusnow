@@ -29,13 +29,12 @@ const TodoList = () => {
       </button>
 
       <div
-        className={`fixed bottom-0 right-0 w-[300px] h-[600px] bg-white z-10 flex flex-col p-5 outline transition-transform duration-300 ease-in-out ${
+        className={`fixed bottom-0 right-0 w-[500px] h-[600px] bg-white z-10 flex flex-col p-5 outline transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-y-0" : "translate-y-[580px]"
-        }`}
+        }`} //TODO: 改一下大小跟邏輯，只需要存完成的TODO？
       >
         <h2 className="text-xl mb-4">Todo List</h2>
 
-        {/* 輸入框和新增按鈕 */}
         <div className="mb-4 flex">
           <input
             type="text"
@@ -52,7 +51,6 @@ const TodoList = () => {
           </button>
         </div>
 
-        {/* Todo 列表 */}
         <ul className="flex-grow overflow-y-auto">
           {todos.map((todo) => (
             <li key={todo.id} className="flex items-center mb-2">
@@ -60,13 +58,13 @@ const TodoList = () => {
                 type="checkbox"
                 checked={todo.completed}
                 onChange={() => toggleComplete(todo.id)}
-                className="mr-2 p-6"
+                className="mr-2 w-6 h-6"
               />
               <input
                 type="text"
                 value={todo.title}
                 onChange={(e) => editTodoTitle(todo.id, e.target.value)}
-                className={`flex-grow p-1 ${todo.completed ? "line-through text-gray-500" : ""}`}
+                className={`flex-grow p-1 ${todo.completed ? "line-through text-gray-500" : ""} text-xl`}
               />
               <button
                 onClick={() => removeTodo(todo.id)}
