@@ -42,7 +42,7 @@ const Timer = () => {
           })}
         />
       </div>
-      <div className="mt-5 flex justify-center gap-3">
+      <div className="mt-5">
         {isPaused ? (
           <DefaultButton onClick={startTimer}>Start</DefaultButton>
         ) : (

@@ -1,15 +1,13 @@
 import { useState } from "react";
-
-interface Todo {
-  id: number;
-  title: string;
-  completed: boolean;
-}
+import { useTodoStore } from "../../store/todoStore"; // 請確保路徑正確
 
 const TodoList = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodoTitle, setNewTodoTitle] = useState<string>("");
+
+  // 從 zustand store 中取出狀態和方法
+  const { todos, addTodo, removeTodo, editTodoTitle, toggleComplete } =
+    useTodoStore();
 
   // 切換 sidebar 開關
   const toggleSidebar = () => {
@@ -17,38 +15,10 @@ const TodoList = () => {
   };
 
   // 新增 todo 項目
-  const addTodo = () => {
+  const handleAddTodo = () => {
     if (newTodoTitle.trim() === "") return; // 避免空白的 todo
-    const newTodo: Todo = {
-      id: Date.now(),
-      title: newTodoTitle,
-      completed: false,
-    };
-    setTodos([...todos, newTodo]);
+    addTodo(newTodoTitle);
     setNewTodoTitle(""); // 清空輸入框
-  };
-
-  // 刪除完成的 todo 項目
-  const removeTodo = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
-
-  // 編輯 todo 標題
-  const editTodoTitle = (id: number, newTitle: string) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, title: newTitle } : todo
-      )
-    );
-  };
-
-  // 切換 todo 的完成狀態
-  const toggleComplete = (id: number) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
   };
 
   return (
@@ -77,7 +47,7 @@ const TodoList = () => {
             placeholder="New Todo"
           />
           <button
-            onClick={addTodo}
+            onClick={handleAddTodo}
             className="bg-green-500 text-white p-2 ml-2 rounded"
           >
             +
