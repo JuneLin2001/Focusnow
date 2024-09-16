@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { useTodoStore } from "../../store/todoStore"; // 請確保路徑正確
+import { useTodoStore } from "../../store/todoStore";
 
 const TodoList = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [newTodoTitle, setNewTodoTitle] = useState<string>("");
 
-  // 從 zustand store 中取出狀態和方法
   const { todos, addTodo, removeTodo, editTodoTitle, toggleComplete } =
     useTodoStore();
 
-  // 切換 sidebar 開關
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
@@ -62,7 +60,7 @@ const TodoList = () => {
                 type="checkbox"
                 checked={todo.completed}
                 onChange={() => toggleComplete(todo.id)}
-                className="mr-2"
+                className="mr-2 p-6"
               />
               <input
                 type="text"

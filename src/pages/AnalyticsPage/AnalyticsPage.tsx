@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebaseConfig";
+import { db } from "../../firebase/firebaseConfig";
 import useAuthStore from "../../store/authStore";
 
 interface Task {
   taskId: string;
   taskName: string;
-  isTaskCompleted: boolean;
+  completed: boolean;
 }
 
 interface UserAnalytics {
@@ -92,8 +92,7 @@ const AanalyticsPage: React.FC = () => {
             {Array.isArray(analytics.tasks) && analytics.tasks.length > 0 ? (
               analytics.tasks.map((task) => (
                 <li key={task.taskId}>
-                  {task.taskName} -{" "}
-                  {task.isTaskCompleted ? "Completed" : "Pending"}
+                  {task.taskName} - {task.completed ? "Completed" : "Pending"}
                 </li>
               ))
             ) : (

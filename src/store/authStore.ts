@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { User, signOut } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebaseConfig";
+import { auth, db } from "../firebase/firebaseConfig";
 
 interface AuthState {
   user: User | null;

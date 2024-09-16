@@ -1,28 +1,50 @@
 import React from "react";
 
-interface DefaultButtonProps {
+interface ButtonProps {
   onClick: () => void;
   children: React.ReactNode;
+  className?: string;
+  disabled?: boolean;
 }
 
-export const DefaultButton = ({ onClick, children }: DefaultButtonProps) => {
+// 通用按鈕組件
+const Button = ({ onClick, children, className, disabled }: ButtonProps) => {
   return (
     <button
-      onClick={onClick} // 將 onClick 綁定到按鈕的點擊事件
-      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      onClick={onClick}
+      className={`text-white font-bold py-2 px-4 rounded ${className}`}
+      disabled={disabled} // 設置 disabled 屬性
     >
-      {children} {/* 使用 children 來顯示按鈕的內容 */}
+      {children}
     </button>
   );
 };
 
-export const ResetButton = ({ onClick, children }: DefaultButtonProps) => {
-  return (
-    <button
-      onClick={onClick} // 將 onClick 綁定到按鈕的點擊事件
-      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-    >
-      {children} {/* 使用 children 來顯示按鈕的內容 */}
-    </button>
-  );
-};
+// 藍色默認按鈕
+export const DefaultButton = ({ onClick, children }: ButtonProps) => (
+  <Button onClick={onClick} className="bg-blue-500 hover:bg-blue-700">
+    {children}
+  </Button>
+);
+
+// 紅色重置按鈕
+export const ResetButton = ({ onClick, children }: ButtonProps) => (
+  <Button onClick={onClick} className="bg-red-500 hover:bg-red-700">
+    {children}
+  </Button>
+);
+
+// 可以用來添加或減少時間的按鈕
+export const AddOrSubtractButton = ({
+  onClick,
+  children,
+  disabled,
+}: ButtonProps) => (
+  <Button
+    onClick={onClick}
+    disabled={disabled}
+    className="bg-blue-500 hover:bg-blue-700" // 用不同的顏色來區分
+  >
+    {children}
+  </Button>
+);
