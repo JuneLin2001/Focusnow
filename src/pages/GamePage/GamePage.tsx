@@ -1,7 +1,7 @@
 // GamePage.tsx
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-// import { Perf } from "r3f-perf";
+import { Perf } from "r3f-perf";
 import MovingBox from "./MovingBox";
 
 const GamePage = () => {
@@ -14,12 +14,13 @@ const GamePage = () => {
 
   return (
     <Canvas camera={{ position: [5, 5, 10] }}>
-      {/* <Perf position="top-right" showGraph={false} /> */}
+      <Perf position="top-right" showGraph={false} />
 
       <ambientLight intensity={2} />
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]}>
         <boxGeometry args={[15, 10, 1]} />
+
         <meshStandardMaterial color="aqua" />
       </mesh>
 

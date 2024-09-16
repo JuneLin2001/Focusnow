@@ -14,6 +14,7 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { useTodoStore, Todo } from "../../store/todoStore";
 
 const Timer = () => {
   const {
@@ -27,8 +28,8 @@ const Timer = () => {
     addFiveMinutes,
     minusFiveMinutes,
   } = useTimerStore();
-
   const { user } = useAuthStore();
+  const { todos } = useTodoStore();
   const [inputMinutes, setInputMinutes] = useState(25);
   const [showLogin, setShowLogin] = useState(false);
   const [startTime, setStartTime] = useState<Date | null>(null); // Add state to store start time
@@ -52,15 +53,24 @@ const Timer = () => {
             const focusDuration = inputMinutes;
             const pomodoroCompleted = mode === "work";
 
+            const formattedTodos = todos.map((todo) => ({
+              ...todo,
+              startTime: Timestamp.fromDate(todo.startTime.toDate()),
+              doneTime: todo.doneTime
+                ? Timestamp.fromDate(todo.doneTime.toDate())
+                : null,
+            }));
+
             const taskData = {
               startTime: Timestamp.fromDate(startTime),
               endTime: Timestamp.fromDate(endTime),
               focusDuration,
               pomodoroCompleted,
+              todos: formattedTodos, // 將 todos 包含在 taskData 中
             };
 
             if (user) {
-              // User is logged in, save data to Firestore and remove from localStorage
+              // User is logged in, save data to Firestore
               saveTaskData(user, taskData)
                 .then(() => {
                   console.log("Task data saved successfully");
@@ -84,7 +94,7 @@ const Timer = () => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [tick, isPaused, secondsLeft, mode, inputMinutes, user, startTime]);
+  }, [tick, isPaused, secondsLeft, mode, inputMinutes, user, startTime, todos]);
 
   useEffect(() => {
     if (user) {
@@ -108,10 +118,29 @@ const Timer = () => {
           const endTimeTimestamp = Timestamp.fromDate(endTimeDate);
 
           // 更新 taskData 以使用 Firestore Timestamp
+          const updatedTodos = taskData.todos.map((todo: Todo) => ({
+            ...todo,
+            startTime: Timestamp.fromDate(
+              new Date(
+                todo.startTime.seconds * 1000 +
+                  todo.startTime.nanoseconds / 1000000
+              )
+            ),
+            doneTime: todo.doneTime
+              ? Timestamp.fromDate(
+                  new Date(
+                    todo.doneTime.seconds * 1000 +
+                      todo.doneTime.nanoseconds / 1000000
+                  )
+                )
+              : null,
+          }));
+
           const updatedTaskData = {
             ...taskData,
             startTime: startTimeTimestamp,
             endTime: endTimeTimestamp,
+            todos: updatedTodos,
           };
 
           // 儲存到 Firestore
@@ -135,9 +164,6 @@ const Timer = () => {
     console.log(startTime);
     startTimer();
   };
-
-  // const totalSeconds = mode === "work" ? secondsLeft : 5 * 60;
-  // const percentage = Math.round((secondsLeft / totalSeconds) * 100);
 
   const minutes = Math.floor(secondsLeft / 60);
   const seconds = secondsLeft % 60;
@@ -187,7 +213,7 @@ const Timer = () => {
       {showLogin && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50">
           <div className="bg-white p-5 rounded shadow-lg">
-            <h2 className="text-xl mb-4">Please log in to save your data</h2>
+            <h2 className="text-xl mb-4">Please login to save your data</h2>
             <LoginButton onLoginSuccess={handleLoginSuccess} />
           </div>
         </div>
