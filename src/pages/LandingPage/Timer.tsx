@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useTimerStore } from "../../store/timerStore";
+import { DefaultButton, ResetButton } from "../../components/Button";
 
 const Timer = () => {
   const {
@@ -43,19 +44,9 @@ const Timer = () => {
       </div>
       <div className="mt-5 flex justify-center gap-3">
         {isPaused ? (
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={startTimer}
-          >
-            Start
-          </button>
+          <DefaultButton onClick={startTimer}>Start</DefaultButton>
         ) : (
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            onClick={resetTimer}
-          >
-            Reset
-          </button>
+          <ResetButton onClick={resetTimer}>Reset</ResetButton>
         )}
       </div>
     </div>
