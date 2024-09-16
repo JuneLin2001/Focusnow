@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { useTimerStore } from "../../store/timerStore"; // 確保引入正確的檔案路徑
+import { useTimerStore } from "../../store/timerStore";
 
-const LandingPage = () => {
+const Timer = () => {
   const {
     secondsLeft,
     isPaused,
@@ -62,4 +62,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default Timer;
