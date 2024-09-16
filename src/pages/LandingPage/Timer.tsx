@@ -30,9 +30,12 @@ const Timer = () => {
 
   const { user } = useAuthStore();
   const [inputMinutes, setInputMinutes] = useState(25);
-  const [taskSaved, setTaskSaved] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [startTime, setStartTime] = useState<Date | null>(null); // Add state to store start time
+
+  const handleLoginSuccess = () => {
+    setShowLogin(false); // Close the login popup on successful login
+  };
 
   useEffect(() => {
     let interval: number;
@@ -42,34 +45,37 @@ const Timer = () => {
         tick();
         console.log(secondsLeft);
 
-        if (secondsLeft === 1 && !taskSaved) {
-          if (user) {
-            const endTime = new Date(); // Capture end time when task completes
+        if (secondsLeft === 1) {
+          const endTime = new Date(); // Capture end time when task completes
 
-            if (startTime) {
-              const focusDuration = inputMinutes;
-              const pomodoroCompleted = mode === "work";
+          if (startTime) {
+            const focusDuration = inputMinutes;
+            const pomodoroCompleted = mode === "work";
 
-              const taskData = {
-                startTime: Timestamp.fromDate(startTime),
-                endTime: Timestamp.fromDate(endTime),
-                focusDuration,
-                pomodoroCompleted,
-              };
+            const taskData = {
+              startTime: Timestamp.fromDate(startTime),
+              endTime: Timestamp.fromDate(endTime),
+              focusDuration,
+              pomodoroCompleted,
+            };
 
+            if (user) {
+              // User is logged in, save data to Firestore and remove from localStorage
               saveTaskData(user, taskData)
                 .then(() => {
-                  setTaskSaved(true); // Mark task as saved
                   console.log("Task data saved successfully");
+                  localStorage.removeItem("taskData");
                 })
                 .catch((error) => {
                   console.error("Error saving task data: ", error);
                 });
             } else {
-              console.error("Start time is not set");
+              // User is not logged in, save data to localStorage
+              localStorage.setItem("taskData", JSON.stringify(taskData));
+              setShowLogin(true); // Show login prompt if not logged in
             }
           } else {
-            setShowLogin(true); // Show login prompt if not logged in
+            console.error("Start time is not set");
           }
         }
       }, 1000);
@@ -78,24 +84,59 @@ const Timer = () => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [
-    tick,
-    isPaused,
-    secondsLeft,
-    taskSaved,
-    mode,
-    inputMinutes,
-    user,
-    startTime,
-  ]);
+  }, [tick, isPaused, secondsLeft, mode, inputMinutes, user, startTime]);
+
+  useEffect(() => {
+    if (user) {
+      const savedTaskData = localStorage.getItem("taskData");
+      if (savedTaskData) {
+        try {
+          const taskData = JSON.parse(savedTaskData);
+
+          // 將 Firestore Timestamp 格式的數據轉換為 JavaScript Date 對象
+          const startTimeDate = new Date(
+            taskData.startTime.seconds * 1000 +
+              taskData.startTime.nanoseconds / 1000000
+          );
+          const endTimeDate = new Date(
+            taskData.endTime.seconds * 1000 +
+              taskData.endTime.nanoseconds / 1000000
+          );
+
+          // 將 JavaScript Date 對象轉換為 Firestore Timestamp
+          const startTimeTimestamp = Timestamp.fromDate(startTimeDate);
+          const endTimeTimestamp = Timestamp.fromDate(endTimeDate);
+
+          // 更新 taskData 以使用 Firestore Timestamp
+          const updatedTaskData = {
+            ...taskData,
+            startTime: startTimeTimestamp,
+            endTime: endTimeTimestamp,
+          };
+
+          // 儲存到 Firestore
+          saveTaskData(user, updatedTaskData)
+            .then(() => {
+              console.log("Task data saved successfully");
+              localStorage.removeItem("taskData");
+            })
+            .catch((error) => {
+              console.error("Error saving task data: ", error);
+            });
+        } catch (error) {
+          console.error("Error parsing saved task data: ", error);
+        }
+      }
+    }
+  }, [user]);
 
   const handleStartTimer = () => {
     setStartTime(new Date()); // Set start time when starting the timer
     startTimer();
   };
 
-  const totalSeconds = mode === "work" ? secondsLeft : 5 * 60;
-  const percentage = Math.round((secondsLeft / totalSeconds) * 100);
+  // const totalSeconds = mode === "work" ? secondsLeft : 5 * 60;
+  // const percentage = Math.round((secondsLeft / totalSeconds) * 100);
 
   const minutes = Math.floor(secondsLeft / 60);
   const seconds = secondsLeft % 60;
@@ -108,7 +149,7 @@ const Timer = () => {
     <div className="flex flex-col justify-center items-center h-screen">
       <div style={{ width: 400, height: 400 }}>
         <CircularProgressbarWithChildren
-          value={percentage}
+          value={(secondsLeft / (inputMinutes * 60)) * 100}
           styles={buildStyles({
             textColor: "#000",
             pathColor: mode === "work" ? "blue" : "green",
@@ -146,7 +187,7 @@ const Timer = () => {
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50">
           <div className="bg-white p-5 rounded shadow-lg">
             <h2 className="text-xl mb-4">Please log in to save your data</h2>
-            <LoginButton />
+            <LoginButton onLoginSuccess={handleLoginSuccess} />
           </div>
         </div>
       )}

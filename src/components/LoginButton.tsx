@@ -2,7 +2,11 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import useAuthStore from "../store/authStore";
 
-const LoginButton = () => {
+interface LoginButtonProps {
+  onLoginSuccess: () => void; // Add prop for login success callback
+}
+
+const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
   const { user, setUser, logout } = useAuthStore();
 
   const handleLogin = async () => {
@@ -11,6 +15,7 @@ const LoginButton = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       setUser(user); // 更新全局狀態中的使用者資訊
+      onLoginSuccess(); // Notify that login was successful
     } catch (error) {
       console.error("Login error", error);
     }
