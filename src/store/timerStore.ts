@@ -17,7 +17,10 @@ export const useTimerStore = create<TimerState>((set) => ({
   isPaused: true,
   mode: "work",
   setTimer: (minutes) => set({ secondsLeft: minutes * 60 }),
-  startTimer: () => set({ isPaused: false }),
+  startTimer: () => {
+    set({ isPaused: false });
+    console.log("startTimer");
+  },
   breakTimer: () => set({ isPaused: true, secondsLeft: 25 * 60 }), // 重置為 25 分鐘
   tick: () =>
     set((state) => ({

@@ -38,7 +38,7 @@ const Timer = () => {
       if (!isPaused) {
         tick();
 
-        if (secondsLeft <= 0 && !taskSaved) {
+        if (secondsLeft <= 0) {
           if (user) {
             // Save data if user is logged in
             const endTime = new Date();
@@ -53,15 +53,17 @@ const Timer = () => {
               startTime: Timestamp.fromDate(startTime),
             };
 
-            saveTaskData(taskData)
+            // 保存至 Firestore 的 users/{userId}/analytics 子集合中
+            saveTaskData(user, taskData)
               .then(() => {
-                setTaskSaved(true); // Mark task as saved
+                setTaskSaved(true); // 標記任務已保存
+                console.log("Task data saved successfully");
               })
               .catch((error) => {
                 console.error("Error saving task data: ", error);
               });
           } else {
-            // Show login prompt if user is not logged in
+            // 如果未登入，顯示登入提示
             setShowLogin(true);
           }
         }
@@ -75,8 +77,7 @@ const Timer = () => {
   const percentage = Math.round((secondsLeft / totalSeconds) * 100);
 
   const minutes = Math.floor(secondsLeft / 60);
-  let seconds = secondsLeft % 60;
-  if (seconds < 10) seconds = parseInt("0" + seconds);
+  const seconds = secondsLeft % 60;
 
   const handleSetTimer = () => {
     setTimer(inputMinutes);
@@ -91,7 +92,6 @@ const Timer = () => {
             textColor: "#000",
             pathColor: mode === "work" ? "blue" : "green",
             trailColor: "#d6d6d6",
-            strokeLinecap: "butt",
           })}
         >
           <AddOrSubtractButton onClick={addFiveMinutes} disabled={!isPaused}>
