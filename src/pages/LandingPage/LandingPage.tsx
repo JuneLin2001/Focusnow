@@ -1,73 +1,62 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { useTimerStore } from "../../store/timerStore"; // 確保引入正確的檔案路徑
 
-const LandingPage: React.FC = () => {
-  const [timeLeft, setTimeLeft] = useState<number>(25 * 60); // 初始時間設為 25 分鐘（以秒為單位）
-  const [isActive, setIsActive] = useState<boolean>(false);
+const LandingPage = () => {
+  const {
+    secondsLeft,
+    isPaused,
+    mode,
+    startTimer,
+    breakTimer: resetTimer,
+    tick,
+  } = useTimerStore();
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    const interval = setInterval(() => {
+      tick();
+    }, 1000);
 
-    if (isActive && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft((prevTime) => prevTime - 1);
-      }, 1000);
-    } else if (timeLeft === 0) {
-      setIsActive(false); // 當時間到達 0 時停止計時器
-    }
+    return () => clearInterval(interval);
+  }, [tick]);
 
-    return () => clearInterval(timer); // 清除計時器
-  }, [isActive, timeLeft]);
+  const totalSeconds = mode === "work" ? 25 * 60 : 5 * 60; // 模擬模式時間
+  const percentage = Math.round((secondsLeft / totalSeconds) * 100);
 
-  const formatTime = (seconds: number): string => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
-  };
-
-  const handleStart = () => {
-    setIsActive(true);
-  };
-
-  const handleReset = () => {
-    setIsActive(false);
-    setTimeLeft(25 * 60); // 重置時間為 25 分鐘
-  };
-
-  const minusFiveMinute = () => {
-    if (timeLeft >= 300) {
-      setTimeLeft((prevTime) => prevTime - 300);
-    } else if (timeLeft >= 30) {
-      setTimeLeft((prevTime) => prevTime - 30);
-    } else if (timeLeft >= 3) {
-      setTimeLeft((prevTime) => prevTime - 3);
-    }
-  };
+  const minutes = Math.floor(secondsLeft / 60);
+  let seconds = secondsLeft % 60;
+  if (seconds < 10) seconds = parseInt("0" + seconds);
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="w-96 h-96 border-4 border-black rounded-full flex flex-col justify-center items-center">
-        <p className="text-[96px]">{formatTime(timeLeft)}</p>
-        {isActive ? (
+    <div className="flex flex-col justify-center items-center h-screen">
+      <div style={{ width: 400, height: 400 }}>
+        <CircularProgressbar
+          value={percentage}
+          text={`${minutes}:${seconds < 10 ? "0" + seconds : seconds}`}
+          styles={buildStyles({
+            textColor: "#000",
+            pathColor: mode === "work" ? "blue" : "green",
+            trailColor: "#d6d6d6",
+          })}
+        />
+      </div>
+      <div className="mt-5 flex justify-center gap-3">
+        {isPaused ? (
           <button
-            onClick={handleReset}
-            className="bg-red-500 text-white px-4 py-2 mt-4 block rounded"
-          >
-            Reset
-          </button>
-        ) : (
-          <button
-            onClick={handleStart}
-            className="bg-black text-white px-4 py-2 mt-4 block rounded"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={startTimer}
           >
             Start
           </button>
+        ) : (
+          <button
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            onClick={resetTimer}
+          >
+            Reset
+          </button>
         )}
-        <button
-          onClick={minusFiveMinute}
-          className="bg-black text-white px-4 py-2 mt-4 block rounded"
-        >
-          minusTime
-        </button>
       </div>
     </div>
   );
