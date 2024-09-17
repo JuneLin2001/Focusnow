@@ -1,6 +1,6 @@
 import { collection, addDoc, Timestamp } from "firebase/firestore";
-import { db } from "./firebaseConfig"; // 確保這裡的路徑正確
-import { User } from "firebase/auth"; // 確保這裡的路徑正確
+import { db } from "./firebaseConfig";
+import { User } from "firebase/auth";
 
 export interface Todo {
   id: string;

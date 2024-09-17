@@ -29,7 +29,7 @@ const Timer = () => {
     minusFiveMinutes,
   } = useTimerStore();
   const { user } = useAuthStore();
-  const { todos } = useTodoStore();
+  const { todos, removeTodo } = useTodoStore();
   const [inputMinutes, setInputMinutes] = useState(25);
   const [showLogin, setShowLogin] = useState(false);
   const [startTime, setStartTime] = useState<Date | null>(null);
@@ -47,19 +47,21 @@ const Timer = () => {
         console.log(secondsLeft);
 
         if (secondsLeft === 1) {
-          const endTime = new Date(); // Capture end time when task completes
+          const endTime = new Date();
 
           if (startTime) {
             const focusDuration = inputMinutes;
             const pomodoroCompleted = mode === "work";
 
-            const formattedTodos = todos.map((todo) => ({
-              ...todo,
-              startTime: Timestamp.fromDate(todo.startTime.toDate()),
-              doneTime: todo.doneTime
-                ? Timestamp.fromDate(todo.doneTime.toDate())
-                : null,
-            }));
+            const formattedTodos = todos
+              .filter((todo) => todo.completed)
+              .map((todo) => ({
+                ...todo,
+                startTime: Timestamp.fromDate(todo.startTime.toDate()),
+                doneTime: todo.doneTime
+                  ? Timestamp.fromDate(todo.doneTime.toDate())
+                  : null,
+              }));
 
             const taskData = {
               startTime: Timestamp.fromDate(startTime),
@@ -73,6 +75,11 @@ const Timer = () => {
               saveTaskData(user, taskData)
                 .then(() => {
                   console.log("Task data saved successfully");
+                  todos
+                    .filter((todo) => todo.completed)
+                    .forEach((todo) => {
+                      removeTodo(todo.id);
+                    });
                   localStorage.removeItem("taskData");
                 })
                 .catch((error) => {
@@ -92,7 +99,17 @@ const Timer = () => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [tick, isPaused, secondsLeft, mode, inputMinutes, user, startTime, todos]);
+  }, [
+    tick,
+    isPaused,
+    secondsLeft,
+    mode,
+    inputMinutes,
+    user,
+    startTime,
+    todos,
+    removeTodo,
+  ]);
 
   useEffect(() => {
     if (user) {

@@ -1,9 +1,6 @@
 import { create } from "zustand";
-import { Timestamp, doc, deleteDoc } from "firebase/firestore";
-import { User } from "firebase/auth"; // 確保這裡的路徑正確
-import { db } from "../firebase/firebaseConfig"; // 確保這裡的路徑正確
+import { Timestamp } from "firebase/firestore";
 
-// 定義 Todo 型別
 export interface Todo {
   id: string;
   title: string;
@@ -18,7 +15,6 @@ interface TodoState {
   removeTodo: (id: string) => void;
   editTodoTitle: (id: string, newTitle: string) => void;
   toggleComplete: (id: string) => void;
-  saveCompletedTodos: (user: User) => Promise<void>;
 }
 
 export const useTodoStore = create<TodoState>((set) => ({
@@ -61,27 +57,5 @@ export const useTodoStore = create<TodoState>((set) => ({
           : todo
       ),
     }));
-  },
-  saveCompletedTodos: async (user: User) => {
-    try {
-      const completedTodos = useTodoStore
-        .getState()
-        .todos.filter((todo) => todo.completed);
-
-      await Promise.all(
-        completedTodos.map(async (todo) => {
-          const todoRef = doc(db, `users/${user.uid}/analytics/${todo.id}`);
-          await deleteDoc(todoRef);
-        })
-      );
-
-      set((state) => ({
-        todos: state.todos.filter((todo) => !todo.completed),
-      }));
-
-      console.log("Completed todos saved and removed successfully");
-    } catch (error) {
-      console.error("Error saving or removing completed todos: ", error);
-    }
   },
 }));
