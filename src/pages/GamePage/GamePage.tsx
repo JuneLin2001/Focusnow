@@ -1,16 +1,38 @@
-// GamePage.tsx
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Perf } from "r3f-perf";
 import MovingBox from "./MovingBox";
+import { useControls } from "leva";
+import Model from "./Model";
 
 const GamePage = () => {
-  // 生成單一模型的初始位置
-  const position: [number, number, number] = [
-    Math.random() * 7.5 - 7.5, // X 位置在平面寬度內
-    0, // Y 位置（固定在平面上方）
-    Math.random() * 5 - 5, // Z 位置在平面深度內
-  ];
+  const position: [number, number, number] = [0, 0, 0];
+
+  const { width, depth, speed } = useControls({
+    width: {
+      value: 15,
+      min: 1,
+      max: 30,
+      step: 0.1,
+    },
+    depth: {
+      value: 10,
+      min: 1,
+      max: 20,
+      step: 0.1,
+    },
+    speed: {
+      value: 0.2,
+      min: 0.1,
+      max: 1,
+      step: 0.1,
+    },
+  });
+
+  const minX = -width / 2;
+  const maxX = width / 2;
+  const minZ = -depth / 2;
+  const maxZ = depth / 2;
 
   return (
     <Canvas camera={{ position: [5, 5, 10] }}>
@@ -19,12 +41,20 @@ const GamePage = () => {
       <ambientLight intensity={2} />
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]}>
-        <boxGeometry args={[15, 10, 1]} />
-
+        <boxGeometry args={[width, depth, 1]} />
         <meshStandardMaterial color="aqua" />
       </mesh>
 
-      <MovingBox position={position} />
+      <MovingBox
+        position={position}
+        minX={minX}
+        maxX={maxX}
+        minZ={minZ}
+        maxZ={maxZ}
+        speed={speed}
+      />
+
+      <Model />
 
       <OrbitControls />
     </Canvas>
