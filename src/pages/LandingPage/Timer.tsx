@@ -32,10 +32,10 @@ const Timer = () => {
   const { todos } = useTodoStore();
   const [inputMinutes, setInputMinutes] = useState(25);
   const [showLogin, setShowLogin] = useState(false);
-  const [startTime, setStartTime] = useState<Date | null>(null); // Add state to store start time
+  const [startTime, setStartTime] = useState<Date | null>(null);
 
   const handleLoginSuccess = () => {
-    setShowLogin(false); // Close the login popup on successful login
+    setShowLogin(false);
   };
 
   useEffect(() => {
@@ -66,11 +66,10 @@ const Timer = () => {
               endTime: Timestamp.fromDate(endTime),
               focusDuration,
               pomodoroCompleted,
-              todos: formattedTodos, // 將 todos 包含在 taskData 中
+              todos: formattedTodos,
             };
 
             if (user) {
-              // User is logged in, save data to Firestore
               saveTaskData(user, taskData)
                 .then(() => {
                   console.log("Task data saved successfully");
@@ -80,9 +79,8 @@ const Timer = () => {
                   console.error("Error saving task data: ", error);
                 });
             } else {
-              // User is not logged in, save data to localStorage
               localStorage.setItem("taskData", JSON.stringify(taskData));
-              setShowLogin(true); // Show login prompt if not logged in
+              setShowLogin(true);
             }
           } else {
             console.error("Start time is not set");
@@ -103,7 +101,6 @@ const Timer = () => {
         try {
           const taskData = JSON.parse(savedTaskData);
 
-          // 將 Firestore Timestamp 格式的數據轉換為 JavaScript Date 對象
           const startTimeDate = new Date(
             taskData.startTime.seconds * 1000 +
               taskData.startTime.nanoseconds / 1000000
@@ -113,11 +110,9 @@ const Timer = () => {
               taskData.endTime.nanoseconds / 1000000
           );
 
-          // 將 JavaScript Date 對象轉換為 Firestore Timestamp
           const startTimeTimestamp = Timestamp.fromDate(startTimeDate);
           const endTimeTimestamp = Timestamp.fromDate(endTimeDate);
 
-          // 更新 taskData 以使用 Firestore Timestamp
           const updatedTodos = taskData.todos.map((todo: Todo) => ({
             ...todo,
             startTime: Timestamp.fromDate(
@@ -143,7 +138,6 @@ const Timer = () => {
             todos: updatedTodos,
           };
 
-          // 儲存到 Firestore
           saveTaskData(user, updatedTaskData)
             .then(() => {
               console.log("Task data saved successfully");

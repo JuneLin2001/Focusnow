@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
-import GamePage from "./pages/GamePage/GamePage";
+import GamePage from "./pages/GamePage";
 import AanalyticsPage from "./pages/AnalyticsPage/AnalyticsPage";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
