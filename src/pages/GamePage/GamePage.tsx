@@ -55,7 +55,8 @@ const GamePage = () => {
         speed={speed}
       />
 
-      <Model />
+      <Model minX={minX} maxX={maxX} minZ={minZ} maxZ={maxZ} />
+
       <MovingModel
         position={position}
         minX={minX}
@@ -63,8 +64,6 @@ const GamePage = () => {
         minZ={minZ}
         maxZ={maxZ}
         speed={speed}
-        scale={0.5}
-        rotation={[0, 4, 0]}
       />
       <OrbitControls />
     </Canvas>

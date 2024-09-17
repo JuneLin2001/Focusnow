@@ -1,20 +1,27 @@
 import { useGLTF } from "@react-three/drei";
-import { useControls } from "leva"; // 引入 useControls
+import { useControls } from "leva";
 
-const Model = () => {
+interface ModelProps {
+  minX: number;
+  maxX: number;
+  minZ: number;
+  maxZ: number;
+}
+
+const Model = ({ minX, maxX, minZ, maxZ }: ModelProps) => {
   const { scene } = useGLTF("BBpenguinCenter.glb");
 
-  // 使用 useControls 創建一個控制面板來調整位置
-  const { x, y, z } = useControls("Position", {
-    x: { value: 0, min: -10, max: 10, step: 0.1 },
-    y: { value: -0.5, min: -10, max: 10, step: 0.1 },
-    z: { value: 0, min: -10, max: 10, step: 0.1 },
+  const { x, z, rotationY } = useControls("Transform", {
+    x: { value: 0, min: minX, max: maxX, step: 0.1 },
+    z: { value: 0, min: minZ, max: maxZ, step: 0.1 },
+    rotationY: { value: 0, min: 0, max: Math.PI * 2, step: 0.1 },
   });
 
   return (
     <primitive
       object={scene}
-      position={[x, y, z]} // 使用 useControls 的值來控制位置
+      position={[x, -0.5, z]}
+      rotation={[0, rotationY, 0]}
       scale={[0.5, 0.5, 0.5]}
     />
   );

@@ -10,8 +10,6 @@ interface MovingModelProps {
   minZ: number;
   maxZ: number;
   speed: number;
-  scale: number;
-  rotation: [number, number, number];
 }
 
 const MovingModel = ({
@@ -21,8 +19,6 @@ const MovingModel = ({
   minZ,
   maxZ,
   speed,
-  scale,
-  rotation,
 }: MovingModelProps) => {
   const { scene } = useGLTF("/low_poly_rockhopper_penguin.glb");
   const modelRef = useRef<THREE.Group>(null!);
@@ -54,13 +50,6 @@ const MovingModel = ({
     }
   });
 
-  useFrame(() => {
-    if (modelRef.current) {
-      modelRef.current.scale.set(scale, scale, scale);
-      modelRef.current.rotation.set(rotation[0], rotation[1], rotation[2]);
-    }
-  });
-
   const handleClick = () => {
     console.log("Model clicked!");
   };
@@ -69,6 +58,8 @@ const MovingModel = ({
     <primitive
       object={scene}
       position={position}
+      scale={[0.5, 0.5, 0.5]}
+      rotation={[0, Math.PI / 2, 0]}
       ref={modelRef}
       onClick={handleClick}
       castShadow
