@@ -4,6 +4,7 @@ import { Perf } from "r3f-perf";
 import MovingBox from "./MovingBox";
 import { useControls } from "leva";
 import Model from "./Model";
+import MovingModel from "./MovingModel";
 
 const GamePage = () => {
   const position: [number, number, number] = [0, 0, 0];
@@ -55,7 +56,16 @@ const GamePage = () => {
       />
 
       <Model />
-
+      <MovingModel
+        position={position}
+        minX={minX}
+        maxX={maxX}
+        minZ={minZ}
+        maxZ={maxZ}
+        speed={speed}
+        scale={0.5}
+        rotation={[0, 4, 0]}
+      />
       <OrbitControls />
     </Canvas>
   );
