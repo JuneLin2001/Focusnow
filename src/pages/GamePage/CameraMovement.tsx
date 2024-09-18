@@ -9,6 +9,8 @@ import {
 import { Suspense, useEffect, useState, useRef } from "react";
 import gsap from "gsap";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import Ocean from "./Ocean";
+import { Stats } from "@react-three/drei";
 
 // CameraController Component
 interface CameraControllerProps {
@@ -87,6 +89,8 @@ export default function CameraMovement() {
 
   return (
     <Canvas>
+      <Stats />
+
       <Suspense fallback={null}>
         <Environment preset="sunset" />
       </Suspense>
@@ -117,6 +121,7 @@ export default function CameraMovement() {
         targetPosition={targetPosition || [0, 0, 0]}
         controlsRef={controlsRef}
       />
+      <Ocean />
     </Canvas>
   );
 }

@@ -37,7 +37,7 @@ const GamePage = () => {
   return (
     <Canvas camera={{ position: [5, 5, 10] }}>
       <ambientLight intensity={2} />
-      <Stats className="w-[300px] h-[300px]" />
+      <Stats />
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]}>
         <boxGeometry args={[width, depth, 1]} />
