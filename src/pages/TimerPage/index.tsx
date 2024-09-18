@@ -1,4 +1,4 @@
-import Timer from "./Timer";
+import Timer from "./Timer.js";
 import TodoList from "./TodoList.js";
 // import BackgroundModel from "./BackgroundModel";
 // import { Canvas } from "@react-three/fiber";

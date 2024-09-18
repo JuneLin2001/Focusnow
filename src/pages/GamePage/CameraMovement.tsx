@@ -11,7 +11,7 @@ import {
 } from "@react-three/drei";
 import gsap from "gsap";
 import * as THREE from "three";
-import LandingPage from "../LandingPage/index";
+import LandingPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage/AnalyticsPage";
 import Ocean from "./Ocean";
 
