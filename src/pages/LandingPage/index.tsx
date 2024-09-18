@@ -6,7 +6,7 @@ import { Canvas } from "@react-three/fiber";
 const LandingPage = () => {
   return (
     <div className="relative w-screen h-screen">
-      <Canvas
+      {/*  <Canvas
         style={{
           position: "absolute",
           top: 0,
@@ -16,9 +16,9 @@ const LandingPage = () => {
         }}
         camera={{ position: [20, 2, 5], fov: 50 }} // 調整相機位置
       >
-        <ambientLight intensity={5} /> {/* 環境光 */}
+        <ambientLight intensity={5} /> 
         <BackgroundModel />
-      </Canvas>
+      </Canvas> */}
       <div className="relative z-10">
         <Timer />
         <TodoList />
