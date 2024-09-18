@@ -38,8 +38,8 @@ interface OceanProps {
 }
 
 const Ocean: React.FC<OceanProps> = ({
-  size = 100,
-  subdivisions = 100,
+  size = 50,
+  subdivisions = 10,
   position = [0, 0, 0],
 }) => {
   const meshRef = useRef<THREE.Mesh>(null);

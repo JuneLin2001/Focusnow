@@ -1,4 +1,4 @@
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import {
   Float,
   ContactShadows,
@@ -11,6 +11,7 @@ import gsap from "gsap";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import Ocean from "./Ocean";
 import { Stats } from "@react-three/drei";
+import * as THREE from "three";
 
 // CameraController Component
 interface CameraControllerProps {
@@ -59,13 +60,51 @@ const CameraController: React.FC<CameraControllerProps> = ({
   return null;
 };
 
+// Bubble Component
+interface BubbleProps {
+  position: [number, number, number];
+  onClick: () => void;
+}
+
+const Bubble: React.FC<BubbleProps> = ({ position, onClick }) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const [hovered, setHovered] = useState(false);
+
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.position.y =
+        position[1] + Math.sin(Date.now() * 0.003) * 0.1;
+    }
+  });
+
+  return (
+    <Float
+      position={position}
+      speed={2}
+      rotationIntensity={1}
+      floatIntensity={1}
+    >
+      <mesh
+        ref={meshRef}
+        onClick={onClick}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        scale={hovered ? 1.2 : 1}
+      >
+        <sphereGeometry args={[0.2, 32, 32]} />
+        <meshBasicMaterial color={hovered ? "lightblue" : "blue"} />
+      </mesh>
+    </Float>
+  );
+};
+
 // ThreeBox Component - Render multiple boxes
 interface ThreeBoxProps {
   position: [number, number, number];
   onClick: () => void;
 }
 
-function ThreeBox({ position, onClick }: ThreeBoxProps) {
+const ThreeBox: React.FC<ThreeBoxProps> = ({ position, onClick }) => {
   return (
     <Float
       position={position}
@@ -73,12 +112,13 @@ function ThreeBox({ position, onClick }: ThreeBoxProps) {
       rotationIntensity={2}
       floatIntensity={2}
     >
-      <Box onClick={onClick}>
+      <Box>
         <meshPhysicalMaterial color="hotpink" />
+        <Bubble position={[0, 1, 0]} onClick={onClick} />
       </Box>
     </Float>
   );
-}
+};
 
 // CameraMovement Component
 export default function CameraMovement() {
@@ -86,6 +126,21 @@ export default function CameraMovement() {
     [number, number, number] | null
   >(null);
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
+
+  useEffect(() => {
+    if (controlsRef.current) {
+      const controls = controlsRef.current;
+
+      // 設置初始鏡頭角度
+      const initialCameraPosition = new THREE.Vector3(5, 5, 10); // 相機初始位置
+      const initialCameraTarget = new THREE.Vector3(5, 5, 5); // 相機目標位置
+
+      // 設置相機的位置和目標
+      controls.object.position.copy(initialCameraPosition);
+      controls.target.copy(initialCameraTarget);
+      controls.update(); // 更新 OrbitControls 以應用變更
+    }
+  }, [controlsRef]);
 
   return (
     <Canvas>
@@ -95,16 +150,16 @@ export default function CameraMovement() {
         <Environment preset="sunset" />
       </Suspense>
       <ThreeBox
-        position={[-6, 0, 0]}
-        onClick={() => setTargetPosition([-6, 0, 0])}
+        position={[-6, 2, 0]}
+        onClick={() => setTargetPosition([-6, 2, 0])}
       />
       <ThreeBox
-        position={[0, 0, 0]}
-        onClick={() => setTargetPosition([0, 0, 0])}
+        position={[0, 2, 6]}
+        onClick={() => setTargetPosition([0, 2, 6])}
       />
       <ThreeBox
-        position={[6, 0, 0]}
-        onClick={() => setTargetPosition([6, 0, 0])}
+        position={[6, 2, 0]}
+        onClick={() => setTargetPosition([6, 2, 0])}
       />
       <ContactShadows
         position={[0, -1.5, 0]}
