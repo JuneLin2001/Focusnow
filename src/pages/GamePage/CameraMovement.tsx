@@ -12,7 +12,7 @@ import {
 import gsap from "gsap";
 import * as THREE from "three";
 import LandingPage from "../LandingPage/index";
-import AanalyticsPage from "../AnalyticsPage/AnalyticsPage";
+import AnalyticsPage from "../AnalyticsPage/AnalyticsPage";
 import Ocean from "./Ocean";
 
 // CameraController Component
@@ -146,9 +146,12 @@ export default function CameraMovement() {
   }, [controlsRef]);
 
   return (
-    <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
-      {page === "landing" && <LandingPage />}
-      {page === "analytics" && <AanalyticsPage />}
+    <>
+      <div className="fixed top-2/4 left-2/4  z-50">
+        {page === "landing" && <LandingPage />}
+        {page === "analytics" && <AnalyticsPage />}
+      </div>
+
       <Canvas>
         <Stats />
 
@@ -166,15 +169,15 @@ export default function CameraMovement() {
           position={[0, 2, 16]}
           onClick={() => {
             setTargetPosition([0, 2, 16]);
-            setPage("analytics");
-          }} // 點擊後顯示 AnalyticsPage
+            setPage(null);
+          }}
         />
         <ThreeBox
           position={[16, 2, 0]}
           onClick={() => {
             setTargetPosition([16, 2, 0]);
-            setPage("landing");
-          }} // 點擊後顯示 LandingPage
+            setPage("analytics");
+          }}
         />
         <ContactShadows
           position={[0, -1.5, 0]}
@@ -193,6 +196,6 @@ export default function CameraMovement() {
         />
         <Ocean />
       </Canvas>
-    </div>
+    </>
   );
 }

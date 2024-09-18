@@ -13,10 +13,10 @@ const App: React.FC = () => {
       <Header />
       {/* <Sidebar /> */}
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<CameraMovement />} />
         <Route path="/game" element={<GamePage />} />
         <Route path="/analytics" element={<AanalyticsPage />} />
-        <Route path="/cameramovement" element={<CameraMovement />} />
+        <Route path="/timer" element={<LandingPage />} />
       </Routes>
     </>
   );
