@@ -15,7 +15,7 @@ import LandingPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage/AnalyticsPage";
 import Ocean from "./Ocean";
 import PenguinModel from "./PenguinModel";
-import Iceberg from "./IceBerg";
+import Iceberg from "./Iceberg";
 
 // CameraController Component
 interface CameraControllerProps {
