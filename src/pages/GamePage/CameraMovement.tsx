@@ -156,23 +156,23 @@ export default function CameraMovement() {
           <Environment preset="sunset" />
         </Suspense>
         <ThreeBox
-          position={[-6, 2, 0]}
+          position={[-16, 2, 0]}
           onClick={() => {
-            setTargetPosition([-6, 2, 0]);
+            setTargetPosition([-16, 2, 0]);
             setPage("landing");
           }} // 點擊後顯示 LandingPage
         />
         <ThreeBox
-          position={[0, 2, 6]}
+          position={[0, 2, 16]}
           onClick={() => {
-            setTargetPosition([0, 2, 6]);
+            setTargetPosition([0, 2, 16]);
             setPage("analytics");
           }} // 點擊後顯示 AnalyticsPage
         />
         <ThreeBox
-          position={[6, 2, 0]}
+          position={[16, 2, 0]}
           onClick={() => {
-            setTargetPosition([6, 2, 0]);
+            setTargetPosition([16, 2, 0]);
             setPage("landing");
           }} // 點擊後顯示 LandingPage
         />

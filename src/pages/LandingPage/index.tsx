@@ -5,7 +5,7 @@ import TodoList from "./TodoList.js";
 
 const LandingPage = () => {
   return (
-    <div className="relative w-screen h-screen">
+    <div className="relative w-screen ">
       {/*  <Canvas
         style={{
           position: "absolute",

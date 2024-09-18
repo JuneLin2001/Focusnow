@@ -184,7 +184,7 @@ const Timer = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
+    <div>
       <div style={{ width: 400, height: 400 }}>
         <CircularProgressbarWithChildren
           value={(secondsLeft / (inputMinutes * 60)) * 100}
@@ -222,7 +222,7 @@ const Timer = () => {
       </div>
 
       {showLogin && (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50">
+        <div className="fixed top-0 left-0 w-full  flex justify-center items-center bg-gray-800 bg-opacity-50">
           <div className="bg-white p-5 rounded shadow-lg">
             <h2 className="text-xl mb-4">Please login to save your data</h2>
             <LoginButton onLoginSuccess={handleLoginSuccess} />
