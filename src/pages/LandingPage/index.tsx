@@ -15,6 +15,7 @@ import LandingPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage/AnalyticsPage";
 import Ocean from "./Ocean";
 import PenguinModel from "./PenguinModel";
+import Iceberg from "./IceBerg";
 
 // CameraController Component
 interface CameraControllerProps {
@@ -159,12 +160,12 @@ export default function CameraMovement() {
         <Suspense fallback={null}>
           <Environment preset="sunset" />
         </Suspense>
-        <ThreeBox
+        <Iceberg
           position={[-16, 2, 0]}
           onClick={() => {
             setTargetPosition([-16, 2, 0]);
             setPage("landing");
-          }} // 點擊後顯示 LandingPage
+          }}
         />
         <ThreeBox
           position={[0, 2, 16]}

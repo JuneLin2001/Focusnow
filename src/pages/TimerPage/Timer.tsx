@@ -184,8 +184,8 @@ const Timer = () => {
   };
 
   return (
-    <div>
-      <div style={{ width: 400, height: 400 }}>
+    <div className="absolute top-1/2 left-1/4 -translate-x-1/4 -translate-y-1/2">
+      <div className="flex justify-center">
         <CircularProgressbarWithChildren
           value={(secondsLeft / (inputMinutes * 60)) * 100}
           styles={buildStyles({
