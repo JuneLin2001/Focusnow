@@ -21,5 +21,10 @@ body,
 }
 
 body {
-  background: white;
+  background: linear-gradient(
+    to bottom,
+    hsl(200deg, 80%, 52%),
+    hsl(200deg, 80%, 78%),
+    hsl(200deg, 80%, 90%) 100%
+  );
 }

@@ -1,17 +1,19 @@
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
+import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import {
   Float,
   ContactShadows,
   Environment,
   OrbitControls,
   Box,
+  Stats,
 } from "@react-three/drei";
-import { Suspense, useEffect, useState, useRef } from "react";
 import gsap from "gsap";
-import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
-import Ocean from "./Ocean";
-import { Stats } from "@react-three/drei";
 import * as THREE from "three";
+import LandingPage from "../LandingPage/index";
+import AanalyticsPage from "../AnalyticsPage/AnalyticsPage";
+import Ocean from "./Ocean";
 
 // CameraController Component
 interface CameraControllerProps {
@@ -125,6 +127,7 @@ export default function CameraMovement() {
   const [targetPosition, setTargetPosition] = useState<
     [number, number, number] | null
   >(null);
+  const [page, setPage] = useState<"landing" | "analytics" | null>(null);
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
 
   useEffect(() => {
@@ -143,40 +146,53 @@ export default function CameraMovement() {
   }, [controlsRef]);
 
   return (
-    <Canvas>
-      <Stats />
+    <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
+      {page === "landing" && <LandingPage />}
+      {page === "analytics" && <AanalyticsPage />}
+      <Canvas>
+        <Stats />
 
-      <Suspense fallback={null}>
-        <Environment preset="sunset" />
-      </Suspense>
-      <ThreeBox
-        position={[-6, 2, 0]}
-        onClick={() => setTargetPosition([-6, 2, 0])}
-      />
-      <ThreeBox
-        position={[0, 2, 6]}
-        onClick={() => setTargetPosition([0, 2, 6])}
-      />
-      <ThreeBox
-        position={[6, 2, 0]}
-        onClick={() => setTargetPosition([6, 2, 0])}
-      />
-      <ContactShadows
-        position={[0, -1.5, 0]}
-        scale={10}
-        blur={3}
-        opacity={0.25}
-        far={10}
-      />
+        <Suspense fallback={null}>
+          <Environment preset="sunset" />
+        </Suspense>
+        <ThreeBox
+          position={[-6, 2, 0]}
+          onClick={() => {
+            setTargetPosition([-6, 2, 0]);
+            setPage("landing");
+          }} // 點擊後顯示 LandingPage
+        />
+        <ThreeBox
+          position={[0, 2, 6]}
+          onClick={() => {
+            setTargetPosition([0, 2, 6]);
+            setPage("analytics");
+          }} // 點擊後顯示 AnalyticsPage
+        />
+        <ThreeBox
+          position={[6, 2, 0]}
+          onClick={() => {
+            setTargetPosition([6, 2, 0]);
+            setPage("landing");
+          }} // 點擊後顯示 LandingPage
+        />
+        <ContactShadows
+          position={[0, -1.5, 0]}
+          scale={10}
+          blur={3}
+          opacity={0.25}
+          far={10}
+        />
 
-      {/* 使用 ref 獲取 OrbitControls 的實例 */}
-      <OrbitControls ref={controlsRef} makeDefault />
+        {/* 使用 ref 獲取 OrbitControls 的實例 */}
+        <OrbitControls ref={controlsRef} makeDefault />
 
-      <CameraController
-        targetPosition={targetPosition || [0, 0, 0]}
-        controlsRef={controlsRef}
-      />
-      <Ocean />
-    </Canvas>
+        <CameraController
+          targetPosition={targetPosition || [0, 0, 0]}
+          controlsRef={controlsRef}
+        />
+        <Ocean />
+      </Canvas>
+    </div>
   );
 }

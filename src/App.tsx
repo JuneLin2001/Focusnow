@@ -4,14 +4,14 @@ import LandingPage from "./pages/LandingPage";
 import GamePage from "./pages/GamePage";
 import AanalyticsPage from "./pages/AnalyticsPage/AnalyticsPage";
 import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
+// import Sidebar from "./components/Sidebar";
 import CameraMovement from "./pages/GamePage/CameraMovement";
 
 const App: React.FC = () => {
   return (
     <>
       <Header />
-      <Sidebar />
+      {/* <Sidebar /> */}
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/game" element={<GamePage />} />
