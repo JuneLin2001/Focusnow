@@ -14,6 +14,7 @@ import * as THREE from "three";
 import LandingPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage/AnalyticsPage";
 import Ocean from "./Ocean";
+import PenguinModel from "./PenguinModel";
 
 // CameraController Component
 interface CameraControllerProps {
@@ -179,6 +180,16 @@ export default function CameraMovement() {
             setPage("analytics");
           }}
         />
+        <PenguinModel
+          position={[-10, 2, 10]}
+          onClick={() => {
+            setTargetPosition([-10, 2, 10]);
+            setPage(null); // 顯示 CameraMovement 頁面
+          }}
+        >
+          <Bubble position={[0, 2, 0]} onClick={() => {}} />{" "}
+          {/* Bubble 作為 PenguinModel 的子組件 */}
+        </PenguinModel>
         <ContactShadows
           position={[0, -1.5, 0]}
           scale={10}

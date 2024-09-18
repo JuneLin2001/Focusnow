@@ -23,7 +23,7 @@ const TodoList = () => {
     <div className="relative flex">
       <button
         onClick={toggleSidebar}
-        className="absolute bottom-4 right-4 z-20 bg-blue-500 text-white p-2 rounded"
+        className=" bottom-4 right-4 z-20 bg-blue-500 text-white p-2 ml-96 rounded"
       >
         {isOpen ? "Close" : "Open"}
       </button>
