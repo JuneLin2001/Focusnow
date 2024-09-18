@@ -3,7 +3,7 @@ import { auth } from "../firebase/firebaseConfig";
 import useAuthStore from "../store/authStore";
 
 interface LoginButtonProps {
-  onLoginSuccess: () => void; // Add prop for login success callback
+  onLoginSuccess: () => void;
 }
 
 const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {

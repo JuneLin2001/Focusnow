@@ -7,6 +7,10 @@ const Sidebar = () => {
   const { user } = useAuthStore();
   const { isOpen, toggleSidebar } = useSidebarStore();
 
+  const handleLoginSuccess = () => {
+    console.log("handleLoginSuccess");
+  };
+
   return (
     <div className="relative flex">
       <button
@@ -43,7 +47,7 @@ const Sidebar = () => {
           ) : (
             <div className="mb-4 text-gray-600">Not logged in</div>
           )}
-          <LoginButton />
+          <LoginButton onLoginSuccess={handleLoginSuccess} />
           <Link to="/" className="text-black mb-4 text-xl hover:text-gray-400">
             Homepage
           </Link>

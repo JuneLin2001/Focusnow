@@ -1,6 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import { Perf } from "r3f-perf";
+import { OrbitControls, Stats } from "@react-three/drei";
 import MovingBox from "./MovingBox";
 import { useControls } from "leva";
 import Model from "./Model";
@@ -37,9 +36,8 @@ const GamePage = () => {
 
   return (
     <Canvas camera={{ position: [5, 5, 10] }}>
-      <Perf position="top-right" showGraph={false} />
-
       <ambientLight intensity={2} />
+      <Stats className="w-[300px] h-[300px]" />
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]}>
         <boxGeometry args={[width, depth, 1]} />

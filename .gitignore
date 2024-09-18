@@ -23,4 +23,13 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment Configuration
 .env
+.env.local
+.env.*.local
+
+# Firebase cache
+.firebase/
+
+# TypeScript Cache
+*.tsbuildinfo

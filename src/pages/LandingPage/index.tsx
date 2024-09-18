@@ -1,7 +1,7 @@
 import Timer from "./Timer";
 import TodoList from "./TodoList.js";
-import BackgroundModel from "./BackgroundModel";
-import { Canvas } from "@react-three/fiber";
+// import BackgroundModel from "./BackgroundModel";
+// import { Canvas } from "@react-three/fiber";
 
 const LandingPage = () => {
   return (
