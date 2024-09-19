@@ -48,6 +48,7 @@ const GamePage = () => {
         maxX={maxX}
         minZ={minZ}
         maxZ={maxZ}
+        speed={speed}
       />
     </group>
   );

@@ -31,9 +31,6 @@ const MovingBox = ({
     )
   );
 
-  const scaleRef = useRef<number>(1);
-  const scaleSpeed = 0.05;
-
   useFrame(() => {
     if (meshRef.current) {
       const currentPosition = meshRef.current.position;
@@ -49,17 +46,6 @@ const MovingBox = ({
           Math.random() * (maxX - minX) + minX,
           position[1],
           Math.random() * (maxZ - minZ) + minZ
-        );
-      }
-
-      // 縮放動畫
-      if (scaleRef.current > 0.5) {
-        // 確保不會縮小到 0 或更小
-        scaleRef.current -= scaleSpeed;
-        meshRef.current.scale.set(
-          scaleRef.current,
-          scaleRef.current,
-          scaleRef.current
         );
       }
     }

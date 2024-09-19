@@ -26,7 +26,7 @@ const MovingModel = ({
   const targetPosition = useRef<THREE.Vector3>(
     new THREE.Vector3(
       Math.random() * (maxX - minX) + minX,
-      -0.5,
+      position[1],
       Math.random() * (maxZ - minZ) + minZ
     )
   );
@@ -43,7 +43,7 @@ const MovingModel = ({
       } else {
         targetPosition.current.set(
           Math.random() * (maxX - minX) + minX,
-          -0.5,
+          position[1],
           Math.random() * (maxZ - minZ) + minZ
         );
       }
@@ -58,7 +58,7 @@ const MovingModel = ({
     <primitive
       object={scene}
       position={position}
-      scale={[0.5, 0.5, 0.5]}
+      scale={[5, 5, 5]}
       rotation={[0, Math.PI / 2, 0]}
       ref={modelRef}
       onClick={handleClick}
