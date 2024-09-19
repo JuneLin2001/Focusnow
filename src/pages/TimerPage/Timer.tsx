@@ -185,7 +185,7 @@ const Timer = () => {
 
   return (
     //TODO: Timer的大小和位置，不能用w-screen h-screen不然會蓋住Canva就不能滑動畫面
-    <div className="w-fit h-screen flex justify-center items-center">
+    <div className="w-screen h-screen flex justify-center items-center">
       <div>
         <CircularProgressbarWithChildren
           value={(secondsLeft / (inputMinutes * 60)) * 100}
@@ -221,7 +221,7 @@ const Timer = () => {
           )}
         </div>
         {showLogin && (
-          <div className="fixed top-0 left-0 w-full  flex justify-center items-center bg-gray-800 bg-opacity-50">
+          <div className="flex justify-center items-center bg-gray-800 bg-opacity-50">
             <div className="bg-white p-5 rounded shadow-lg">
               <h2 className="text-xl mb-4">Please login to save your data</h2>
               <LoginButton onLoginSuccess={handleLoginSuccess} />

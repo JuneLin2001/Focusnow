@@ -17,7 +17,7 @@ import GamePage from "../GamePage/index";
 import Ocean from "./Ocean";
 import PenguinModel from "./PenguinModel";
 import Mainland from "./Mainland";
-import IceMountain from "./IceMountain";
+// import IceMountain from "./IceMountain";
 
 // CameraController Component
 interface CameraControllerProps {
@@ -171,13 +171,13 @@ export default function CameraMovement() {
             setPage("timer");
           }}
         />
-        <IceMountain
+        {/* <IceMountain
           position={[0, 2, 16]}
           onClick={() => {
             // setTargetPosition([0, 2, 16]);
             // setPage(null);
           }}
-        />
+        /> */}
         <ThreeBox
           position={[-114, 2, -16]}
           onClick={() => {

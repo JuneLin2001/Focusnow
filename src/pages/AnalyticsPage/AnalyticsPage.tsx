@@ -3,18 +3,20 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import useAuthStore from "../../store/authStore";
 
-interface Task {
-  taskId: string;
-  taskName: string;
+interface Todos {
   completed: boolean;
+  doneTime: string;
+  id: string;
+  startTime: string;
+  title: string;
 }
 
 interface UserAnalytics {
-  focusDuration: number; // 專注長度（以分鐘為單位）
-  pomodoroCompleted: boolean; // 番茄鐘是否完成
-  startTime: string; // 開始時間（字符串格式）
-  endTime: string; // 結束時間（字符串格式）
-  tasks: Task[]; // 任務列表
+  focusDuration: number;
+  pomodoroCompleted: boolean;
+  startTime: string;
+  endTime: string;
+  todos: Todos[];
 }
 
 const AanalyticsPage: React.FC = () => {
@@ -54,7 +56,7 @@ const AanalyticsPage: React.FC = () => {
                 ? formatTimestamp(data.startTime)
                 : "N/A",
               endTime: data.endTime ? formatTimestamp(data.endTime) : "N/A",
-              tasks: Array.isArray(data.tasks) ? data.tasks : [], // 確保 tasks 是數組
+              todos: Array.isArray(data.todos) ? data.todos : [], // 確保 todos 是數組
             });
           }
         } catch (error) {
@@ -87,16 +89,16 @@ const AanalyticsPage: React.FC = () => {
           <p>
             <strong>End Time:</strong> {analytics.endTime}
           </p>
-          <h2>Tasks</h2>
+          <h2>Todos</h2>
           <ul>
-            {Array.isArray(analytics.tasks) && analytics.tasks.length > 0 ? (
-              analytics.tasks.map((task) => (
-                <li key={task.taskId}>
-                  {task.taskName} - {task.completed ? "Completed" : "Pending"}
+            {Array.isArray(analytics.todos) && analytics.todos.length > 0 ? (
+              analytics.todos.map((task) => (
+                <li key={task.id}>
+                  {task.title} - {task.completed ? "Completed" : "Pending"}
                 </li>
               ))
             ) : (
-              <li>No tasks available</li>
+              <li>No todos available</li>
             )}
           </ul>
         </div>
