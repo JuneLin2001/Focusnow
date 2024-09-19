@@ -129,13 +129,11 @@ const AanalyticsPage: React.FC = () => {
           filteredAnalytics.map((analytics, index) => (
             <li key={index}>
               <ul>
-                {analytics.todos.length > 0 ? (
-                  analytics.todos.map((todo) => (
-                    <li key={todo.id}>{todo.title}</li>
-                  ))
-                ) : (
-                  <li>No todos available</li>
-                )}
+                {analytics.todos.length > 0
+                  ? analytics.todos.map((todo) => (
+                      <li key={todo.id}>{todo.title}</li>
+                    ))
+                  : ""}
               </ul>
             </li>
           ))

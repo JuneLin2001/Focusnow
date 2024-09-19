@@ -13,11 +13,12 @@ import gsap from "gsap";
 import * as THREE from "three";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage/AnalyticsPage";
-import GamePage from "../GamePage/index";
 import Ocean from "./Ocean";
 import PenguinModel from "./PenguinModel";
 import Mainland from "./Mainland";
+import Header from "./Header";
 // import IceMountain from "./IceMountain";
+import GamePage from "../GamePage/index";
 
 // CameraController Component
 interface CameraControllerProps {
@@ -151,11 +152,11 @@ export default function CameraMovement() {
 
   return (
     <>
+      <Header setPage={setPage} setTargetPosition={setTargetPosition} />
       {/* //TODO: Page的位置 */}
       <div className="fixed z-10">
         {page === "timer" && <TimerPage />}
         {page === "analytics" && <AnalyticsPage />}
-        {page === "game" && <GamePage />}
       </div>
 
       <Canvas>
@@ -164,11 +165,14 @@ export default function CameraMovement() {
         <Suspense fallback={null}>
           <Environment preset="sunset" />
         </Suspense>
+
+        <GamePage />
+
         <Mainland
           position={[-16, 2, 0]}
           onClick={() => {
-            setTargetPosition([-16, 2, 0]);
-            setPage("timer");
+            // setTargetPosition([-16, 2, 0]);
+            // setPage("timer");
           }}
         />
         {/* <IceMountain
@@ -202,6 +206,7 @@ export default function CameraMovement() {
           <Bubble position={[0, 2, 0]} onClick={() => {}} />{" "}
           {/* Bubble 作為 PenguinModel 的子組件 */}
         </PenguinModel>
+
         <ContactShadows
           position={[0, -1.5, 0]}
           scale={10}

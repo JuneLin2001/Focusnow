@@ -1,33 +1,14 @@
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Stats } from "@react-three/drei";
 import MovingBox from "./MovingBox";
-import { useControls } from "leva";
 import Model from "./Model";
 import MovingModel from "./MovingModel";
 
 const GamePage = () => {
-  const position: [number, number, number] = [0, 0, 0];
+  const position: [number, number, number] = [0, 20, 0];
 
-  const { width, depth, speed } = useControls({
-    width: {
-      value: 15,
-      min: 1,
-      max: 30,
-      step: 0.1,
-    },
-    depth: {
-      value: 10,
-      min: 1,
-      max: 20,
-      step: 0.1,
-    },
-    speed: {
-      value: 0.2,
-      min: 0.1,
-      max: 1,
-      step: 0.1,
-    },
-  });
+  // 手動設置 width、depth、speed 的默認值
+  const width = 150;
+  const depth = 200;
+  const speed = 2;
 
   const minX = -width / 2;
   const maxX = width / 2;
@@ -35,13 +16,10 @@ const GamePage = () => {
   const maxZ = depth / 2;
 
   return (
-    <Canvas camera={{ position: [5, 5, 10] }}>
-      <ambientLight intensity={2} />
-      <Stats />
-
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]}>
-        <boxGeometry args={[width, depth, 1]} />
-        <meshStandardMaterial color="aqua" wireframe />
+    <group>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={position}>
+        <boxGeometry args={[width, depth, 5]} />
+        {<meshStandardMaterial color="aqua" wireframe />}
       </mesh>
 
       <MovingBox
@@ -70,11 +48,8 @@ const GamePage = () => {
         maxX={maxX}
         minZ={minZ}
         maxZ={maxZ}
-        speed={speed}
       />
-
-      <OrbitControls />
-    </Canvas>
+    </group>
   );
 };
 

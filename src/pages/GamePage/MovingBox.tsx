@@ -19,12 +19,14 @@ const MovingBox = ({
   maxZ,
   speed,
 }: MovingBoxProps) => {
-  const meshRef = useRef<THREE.Mesh>(null!);
+  const meshRef = useRef<THREE.Mesh | null>(null);
 
+  console.log(`${minX}, ${maxX}, ${minZ}, ${maxZ}, ${position[1]}`);
+  // 使用 `useRef` 初始化 `targetPosition`
   const targetPosition = useRef<THREE.Vector3>(
     new THREE.Vector3(
       Math.random() * (maxX - minX) + minX,
-      0,
+      position[1],
       Math.random() * (maxZ - minZ) + minZ
     )
   );
@@ -45,12 +47,14 @@ const MovingBox = ({
         // 當模型到達目標位置時，生成新的隨機目標位置
         targetPosition.current.set(
           Math.random() * (maxX - minX) + minX,
-          0,
+          position[1],
           Math.random() * (maxZ - minZ) + minZ
         );
       }
 
-      if (scaleRef.current > 1) {
+      // 縮放動畫
+      if (scaleRef.current > 0.5) {
+        // 確保不會縮小到 0 或更小
         scaleRef.current -= scaleSpeed;
         meshRef.current.scale.set(
           scaleRef.current,
@@ -73,7 +77,7 @@ const MovingBox = ({
       castShadow
       receiveShadow
     >
-      <boxGeometry args={[1, 1, 1]} />
+      <boxGeometry args={[5, 5, 5]} />
       <meshStandardMaterial color="red" />
     </mesh>
   );
