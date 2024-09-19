@@ -1,33 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { collection, getDocs, Timestamp } from "firebase/firestore";
+import React, { useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import useAuthStore from "../../store/authStore";
-
-interface Todos {
-  completed: boolean;
-  doneTime: Timestamp;
-  id: string;
-  startTime: Timestamp;
-  title: string;
-}
-
-interface UserAnalytics {
-  focusDuration: number;
-  pomodoroCompleted: boolean;
-  startTime: Timestamp;
-  endTime: Timestamp;
-  todos: Todos[];
-}
+import { useAnalyticsStore } from "../../store/analyticsStore";
+import { UserAnalytics } from "../../types/type";
 
 const AanalyticsPage: React.FC = () => {
   const { user } = useAuthStore();
-  const [analyticsList, setAnalyticsList] = useState<UserAnalytics[]>([]);
-  const [filteredAnalytics, setFilteredAnalytics] = useState<UserAnalytics[]>(
-    []
-  );
-  const [totalFocusDuration, setTotalFocusDuration] = useState<number>(0);
-  const [startDate, setStartDate] = useState<string>(""); // 開始日期
-  const [endDate, setEndDate] = useState<string>(""); // 結束日期
+  const {
+    filteredAnalytics,
+    totalFocusDuration,
+    startDate,
+    endDate,
+    setAnalyticsList,
+    setTotalFocusDuration,
+    setStartDate,
+    setEndDate,
+    filterByDate,
+  } = useAnalyticsStore();
 
   useEffect(() => {
     if (user) {
@@ -52,12 +42,12 @@ const AanalyticsPage: React.FC = () => {
             );
 
             setAnalyticsList(sortedAnalytics);
-            setFilteredAnalytics(sortedAnalytics); // 初始狀態下顯示所有數據
 
             // 計算總 Focus Duration
-            const totalDuration = sortedAnalytics.reduce((acc, analytics) => {
-              return acc + analytics.focusDuration;
-            }, 0);
+            const totalDuration = sortedAnalytics.reduce(
+              (acc, analytics) => acc + analytics.focusDuration,
+              0
+            );
             setTotalFocusDuration(totalDuration);
           }
         } catch (error) {
@@ -67,28 +57,7 @@ const AanalyticsPage: React.FC = () => {
 
       fetchAnalytics();
     }
-  }, [user]);
-
-  // 根據日期範圍篩選數據
-  const filterByDate = () => {
-    if (!startDate || !endDate) return;
-
-    const start = new Date(startDate).getTime() / 1000; // 轉換成秒
-    const end = new Date(endDate).getTime() / 1000;
-
-    const filtered = analyticsList.filter((analytics) => {
-      const analyticsTime = analytics.startTime.seconds;
-      return analyticsTime >= start && analyticsTime <= end;
-    });
-
-    setFilteredAnalytics(filtered);
-
-    // 重新計算總 Focus Duration
-    const totalDuration = filtered.reduce((acc, analytics) => {
-      return acc + analytics.focusDuration;
-    }, 0);
-    setTotalFocusDuration(totalDuration);
-  };
+  }, [user, setAnalyticsList, setTotalFocusDuration]);
 
   if (!user) {
     return <div className="p-96">Please login to see analytics.</div>;

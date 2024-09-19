@@ -71,7 +71,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
     <primitive
       object={scene.clone()} // 使用 clone() 來避免共享同一個場景
       position={position}
-      scale={[5, 5, 5]}
+      scale={[1, 1, 1]}
       rotation={[0, Math.PI / 2, 0]}
       ref={modelRef}
       onClick={handleClick}
