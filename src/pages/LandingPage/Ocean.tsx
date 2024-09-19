@@ -38,7 +38,7 @@ interface OceanProps {
 }
 
 const Ocean: React.FC<OceanProps> = ({
-  size = 50,
+  size = 250,
   subdivisions = 10,
   position = [0, 0, 0],
 }) => {

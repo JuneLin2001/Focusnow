@@ -11,11 +11,13 @@ import {
 } from "@react-three/drei";
 import gsap from "gsap";
 import * as THREE from "three";
-import LandingPage from "../TimerPage/index";
+import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage/AnalyticsPage";
+import GamePage from "../GamePage/index";
 import Ocean from "./Ocean";
 import PenguinModel from "./PenguinModel";
-import Iceberg from "./Iceberg";
+import Mainland from "./Mainland";
+import IceMountain from "./IceMountain";
 
 // CameraController Component
 interface CameraControllerProps {
@@ -129,7 +131,7 @@ export default function CameraMovement() {
   const [targetPosition, setTargetPosition] = useState<
     [number, number, number] | null
   >(null);
-  const [page, setPage] = useState<"landing" | "analytics" | null>(null);
+  const [page, setPage] = useState<"timer" | "analytics" | "game" | null>(null);
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
 
   useEffect(() => {
@@ -149,9 +151,11 @@ export default function CameraMovement() {
 
   return (
     <>
-      <div className="fixed top-2/4 left-2/4  z-50">
-        {page === "landing" && <LandingPage />}
+      {/* //TODO: Page的位置 */}
+      <div className="fixed z-10">
+        {page === "timer" && <TimerPage />}
         {page === "analytics" && <AnalyticsPage />}
+        {page === "game" && <GamePage />}
       </div>
 
       <Canvas>
@@ -160,32 +164,39 @@ export default function CameraMovement() {
         <Suspense fallback={null}>
           <Environment preset="sunset" />
         </Suspense>
-        <Iceberg
+        <Mainland
           position={[-16, 2, 0]}
           onClick={() => {
             setTargetPosition([-16, 2, 0]);
-            setPage("landing");
+            setPage("timer");
+          }}
+        />
+        <IceMountain
+          position={[0, 2, 16]}
+          onClick={() => {
+            // setTargetPosition([0, 2, 16]);
+            // setPage(null);
           }}
         />
         <ThreeBox
-          position={[0, 2, 16]}
+          position={[-114, 2, -16]}
           onClick={() => {
-            setTargetPosition([0, 2, 16]);
+            setTargetPosition([-114, 2, -16]);
             setPage(null);
           }}
         />
         <ThreeBox
-          position={[16, 2, 0]}
+          position={[-116, 2, 0]}
           onClick={() => {
-            setTargetPosition([16, 2, 0]);
+            setTargetPosition([-116, 2, 0]);
             setPage("analytics");
           }}
         />
         <PenguinModel
-          position={[-10, 2, 10]}
+          position={[-106, 2, 45]}
           onClick={() => {
-            setTargetPosition([-10, 2, 10]);
-            setPage(null); // 顯示 CameraMovement 頁面
+            setTargetPosition([-106, 2, 45]);
+            setPage(null);
           }}
         >
           <Bubble position={[0, 2, 0]} onClick={() => {}} />{" "}

@@ -184,8 +184,9 @@ const Timer = () => {
   };
 
   return (
-    <div className="absolute top-1/2 left-1/4 -translate-x-1/4 -translate-y-1/2">
-      <div className="flex justify-center">
+    //TODO: Timer的大小和位置，不能用w-screen h-screen不然會蓋住Canva就不能滑動畫面
+    <div className="w-fit h-screen flex justify-center items-center">
+      <div>
         <CircularProgressbarWithChildren
           value={(secondsLeft / (inputMinutes * 60)) * 100}
           styles={buildStyles({
@@ -202,33 +203,32 @@ const Timer = () => {
             -
           </AddOrSubtractButton>
         </CircularProgressbarWithChildren>
-      </div>
-      <div className="mt-5">
-        {isPaused ? (
-          <>
-            <DefaultButton onClick={handleStartTimer}>Start</DefaultButton>
-            <input
-              type="number"
-              value={inputMinutes}
-              onChange={(e) => setInputMinutes(parseInt(e.target.value))}
-              min="1"
-              className="ml-2 p-2 border border-gray-300 rounded"
-            />
-            <DefaultButton onClick={handleSetTimer}>Set Timer</DefaultButton>
-          </>
-        ) : (
-          <ResetButton onClick={resetTimer}>Reset</ResetButton>
+        <div className="mt-5">
+          {isPaused ? (
+            <>
+              <DefaultButton onClick={handleStartTimer}>Start</DefaultButton>
+              <input
+                type="number"
+                value={inputMinutes}
+                onChange={(e) => setInputMinutes(parseInt(e.target.value))}
+                min="1"
+                className="ml-2 p-2 border border-gray-300 rounded"
+              />
+              <DefaultButton onClick={handleSetTimer}>Set Timer</DefaultButton>
+            </>
+          ) : (
+            <ResetButton onClick={resetTimer}>Reset</ResetButton>
+          )}
+        </div>
+        {showLogin && (
+          <div className="fixed top-0 left-0 w-full  flex justify-center items-center bg-gray-800 bg-opacity-50">
+            <div className="bg-white p-5 rounded shadow-lg">
+              <h2 className="text-xl mb-4">Please login to save your data</h2>
+              <LoginButton onLoginSuccess={handleLoginSuccess} />
+            </div>
+          </div>
         )}
       </div>
-
-      {showLogin && (
-        <div className="fixed top-0 left-0 w-full  flex justify-center items-center bg-gray-800 bg-opacity-50">
-          <div className="bg-white p-5 rounded shadow-lg">
-            <h2 className="text-xl mb-4">Please login to save your data</h2>
-            <LoginButton onLoginSuccess={handleLoginSuccess} />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

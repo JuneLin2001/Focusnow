@@ -20,14 +20,13 @@ const TodoList = () => {
   };
 
   return (
-    <div className="relative flex">
+    <>
       <button
         onClick={toggleSidebar}
-        className=" bottom-4 right-4 z-20 bg-blue-500 text-white p-2 ml-96 rounded"
+        className="absolute bottom-4 right-4 z-20 bg-purple-500 text-white p-2 ml-96 rounded"
       >
         {isOpen ? "Close" : "Open"}
       </button>
-
       <div
         className={`fixed bottom-0 right-0 w-[500px] h-[600px] bg-white z-10 flex flex-col p-5 outline transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-y-0" : "translate-y-[580px]"
@@ -76,7 +75,7 @@ const TodoList = () => {
           ))}
         </ul>
       </div>
-    </div>
+    </>
   );
 };
 

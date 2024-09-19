@@ -41,8 +41,17 @@ const GamePage = () => {
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]}>
         <boxGeometry args={[width, depth, 1]} />
-        <meshStandardMaterial color="aqua" />
+        <meshStandardMaterial color="aqua" wireframe />
       </mesh>
+
+      <MovingBox
+        position={position}
+        minX={minX}
+        maxX={maxX}
+        minZ={minZ}
+        maxZ={maxZ}
+        speed={speed}
+      />
 
       <MovingBox
         position={position}
@@ -63,6 +72,7 @@ const GamePage = () => {
         maxZ={maxZ}
         speed={speed}
       />
+
       <OrbitControls />
     </Canvas>
   );
