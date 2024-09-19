@@ -42,7 +42,6 @@ const CameraController: React.FC<CameraControllerProps> = ({
         y: targetPosition[1] + 2,
         z: targetPosition[2] + 4,
         duration: 1.5,
-        ease: "power3.inOut",
         onUpdate: () => {
           camera.lookAt(
             targetPosition[0],
@@ -58,7 +57,6 @@ const CameraController: React.FC<CameraControllerProps> = ({
         y: targetPosition[1],
         z: targetPosition[2],
         duration: 1.5,
-        ease: "power3.inOut",
         onUpdate: () => controls.update(),
       });
     }

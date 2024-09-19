@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { useGLTF } from "@react-three/drei";
 
 interface MovingBoxProps {
   position: [number, number, number];
@@ -19,7 +20,9 @@ const MovingBox = ({
   maxZ,
   speed,
 }: MovingBoxProps) => {
-  const meshRef = useRef<THREE.Mesh | null>(null);
+  const { scene } = useGLTF("/low_poly_rockhopper_penguin.glb");
+
+  const modelRef = useRef<THREE.Mesh | null>(null);
 
   console.log(`${minX}, ${maxX}, ${minZ}, ${maxZ}, ${position[1]}`);
   // 使用 `useRef` 初始化 `targetPosition`
@@ -32,8 +35,8 @@ const MovingBox = ({
   );
 
   useFrame(() => {
-    if (meshRef.current) {
-      const currentPosition = meshRef.current.position;
+    if (modelRef.current) {
+      const currentPosition = modelRef.current.position;
       const direction = targetPosition.current.clone().sub(currentPosition);
       const distance = direction.length();
 
@@ -56,8 +59,9 @@ const MovingBox = ({
   };
 
   return (
-    <mesh
-      ref={meshRef}
+    <primitive
+      object={scene}
+      ref={modelRef}
       position={position}
       onClick={handleClick}
       castShadow
@@ -65,7 +69,7 @@ const MovingBox = ({
     >
       <boxGeometry args={[5, 5, 5]} />
       <meshStandardMaterial color="red" />
-    </mesh>
+    </primitive>
   );
 };
 

@@ -1,9 +1,10 @@
-import { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 interface MovingModelProps {
+  id: number;
   position: [number, number, number];
   minX: number;
   maxX: number;
@@ -12,16 +13,18 @@ interface MovingModelProps {
   speed: number;
 }
 
-const MovingModel = ({
+const MovingModel: React.FC<MovingModelProps> = ({
+  id,
   position,
   minX,
   maxX,
   minZ,
   maxZ,
   speed,
-}: MovingModelProps) => {
+}) => {
   const { scene } = useGLTF("/low_poly_rockhopper_penguin.glb");
   const modelRef = useRef<THREE.Group>(null!);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const targetPosition = useRef<THREE.Vector3>(
     new THREE.Vector3(
@@ -31,8 +34,14 @@ const MovingModel = ({
     )
   );
 
+  useEffect(() => {
+    if (scene) {
+      setIsLoaded(true);
+    }
+  }, [scene]);
+
   useFrame(() => {
-    if (modelRef.current) {
+    if (modelRef.current && isLoaded) {
       const currentPosition = modelRef.current.position;
       const direction = targetPosition.current.clone().sub(currentPosition);
       const distance = direction.length();
@@ -51,19 +60,21 @@ const MovingModel = ({
   });
 
   const handleClick = () => {
-    console.log("Model clicked!");
+    console.log(`number ${id} Model clicked!`);
   };
+
+  if (!isLoaded) {
+    return null; // 或者返回一個加載指示器
+  }
 
   return (
     <primitive
-      object={scene}
+      object={scene.clone()} // 使用 clone() 來避免共享同一個場景
       position={position}
       scale={[5, 5, 5]}
       rotation={[0, Math.PI / 2, 0]}
       ref={modelRef}
       onClick={handleClick}
-      castShadow
-      receiveShadow
     />
   );
 };
