@@ -45,8 +45,6 @@ const GamePage = () => {
         {<meshStandardMaterial color="aqua" wireframe />}
       </mesh>
 
-      {/* <Model minX={minX} maxX={maxX} minZ={minZ} maxZ={maxZ} /> */}
-
       {randomPositions.map((randomPositions, index: number) => (
         <MovingModel
           key={index}

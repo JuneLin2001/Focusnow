@@ -64,7 +64,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
   };
 
   if (!isLoaded) {
-    return null; // 或者返回一個加載指示器
+    return null;
   }
 
   return (

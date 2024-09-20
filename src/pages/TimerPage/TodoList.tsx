@@ -30,7 +30,7 @@ const TodoList = () => {
       <div
         className={`fixed bottom-0 right-0 w-[500px] h-[600px] bg-white z-10 flex flex-col p-5 outline transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-y-0" : "translate-y-[580px]"
-        }`} //TODO: 改一下大小跟邏輯，只需要存完成的TODO？
+        }`} //TODO: 改一下大小
       >
         <h2 className="text-xl mb-4">Todo List</h2>
 
