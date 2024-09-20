@@ -1,17 +1,12 @@
 // import MovingBox from "./MovingBox";
 // import Model from "./Model";
 import MovingModel from "./MovingModel";
+import { useAnalyticsStore } from "../../store/analyticsStore";
 
 const GamePage = () => {
   const position: [number, number, number] = [50, 20, 0];
 
-  const testPositions: [number, number, number][] = [
-    [5, 30, 5],
-    [-5, 30, -5],
-    [10, 30, -10],
-    [30, 30, -10],
-    [20, 30, -10],
-  ];
+  const { totalFocusDuration } = useAnalyticsStore();
 
   // 手動設置 width、depth、speed 的默認值
   const width = 100;
@@ -29,6 +24,20 @@ const GamePage = () => {
 
   console.log(`${minX}, ${maxX}, ${minZ}, ${maxZ}, ${position[1]}`);
 
+  console.log(totalFocusDuration);
+
+  // 根據 totalFocusDuration 計算要渲染的 MovingModel 數量
+  const numModels = Math.floor(totalFocusDuration / 30);
+
+  const randomPositions: [number, number, number][] = Array.from(
+    { length: numModels },
+    () => [
+      Math.random() * (maxX - minX) + minX,
+      30,
+      Math.random() * (maxZ - minZ) + minZ,
+    ]
+  );
+
   return (
     <group>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={position}>
@@ -36,31 +45,13 @@ const GamePage = () => {
         {<meshStandardMaterial color="aqua" wireframe />}
       </mesh>
 
-      {/* <MovingBox
-        position={position}
-        minX={minX}
-        maxX={maxX}
-        minZ={minZ}
-        maxZ={maxZ}
-        speed={speed}
-      /> */}
-
-      {/* <MovingBox
-        position={position}
-        minX={minX}
-        maxX={maxX}
-        minZ={minZ}
-        maxZ={maxZ}
-        speed={speed}
-      /> */}
-
       {/* <Model minX={minX} maxX={maxX} minZ={minZ} maxZ={maxZ} /> */}
 
-      {testPositions.map((pos, index: number) => (
+      {randomPositions.map((randomPositions, index: number) => (
         <MovingModel
-          key={index} // 為每個 MovingModel 提供唯一的 key
+          key={index}
           id={index}
-          position={position}
+          position={randomPositions}
           minX={minX}
           maxX={maxX}
           minZ={minZ}

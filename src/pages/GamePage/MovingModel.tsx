@@ -22,7 +22,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
   maxZ,
   speed,
 }) => {
-  const { scene } = useGLTF("/low_poly_rockhopper_penguin.glb");
+  const { scene } = useGLTF("BBpenguinCenter.glb");
   const modelRef = useRef<THREE.Group>(null!);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -71,7 +71,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
     <primitive
       object={scene.clone()} // 使用 clone() 來避免共享同一個場景
       position={position}
-      scale={[1, 1, 1]}
+      scale={[2, 2, 2]}
       rotation={[0, Math.PI / 2, 0]}
       ref={modelRef}
       onClick={handleClick}
