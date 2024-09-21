@@ -23,8 +23,8 @@ const Header: React.FC<HeaderProps> = ({ setPage, setTargetPosition }) => {
       <div className="header">
         <DefaultButton
           onClick={() => {
-            setTargetPosition([-16, 2, 0]); // 移動相機到 "timer" 頁面的位置
-            setPage("timer"); // 切換到 Timer 頁面
+            setTargetPosition([32, 20, -50]);
+            setPage("timer");
           }}
         >
           Timer Page
@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ setPage, setTargetPosition }) => {
         <DefaultButton
           onClick={() => {
             setPage("analytics");
-            setTargetPosition([-116, 2, 0]);
+            setTargetPosition([-75, 25, 100]);
           }}
         >
           Analytics Page

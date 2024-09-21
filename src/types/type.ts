@@ -17,3 +17,9 @@ export interface UserAnalytics {
   endTime: Timestamp;
   todos: Todos[];
 }
+
+export interface ModelProps {
+  position: [number, number, number];
+  children?: React.ReactNode;
+  onClick?: () => void;
+}

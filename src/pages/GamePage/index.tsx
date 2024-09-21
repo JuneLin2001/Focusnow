@@ -4,14 +4,14 @@ import MovingModel from "./MovingModel";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 
 const GamePage = () => {
-  const position: [number, number, number] = [50, 20, 0];
+  const position: [number, number, number] = [80, 5, 0];
 
   const { totalFocusDuration } = useAnalyticsStore();
 
   // 手動設置 width、depth、speed 的默認值
   const width = 100;
   const depth = 200;
-  const speed = 2;
+  const speed = 1;
 
   const minX = position[0] - width / 2;
   const maxX = position[0] + width / 2;
@@ -33,7 +33,7 @@ const GamePage = () => {
     { length: numModels },
     () => [
       Math.random() * (maxX - minX) + minX,
-      30,
+      position[1],
       Math.random() * (maxZ - minZ) + minZ,
     ]
   );
