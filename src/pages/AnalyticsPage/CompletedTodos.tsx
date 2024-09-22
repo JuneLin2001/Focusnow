@@ -1,11 +1,13 @@
 import React from "react";
 import { UserAnalytics } from "../../types/type"; // 確保這裡的路徑正確
 
-interface TodoListProps {
+interface CompletedTodosProps {
   filteredAnalytics: UserAnalytics[];
 }
 
-const TodoList: React.FC<TodoListProps> = ({ filteredAnalytics }) => {
+const CompletedTodos: React.FC<CompletedTodosProps> = ({
+  filteredAnalytics,
+}) => {
   return (
     <>
       <h3>Completed Todos:</h3>
@@ -32,4 +34,4 @@ const TodoList: React.FC<TodoListProps> = ({ filteredAnalytics }) => {
   );
 };
 
-export default TodoList;
+export default CompletedTodos;

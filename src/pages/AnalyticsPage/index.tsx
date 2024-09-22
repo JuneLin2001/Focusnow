@@ -5,9 +5,9 @@ import useAuthStore from "../../store/authStore";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import { UserAnalytics } from "../../types/type";
 import dayjs from "dayjs";
-import ChartDisplay from "./ChartDisplay";
+// import ChartDisplay from "./ChartDisplay";
 import DateSelector from "./DateSelector";
-import TodoList from "./TodoList";
+import CompletedTodos from "./CompletedTodos";
 import { ChartData } from "chart.js";
 
 const AanalyticsPage: React.FC = () => {
@@ -75,11 +75,29 @@ const AanalyticsPage: React.FC = () => {
             const filteredData = sortedAnalytics.filter((analytics) => {
               const analyticsDate = dayjs.unix(analytics.startTime.seconds);
               return (
-                analyticsDate.isAfter(start) && analyticsDate.isBefore(end)
+                analyticsDate.isSame(start, "day") || // 包含開始日期
+                analyticsDate.isSame(end, "day") || // 包含結束日期
+                (analyticsDate.isAfter(start) && analyticsDate.isBefore(end))
               );
             });
 
             setFilteredAnalytics(filteredData);
+
+            if (filteredData.length === 0) {
+              // 如果沒有數據，設置預設值
+              setTotalFocusDuration(0);
+              setChartData({
+                labels: ["無數據"],
+                datasets: [
+                  {
+                    label: "專注時長（分鐘）",
+                    data: [0],
+                    backgroundColor: "rgba(255, 99, 132, 0.6)",
+                  },
+                ],
+              });
+              return; // 提前返回
+            }
 
             const totalDuration = filteredData.reduce(
               (acc, analytics) => acc + analytics.focusDuration,
@@ -124,6 +142,8 @@ const AanalyticsPage: React.FC = () => {
     return <div className="p-96">Please login to see analytics.</div>;
   }
 
+  console.log("chartData:", JSON.stringify(chartData, null, 2));
+
   return (
     <div className="p-96">
       <h2>Total Focus Duration: {totalFocusDuration} minutes</h2>
@@ -138,9 +158,9 @@ const AanalyticsPage: React.FC = () => {
         setCurrentDate={setCurrentDate}
       />
 
-      <ChartDisplay chartData={chartData} filterType={filterType} />
+      {/* <ChartDisplay chartData={chartData} filterType={filterType} /> */}
 
-      <TodoList filteredAnalytics={filteredAnalytics} />
+      <CompletedTodos filteredAnalytics={filteredAnalytics} />
     </div>
   );
 };
