@@ -9,7 +9,7 @@ import {
 } from "@react-three/drei";
 import gsap from "gsap";
 import TimerPage from "../TimerPage/index";
-import AnalyticsPage from "../AnalyticsPage/AnalyticsPage";
+import AnalyticsPage from "../AnalyticsPage";
 import Ocean from "./Ocean";
 import Mainland from "./Mainland";
 import Header from "./Header";

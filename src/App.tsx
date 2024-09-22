@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import TimerPage from "./pages/TimerPage";
 // import GamePage from "./pages/GamePage";
-import AanalyticsPage from "./pages/AnalyticsPage/AnalyticsPage";
+import AanalyticsPage from "./pages/AnalyticsPage";
 // import Header from "./components/Header";
 // import Sidebar from "./components/Sidebar";
 import CameraMovement from "./pages/LandingPage";
