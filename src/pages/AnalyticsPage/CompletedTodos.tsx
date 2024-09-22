@@ -21,7 +21,7 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
                     <li key={todo.id}>{todo.title}</li>
                   ))
                 ) : (
-                  <li>沒有待辦事項</li>
+                  <li></li>
                 )}
               </ul>
             </li>
