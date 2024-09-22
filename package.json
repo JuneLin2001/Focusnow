@@ -13,6 +13,7 @@
     "@react-three/drei": "^9.112.0",
     "@react-three/fiber": "^8.17.7",
     "@types/three": "^0.168.0",
+    "dayjs": "^1.11.13",
     "firebase": "^10.13.1",
     "glsl-random": "^0.0.5",
     "gsap": "^3.12.5",
