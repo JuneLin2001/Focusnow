@@ -1,14 +1,13 @@
-// import MovingBox from "./MovingBox";
-// import Model from "./Model";
 import MovingModel from "./MovingModel";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 
 const GamePage = () => {
   const position: [number, number, number] = [80, 5, 0];
 
-  const { totalFocusDuration } = useAnalyticsStore();
+  const last30DaysFocusDuration = useAnalyticsStore(
+    (state) => state.last30DaysFocusDuration
+  );
 
-  // 手動設置 width、depth、speed 的默認值
   const width = 100;
   const depth = 200;
   const speed = 1;
@@ -17,17 +16,12 @@ const GamePage = () => {
   const maxX = position[0] + width / 2;
   const minZ = position[2] - depth / 2;
   const maxZ = position[2] + depth / 2;
-  // const minX = -width / 2;
-  // const maxX = width / 2;
-  // const minZ = -depth / 2;
-  // const maxZ = depth / 2;
 
   console.log(`${minX}, ${maxX}, ${minZ}, ${maxZ}, ${position[1]}`);
 
-  console.log(totalFocusDuration);
+  console.log(last30DaysFocusDuration);
 
-  // 根據 totalFocusDuration 計算要渲染的 MovingModel 數量
-  const numModels = Math.floor(totalFocusDuration / 30);
+  const numModels = Math.floor(last30DaysFocusDuration / 30);
 
   const randomPositions: [number, number, number][] = Array.from(
     { length: numModels },

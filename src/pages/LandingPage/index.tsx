@@ -17,7 +17,7 @@ import Header from "./Header";
 import GamePage from "../GamePage/index";
 import Igloo from "./Igloo";
 import FloatingIce from "./floatingIce";
-import Cube from "./cube";
+import Cube from "./Cube";
 
 // CameraController Component
 interface CameraControllerProps {
