@@ -5,21 +5,45 @@ import useAuthStore from "../../store/authStore";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import { UserAnalytics } from "../../types/type";
 import dayjs from "dayjs"; // 用來處理日期
+import { Bar } from "react-chartjs-2"; // 引入長條圖
+import { ChartData } from "chart.js"; // 引入 ChartData 型別
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const AanalyticsPage: React.FC = () => {
   const { user } = useAuthStore();
   const {
     filteredAnalytics,
     setAnalyticsList,
-    setFilteredAnalytics, // 手動設置篩選後的數據
+    setFilteredAnalytics,
+    setLast30DaysFocusDuration, // 新增
+    last30DaysFocusDuration, // 新增
   } = useAnalyticsStore();
 
   const [filterType, setFilterType] = useState<string>("daily"); // "daily", "weekly", "monthly"
   const [totalFocusDuration, setTotalFocusDuration] = useState<number>(0); // 專注總時長
-
   const [currentDate, setCurrentDate] = useState(dayjs()); // 當前選中的日期，用 dayjs 來管理
+  const [chartData, setChartData] = useState<ChartData<"bar">>({
+    labels: [],
+    datasets: [],
+  });
 
-  // 使用 useCallback 包裹範圍計算邏輯
   const calculateDateRange = useCallback(() => {
     let start, end;
 
@@ -37,7 +61,6 @@ const AanalyticsPage: React.FC = () => {
     return { start, end };
   }, [filterType, currentDate]);
 
-  // 更新數據並篩選
   useEffect(() => {
     if (user) {
       const fetchAnalytics = async () => {
@@ -55,14 +78,13 @@ const AanalyticsPage: React.FC = () => {
               doc.data()
             ) as UserAnalytics[];
 
-            // 按日期排序的 Analytics
             const sortedAnalytics = data.sort((a, b) =>
               a.startTime.seconds < b.startTime.seconds ? 1 : -1
             );
 
             setAnalyticsList(sortedAnalytics);
+            setLast30DaysFocusDuration(); // 更新最近 30 天的專注時長
 
-            // 根據篩選範圍來篩選數據
             const { start, end } = calculateDateRange();
             const filteredData = sortedAnalytics.filter((analytics) => {
               const analyticsDate = dayjs.unix(analytics.startTime.seconds);
@@ -71,15 +93,31 @@ const AanalyticsPage: React.FC = () => {
               );
             });
 
-            // 更新篩選後的數據
             setFilteredAnalytics(filteredData);
 
-            // 計算篩選後的專注時長總和
             const totalDuration = filteredData.reduce(
               (acc, analytics) => acc + analytics.focusDuration,
               0
             );
-            setTotalFocusDuration(totalDuration); // 更新篩選後的總專注時長
+            setTotalFocusDuration(totalDuration);
+
+            const chartLabels = filteredData.map((analytics) =>
+              dayjs.unix(analytics.startTime.seconds).format("YYYY-MM-DD")
+            );
+            const chartFocusDurations = filteredData.map(
+              (analytics) => analytics.focusDuration
+            );
+
+            setChartData({
+              labels: chartLabels,
+              datasets: [
+                {
+                  label: "專注時長（分鐘）",
+                  data: chartFocusDurations,
+                  backgroundColor: "rgba(75, 192, 192, 0.6)",
+                },
+              ],
+            });
           }
         } catch (error) {
           console.error("Error fetching user analytics", error);
@@ -88,9 +126,14 @@ const AanalyticsPage: React.FC = () => {
 
       fetchAnalytics();
     }
-  }, [user, calculateDateRange, setAnalyticsList, setFilteredAnalytics]);
+  }, [
+    user,
+    calculateDateRange,
+    setAnalyticsList,
+    setFilteredAnalytics,
+    setLast30DaysFocusDuration,
+  ]);
 
-  // 切換日期
   const handlePrev = () => {
     if (filterType === "daily") {
       setCurrentDate(currentDate.subtract(1, "day"));
@@ -118,8 +161,10 @@ const AanalyticsPage: React.FC = () => {
   return (
     <div className="p-96">
       <h2>Total Focus Duration: {totalFocusDuration} minutes</h2>
-
-      {/* 篩選方式選單 */}
+      <h2>
+        Last 30 Days Total Focus Duration: {last30DaysFocusDuration} minutes
+      </h2>{" "}
+      {/* 新增 */}
       <div className="mt-4">
         <label>篩選方式:</label>
         <select
@@ -132,8 +177,6 @@ const AanalyticsPage: React.FC = () => {
           <option value="monthly">每月</option>
         </select>
       </div>
-
-      {/* 用左右箭頭選擇日期範圍 */}
       <div className="mt-4 flex items-center">
         <button onClick={handlePrev} className="bg-gray-300 p-2 rounded-l">
           ←
@@ -151,7 +194,25 @@ const AanalyticsPage: React.FC = () => {
           →
         </button>
       </div>
-
+      {chartData && (
+        <div className="mt-6">
+          <Bar
+            data={chartData}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "top",
+                },
+                title: {
+                  display: true,
+                  text: `專注時長（${filterType === "daily" ? "每日" : filterType === "weekly" ? "每週" : "每月"}）`,
+                },
+              },
+            }}
+          />
+        </div>
+      )}
       <br />
       <h3>Completed Todos:</h3>
       <ul>
