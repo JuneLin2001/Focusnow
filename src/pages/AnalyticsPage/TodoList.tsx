@@ -1,12 +1,11 @@
-import { UserAnalytics } from "../../types/type";
+import React from "react";
+import { UserAnalytics } from "../../types/type"; // 確保這裡的路徑正確
 
-interface CompletedTodosProps {
+interface TodoListProps {
   filteredAnalytics: UserAnalytics[];
 }
 
-const CompletedTodos: React.FC<CompletedTodosProps> = ({
-  filteredAnalytics,
-}) => {
+const TodoList: React.FC<TodoListProps> = ({ filteredAnalytics }) => {
   return (
     <>
       <h3>Completed Todos:</h3>
@@ -20,7 +19,7 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
                     <li key={todo.id}>{todo.title}</li>
                   ))
                 ) : (
-                  <li>沒有完成的任務</li>
+                  <li>沒有待辦事項</li>
                 )}
               </ul>
             </li>
@@ -33,4 +32,4 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
   );
 };
 
-export default CompletedTodos;
+export default TodoList;
