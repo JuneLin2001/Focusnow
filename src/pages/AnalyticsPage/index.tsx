@@ -7,7 +7,7 @@ import { UserAnalytics } from "../../types/type";
 import dayjs from "dayjs";
 import ChartDisplay from "./ChartDisplay";
 import DateSelector from "./DateSelector";
-import TodoList from "./TodoList";
+import CompletedTodos from "./CompletedTodos";
 import { ChartData } from "chart.js";
 
 const AanalyticsPage: React.FC = () => {
@@ -140,7 +140,7 @@ const AanalyticsPage: React.FC = () => {
 
       <ChartDisplay chartData={chartData} filterType={filterType} />
 
-      <TodoList filteredAnalytics={filteredAnalytics} />
+      <CompletedTodos filteredAnalytics={filteredAnalytics} />
     </div>
   );
 };
