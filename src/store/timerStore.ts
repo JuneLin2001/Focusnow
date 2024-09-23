@@ -4,7 +4,7 @@ interface TimerState {
   secondsLeft: number;
   isPaused: boolean;
   mode: "work" | "break";
-  setTimer: (minutes: number) => void; // 新增設定計時器時間的函數
+  setTimer: (minutes: number) => void;
   startTimer: () => void;
   resetTimer: () => void;
   tick: () => void;
@@ -13,7 +13,7 @@ interface TimerState {
 }
 
 export const useTimerStore = create<TimerState>((set) => ({
-  secondsLeft: 25 * 60, // 預設為 25 分鐘
+  secondsLeft: 25 * 60,
   isPaused: true,
   mode: "work",
   setTimer: (minutes) => set({ secondsLeft: minutes * 60 }),
@@ -21,12 +21,30 @@ export const useTimerStore = create<TimerState>((set) => ({
     set({ isPaused: false });
     console.log("startTimer");
   },
-  resetTimer: () => set({ isPaused: true, secondsLeft: 25 * 60 }), // 重置為 25 分鐘
+  resetTimer: () => set({ isPaused: true, mode: "work" }),
   tick: () =>
-    set((state) => ({
-      secondsLeft: Math.max(0, state.secondsLeft - 1),
-      isPaused: state.secondsLeft <= 1 ? true : state.isPaused,
-    })),
+    set((state) => {
+      const newSecondsLeft = Math.max(0, state.secondsLeft - 1);
+      if (newSecondsLeft === 0) {
+        if (state.mode === "work") {
+          return {
+            secondsLeft: 5 * 60,
+            isPaused: false,
+            mode: "break",
+          };
+        } else {
+          return {
+            secondsLeft: state.secondsLeft,
+            isPaused: true,
+            mode: "work",
+          };
+        }
+      }
+      return {
+        secondsLeft: newSecondsLeft,
+        isPaused: state.secondsLeft <= 1 ? true : state.isPaused,
+      };
+    }),
   addFiveMinutes: () =>
     set((state) => ({
       secondsLeft: Math.max(0, state.secondsLeft + 5 * 60),
