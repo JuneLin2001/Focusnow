@@ -180,7 +180,7 @@ const AnalyticsPage = () => {
   }
 
   return (
-    <div className="w-full h-full bg-gray-100 p-4 pt-24">
+    <div className=" bg-gray-100 p-4 pt-24">
       <h2 className="text-xl font-semibold">
         Total Focus Duration: {totalFocusDuration} minutes
       </h2>

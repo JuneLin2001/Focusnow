@@ -17,7 +17,7 @@ import Header from "./Header";
 import GamePage from "../GamePage/index";
 import Igloo from "./Igloo";
 import FloatingIce from "./floatingIce";
-import Cube from "./Cube";
+import Analytics from "./AnalyticsCube";
 
 // CameraController Component
 interface CameraControllerProps {
@@ -82,7 +82,7 @@ export default function LandingPage() {
       {page === null ? (
         <div className="fixed z-10"></div>
       ) : (
-        <div className="fixed z-10 bg-gray-100">
+        <div className="fixed z-10 bg-gray-100 opacity-80">
           {page === "timer" && <TimerPage />}
           {page === "analytics" && <AnalyticsPage />}
         </div>
@@ -105,7 +105,7 @@ export default function LandingPage() {
           }}
         />
         <FloatingIce position={[0, 2, -30]} />
-        <Cube position={[0, 2, 0]} />
+        <Analytics position={[0, 2, 0]} />
 
         <ContactShadows
           position={[0, -1.5, 0]}
