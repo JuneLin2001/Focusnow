@@ -29,7 +29,6 @@ const AnalyticsPage = () => {
     setAnalyticsList,
     setFilteredAnalytics,
     setLast30DaysFocusDuration,
-    last30DaysFocusDuration,
   } = useAnalyticsStore();
 
   const [filterType, setFilterType] = useState<"daily" | "weekly" | "monthly">(
@@ -183,9 +182,6 @@ const AnalyticsPage = () => {
     <div className=" bg-gray-100 p-4 pt-24">
       <h2 className="text-xl font-semibold">
         Total Focus Duration: {totalFocusDuration} minutes
-      </h2>
-      <h2 className="text-xl font-semibold">
-        Last 30 Days Total Focus Duration: {last30DaysFocusDuration} minutes
       </h2>
 
       <DateSelector
