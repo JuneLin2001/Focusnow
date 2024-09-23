@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import useAuthStore from "../../store/authStore";
@@ -22,7 +22,7 @@ import {
 
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const AnalyticsPage: React.FC = () => {
+const AnalyticsPage = () => {
   const { user } = useAuthStore();
   const {
     filteredAnalytics,
@@ -69,7 +69,7 @@ const AnalyticsPage: React.FC = () => {
 
         const formattedKey =
           filterType === "daily"
-            ? dateKey.startOf("hour").format("MM-DD HH:mm")
+            ? dateKey.startOf("hour").format("HH:mm")
             : filterType === "weekly"
               ? dateKey.format("MM-DD")
               : dateKey.format("MM-DD");
@@ -172,7 +172,7 @@ const AnalyticsPage: React.FC = () => {
     setAnalyticsList,
     setFilteredAnalytics,
     setLast30DaysFocusDuration,
-    mergeData, // 添加 mergeData 作為依賴
+    mergeData,
   ]);
 
   if (!user) {
@@ -180,7 +180,7 @@ const AnalyticsPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full h-full bg-gray-100 p-4">
+    <div className="w-full h-full bg-gray-100 p-4 pt-24">
       <h2 className="text-xl font-semibold">
         Total Focus Duration: {totalFocusDuration} minutes
       </h2>
