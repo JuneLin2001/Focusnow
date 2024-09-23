@@ -14,7 +14,7 @@ import CameraController from "./CameraController";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
-    [number, number, number] | null
+    [number, number, number]
   >([0, 30, 0]);
   const [page, setPage] = useState<"timer" | "analytics" | "game" | null>(null);
 
@@ -53,7 +53,7 @@ const LandingPage = () => {
           opacity={0.25}
           far={10}
         />
-        <CameraController targetPosition={targetPosition || [0, 30, 0]} />
+        <CameraController targetPosition={targetPosition} />
         <OceanModel position={[0, 0, 0]} />
       </Canvas>
     </>

@@ -8,7 +8,7 @@ interface HeaderProps {
     React.SetStateAction<"timer" | "analytics" | "game" | null>
   >;
   setTargetPosition: React.Dispatch<
-    React.SetStateAction<[number, number, number] | null>
+    React.SetStateAction<[number, number, number]>
   >;
 }
 
