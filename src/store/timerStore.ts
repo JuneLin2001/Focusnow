@@ -31,11 +31,12 @@ export const useTimerStore = create<TimerState>((set) => ({
     set((state) => ({
       isPaused: true,
       mode: "work",
-      secondsLeft: state.inputMinutes * 60, // 使用者輸入的分鐘數
+      secondsLeft: state.inputMinutes * 60,
     })),
   tick: () =>
     set((state) => {
       const newSecondsLeft = Math.max(0, state.secondsLeft - 1);
+
       if (newSecondsLeft === 0) {
         if (state.mode === "work") {
           return {
@@ -45,17 +46,19 @@ export const useTimerStore = create<TimerState>((set) => ({
           };
         } else {
           return {
-            secondsLeft: state.secondsLeft,
-            isPaused: true,
+            secondsLeft: state.inputMinutes * 60,
+            isPaused: false,
             mode: "work",
           };
         }
       }
+
       return {
         secondsLeft: newSecondsLeft,
-        isPaused: state.secondsLeft <= 1 ? true : state.isPaused,
+        isPaused: state.isPaused,
       };
     }),
+
   addFiveMinutes: () =>
     set((state) => {
       const newMinutes = Math.min(state.inputMinutes + 5, 120); // 最大為120分鐘

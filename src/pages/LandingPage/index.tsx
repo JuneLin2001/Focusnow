@@ -11,13 +11,13 @@ import gsap from "gsap";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
 import Ocean from "./Ocean";
-import Mainland from "./Mainland";
+import Mainland from "../../models/Mainland";
 import Header from "./Header";
 // import IceMountain from "./IceMountain";
 import GamePage from "../GamePage/index";
-import Igloo from "./Igloo";
-import FloatingIce from "./floatingIce";
-import Analytics from "./AnalyticsCube";
+import Igloo from "../../models/Igloo";
+import FloatingIce from "../../models/floatingIce";
+import Analytics from "../../models/AnalyticsCube";
 
 // CameraController Component
 interface CameraControllerProps {

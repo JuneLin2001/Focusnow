@@ -2,11 +2,10 @@
 import React from "react";
 import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { ModelProps } from "../../types/type";
+import { ModelProps } from "../types/type";
 
-const AnalyticsCube: React.FC<ModelProps> = ({ children, onClick }) => {
-  const gltf = useLoader(GLTFLoader, "cube.glb");
-
+const Igloo: React.FC<ModelProps> = ({ children, onClick }) => {
+  const gltf = useLoader(GLTFLoader, "igloo.glb");
   return (
     <group onClick={onClick}>
       <primitive object={gltf.scene} />
@@ -15,4 +14,4 @@ const AnalyticsCube: React.FC<ModelProps> = ({ children, onClick }) => {
   );
 };
 
-export default AnalyticsCube;
+export default Igloo;

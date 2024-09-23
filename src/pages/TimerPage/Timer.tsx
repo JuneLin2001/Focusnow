@@ -47,32 +47,24 @@ const Timer = () => {
 
   useEffect(() => {
     requestNotificationPermission();
-
-    const savedTime = localStorage.getItem("remainingTime");
-    if (savedTime) {
-      const remainingTime = Number(savedTime);
-      if (remainingTime > 0) {
-        setTimer(Math.floor(remainingTime / 60));
-      }
-    }
-  }, [setTimer]);
+  }, []);
 
   useEffect(() => {
     let interval: number;
 
-    if (!isPaused && secondsLeft >= 0) {
+    if (!isPaused && secondsLeft - 1 >= 0) {
       interval = window.setInterval(() => {
         tick();
-        localStorage.setItem("remainingTime", secondsLeft.toString());
+        console.log(secondsLeft - 1);
 
-        if (secondsLeft === 1) {
+        if (secondsLeft - 1 === 0) {
           const endTime = new Date();
-          const focusDuration = mode === "work" ? inputMinutes : 5; // 休息為 5 分鐘
+          const focusDuration = mode === "work" ? inputMinutes : 5;
           const pomodoroCompleted = mode === "work";
 
           sendBrowserNotification(
             mode === "work" ? "工作時間結束！" : "休息時間結束！",
-            "請準備切換模式！"
+            mode === "work" ? "切換到休息模式！" : "切換到工作模式"
           );
 
           if (startTime) {
@@ -124,7 +116,6 @@ const Timer = () => {
 
     return () => {
       clearInterval(interval);
-      localStorage.removeItem("remainingTime");
     };
   }, [
     tick,
@@ -140,7 +131,7 @@ const Timer = () => {
 
   const handleStartTimer = () => {
     startTimer();
-    localStorage.setItem("remainingTime", secondsLeft.toString());
+    setIsEditing(false);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,9 +139,7 @@ const Timer = () => {
       const value = e.target.value;
       const numericValue = parseInt(value);
 
-      // 檢查是否為數字
       if (!isNaN(numericValue)) {
-        // 設定最小值為 1，最大值為 120
         const clampedValue = Math.min(Math.max(numericValue, 1), 120);
         setInputMinutes(clampedValue);
         setTimer(clampedValue);
@@ -172,40 +161,51 @@ const Timer = () => {
     <div className="w-screen h-screen flex justify-center items-center">
       <div>
         <CircularProgressbarWithChildren
-          value={(secondsLeft / (inputMinutes * 60)) * 100}
+          value={
+            mode === "work"
+              ? (secondsLeft / (inputMinutes * 60)) * 100
+              : (secondsLeft / (5 * 60)) * 100
+          }
           styles={buildStyles({
             textColor: "#000",
             pathColor: mode === "work" ? "blue" : "green",
             trailColor: "#d6d6d6",
           })}
         >
-          <AddOrSubtractButton onClick={addFiveMinutes} disabled={!isPaused}>
-            +
-          </AddOrSubtractButton>
+          {isPaused && (
+            <AddOrSubtractButton onClick={addFiveMinutes} disabled={!isPaused}>
+              +
+            </AddOrSubtractButton>
+          )}
+
           <div className="flex items-center">
             {isEditing ? (
               <input
                 type="text"
-                value={Math.floor(secondsLeft / 60)} // 只顯示分鐘數
+                value={`${Math.floor(secondsLeft / 60)}`}
                 onChange={handleInputChange}
-                disabled={!isPaused} // 當未暫停時禁用編輯
-                className="text-5xl border-none bg-transparent focus:outline-none text-center mx-2"
-                onBlur={handleInputBlur} // 失去焦點時關閉編輯模式
+                disabled={!isPaused}
+                className="text-5xl border-4 border-black w-24 bg-transparent focus:outline-none text-center"
+                onBlur={handleInputBlur}
               />
             ) : (
               <div
                 className="text-5xl cursor-pointer"
-                onClick={handleInputClick} // 點擊時進入編輯模式
+                onClick={handleInputClick}
               >
                 {`${Math.floor(secondsLeft / 60)}:${secondsLeft % 60 < 10 ? "0" + (secondsLeft % 60) : secondsLeft % 60}`}
               </div>
             )}
           </div>
-          <AddOrSubtractButton onClick={minusFiveMinutes} disabled={!isPaused}>
-            -
-          </AddOrSubtractButton>
+          {isPaused && (
+            <AddOrSubtractButton
+              onClick={minusFiveMinutes}
+              disabled={!isPaused}
+            >
+              -
+            </AddOrSubtractButton>
+          )}
         </CircularProgressbarWithChildren>
-
         <div className="mt-5 flex justify-center">
           {isPaused ? (
             <DefaultButton onClick={handleStartTimer}>開始</DefaultButton>
