@@ -18,9 +18,21 @@ const LandingPage = () => {
   >([0, 30, 0]);
   const [page, setPage] = useState<"timer" | "analytics" | "game" | null>(null);
 
+  const setPageWithDelay: (
+    newPage: "timer" | "analytics" | "game" | null
+  ) => void = (newPage) => {
+    setTimeout(() => {
+      setPage(newPage);
+    }, 2000);
+  };
+
   return (
     <>
-      <Header setPage={setPage} setTargetPosition={setTargetPosition} />
+      <Header
+        setPage={setPage} // 傳遞原始 setPage
+        setPageWithDelay={setPageWithDelay} // 傳遞延遲版本
+        setTargetPosition={setTargetPosition}
+      />
       {page === null ? (
         <div className="fixed z-10"></div>
       ) : (
@@ -41,7 +53,7 @@ const LandingPage = () => {
           position={[-114, 2, -16]}
           onClick={() => {
             setTargetPosition([52, 35, 0]);
-            setPage("timer");
+            setPageWithDelay("timer");
           }}
         />
         <FloatingIce position={[0, 2, -30]} />

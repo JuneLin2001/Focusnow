@@ -4,15 +4,16 @@ import { DefaultButton } from "../../components/Button";
 import React, { useState } from "react";
 
 interface HeaderProps {
-  setPage: React.Dispatch<
-    React.SetStateAction<"timer" | "analytics" | "game" | null>
-  >;
-  setTargetPosition: React.Dispatch<
-    React.SetStateAction<[number, number, number]>
-  >;
+  setPage: (newPage: "timer" | "analytics" | "game" | null) => void; // 原始 setPage
+  setPageWithDelay: (newPage: "timer" | "analytics" | "game" | null) => void; // 延遲版本
+  setTargetPosition: (position: [number, number, number]) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ setPage, setTargetPosition }) => {
+const Header: React.FC<HeaderProps> = ({
+  setPage,
+  setPageWithDelay,
+  setTargetPosition,
+}) => {
   const { user } = useAuthStore();
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
@@ -34,16 +35,18 @@ const Header: React.FC<HeaderProps> = ({ setPage, setTargetPosition }) => {
     <div className="fixed flex justify-center items-center w-full h-16 mb-5 py-10 bg-[#D9D9D9] z-50">
       <DefaultButton
         onClick={() => {
+          setPage(null);
           setTargetPosition([32, 20, -50]);
-          setPage("timer");
+          setPageWithDelay("timer");
         }}
       >
         Timer Page
       </DefaultButton>
       <DefaultButton
         onClick={() => {
-          setPage("analytics");
+          setPage(null);
           setTargetPosition([-75, 25, 100]);
+          setPageWithDelay("analytics");
         }}
       >
         Analytics Page
