@@ -117,8 +117,6 @@ const Timer = () => {
                 });
               setShowLogin(true);
             }
-          } else {
-            console.error("Start time is not set");
           }
         }
       }, 1000);

@@ -57,11 +57,20 @@ export const useTimerStore = create<TimerState>((set) => ({
       };
     }),
   addFiveMinutes: () =>
-    set((state) => ({
-      secondsLeft: Math.max(0, state.secondsLeft + 5 * 60),
-    })),
+    set((state) => {
+      const newMinutes = Math.min(state.inputMinutes + 5, 120); // 最大為120分鐘
+      return {
+        secondsLeft: newMinutes * 60,
+        inputMinutes: newMinutes, // 同步更新inputMinutes
+      };
+    }),
+
   minusFiveMinutes: () =>
-    set((state) => ({
-      secondsLeft: Math.max(0, state.secondsLeft - 5 * 60),
-    })),
+    set((state) => {
+      const newMinutes = Math.max(state.inputMinutes - 5, 1); // 最小為1分鐘
+      return {
+        secondsLeft: newMinutes * 60,
+        inputMinutes: newMinutes, // 同步更新inputMinutes
+      };
+    }),
 }));
