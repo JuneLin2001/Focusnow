@@ -15,6 +15,8 @@ import {
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useTodoStore, Todo } from "../../store/todoStore";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Timer = () => {
   const {
@@ -38,16 +40,63 @@ const Timer = () => {
     setShowLogin(false);
   };
 
+  const requestNotificationPermission = async () => {
+    const permission = await Notification.requestPermission();
+    if (permission !== "granted") {
+      console.error("Notification permission denied");
+    }
+  };
+
+  const sendBrowserNotification = (title: string, message: string) => {
+    if (Notification.permission === "granted") {
+      new Notification(title, { body: message });
+    } else {
+      console.warn("Notification permission not granted.");
+    }
+  };
+
+  const sendNotification = (title: string, message: string) => {
+    toast(
+      <div>
+        <strong>{title}</strong>
+        <p>{message}</p>
+      </div>,
+      {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      }
+    );
+  };
+
+  useEffect(() => {
+    requestNotificationPermission(); // 請求通知權限
+
+    // 檢查 localStorage 是否有保存的時間
+    const savedTime = localStorage.getItem("remainingTime");
+    if (savedTime) {
+      const remainingTime = Number(savedTime);
+      if (remainingTime > 0) {
+        setTimer(Math.floor(remainingTime / 60));
+      }
+    }
+  }, [setTimer]);
+
   useEffect(() => {
     let interval: number;
 
     if (!isPaused && secondsLeft >= 0) {
       interval = window.setInterval(() => {
         tick();
-        console.log(secondsLeft);
+        localStorage.setItem("remainingTime", secondsLeft.toString());
 
         if (secondsLeft === 1) {
           const endTime = new Date();
+          sendNotification("計時完成！", "恭喜你完成了專注時段！");
+          sendBrowserNotification("計時完成！", "恭喜你完成了專注時段！"); // 使用瀏覽器通知
 
           if (startTime) {
             const focusDuration = inputMinutes;
@@ -97,7 +146,8 @@ const Timer = () => {
     }
 
     return () => {
-      if (interval) clearInterval(interval);
+      clearInterval(interval);
+      localStorage.removeItem("remainingTime");
     };
   }, [
     tick,
@@ -172,8 +222,8 @@ const Timer = () => {
 
   const handleStartTimer = () => {
     setStartTime(new Date());
-    console.log(startTime);
     startTimer();
+    localStorage.setItem("remainingTime", secondsLeft.toString());
   };
 
   const minutes = Math.floor(secondsLeft / 60);
@@ -184,8 +234,8 @@ const Timer = () => {
   };
 
   return (
-    //TODO: Timer的大小和位置，不能用w-screen h-screen不然會蓋住Canva就不能滑動畫面
     <div className="w-screen h-screen flex justify-center items-center">
+      <ToastContainer />
       <div>
         <CircularProgressbarWithChildren
           value={(secondsLeft / (inputMinutes * 60)) * 100}
