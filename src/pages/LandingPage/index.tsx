@@ -79,10 +79,14 @@ export default function LandingPage() {
     <>
       <Header setPage={setPage} setTargetPosition={setTargetPosition} />
       {/* //TODO: Page的位置 */}
-      <div className="fixed z-10">
-        {page === "timer" && <TimerPage />}
-        {page === "analytics" && <AnalyticsPage />}
-      </div>
+      {page === null ? (
+        <div className="fixed z-10"></div>
+      ) : (
+        <div className="w-full h-full fixed z-10 opacity-50 bg-gray-100">
+          {page === "timer" && <TimerPage />}
+          {page === "analytics" && <AnalyticsPage />}
+        </div>
+      )}
 
       <Canvas>
         <Stats />

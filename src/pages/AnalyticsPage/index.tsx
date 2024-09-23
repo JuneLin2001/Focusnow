@@ -10,7 +10,7 @@ import DateSelector from "./DateSelector";
 import CompletedTodos from "./CompletedTodos";
 import { ChartData } from "chart.js";
 
-const AanalyticsPage: React.FC = () => {
+const AnalyticsPage: React.FC = () => {
   const { user } = useAuthStore();
   const {
     filteredAnalytics,
@@ -142,10 +142,8 @@ const AanalyticsPage: React.FC = () => {
     return <div className="p-96">Please login to see analytics.</div>;
   }
 
-  console.log("chartData:", JSON.stringify(chartData, null, 2));
-
   return (
-    <div className="p-96">
+    <div className="w-full h-full bg-gray-100 ">
       <h2>Total Focus Duration: {totalFocusDuration} minutes</h2>
       <h2>
         Last 30 Days Total Focus Duration: {last30DaysFocusDuration} minutes
@@ -165,4 +163,4 @@ const AanalyticsPage: React.FC = () => {
   );
 };
 
-export default AanalyticsPage;
+export default AnalyticsPage;

@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({ setPage, setTargetPosition }) => {
       </DefaultButton>
       <DefaultButton
         onClick={() => {
-          setPage("game");
+          setPage(null);
           setTargetPosition([5, 60, 10]);
         }}
       >
