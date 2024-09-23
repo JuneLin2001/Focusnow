@@ -70,7 +70,9 @@ export default function LandingPage() {
   const [targetPosition, setTargetPosition] = useState<
     [number, number, number] | null
   >([0, 30, 0]); //TODO: 鏡頭初始位置
-  const [page, setPage] = useState<"timer" | "analytics" | "game" | null>(null);
+  const [page, setPage] = useState<"timer" | "analytics" | "game" | null>(
+    "analytics"
+  );
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
 
   return (
