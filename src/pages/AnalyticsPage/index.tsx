@@ -5,10 +5,22 @@ import useAuthStore from "../../store/authStore";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import { UserAnalytics } from "../../types/type";
 import dayjs from "dayjs";
-// import ChartDisplay from "./ChartDisplay";
 import DateSelector from "./DateSelector";
 import CompletedTodos from "./CompletedTodos";
 import { ChartData } from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+import {
+  Chart,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const AnalyticsPage: React.FC = () => {
   const { user } = useAuthStore();
@@ -31,7 +43,8 @@ const AnalyticsPage: React.FC = () => {
   });
 
   const calculateDateRange = useCallback(() => {
-    let start, end;
+    let start = dayjs();
+    let end = dayjs();
 
     if (filterType === "daily") {
       start = currentDate.startOf("day");
@@ -46,6 +59,48 @@ const AnalyticsPage: React.FC = () => {
 
     return { start, end };
   }, [filterType, currentDate]);
+
+  const mergeData = useCallback(
+    (filteredData: UserAnalytics[], start: dayjs.Dayjs, end: dayjs.Dayjs) => {
+      const mergedData: { [key: string]: number } = {};
+
+      filteredData.forEach((analytics) => {
+        const dateKey = dayjs.unix(analytics.startTime.seconds);
+
+        const formattedKey =
+          filterType === "daily"
+            ? dateKey.startOf("hour").format("MM-DD HH:mm")
+            : filterType === "weekly"
+              ? dateKey.format("MM-DD")
+              : dateKey.format("MM-DD");
+
+        if (!mergedData[formattedKey]) {
+          mergedData[formattedKey] = 0;
+        }
+        mergedData[formattedKey] += analytics.focusDuration;
+      });
+
+      const allDates = [];
+      let current = start.clone();
+      while (current.isBefore(end) || current.isSame(end)) {
+        const dateKey =
+          filterType === "daily"
+            ? current.startOf("hour").format("HH:mm")
+            : filterType === "weekly"
+              ? current.format("MM-DD")
+              : current.format("MM-DD");
+
+        allDates.push({
+          date: dateKey,
+          duration: mergedData[dateKey] || 0, // 若無資料則為 0
+        });
+        current = current.add(1, filterType === "daily" ? "hour" : "day");
+      }
+
+      return allDates;
+    },
+    [filterType]
+  );
 
   useEffect(() => {
     if (user) {
@@ -75,41 +130,22 @@ const AnalyticsPage: React.FC = () => {
             const filteredData = sortedAnalytics.filter((analytics) => {
               const analyticsDate = dayjs.unix(analytics.startTime.seconds);
               return (
-                analyticsDate.isSame(start, "day") || // 包含開始日期
-                analyticsDate.isSame(end, "day") || // 包含結束日期
+                analyticsDate.isSame(start, "day") ||
+                analyticsDate.isSame(end, "day") ||
                 (analyticsDate.isAfter(start) && analyticsDate.isBefore(end))
               );
             });
 
             setFilteredAnalytics(filteredData);
 
-            if (filteredData.length === 0) {
-              // 如果沒有數據，設置預設值
-              setTotalFocusDuration(0);
-              setChartData({
-                labels: ["無數據"],
-                datasets: [
-                  {
-                    label: "專注時長（分鐘）",
-                    data: [0],
-                    backgroundColor: "rgba(255, 99, 132, 0.6)",
-                  },
-                ],
-              });
-              return; // 提前返回
-            }
-
-            const totalDuration = filteredData.reduce(
-              (acc, analytics) => acc + analytics.focusDuration,
-              0
+            const mergedResults = mergeData(filteredData, start, end);
+            const chartLabels = mergedResults.map((item) => item.date);
+            const chartFocusDurations = mergedResults.map(
+              (item) => item.duration
             );
-            setTotalFocusDuration(totalDuration);
 
-            const chartLabels = filteredData.map((analytics) =>
-              dayjs.unix(analytics.startTime.seconds).format("YYYY-MM-DD")
-            );
-            const chartFocusDurations = filteredData.map(
-              (analytics) => analytics.focusDuration
+            setTotalFocusDuration(
+              mergedResults.reduce((acc, item) => acc + item.duration, 0)
             );
 
             setChartData({
@@ -136,6 +172,7 @@ const AnalyticsPage: React.FC = () => {
     setAnalyticsList,
     setFilteredAnalytics,
     setLast30DaysFocusDuration,
+    mergeData, // 添加 mergeData 作為依賴
   ]);
 
   if (!user) {
@@ -143,9 +180,11 @@ const AnalyticsPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full h-full bg-gray-100 ">
-      <h2>Total Focus Duration: {totalFocusDuration} minutes</h2>
-      <h2>
+    <div className="w-full h-full bg-gray-100 p-4">
+      <h2 className="text-xl font-semibold">
+        Total Focus Duration: {totalFocusDuration} minutes
+      </h2>
+      <h2 className="text-xl font-semibold">
         Last 30 Days Total Focus Duration: {last30DaysFocusDuration} minutes
       </h2>
 
@@ -156,7 +195,21 @@ const AnalyticsPage: React.FC = () => {
         setCurrentDate={setCurrentDate}
       />
 
-      {/* <ChartDisplay chartData={chartData} filterType={filterType} /> */}
+      <div className="mt-6">
+        <Bar
+          data={chartData}
+          options={{
+            responsive: true,
+            plugins: {
+              legend: { position: "top" },
+              title: {
+                display: true,
+                text: `專注時長（${filterType === "daily" ? "每日" : filterType === "weekly" ? "每週" : "每月"}）`,
+              },
+            },
+          }}
+        />
+      </div>
 
       <CompletedTodos filteredAnalytics={filteredAnalytics} />
     </div>
