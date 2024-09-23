@@ -4,7 +4,10 @@ interface TimerState {
   secondsLeft: number;
   isPaused: boolean;
   mode: "work" | "break";
+  inputMinutes: number;
+  startTime: Date | null;
   setTimer: (minutes: number) => void;
+  setInputMinutes: (minutes: number) => void;
   startTimer: () => void;
   resetTimer: () => void;
   tick: () => void;
@@ -16,12 +19,20 @@ export const useTimerStore = create<TimerState>((set) => ({
   secondsLeft: 25 * 60,
   isPaused: true,
   mode: "work",
+  inputMinutes: 25, // 預設值
+  startTime: null, // 初始為 null
   setTimer: (minutes) => set({ secondsLeft: minutes * 60 }),
+  setInputMinutes: (minutes) => set({ inputMinutes: minutes }), // 設置 inputMinutes
   startTimer: () => {
-    set({ isPaused: false });
+    set({ isPaused: false, startTime: new Date() }); // 設置 startTime
     console.log("startTimer");
   },
-  resetTimer: () => set({ isPaused: true, mode: "work" }),
+  resetTimer: () =>
+    set((state) => ({
+      isPaused: true,
+      mode: "work",
+      secondsLeft: state.inputMinutes * 60, // 使用者輸入的分鐘數
+    })),
   tick: () =>
     set((state) => {
       const newSecondsLeft = Math.max(0, state.secondsLeft - 1);

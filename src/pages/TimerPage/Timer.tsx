@@ -15,29 +15,30 @@ import {
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useTodoStore } from "../../store/todoStore";
-import { ToastContainer } from "react-toastify";
 import {
   requestNotificationPermission,
   sendBrowserNotification,
-} from "../../utils/NotificationService"; // 引入新的函數
+} from "../../utils/NotificationService";
 
 const Timer = () => {
   const {
     secondsLeft,
     isPaused,
     mode,
+    inputMinutes,
+    startTime,
     startTimer,
     resetTimer,
     tick,
     setTimer,
     addFiveMinutes,
     minusFiveMinutes,
+    setInputMinutes,
   } = useTimerStore();
+
   const { user } = useAuthStore();
   const { todos, removeTodo } = useTodoStore();
-  const [inputMinutes, setInputMinutes] = useState(25);
   const [showLogin, setShowLogin] = useState(false);
-  const [startTime, setStartTime] = useState<Date | null>(null);
   const [isEditing, setIsEditing] = useState(false);
 
   const handleLoginSuccess = () => {
@@ -140,19 +141,22 @@ const Timer = () => {
   ]);
 
   const handleStartTimer = () => {
-    setStartTime(new Date());
     startTimer();
     localStorage.setItem("remainingTime", secondsLeft.toString());
   };
 
-  const minutes = Math.floor(secondsLeft / 60);
-  const seconds = secondsLeft % 60;
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (isPaused) {
-      const value = parseInt(e.target.value);
-      setInputMinutes(value);
-      setTimer(value);
+      const value = e.target.value;
+      const numericValue = parseInt(value);
+
+      // 檢查是否為數字
+      if (!isNaN(numericValue)) {
+        // 設定最小值為 1，最大值為 120
+        const clampedValue = Math.min(Math.max(numericValue, 1), 120);
+        setInputMinutes(clampedValue);
+        setTimer(clampedValue);
+      }
     }
   };
 
@@ -168,7 +172,6 @@ const Timer = () => {
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">
-      <ToastContainer />
       <div>
         <CircularProgressbarWithChildren
           value={(secondsLeft / (inputMinutes * 60)) * 100}
@@ -184,18 +187,20 @@ const Timer = () => {
           <div className="flex items-center">
             {isEditing ? (
               <input
-                type="number"
-                value={inputMinutes}
+                type="text"
+                value={Math.floor(secondsLeft / 60)} // 只顯示分鐘數
                 onChange={handleInputChange}
-                min="1"
-                onBlur={handleInputBlur}
-                className="text-5xl border-none bg-transparent focus:outline-none text-center"
+                disabled={!isPaused} // 當未暫停時禁用編輯
+                className="text-5xl border-none bg-transparent focus:outline-none text-center mx-2"
+                onBlur={handleInputBlur} // 失去焦點時關閉編輯模式
               />
             ) : (
               <div
                 className="text-5xl cursor-pointer"
-                onClick={handleInputClick}
-              >{`${minutes}:${seconds < 10 ? "0" + seconds : seconds}`}</div>
+                onClick={handleInputClick} // 點擊時進入編輯模式
+              >
+                {`${Math.floor(secondsLeft / 60)}:${secondsLeft % 60 < 10 ? "0" + (secondsLeft % 60) : secondsLeft % 60}`}
+              </div>
             )}
           </div>
           <AddOrSubtractButton onClick={minusFiveMinutes} disabled={!isPaused}>
@@ -205,9 +210,11 @@ const Timer = () => {
 
         <div className="mt-5 flex justify-center">
           {isPaused ? (
-            <DefaultButton onClick={handleStartTimer}>Start</DefaultButton>
+            <DefaultButton onClick={handleStartTimer}>開始</DefaultButton>
+          ) : mode === "break" ? (
+            <ResetButton onClick={resetTimer}>跳過休息</ResetButton>
           ) : (
-            <ResetButton onClick={resetTimer}>Reset</ResetButton>
+            <ResetButton onClick={resetTimer}>放棄</ResetButton>
           )}
         </div>
 
