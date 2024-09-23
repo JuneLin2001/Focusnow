@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -25,6 +25,8 @@ const MovingModel: React.FC<MovingModelProps> = ({
   const { scene } = useGLTF("BBpenguinCenter.glb");
   const modelRef = useRef<THREE.Group>(null!);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { camera } = useThree(); // 獲取相機
+  const [isFollowing, setIsFollowing] = useState(false); // 跟隨狀態
 
   const targetPosition = useRef<THREE.Vector3>(
     new THREE.Vector3(
@@ -49,6 +51,19 @@ const MovingModel: React.FC<MovingModelProps> = ({
       if (distance > 0.1) {
         direction.normalize().multiplyScalar(speed * 0.1);
         currentPosition.add(direction);
+
+        const targetRotation = new THREE.Vector3(
+          targetPosition.current.x,
+          position[1],
+          targetPosition.current.z
+        );
+        const lookAtDirection = targetRotation.sub(currentPosition).normalize();
+        const angle = Math.atan2(lookAtDirection.x, lookAtDirection.z);
+        modelRef.current.rotation.y = THREE.MathUtils.lerp(
+          modelRef.current.rotation.y,
+          angle,
+          0.1
+        );
       } else {
         targetPosition.current.set(
           Math.random() * (maxX - minX) + minX,
@@ -56,11 +71,29 @@ const MovingModel: React.FC<MovingModelProps> = ({
           Math.random() * (maxZ - minZ) + minZ
         );
       }
+
+      // 上下搖擺
+      modelRef.current.position.y =
+        position[1] + Math.sin(Date.now() * 0.001 * speed) * 0.1;
+
+      // 跟隨鏡頭
+      if (isFollowing) {
+        camera.position.lerp(
+          new THREE.Vector3(
+            currentPosition.x,
+            currentPosition.y + 10,
+            currentPosition.z + 3
+          ),
+          0.1
+        );
+        camera.lookAt(currentPosition);
+      }
     }
   });
 
   const handleClick = () => {
     console.log(`number ${id} Model clicked!`);
+    setIsFollowing((prev) => !prev); // 切換跟隨狀態
   };
 
   if (!isLoaded) {
@@ -69,7 +102,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
 
   return (
     <primitive
-      object={scene.clone()} // 使用 clone() 來避免共享同一個場景
+      object={scene.clone()}
       position={position}
       scale={[2, 2, 2]}
       rotation={[0, Math.PI / 2, 0]}

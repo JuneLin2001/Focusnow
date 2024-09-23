@@ -18,6 +18,7 @@ import GamePage from "../GamePage/index";
 import Igloo from "../../models/Igloo";
 import FloatingIce from "../../models/floatingIce";
 import Analytics from "../../models/AnalyticsCube";
+import OceanModel from "../../models/OceanModel";
 
 // CameraController Component
 interface CameraControllerProps {
@@ -30,33 +31,53 @@ const CameraController: React.FC<CameraControllerProps> = ({
   controlsRef,
 }) => {
   const { camera } = useThree();
-  camera.position.set(targetPosition[0], targetPosition[1], targetPosition[2]);
 
   useEffect(() => {
     if (targetPosition && controlsRef.current) {
       const controls = controlsRef.current;
 
+      // 添加隨機偏移量
+      const randomOffsetX = Math.random() * 2 - 1; // -1 到 1 的隨機數
+      const randomOffsetY = Math.random() * 2 - 1;
+      const randomOffsetZ = Math.random() * 2 - 1;
+
+      const finalTargetPosition = [
+        targetPosition[0] + randomOffsetX,
+        targetPosition[1] + randomOffsetY,
+        targetPosition[2] + randomOffsetZ,
+      ];
+
       // 使用 GSAP 對相機進行平滑過渡
       gsap.to(camera.position, {
-        x: targetPosition[0] + 2,
-        y: targetPosition[1] + 2,
-        z: targetPosition[2] + 4,
+        x: finalTargetPosition[0] + 2,
+        y: finalTargetPosition[1] + 2,
+        z: finalTargetPosition[2] + 4,
         duration: 1.5,
+        ease: "power2.out", // 使用非線性插值
         onUpdate: () => {
           camera.lookAt(
-            targetPosition[0],
-            targetPosition[1],
-            targetPosition[2]
+            finalTargetPosition[0],
+            finalTargetPosition[1],
+            finalTargetPosition[2]
           );
         },
       });
 
+      gsap.to(camera.rotation, {
+        x: 0, // 設定x軸旋轉
+        y: Math.PI, // 設定y軸旋轉（180度）
+        z: 0, // 設定z軸旋轉
+        duration: 1.5,
+        ease: "power2.out",
+      });
+
       // 控制目標的移動
       gsap.to(controls.target, {
-        x: targetPosition[0],
-        y: targetPosition[1],
-        z: targetPosition[2],
+        x: finalTargetPosition[0],
+        y: finalTargetPosition[1],
+        z: finalTargetPosition[2],
         duration: 1.5,
+        ease: "power2.out", // 使用非線性插值
         onUpdate: () => controls.update(),
       });
     }
@@ -70,14 +91,13 @@ export default function LandingPage() {
   const [targetPosition, setTargetPosition] = useState<
     [number, number, number] | null
   >([0, 30, 0]); //TODO: 鏡頭初始位置
-  const [page, setPage] = useState<"timer" | "analytics" | "game" | null>(
-    "analytics"
-  );
+
+  const [page, setPage] = useState<"timer" | "analytics" | "game" | null>(null);
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
 
   return (
     <>
-      <Header setPage={setPage} setTargetPosition={setTargetPosition} />
+      <Header setPage={setPage} setTargetPosition={setTargetPosition} />{" "}
       {/* //TODO: Page的位置 */}
       {page === null ? (
         <div className="fixed z-10"></div>
@@ -87,12 +107,11 @@ export default function LandingPage() {
           {page === "analytics" && <AnalyticsPage />}
         </div>
       )}
-
       <Canvas>
         <Stats />
 
         <Suspense fallback={null}>
-          <Environment preset="sunset" />
+          <Environment preset="warehouse" />
         </Suspense>
 
         <GamePage />
@@ -100,6 +119,7 @@ export default function LandingPage() {
         <Igloo
           position={[-114, 2, -16]}
           onClick={() => {
+            setTargetPosition([0, 30, 0]);
             setTargetPosition([52, 35, 0]);
             setPage("timer");
           }}
@@ -122,7 +142,7 @@ export default function LandingPage() {
           targetPosition={targetPosition || [0, 0, 0]}
           controlsRef={controlsRef}
         />
-        <Ocean />
+        <OceanModel position={[0, 0, 0]} />
       </Canvas>
     </>
   );
