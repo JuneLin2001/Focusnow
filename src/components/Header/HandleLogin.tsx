@@ -1,4 +1,4 @@
-import LoginButton from "../../components/LoginButton";
+import LoginButton from "../LoginButton";
 import useAuthStore from "../../store/authStore";
 
 const HandleLogin = () => {

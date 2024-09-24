@@ -4,7 +4,7 @@ import { Stats, ContactShadows, Environment } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
 import Mainland from "../../models/Mainland";
-import Header from "./Header";
+import Header from "../../components/Header/index";
 import GamePage from "../GamePage/index";
 import Igloo from "../../models/Igloo";
 import FloatingIce from "../../models/floatingIce";

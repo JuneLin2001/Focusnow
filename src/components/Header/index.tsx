@@ -1,4 +1,4 @@
-import { HeaderButton } from "../../components/Button";
+import { HeaderButton } from "../Button";
 import ToggleBgm from "./ToggleBgm";
 import HandleLogin from "./HandleLogin";
 
