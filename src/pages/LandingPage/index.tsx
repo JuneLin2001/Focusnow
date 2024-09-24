@@ -43,7 +43,7 @@ const LandingPage = () => {
         </div>
       )}
       <Canvas>
-        <Stats className="mt-20 ml-20" />
+        <Stats className="mt-20 ml-96" />
 
         <Suspense fallback={null}>
           <Environment preset="warehouse" />
