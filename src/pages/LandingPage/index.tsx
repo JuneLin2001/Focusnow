@@ -30,7 +30,7 @@ const LandingPage = () => {
   return (
     <>
       <ResponsiveAppBar
-        pages={["Timer", "Analytics", "Game"]}
+        pages={["Timer", "Game", "Analytics"]}
         setPage={setPage} // 傳遞原始 setPage
         setTargetPosition={setTargetPosition}
       />
