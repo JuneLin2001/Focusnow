@@ -48,3 +48,12 @@ export const AddOrSubtractButton = ({
     {children}
   </Button>
 );
+
+export const HeaderButton = ({ onClick, children }: ButtonProps) => (
+  <button
+    onClick={onClick}
+    className="text-3xl font-bold text-gray-600 mr-4 bg-white"
+  >
+    {children}
+  </button>
+);
