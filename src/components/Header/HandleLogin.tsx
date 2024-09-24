@@ -1,12 +1,7 @@
-import LoginButton from "../LoginButton";
 import useAuthStore from "../../store/authStore";
 
 const HandleLogin = () => {
   const { user } = useAuthStore();
-
-  const handleLoginSuccess = () => {
-    console.log("handleLoginSuccess");
-  };
 
   return (
     <>
@@ -27,7 +22,6 @@ const HandleLogin = () => {
       ) : (
         <div className="mb-4 text-gray-600">Not logged in</div>
       )}
-      <LoginButton onLoginSuccess={handleLoginSuccess} />
     </>
   );
 };

@@ -4,13 +4,14 @@ import { Stats, ContactShadows, Environment } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
 import Mainland from "../../models/Mainland";
-import Header from "../../components/Header/index";
+// import Header from "../../components/Header/index";
 import GamePage from "../GamePage/index";
 import Igloo from "../../models/Igloo";
 import FloatingIce from "../../models/floatingIce";
 import Analytics from "../../models/AnalyticsCube";
 import OceanModel from "../../models/OceanModel";
 import CameraController from "./CameraController";
+import ResponsiveAppBar from "../../components/Header/ResponsiveAppBar";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -28,9 +29,9 @@ const LandingPage = () => {
 
   return (
     <>
-      <Header
+      <ResponsiveAppBar
+        pages={["Timer", "Analytics", "Game"]}
         setPage={setPage} // 傳遞原始 setPage
-        setPageWithDelay={setPageWithDelay} // 傳遞延遲版本
         setTargetPosition={setTargetPosition}
       />
       {page === null ? (
@@ -42,7 +43,7 @@ const LandingPage = () => {
         </div>
       )}
       <Canvas>
-        <Stats />
+        <Stats className="mt-20 ml-20" />
 
         <Suspense fallback={null}>
           <Environment preset="warehouse" />

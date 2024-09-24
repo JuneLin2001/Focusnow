@@ -1,10 +1,13 @@
 import { useState, useRef } from "react";
+import MusicNoteIcon from "@mui/icons-material/MusicNote";
+import MusicOffIcon from "@mui/icons-material/MusicOff";
+import IconButton from "@mui/material/IconButton";
 
 const ToggleBgm = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const toggleBGM = () => {
+  const toggleBgm = () => {
     if (isPlaying) {
       audioRef.current?.pause();
     } else {
@@ -15,12 +18,9 @@ const ToggleBgm = () => {
 
   return (
     <>
-      <button
-        onClick={toggleBGM}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-36"
-      >
-        {isPlaying ? "Stop BGM" : "Play BGM"}
-      </button>
+      <IconButton onClick={toggleBgm} color="inherit">
+        {isPlaying ? <MusicOffIcon /> : <MusicNoteIcon />}
+      </IconButton>
       <audio ref={audioRef} loop>
         <source
           src="Richard Clayderman - Les Premiers Sourires de Vanessa (Official Video) - Richard Clayderman Official (youtube).mp3"
