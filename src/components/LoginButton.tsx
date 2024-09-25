@@ -24,8 +24,8 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      setUser(user); // 更新全局狀態中的使用者資訊
-      onLoginSuccess(); // Notify that login was successful
+      setUser(user);
+      onLoginSuccess();
     } catch (error) {
       console.error("Login error", error);
     }
@@ -33,7 +33,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
 
   const handleLogout = async () => {
     try {
-      await logout(); // 使用全局狀態中的登出方法
+      await logout();
     } catch (error) {
       console.error("Logout error", error);
     }
@@ -49,10 +49,22 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
 
   return (
     <>
-      <Tooltip title={user ? "Open settings" : "Login with Google"}>
+      <Tooltip
+        title={
+          user ? (
+            <>
+              {user.displayName}
+              <br />
+              {user.email}
+            </>
+          ) : (
+            "Login with Google"
+          )
+        }
+      >
         <IconButton
-          onClick={user ? handleOpenUserMenu : handleLogin} // 如果已登入則打開選單，否則直接登入
-          sx={{ p: 0 }}
+          onClick={user ? handleOpenUserMenu : handleLogin}
+          sx={{ p: 0, mr: 4 }}
         >
           {user ? (
             <Avatar
@@ -64,7 +76,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
           )}
         </IconButton>
       </Tooltip>
-      {user && ( // 只有在用戶已登入時顯示選單
+      {user && (
         <Menu
           sx={{ mt: "45px" }}
           id="menu-appbar"

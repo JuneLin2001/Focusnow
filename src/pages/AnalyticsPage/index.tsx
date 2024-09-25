@@ -91,7 +91,7 @@ const AnalyticsPage = () => {
 
         allDates.push({
           date: dateKey,
-          duration: mergedData[dateKey] || 0, // 若無資料則為 0
+          duration: mergedData[dateKey] || 0,
         });
         current = current.add(1, filterType === "daily" ? "hour" : "day");
       }
@@ -175,38 +175,43 @@ const AnalyticsPage = () => {
   ]);
 
   if (!user) {
-    return <div className="p-96">Please login to see analytics.</div>;
+    return (
+      <div className="w-full h-full flex jus">
+        <p className="p-96">Please login to see analytics.</p>
+      </div>
+    );
   }
 
   return (
-    <div className=" bg-gray-100 p-4 pt-24">
-      <h2 className="text-xl font-semibold">
-        Total Focus Duration: {totalFocusDuration} minutes
-      </h2>
+    <div className="flex  pt-24">
+      <div className="bg-gray-100 p-4">
+        <h2 className="text-xl font-semibold">
+          Total Focus Duration: {totalFocusDuration} minutes
+        </h2>
 
-      <DateSelector
-        filterType={filterType}
-        setFilterType={setFilterType}
-        currentDate={currentDate}
-        setCurrentDate={setCurrentDate}
-      />
-
-      <div className="mt-6">
-        <Bar
-          data={chartData}
-          options={{
-            responsive: true,
-            plugins: {
-              legend: { position: "top" },
-              title: {
-                display: true,
-                text: `專注時長（${filterType === "daily" ? "每日" : filterType === "weekly" ? "每週" : "每月"}）`,
-              },
-            },
-          }}
+        <DateSelector
+          filterType={filterType}
+          setFilterType={setFilterType}
+          currentDate={currentDate}
+          setCurrentDate={setCurrentDate}
         />
-      </div>
 
+        <div className="mt-6 w-[50vw]">
+          <Bar
+            data={chartData}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: { position: "top" },
+                title: {
+                  display: true,
+                  text: `專注時長（${filterType === "daily" ? "每日" : filterType === "weekly" ? "每週" : "每月"}）`,
+                },
+              },
+            }}
+          />
+        </div>
+      </div>
       <CompletedTodos filteredAnalytics={filteredAnalytics} />
     </div>
   );

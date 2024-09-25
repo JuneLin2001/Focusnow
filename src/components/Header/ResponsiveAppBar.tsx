@@ -43,7 +43,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
     <div className="fixed w-full bg-gray-200 z-50">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <HomeIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <HomeIcon sx={{ display: { xs: "none", md: "flex" }, mr: 4 }} />
 
           {/* 手機版漢堡選單 */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -117,7 +117,13 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
                     setTargetPosition([5, 60, 10]);
                   }
                 }}
-                sx={{ my: 2, color: "black", display: "block" }}
+                sx={{
+                  my: 2,
+                  color: "black",
+                  display: "block",
+                  textTransform: "capitalize",
+                  fontSize: 16,
+                }}
               >
                 {page}
               </Button>

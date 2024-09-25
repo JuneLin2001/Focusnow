@@ -1,6 +1,6 @@
 import { useState, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Stats, ContactShadows, Environment } from "@react-three/drei";
+import { ContactShadows, Environment } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
 import Mainland from "../../models/Mainland";
@@ -29,14 +29,12 @@ const LandingPage = () => {
       {page === null ? (
         <div className="fixed z-10"></div>
       ) : (
-        <div className="fixed z-10 bg-gray-100 opacity-80">
+        <div className="fixed z-10 bg-gray-100 opacity-80 w-full h-full">
           {page === "timer" && <TimerPage />}
           {page === "analytics" && <AnalyticsPage />}
         </div>
       )}
       <Canvas>
-        <Stats className="mt-20 ml-96" />
-
         <Suspense fallback={null}>
           <Environment preset="warehouse" />
         </Suspense>

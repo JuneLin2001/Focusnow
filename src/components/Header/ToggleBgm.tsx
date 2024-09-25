@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
-import HeadsetIcon from "@mui/icons-material/Headset";
-import HeadsetOffIcon from "@mui/icons-material/HeadsetOff";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import IconButton from "@mui/material/IconButton";
 
 const ToggleBgm = () => {
@@ -18,8 +18,8 @@ const ToggleBgm = () => {
 
   return (
     <>
-      <IconButton onClick={toggleBgm} color="inherit">
-        {isPlaying ? <HeadsetOffIcon /> : <HeadsetIcon />}
+      <IconButton onClick={toggleBgm} color="inherit" sx={{ mr: 1 }}>
+        {isPlaying ? <VolumeOffIcon /> : <VolumeUpIcon />}
       </IconButton>
       <audio ref={audioRef} loop>
         <source

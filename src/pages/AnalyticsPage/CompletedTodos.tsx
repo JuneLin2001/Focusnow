@@ -1,5 +1,7 @@
 import React from "react";
-import { UserAnalytics } from "../../types/type"; // 確保這裡的路徑正確
+import { UserAnalytics } from "../../types/type";
+import { List, ListItem, ListItemText, Typography } from "@mui/material";
+import dayjs from "dayjs"; // 確保引入 Day.js
 
 interface CompletedTodosProps {
   filteredAnalytics: UserAnalytics[];
@@ -10,26 +12,51 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
 }) => {
   return (
     <>
-      <h3>Completed Todos:</h3>
-      <ul>
-        {filteredAnalytics.length > 0 ? (
-          filteredAnalytics.map((analytics, index) => (
-            <li key={index}>
-              <ul>
-                {analytics.todos.length > 0 ? (
-                  analytics.todos.map((todo) => (
-                    <li key={todo.id}>{todo.title}</li>
-                  ))
-                ) : (
-                  <li></li>
-                )}
-              </ul>
-            </li>
-          ))
-        ) : (
-          <p>找不到資料：（</p>
-        )}
-      </ul>
+      <List>
+        {filteredAnalytics.length > 0 &&
+          filteredAnalytics.map((analytics, index) => {
+            if (analytics.todos.length > 0) {
+              return (
+                <ListItem
+                  key={index}
+                  sx={{
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
+                    marginBottom: "8px",
+                  }}
+                >
+                  <ListItemText>
+                    <List>
+                      {analytics.todos.map((todo) => (
+                        <ListItem key={todo.id} sx={{ padding: "4px 16px" }}>
+                          <ListItemText
+                            primary={todo.title}
+                            secondary={
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
+                                {`完成時間：
+                                ${
+                                  todo.doneTime
+                                    ? dayjs(todo.doneTime.toDate()).format(
+                                        "MM-DD HH:mm"
+                                      )
+                                    : "error"
+                                }`}
+                              </Typography>
+                            }
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </ListItemText>
+                </ListItem>
+              );
+            }
+            return null;
+          })}
+      </List>
     </>
   );
 };
