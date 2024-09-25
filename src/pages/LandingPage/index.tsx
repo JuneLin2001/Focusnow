@@ -1,4 +1,4 @@
-import { useState, Suspense } from "react";
+import { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { ContactShadows, Environment } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
@@ -35,9 +35,7 @@ const LandingPage = () => {
         </div>
       )}
       <Canvas>
-        <Suspense fallback={null}>
-          <Environment preset="warehouse" />
-        </Suspense>
+        <Environment preset="warehouse" />
         <GamePage />
         <Mainland position={[-16, 2, 0]} />
         <Igloo
