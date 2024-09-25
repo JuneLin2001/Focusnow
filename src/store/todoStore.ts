@@ -17,37 +17,51 @@ interface TodoState {
   toggleComplete: (id: string) => void;
 }
 
+const loadTodosFromLocalStorage = () => {
+  const storedTodos = localStorage.getItem("todos");
+  return storedTodos ? JSON.parse(storedTodos) : [];
+};
+
+const saveTodosToLocalStorage = (todos: Todo[]) => {
+  localStorage.setItem("todos", JSON.stringify(todos));
+};
+
 export const useTodoStore = create<TodoState>((set) => ({
-  todos: [],
+  todos: loadTodosFromLocalStorage(),
   addTodo: (title) => {
-    set((state) => ({
-      todos: [
-        ...state.todos,
-        {
-          id: Date.now().toString(),
-          title,
-          completed: false,
-          startTime: Timestamp.now(),
-          doneTime: null,
-        },
-      ],
-    }));
+    const newTodo = {
+      id: Date.now().toString(),
+      title,
+      completed: false,
+      startTime: Timestamp.now(),
+      doneTime: null,
+    };
+
+    set((state) => {
+      const updatedTodos = [...state.todos, newTodo];
+      saveTodosToLocalStorage(updatedTodos);
+      return { todos: updatedTodos };
+    });
   },
   removeTodo: (id) => {
-    set((state) => ({
-      todos: state.todos.filter((todo) => todo.id !== id),
-    }));
+    set((state) => {
+      const updatedTodos = state.todos.filter((todo) => todo.id !== id);
+      saveTodosToLocalStorage(updatedTodos);
+      return { todos: updatedTodos };
+    });
   },
   editTodoTitle: (id, newTitle) => {
-    set((state) => ({
-      todos: state.todos.map((todo) =>
+    set((state) => {
+      const updatedTodos = state.todos.map((todo) =>
         todo.id === id ? { ...todo, title: newTitle } : todo
-      ),
-    }));
+      );
+      saveTodosToLocalStorage(updatedTodos); // 更新 Local Storage
+      return { todos: updatedTodos };
+    });
   },
   toggleComplete: (id) => {
-    set((state) => ({
-      todos: state.todos.map((todo) =>
+    set((state) => {
+      const updatedTodos = state.todos.map((todo) =>
         todo.id === id
           ? {
               ...todo,
@@ -55,7 +69,9 @@ export const useTodoStore = create<TodoState>((set) => ({
               doneTime: !todo.completed ? Timestamp.now() : null,
             }
           : todo
-      ),
-    }));
+      );
+      saveTodosToLocalStorage(updatedTodos); // 更新 Local Storage
+      return { todos: updatedTodos };
+    });
   },
 }));
