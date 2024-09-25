@@ -212,7 +212,10 @@ const AnalyticsPage = () => {
           />
         </div>
       </div>
-      <CompletedTodos filteredAnalytics={filteredAnalytics} />
+      <div>
+        <p>CompletedTodos：</p>
+        <CompletedTodos filteredAnalytics={filteredAnalytics} />
+      </div>
     </div>
   );
 };
