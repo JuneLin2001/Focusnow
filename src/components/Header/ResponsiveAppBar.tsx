@@ -8,7 +8,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import HomeIcon from "@mui/icons-material/Home";
 import LoginButton from "../LoginButton";
 import ToggleBgm from "./ToggleBgm";
 
@@ -43,7 +43,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
     <div className="fixed w-full bg-gray-200 z-50">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <HomeIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
 
           {/* 手機版漢堡選單 */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -98,7 +98,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
             </Menu>
           </Box>
 
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <HomeIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
 
           {/* 桌面版按鈕 */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>

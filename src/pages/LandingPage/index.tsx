@@ -19,14 +19,6 @@ const LandingPage = () => {
   >([0, 30, 0]);
   const [page, setPage] = useState<"timer" | "analytics" | "game" | null>(null);
 
-  const setPageWithDelay: (
-    newPage: "timer" | "analytics" | "game" | null
-  ) => void = (newPage) => {
-    setTimeout(() => {
-      setPage(newPage);
-    }, 2000);
-  };
-
   return (
     <>
       <ResponsiveAppBar
@@ -54,7 +46,7 @@ const LandingPage = () => {
           position={[-114, 2, -16]}
           onClick={() => {
             setTargetPosition([52, 35, 0]);
-            setPageWithDelay("timer");
+            setPage("timer");
           }}
         />
         <FloatingIce position={[0, 2, -30]} />
