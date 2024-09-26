@@ -48,6 +48,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
           <HomeIcon
             sx={{ display: { xs: "none", md: "flex" }, mr: 4 }}
             onClick={() => {
+              console.log("HomeIcon clicked");
               setTargetPosition([-50, 12, -150]);
               setLookAtPosition([0, 0, 0]);
             }}

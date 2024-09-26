@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -24,10 +24,6 @@ const MovingModel: React.FC<MovingModelProps> = ({
 }) => {
   const { scene } = useGLTF("BBpenguinCenter.glb");
   const modelRef = useRef<THREE.Group>(null!);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const { camera } = useThree(); // 獲取相機
-  const [isFollowing, setIsFollowing] = useState(false); // 跟隨狀態
-
   const targetPosition = useRef<THREE.Vector3>(
     new THREE.Vector3(
       Math.random() * (maxX - minX) + minX,
@@ -36,14 +32,8 @@ const MovingModel: React.FC<MovingModelProps> = ({
     )
   );
 
-  useEffect(() => {
-    if (scene) {
-      setIsLoaded(true);
-    }
-  }, [scene]);
-
   useFrame(() => {
-    if (modelRef.current && isLoaded) {
+    if (modelRef.current) {
       const currentPosition = modelRef.current.position;
       const direction = targetPosition.current.clone().sub(currentPosition);
       const distance = direction.length();
@@ -71,34 +61,12 @@ const MovingModel: React.FC<MovingModelProps> = ({
           Math.random() * (maxZ - minZ) + minZ
         );
       }
-
-      // 上下搖擺
-      modelRef.current.position.y =
-        position[1] + Math.sin(Date.now() * 0.001 * speed) * 0.1;
-
-      // 跟隨鏡頭
-      if (isFollowing) {
-        camera.position.lerp(
-          new THREE.Vector3(
-            currentPosition.x,
-            currentPosition.y + 10,
-            currentPosition.z + 3
-          ),
-          0.1
-        );
-        camera.lookAt(currentPosition);
-      }
     }
   });
 
   const handleClick = () => {
     console.log(`number ${id} Model clicked!`);
-    setIsFollowing((prev) => !prev); // 切換跟隨狀態
   };
-
-  if (!isLoaded) {
-    return null;
-  }
 
   return (
     <primitive

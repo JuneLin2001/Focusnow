@@ -1,5 +1,8 @@
 import MovingModel from "./MovingModel";
 import { useLast30DaysFocusDurationStore } from "../../store/last30DaysFocusDurationStore";
+import Sign from "./Sign";
+import { useState } from "react";
+import SignInstructions from "./SignInstructions"; // 引入新組件
 
 const GamePage = () => {
   const position: [number, number, number] = [80, 6, 0];
@@ -28,18 +31,31 @@ const GamePage = () => {
     ]
   );
 
+  const [showInstructions, setShowInstructions] = useState(false);
+
+  const handleCloseInstructions = () => {
+    setShowInstructions(false);
+  };
+
   return (
     <group>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={position}>
         <boxGeometry args={[width, depth, 5]} />
-        {<meshStandardMaterial transparent wireframe />}
+        <meshStandardMaterial transparent wireframe />
       </mesh>
 
-      {randomPositions.map((randomPositions, index: number) => (
+      <Sign
+        position={position}
+        onClick={() => {
+          setShowInstructions(true);
+        }}
+      />
+
+      {randomPositions.map((randomPosition, index: number) => (
         <MovingModel
           key={index}
           id={index}
-          position={randomPositions}
+          position={randomPosition}
           minX={minX}
           maxX={maxX}
           minZ={minZ}
@@ -47,6 +63,12 @@ const GamePage = () => {
           speed={speed}
         />
       ))}
+
+      <SignInstructions
+        showInstructions={showInstructions}
+        last30DaysFocusDuration={last30DaysFocusDuration}
+        onClose={handleCloseInstructions}
+      />
     </group>
   );
 };

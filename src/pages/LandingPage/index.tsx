@@ -21,7 +21,7 @@ const LandingPage = () => {
   >([0, 30, 0]); // 相機目標位置
   const [lookAtPosition, setLookAtPosition] = useState<
     [number, number, number]
-  >([0, 0, 0]); // 相機朝向目標
+  >([0, 30, 0]); // 相機朝向目標
   const [page, setPage] = useState<"timer" | "analytics" | "game" | null>(null);
 
   const { analyticsList } = useAnalyticsStore();
@@ -57,8 +57,8 @@ const LandingPage = () => {
         <Igloo
           position={[-114, 2, -16]}
           onClick={() => {
-            setTargetPosition([-40, 12, -50]); // 設定相機移動到某個位置
-            setLookAtPosition([-4, 2, -16]); // 相機朝向 Igloo 的位置
+            setTargetPosition([-40, 12, -50]);
+            setLookAtPosition([-4, 2, -16]);
             setPage("timer");
           }}
         />
@@ -67,8 +67,7 @@ const LandingPage = () => {
         <CameraController
           targetPosition={targetPosition}
           lookAtPosition={lookAtPosition}
-        />{" "}
-        {/* 傳遞 lookAtPosition */}
+        />
         <OceanModel position={[0, 0, 0]} />
       </Canvas>
 
