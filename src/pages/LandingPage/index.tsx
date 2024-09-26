@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { ContactShadows, Environment } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
@@ -13,11 +13,27 @@ import OceanModel from "../../models/OceanModel";
 import CameraController from "./CameraController";
 import ResponsiveAppBar from "../../components/Header/ResponsiveAppBar";
 
+// 引入 zustand store
+import { useAnalyticsStore } from "../../store/analyticsStore"; // 假設儲存路徑
+import { useLast30DaysFocusDurationStore } from "../../store/Last30DaysFocusDurationStore"; // 假設儲存路徑
+
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
     [number, number, number]
   >([0, 30, 0]);
   const [page, setPage] = useState<"timer" | "analytics" | "game" | null>(null);
+
+  // 從 store 中取得 analyticsList 和 last 30 天的專注時長
+  const { analyticsList } = useAnalyticsStore();
+  const { last30DaysFocusDuration, setLast30DaysFocusDuration } =
+    useLast30DaysFocusDurationStore();
+
+  // 當 LandingPage 載入或 analyticsList 改變時，更新 last 30 天的專注時長
+  useEffect(() => {
+    if (analyticsList.length > 0) {
+      setLast30DaysFocusDuration(analyticsList); // 設置過去30天的專注時間
+    }
+  }, [analyticsList, setLast30DaysFocusDuration]); // 每當 analyticsList 改變時觸發
 
   return (
     <>
@@ -57,6 +73,11 @@ const LandingPage = () => {
         <CameraController targetPosition={targetPosition} />
         <OceanModel position={[0, 0, 0]} />
       </Canvas>
+
+      {/* 在這裡顯示 last30DaysFocusDuration */}
+      <div className="fixed bottom-0 right-0 p-4 bg-white opacity-80 z-10">
+        <h3>Last 30 Days Focus Duration: {last30DaysFocusDuration} minutes</h3>
+      </div>
     </>
   );
 };

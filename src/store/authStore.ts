@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { User, signOut } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
+import { useLast30DaysFocusDurationStore } from "../store/Last30DaysFocusDurationStore"; // 假設這是你存放 Last30DaysFocusDuration 的 store
 
 interface AuthState {
   user: User | null;
@@ -14,24 +15,35 @@ const useAuthStore = create<AuthState>((set) => ({
   setUser: async (user) => {
     set({ user });
 
+    // 如果是登入的話，則更新 Firestore 並觸發 Last 30 Days Focus Duration 的更新
     if (user) {
+      const { uid, displayName, email, photoURL } = user;
+
       try {
-        const { uid, displayName, email, photoURL } = user;
         const userRef = doc(collection(db, "users"), uid);
         await setDoc(userRef, {
           displayName,
           email,
           photoURL,
         });
+
+        // 更新 Last 30 Days Focus Duration
+        const { setLast30DaysFocusDuration } =
+          useLast30DaysFocusDurationStore.getState();
+        setLast30DaysFocusDuration(); // 根據當前用戶的數據計算 Last 30 Days Focus Duration
       } catch (error) {
         console.error("Error saving user to Firestore", error);
       }
     }
   },
   logout: async () => {
+    const { setLast30DaysFocusDuration } =
+      useLast30DaysFocusDurationStore.getState(); // 獲取 store 方法
+
     try {
       await signOut(auth);
       set({ user: null });
+      setLast30DaysFocusDuration([]); // 登出時清空 Last 30 Days Focus Duration
     } catch (error) {
       console.error("Logout error", error);
     }

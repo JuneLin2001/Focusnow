@@ -1,10 +1,10 @@
 import MovingModel from "./MovingModel";
-import { useAnalyticsStore } from "../../store/analyticsStore";
+import { useLast30DaysFocusDurationStore } from "../../store/Last30DaysFocusDurationStore";
 
 const GamePage = () => {
   const position: [number, number, number] = [80, 5, 0];
 
-  const last30DaysFocusDuration = useAnalyticsStore(
+  const last30DaysFocusDuration = useLast30DaysFocusDurationStore(
     (state) => state.last30DaysFocusDuration
   );
 

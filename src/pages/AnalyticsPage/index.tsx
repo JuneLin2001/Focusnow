@@ -24,12 +24,8 @@ Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const AnalyticsPage = () => {
   const { user } = useAuthStore();
-  const {
-    filteredAnalytics,
-    setAnalyticsList,
-    setFilteredAnalytics,
-    setLast30DaysFocusDuration,
-  } = useAnalyticsStore();
+  const { filteredAnalytics, setAnalyticsList, setFilteredAnalytics } =
+    useAnalyticsStore();
 
   const [filterType, setFilterType] = useState<"daily" | "weekly" | "monthly">(
     "daily"
@@ -123,7 +119,6 @@ const AnalyticsPage = () => {
             );
 
             setAnalyticsList(sortedAnalytics);
-            setLast30DaysFocusDuration();
 
             const { start, end } = calculateDateRange();
             const filteredData = sortedAnalytics.filter((analytics) => {
@@ -170,7 +165,6 @@ const AnalyticsPage = () => {
     calculateDateRange,
     setAnalyticsList,
     setFilteredAnalytics,
-    setLast30DaysFocusDuration,
     mergeData,
   ]);
 
