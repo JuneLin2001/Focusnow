@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { Timestamp } from "firebase/firestore";
-import { saveTaskData } from "../firebase/firebaseService"; // 確保導入正確
-import useAuthStore from "./authStore"; // 確保這是正確的路徑
-import { useTodoStore } from "./todoStore"; // 確保這是正確的路徑
-import { sendBrowserNotification } from "../utils/NotificationService"; // 確保導入正確
+import { saveTaskData } from "../firebase/firebaseService";
+import useAuthStore from "./authStore";
+import { useTodoStore } from "./todoStore";
+import { sendBrowserNotification } from "../utils/NotificationService";
 
 interface TimerState {
   secondsLeft: number;
@@ -127,20 +127,22 @@ export const useTimerStore = create<TimerState>((set, get) => {
         todos: formattedTodos,
       };
 
-      if (user && mode === "break") {
-        saveTaskData(user, taskData)
-          .then(() => {
-            console.log("Task data saved successfully");
-            todos
-              .filter((todo) => todo.completed)
-              .forEach((todo) => {
-                removeTodo(todo.id);
-              });
-            localStorage.removeItem("taskData");
-          })
-          .catch((error) => {
-            console.error("Error saving task data: ", error);
-          });
+      if (user) {
+        if (mode === "break") {
+          saveTaskData(user, taskData)
+            .then(() => {
+              console.log("Task data saved successfully");
+              todos
+                .filter((todo) => todo.completed)
+                .forEach((todo) => {
+                  removeTodo(todo.id);
+                });
+              localStorage.removeItem("taskData");
+            })
+            .catch((error) => {
+              console.error("Error saving task data: ", error);
+            });
+        }
       } else {
         console.log("User is not logged in");
         localStorage.setItem("taskData", JSON.stringify(taskData));

@@ -18,10 +18,10 @@ import TimerDisplay from "../TimerPage/TimerDisplay";
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
     [number, number, number]
-  >([0, 30, 0]); // 相機目標位置
+  >([-50, 12, -150]);
   const [lookAtPosition, setLookAtPosition] = useState<
     [number, number, number]
-  >([0, 30, 0]); // 相機朝向目標
+  >([0, 0, 0]);
   const [page, setPage] = useState<"timer" | "analytics" | "game" | null>(null);
 
   const { analyticsList } = useAnalyticsStore();
