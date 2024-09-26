@@ -1,11 +1,11 @@
+import { useState, useMemo } from "react";
 import MovingModel from "./MovingModel";
 import { useLast30DaysFocusDurationStore } from "../../store/last30DaysFocusDurationStore";
 import Sign from "./Sign";
-import { useState } from "react";
-import SignInstructions from "./SignInstructions"; // 引入新組件
+import SignInstructions from "./SignInstructions";
 
 const GamePage = () => {
-  const position: [number, number, number] = [80, 6, 0];
+  const position: [number, number, number] = useMemo(() => [80, 6, 0], []);
 
   const last30DaysFocusDuration = useLast30DaysFocusDurationStore(
     (state) => state.last30DaysFocusDuration
@@ -20,16 +20,15 @@ const GamePage = () => {
   const minZ = position[2] - depth / 2;
   const maxZ = position[2] + depth / 2;
 
+  // 使用 useMemo 計算 randomPositions
   const numModels = Math.floor(last30DaysFocusDuration / 30);
-
-  const randomPositions: [number, number, number][] = Array.from(
-    { length: numModels },
-    () => [
+  const randomPositions: [number, number, number][] = useMemo(() => {
+    return Array.from({ length: numModels }, () => [
       Math.random() * (maxX - minX) + minX,
       position[1],
       Math.random() * (maxZ - minZ) + minZ,
-    ]
-  );
+    ]);
+  }, [numModels, minX, maxX, minZ, maxZ, position]);
 
   const [showInstructions, setShowInstructions] = useState(false);
 

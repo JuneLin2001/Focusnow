@@ -20,7 +20,7 @@ interface ResponsiveAppBarProps {
 }
 
 const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
-  pages, // 從 props 中解構 pages
+  pages,
   setPage,
   setTargetPosition,
   setLookAtPosition,
@@ -48,7 +48,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
           <HomeIcon
             sx={{ display: { xs: "none", md: "flex" }, mr: 4 }}
             onClick={() => {
-              console.log("HomeIcon clicked");
+              setPage(null);
               setTargetPosition([-50, 12, -150]);
               setLookAtPosition([0, 0, 0]);
             }}
