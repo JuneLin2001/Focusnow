@@ -3,11 +3,11 @@
 import { Timestamp } from "firebase/firestore";
 
 export interface Todos {
-  completed: boolean;
-  doneTime: Timestamp;
   id: string;
-  startTime: Timestamp;
   title: string;
+  completed: boolean;
+  startTime: Timestamp;
+  doneTime: Timestamp | null;
 }
 
 export interface UserAnalytics {
@@ -22,4 +22,12 @@ export interface ModelProps {
   position: [number, number, number];
   children?: React.ReactNode;
   onClick?: () => void;
+}
+
+export interface TaskData {
+  endTime: Timestamp;
+  focusDuration: number;
+  pomodoroCompleted: boolean;
+  startTime: Timestamp;
+  todos: Todos[];
 }

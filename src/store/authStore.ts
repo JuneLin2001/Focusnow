@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { User, signOut } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
-import { useLast30DaysFocusDurationStore } from "../store/Last30DaysFocusDurationStore";
+import { useLast30DaysFocusDurationStore } from "../store/last30DaysFocusDurationStore";
 import { useAnalyticsStore } from "../store/analyticsStore";
 
 interface AuthState {

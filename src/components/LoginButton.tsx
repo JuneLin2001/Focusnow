@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import useAuthStore from "../store/authStore";
+import { saveTaskData } from "../firebase/firebaseService"; // 確保導入正確
 import {
   IconButton,
   Avatar,
@@ -25,6 +26,46 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       setUser(user);
+
+      // 獲取並儲存 localStorage 中的任務數據
+      const taskDataString = localStorage.getItem("taskData");
+      if (taskDataString) {
+        const taskData = JSON.parse(taskDataString);
+
+        // 確保從 localStorage 獲取的 taskData 是符合格式的
+        const taskDataToSave = {
+          ...taskData,
+          startTime: {
+            seconds: taskData.startTime.seconds,
+            nanoseconds: 0, // 或者設置為您想要的值
+          },
+          endTime: {
+            seconds: taskData.endTime.seconds,
+            nanoseconds: 0, // 或者設置為您想要的值
+          },
+          todos: taskData.todos.map(
+            (todo: {
+              startTime: { seconds: number };
+              doneTime: { seconds: number };
+            }) => ({
+              ...todo,
+              startTime: {
+                seconds: todo.startTime.seconds,
+                nanoseconds: 0, // 或者設置為您想要的值
+              },
+              doneTime: todo.doneTime
+                ? {
+                    seconds: todo.doneTime.seconds,
+                    nanoseconds: 0, // 或者設置為您想要的值
+                  }
+                : null,
+            })
+          ),
+        };
+
+        await saveTaskData(user, taskDataToSave); // 儲存任務數據到 Firestore
+      }
+
       onLoginSuccess();
     } catch (error) {
       console.error("Login error", error);
