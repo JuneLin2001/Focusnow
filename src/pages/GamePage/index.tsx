@@ -1,5 +1,5 @@
 import MovingModel from "./MovingModel";
-import { useLast30DaysFocusDurationStore } from "../../store/Last30DaysFocusDurationStore";
+import { useLast30DaysFocusDurationStore } from "../../store/last30DaysFocusDurationStore";
 
 const GamePage = () => {
   const position: [number, number, number] = [80, 5, 0];

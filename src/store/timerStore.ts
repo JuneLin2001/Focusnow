@@ -102,8 +102,8 @@ export const useTimerStore = create<TimerState>((set, get) => {
       }
 
       sendBrowserNotification(
-        mode === "work" ? "工作時間結束！" : "休息時間結束！",
-        mode === "work" ? "切換到休息模式！" : "切換到工作模式"
+        mode === "break" ? "工作時間結束！" : "休息時間結束！",
+        mode === "break" ? "切換到休息模式！" : "切換到工作模式"
       );
 
       const { user } = useAuthStore.getState();
@@ -127,7 +127,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
         todos: formattedTodos,
       };
 
-      if (user && mode === "work") {
+      if (user && mode === "break") {
         saveTaskData(user, taskData)
           .then(() => {
             console.log("Task data saved successfully");

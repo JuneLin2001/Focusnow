@@ -4,7 +4,6 @@ import { ContactShadows, Environment } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
 import Mainland from "../../models/Mainland";
-// import Header from "../../components/Header/index";
 import GamePage from "../GamePage/index";
 import Igloo from "../../models/Igloo";
 import FloatingIce from "../../models/floatingIce";
@@ -70,9 +69,7 @@ const LandingPage = () => {
         <OceanModel position={[0, 0, 0]} />
       </Canvas>
 
-      <div className="fixed bottom-0 right-0 p-4 bg-white opacity-80 z-10">
-        <TimerDisplay />
-      </div>
+      <TimerDisplay />
     </>
   );
 };
