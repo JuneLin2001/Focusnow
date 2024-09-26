@@ -29,7 +29,6 @@ const Timer = () => {
     startTime,
     startTimer,
     resetTimer,
-    tick,
     setTimer,
     addFiveMinutes,
     minusFiveMinutes,
@@ -54,7 +53,6 @@ const Timer = () => {
 
     if (!isPaused && secondsLeft - 1 >= 0) {
       interval = window.setInterval(() => {
-        tick();
         console.log(secondsLeft - 1);
 
         if (secondsLeft - 1 === 0) {
@@ -118,7 +116,6 @@ const Timer = () => {
       clearInterval(interval);
     };
   }, [
-    tick,
     isPaused,
     secondsLeft,
     mode,
