@@ -1,5 +1,5 @@
-import create from "zustand";
-import { UserAnalytics } from "../types/type"; // 假設這是你的型別定義
+import { create } from "zustand";
+import { UserAnalytics } from "../types/type";
 
 interface Last30DaysFocusDurationState {
   last30DaysFocusDuration: number;
@@ -11,7 +11,7 @@ export const useLast30DaysFocusDurationStore =
     last30DaysFocusDuration: 0,
     setLast30DaysFocusDuration: (analyticsList = []) => {
       if (analyticsList.length === 0) {
-        set({ last30DaysFocusDuration: 0 }); // 如果沒有資料，則設為 0
+        set({ last30DaysFocusDuration: 0 });
         return;
       }
 
@@ -27,6 +27,7 @@ export const useLast30DaysFocusDurationStore =
         (acc, analytics) => acc + analytics.focusDuration,
         0
       );
+
       set({ last30DaysFocusDuration: totalDuration });
     },
   }));
