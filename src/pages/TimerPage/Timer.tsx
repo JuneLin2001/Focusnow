@@ -64,8 +64,8 @@ const Timer = () => {
   };
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
-      <div>
+    <div className="w-screen h-screen flex justify-center items-center ">
+      <div className="z-30 opacity-100">
         <CircularProgressbarWithChildren
           value={
             mode === "work"

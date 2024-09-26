@@ -16,12 +16,14 @@ interface ResponsiveAppBarProps {
   pages: string[]; // 新增 pages 屬性
   setPage: (newPage: "timer" | "analytics" | "game" | null) => void; // 原始 setPage
   setTargetPosition: (position: [number, number, number]) => void;
+  setLookAtPosition: (position: [number, number, number]) => void;
 }
 
 const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
   pages, // 從 props 中解構 pages
   setPage,
   setTargetPosition,
+  setLookAtPosition,
 }) => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -43,7 +45,13 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
     <div className="fixed w-full bg-gray-200 z-50">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <HomeIcon sx={{ display: { xs: "none", md: "flex" }, mr: 4 }} />
+          <HomeIcon
+            sx={{ display: { xs: "none", md: "flex" }, mr: 4 }}
+            onClick={() => {
+              setTargetPosition([-50, 12, -150]);
+              setLookAtPosition([0, 0, 0]);
+            }}
+          />
 
           {/* 手機版漢堡選單 */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -79,7 +87,8 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
                   onClick={() => {
                     handleCloseNavMenu(); // 關閉選單
                     if (page === "Timer") {
-                      setTargetPosition([32, 20, -50]);
+                      setTargetPosition([-50, 12, -150]);
+                      setLookAtPosition([0, 0, 0]);
                       setPage("timer");
                     } else if (page === "Analytics") {
                       setTargetPosition([-75, 25, 100]);
@@ -107,7 +116,8 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
                 key={page}
                 onClick={() => {
                   if (page === "Timer") {
-                    setTargetPosition([32, 20, -50]);
+                    setTargetPosition([-50, 12, -150]);
+                    setLookAtPosition([0, 0, 0]);
                     setPage("timer");
                   } else if (page === "Analytics") {
                     setTargetPosition([-75, 25, 100]);

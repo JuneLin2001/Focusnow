@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { ContactShadows, Environment } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
 import Mainland from "../../models/Mainland";
@@ -18,7 +18,10 @@ import TimerDisplay from "../TimerPage/TimerDisplay";
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
     [number, number, number]
-  >([0, 30, 0]);
+  >([0, 30, 0]); // 相機目標位置
+  const [lookAtPosition, setLookAtPosition] = useState<
+    [number, number, number]
+  >([0, 0, 0]); // 相機朝向目標
   const [page, setPage] = useState<"timer" | "analytics" | "game" | null>(null);
 
   const { analyticsList } = useAnalyticsStore();
@@ -36,11 +39,13 @@ const LandingPage = () => {
         pages={["Timer", "Game", "Analytics"]}
         setPage={setPage}
         setTargetPosition={setTargetPosition}
+        setLookAtPosition={setLookAtPosition}
       />
       {page === null ? (
         <div className="fixed z-10"></div>
       ) : (
-        <div className="fixed z-10 bg-gray-100 opacity-80 w-full h-full">
+        <div className="fixed z-10 w-full h-full">
+          {/* //TODO:頁面的透明度  */}
           {page === "timer" && <TimerPage />}
           {page === "analytics" && <AnalyticsPage />}
         </div>
@@ -52,20 +57,18 @@ const LandingPage = () => {
         <Igloo
           position={[-114, 2, -16]}
           onClick={() => {
-            setTargetPosition([52, 35, 0]);
+            setTargetPosition([-40, 12, -50]); // 設定相機移動到某個位置
+            setLookAtPosition([-4, 2, -16]); // 相機朝向 Igloo 的位置
             setPage("timer");
           }}
         />
         <FloatingIce position={[0, 2, -30]} />
         <Analytics position={[0, 2, 0]} />
-        <ContactShadows
-          position={[0, -1.5, 0]}
-          scale={10}
-          blur={3}
-          opacity={0.25}
-          far={10}
-        />
-        <CameraController targetPosition={targetPosition} />
+        <CameraController
+          targetPosition={targetPosition}
+          lookAtPosition={lookAtPosition}
+        />{" "}
+        {/* 傳遞 lookAtPosition */}
         <OceanModel position={[0, 0, 0]} />
       </Canvas>
 

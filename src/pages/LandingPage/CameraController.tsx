@@ -1,4 +1,3 @@
-// CameraController.tsx
 import { useEffect, useRef } from "react";
 import { useThree } from "@react-three/fiber";
 import gsap from "gsap";
@@ -6,12 +5,14 @@ import { OrbitControls } from "@react-three/drei";
 
 interface CameraControllerProps {
   targetPosition: [number, number, number];
+  lookAtPosition?: [number, number, number]; // 新增的 lookAtPosition 參數
   initialPosition?: [number, number, number]; // 可選的初始位置
 }
 
 const CameraController: React.FC<CameraControllerProps> = ({
   targetPosition,
-  initialPosition = [-500, 60, 50], // 預設初始位置
+  lookAtPosition = targetPosition,
+  initialPosition = [-500, 60, 50],
 }) => {
   const { camera } = useThree();
   const currentPosition = useRef<[number, number, number]>(initialPosition);
@@ -19,28 +20,28 @@ const CameraController: React.FC<CameraControllerProps> = ({
 
   useEffect(() => {
     if (isFirstRender.current) {
-      // 設定相機初始位置
       camera.position.set(...initialPosition);
-      currentPosition.current = initialPosition; // 設定當前位置為初始位置
+      currentPosition.current = initialPosition;
       isFirstRender.current = false;
 
-      // 使用 gsap 平滑移動相機到目標位置
       gsap.to(camera.position, {
-        x: -200, // 移動到最終位置
+        x: -200,
         y: 60,
         z: 50,
         duration: 2,
         ease: "power2.out",
         onUpdate: () => {
-          camera.lookAt(
-            targetPosition[0],
-            targetPosition[1],
-            targetPosition[2]
-          );
+          camera.lookAt(-200, 60, 50);
+          console.log(lookAtPosition);
         },
         onComplete: () => {
           // 當移動完成後，更新 currentPosition
           currentPosition.current = [-200, 60, 50];
+          camera.lookAt(
+            lookAtPosition[0],
+            lookAtPosition[1],
+            lookAtPosition[2]
+          );
         },
       });
     } else {
@@ -50,6 +51,13 @@ const CameraController: React.FC<CameraControllerProps> = ({
         z: targetPosition[2] + 4,
         duration: 2,
         ease: "power2.out",
+        onUpdate: () => {
+          camera.lookAt(
+            lookAtPosition[0], // 相機看向 lookAtPosition
+            lookAtPosition[1],
+            lookAtPosition[2]
+          );
+        },
         onComplete: () => {
           // 更新 currentPosition
           currentPosition.current = [
@@ -57,12 +65,17 @@ const CameraController: React.FC<CameraControllerProps> = ({
             targetPosition[1] + 2,
             targetPosition[2] + 4,
           ];
+          camera.lookAt(
+            lookAtPosition[0],
+            lookAtPosition[1],
+            lookAtPosition[2]
+          ); // 移動結束時再確保看向 lookAtPosition
         },
       });
     }
-  }, [targetPosition, camera, initialPosition]);
+  }, [targetPosition, lookAtPosition, camera, initialPosition]);
 
-  return <OrbitControls target={targetPosition} />;
+  return <OrbitControls target={lookAtPosition} />; // OrbitControls 也要更新成看向 lookAtPosition
 };
 
 export default CameraController;

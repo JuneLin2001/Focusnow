@@ -18,7 +18,7 @@ const TimerPage = () => {
   };
 
   return (
-    <div className="z-30">
+    <div className="z-30 ">
       {showInstructions && (
         <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-40">
           <div className="bg-white p-5 rounded shadow-lg">
