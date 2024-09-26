@@ -19,12 +19,12 @@ export const useTimerStore = create<TimerState>((set) => ({
   secondsLeft: 25 * 60,
   isPaused: true,
   mode: "work",
-  inputMinutes: 25, // 預設值
-  startTime: null, // 初始為 null
+  inputMinutes: 25,
+  startTime: null,
   setTimer: (minutes) => set({ secondsLeft: minutes * 60 }),
-  setInputMinutes: (minutes) => set({ inputMinutes: minutes }), // 設置 inputMinutes
+  setInputMinutes: (minutes) => set({ inputMinutes: minutes }),
   startTimer: () => {
-    set({ isPaused: false, startTime: new Date() }); // 設置 startTime
+    set({ isPaused: false, startTime: new Date() });
     console.log("startTimer");
   },
   resetTimer: () =>
@@ -61,19 +61,19 @@ export const useTimerStore = create<TimerState>((set) => ({
 
   addFiveMinutes: () =>
     set((state) => {
-      const newMinutes = Math.min(state.inputMinutes + 5, 120); // 最大為120分鐘
+      const newMinutes = Math.min(state.inputMinutes + 5, 120);
       return {
         secondsLeft: newMinutes * 60,
-        inputMinutes: newMinutes, // 同步更新inputMinutes
+        inputMinutes: newMinutes,
       };
     }),
 
   minusFiveMinutes: () =>
     set((state) => {
-      const newMinutes = Math.max(state.inputMinutes - 5, 1); // 最小為1分鐘
+      const newMinutes = Math.max(state.inputMinutes - 5, 1);
       return {
         secondsLeft: newMinutes * 60,
-        inputMinutes: newMinutes, // 同步更新inputMinutes
+        inputMinutes: newMinutes,
       };
     }),
 }));

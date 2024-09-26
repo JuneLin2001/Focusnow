@@ -17,6 +17,8 @@ import ResponsiveAppBar from "../../components/Header/ResponsiveAppBar";
 import { useAnalyticsStore } from "../../store/analyticsStore"; // 假設儲存路徑
 import { useLast30DaysFocusDurationStore } from "../../store/Last30DaysFocusDurationStore"; // 假設儲存路徑
 
+import TimerDisplay from "../TimerPage/TimerDisplay";
+
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
     [number, number, number]
@@ -25,8 +27,7 @@ const LandingPage = () => {
 
   // 從 store 中取得 analyticsList 和 last 30 天的專注時長
   const { analyticsList } = useAnalyticsStore();
-  const { last30DaysFocusDuration, setLast30DaysFocusDuration } =
-    useLast30DaysFocusDurationStore();
+  const { setLast30DaysFocusDuration } = useLast30DaysFocusDurationStore();
 
   // 當 LandingPage 載入或 analyticsList 改變時，更新 last 30 天的專注時長
   useEffect(() => {
@@ -74,9 +75,8 @@ const LandingPage = () => {
         <OceanModel position={[0, 0, 0]} />
       </Canvas>
 
-      {/* 在這裡顯示 last30DaysFocusDuration */}
       <div className="fixed bottom-0 right-0 p-4 bg-white opacity-80 z-10">
-        <h3>Last 30 Days Focus Duration: {last30DaysFocusDuration} minutes</h3>
+        <TimerDisplay />{" "}
       </div>
     </>
   );
