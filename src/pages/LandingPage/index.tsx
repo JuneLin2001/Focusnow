@@ -15,6 +15,9 @@ import { useAnalyticsStore } from "../../store/analyticsStore";
 import { useLast30DaysFocusDurationStore } from "../../store/last30DaysFocusDurationStore";
 import TimerDisplay from "../TimerPage/TimerDisplay";
 
+import Sign from "../LandingPage/Sign";
+import SignInstructions from "../LandingPage/SignInstructions";
+
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
     [number, number, number]
@@ -22,16 +25,23 @@ const LandingPage = () => {
   const [lookAtPosition, setLookAtPosition] = useState<
     [number, number, number]
   >([0, 0, 0]);
-  const [page, setPage] = useState<"timer" | "analytics" | "game" | null>(null);
+  const [page, setPage] = useState<
+    "timer" | "analytics" | "game" | "SignInstructions" | null
+  >(null);
 
   const { analyticsList } = useAnalyticsStore();
-  const { setLast30DaysFocusDuration } = useLast30DaysFocusDurationStore();
+  const { setLast30DaysFocusDuration, last30DaysFocusDuration } =
+    useLast30DaysFocusDurationStore();
 
   useEffect(() => {
     if (analyticsList.length > 0) {
       setLast30DaysFocusDuration(analyticsList);
     }
   }, [analyticsList, setLast30DaysFocusDuration]);
+
+  const handleCloseInstructions = () => {
+    setPage(null);
+  };
 
   return (
     <>
@@ -48,6 +58,13 @@ const LandingPage = () => {
           {/* //TODO:頁面的透明度  */}
           {page === "timer" && <TimerPage />}
           {page === "analytics" && <AnalyticsPage />}
+          {page === "SignInstructions" && (
+            <SignInstructions
+              showInstructions={true}
+              last30DaysFocusDuration={last30DaysFocusDuration}
+              onClose={handleCloseInstructions}
+            />
+          )}
         </div>
       )}
       <Canvas>
@@ -65,6 +82,16 @@ const LandingPage = () => {
         />
         <FloatingIce position={[0, 2, -30]} />
         <Analytics position={[0, 2, 0]} />
+
+        <Sign
+          position={[0, 20, 0]}
+          onClick={() => {
+            setPage("SignInstructions");
+            setTargetPosition([10, 20, 10]);
+            setLookAtPosition([0, 20, 0]);
+          }}
+        />
+
         <CameraController
           targetPosition={targetPosition}
           lookAtPosition={lookAtPosition}

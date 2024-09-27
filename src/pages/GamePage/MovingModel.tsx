@@ -16,7 +16,6 @@ interface MovingModelProps {
   focusDuration: number; // 專注時間
   hasTodo: boolean; // 是否有Todo
   todoTitles: string[]; // Todo標題
-  onCloseInstructions: () => void; // 新增屬性來處理關閉指示
   onModelClick: (id: number) => void; // 新增 onModelClick 屬性
 }
 
@@ -31,7 +30,6 @@ const MovingModel: React.FC<MovingModelProps> = ({
   focusDate,
   focusDuration,
   todoTitles,
-  onCloseInstructions,
   onModelClick,
 }) => {
   const { scene } = useGLTF("BBpenguinCenter.glb"); // 載入企鵝模型
@@ -97,7 +95,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
     setIsFollowing((prev) => !prev); // 切換跟隨狀態
     setShowInstructions((prev) => !prev); // 切換顯示 ModelInstructions
     if (showInstructions) {
-      onCloseInstructions(); // 若指示已顯示，則關閉它
+      handleCloseInstructions(); // 若指示已顯示，則關閉它
     }
     onModelClick(id); // 調用 onModelClick 並傳遞 id
   };
@@ -105,7 +103,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
   const handleCloseInstructions = () => {
     setShowInstructions(false); // 關閉 ModelInstructions
     setIsFollowing(false); // 取消跟隨
-    onCloseInstructions(); // 調用傳遞的關閉函數
+    handleCloseInstructions(); // 調用傳遞的關閉函數
   };
 
   return (

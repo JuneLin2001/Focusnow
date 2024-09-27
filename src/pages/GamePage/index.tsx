@@ -1,16 +1,10 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import MovingModel from "./MovingModel";
-import Sign from "./Sign";
-import SignInstructions from "./SignInstructions";
-import { useLast30DaysFocusDurationStore } from "../../store/last30DaysFocusDurationStore";
+
 import { useAnalyticsStore } from "../../store/analyticsStore";
 
 const GamePage = () => {
   const position: [number, number, number] = useMemo(() => [80, 6, 0], []);
-
-  const last30DaysFocusDuration = useLast30DaysFocusDurationStore(
-    (state) => state.last30DaysFocusDuration
-  );
 
   const analyticsList = useAnalyticsStore((state) => state.analyticsList);
 
@@ -62,12 +56,6 @@ const GamePage = () => {
     });
   }, [filteredAnalytics, minX, maxX, minZ, maxZ, position]);
 
-  const [showInstructions, setShowInstructions] = useState(false);
-
-  const handleCloseInstructions = () => {
-    setShowInstructions(false);
-  };
-
   const handleModelClick = (id: number) => {
     console.log(`Model with id ${id} clicked`);
     // 可以添加更多的邏輯，例如取消跟隨或其他操作
@@ -79,13 +67,6 @@ const GamePage = () => {
         <boxGeometry args={[width, depth, 5]} />
         <meshStandardMaterial transparent wireframe />
       </mesh>
-
-      <Sign
-        position={[0, 20, 0]}
-        onClick={() => {
-          setShowInstructions(true);
-        }}
-      />
 
       {randomPositions.map((randomPosition, index: number) => (
         <MovingModel
@@ -101,16 +82,9 @@ const GamePage = () => {
           focusDuration={randomPosition.focusDuration} // 專注時間
           hasTodo={randomPosition.hasTodo} // 是否有 Todo
           todoTitles={randomPosition.todoTitles} // 傳遞所有 Todo 標題的陣列
-          onCloseInstructions={handleCloseInstructions}
           onModelClick={handleModelClick} // 傳遞 onModelClick
         />
       ))}
-
-      <SignInstructions
-        showInstructions={showInstructions}
-        last30DaysFocusDuration={last30DaysFocusDuration}
-        onClose={handleCloseInstructions}
-      />
     </group>
   );
 };
