@@ -1,7 +1,8 @@
-import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useState, useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
+import ModelInstructions from "./ModelInstructions"; // 引入 ModelInstructions
 
 interface MovingModelProps {
   id: number;
@@ -11,6 +12,11 @@ interface MovingModelProps {
   minZ: number;
   maxZ: number;
   speed: number;
+  focusDate: string; // 專注日期
+  hasTodo: boolean; // 是否有Todo
+  todoTitles: string[];
+  onCloseInstructions: () => void; // 新增屬性來處理關閉指示
+  onModelClick: (id: number) => void; // 新增 onModelClick 屬性
 }
 
 const MovingModel: React.FC<MovingModelProps> = ({
@@ -21,6 +27,10 @@ const MovingModel: React.FC<MovingModelProps> = ({
   minZ,
   maxZ,
   speed,
+  focusDate,
+  todoTitles,
+  onCloseInstructions,
+  onModelClick,
 }) => {
   const { scene } = useGLTF("BBpenguinCenter.glb");
   const modelRef = useRef<THREE.Group>(null!);
@@ -32,13 +42,17 @@ const MovingModel: React.FC<MovingModelProps> = ({
     )
   );
 
+  const { camera } = useThree(); // 獲取相機
+  const [isFollowing, setIsFollowing] = useState(false); // 跟隨狀態
+  const [showInstructions, setShowInstructions] = useState(false); // 控制顯示 ModelInstructions
+
   useFrame(() => {
     if (modelRef.current) {
       const currentPosition = modelRef.current.position;
       const direction = targetPosition.current.clone().sub(currentPosition);
       const distance = direction.length();
 
-      if (distance > 0.1) {
+      if (distance > 1000) {
         direction.normalize().multiplyScalar(speed * 0.1);
         currentPosition.add(direction);
 
@@ -61,22 +75,60 @@ const MovingModel: React.FC<MovingModelProps> = ({
           Math.random() * (maxZ - minZ) + minZ
         );
       }
+
+      if (isFollowing) {
+        camera.position.lerp(
+          new THREE.Vector3(
+            currentPosition.x,
+            currentPosition.y + 10,
+            currentPosition.z + 3
+          ),
+          0.1
+        );
+        camera.lookAt(currentPosition);
+      }
     }
   });
 
   const handleClick = () => {
     console.log(`number ${id} Model clicked!`);
+    setIsFollowing((prev) => !prev); // 切換跟隨狀態
+    setShowInstructions((prev) => !prev); // 切換顯示 ModelInstructions
+    if (showInstructions) {
+      onCloseInstructions(); // 若指示已顯示，則關閉它
+    }
+    onModelClick(id); // 調用 onModelClick 並傳遞 id
+  };
+
+  const handleCloseInstructions = () => {
+    setShowInstructions(false); // 關閉 ModelInstructions
+    setIsFollowing(false); // 取消跟隨
+    onCloseInstructions(); // 調用傳遞的關閉函數
   };
 
   return (
-    <primitive
-      object={scene.clone()}
-      position={position}
-      scale={[2, 2, 2]}
-      rotation={[0, Math.PI / 2, 0]}
-      ref={modelRef}
-      onClick={handleClick}
-    />
+    <>
+      <primitive
+        object={scene.clone()}
+        position={position}
+        scale={[2, 2, 2]}
+        rotation={[0, Math.PI / 2, 0]}
+        ref={modelRef}
+        onClick={handleClick}
+      />
+      {showInstructions && ( // 根據狀態顯示 ModelInstructions
+        <ModelInstructions
+          date={focusDate}
+          todoTitles={todoTitles}
+          onClose={() => handleCloseInstructions()}
+          position={[
+            modelRef.current.position.x,
+            modelRef.current.position.y + 2,
+            modelRef.current.position.z,
+          ]} // 將位置傳遞給 ModelInstructions
+        />
+      )}
+    </>
   );
 };
 
