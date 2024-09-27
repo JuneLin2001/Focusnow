@@ -11,6 +11,7 @@ import useAuthStore from "./store/authStore";
 import { auth } from "./firebase/firebaseConfig";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import Watch from "./pages/GamePage/watch";
 
 const App: React.FC = () => {
   const setUser = useAuthStore((state) => state.setUser);
@@ -39,6 +40,7 @@ const App: React.FC = () => {
         />
         <Route path="/analytics" element={<AanalyticsPage />} />
         <Route path="/timer" element={<TimerPage />} />
+        <Route path="/bounce" element={<Watch />} />
       </Routes>
     </>
   );

@@ -29,12 +29,12 @@ const MovingModel: React.FC<MovingModelProps> = ({
   maxZ,
   speed,
   focusDate,
-  focusDuration, // 接收專注時間
+  focusDuration,
   todoTitles,
   onCloseInstructions,
   onModelClick,
 }) => {
-  const { scene } = useGLTF("BBpenguinCenter.glb");
+  const { scene } = useGLTF("BBpenguinCenter.glb"); // 載入企鵝模型
   const modelRef = useRef<THREE.Group>(null!);
   const targetPosition = useRef<THREE.Vector3>(
     new THREE.Vector3(
@@ -54,7 +54,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
       const direction = targetPosition.current.clone().sub(currentPosition);
       const distance = direction.length();
 
-      if (distance > 1000) {
+      if (distance > 0.1) {
         direction.normalize().multiplyScalar(speed * 0.1);
         currentPosition.add(direction);
 
