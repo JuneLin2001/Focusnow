@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Environment } from "@react-three/drei";
+import { Environment, GizmoHelper, GizmoViewport } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
 import Mainland from "../../models/Mainland";
@@ -69,6 +69,9 @@ const LandingPage = () => {
           lookAtPosition={lookAtPosition}
         />
         <OceanModel position={[0, 0, 0]} />
+        <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
+          <GizmoViewport labelColor="white" axisHeadScale={1} />
+        </GizmoHelper>
       </Canvas>
 
       <TimerDisplay />

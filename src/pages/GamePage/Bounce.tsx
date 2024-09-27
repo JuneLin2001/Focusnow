@@ -9,7 +9,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { useLoader } from "@react-three/fiber";
 import { ModelProps } from "../../types/type"; // 確保這個路徑是正確的
 
-export default function Watch() {
+export default function Bounce() {
   return (
     <Canvas shadows camera={{ position: [0, 5, 10], fov: 25 }}>
       <ambientLight intensity={0.5} />
@@ -28,7 +28,7 @@ export default function Watch() {
         polar={[-Math.PI / 3, Math.PI / 3]}
         azimuth={[-Math.PI / 1.4, Math.PI / 2]}
       >
-        <WatchModel position={[0, 0.25, 0]} />
+        <BounceModel position={[0, 0.25, 0]} />
       </PresentationControls>
       <ContactShadows
         position={[0, -1.4, 0]}
@@ -42,7 +42,7 @@ export default function Watch() {
   );
 }
 
-const WatchModel: React.FC<ModelProps> = ({ onClick, ...props }) => {
+const BounceModel: React.FC<ModelProps> = ({ onClick, ...props }) => {
   const gltf = useLoader(GLTFLoader, "BBpenguinCenter.glb"); // 使用 GLTFLoader 加載模型
 
   return (
