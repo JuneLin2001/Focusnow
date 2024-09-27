@@ -51,6 +51,7 @@ const LandingPage = () => {
         </div>
       )}
       <Canvas>
+        {/* //TODO:黑夜模式 */}
         <Environment preset="warehouse" />
         <GamePage />
         <Mainland position={[-16, 2, 0]} />
@@ -69,6 +70,7 @@ const LandingPage = () => {
           lookAtPosition={lookAtPosition}
         />
         <OceanModel position={[0, 0, 0]} />
+
         <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
           <GizmoViewport labelColor="white" axisHeadScale={1} />
         </GizmoHelper>

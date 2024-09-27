@@ -54,7 +54,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
       const direction = targetPosition.current.clone().sub(currentPosition);
       const distance = direction.length();
 
-      if (distance > 0.1) {
+      if (distance > 1000) {
         direction.normalize().multiplyScalar(speed * 0.1);
         currentPosition.add(direction);
 
