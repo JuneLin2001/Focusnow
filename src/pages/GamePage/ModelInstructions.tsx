@@ -5,6 +5,7 @@ interface ModelInstructionsProps {
   todoTitles: string[];
   onClose: () => void;
   position: [number, number, number];
+  focusDuration: number; // 接收專注時間
 }
 
 const ModelInstructions: React.FC<ModelInstructionsProps> = ({
@@ -12,22 +13,29 @@ const ModelInstructions: React.FC<ModelInstructionsProps> = ({
   todoTitles,
   onClose,
   position,
+  focusDuration, // 接收專注時間
 }) => {
   return (
     <Html position={position}>
-      <div className="bg-white p-2 rounded shadow-lg">
-        <p className="text-sm">專注日期: {date}</p>
+      <div className="bg-white p-2 rounded shadow-lg w-96">
+        <p className="text-sm">
+          {`這隻企鵝是你在 ${date} 專注了 ${focusDuration} 分鐘，而來到這裡的`}
+        </p>
+
+        {/* 顯示專注時間 */}
         {todoTitles.length > 0 ? (
-          <ul>
-            {todoTitles.map((title, index) => (
-              <li key={index} className="text-sm">
-                - {title}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-sm">無待辦事項</p>
-        )}
+          <>
+            <br />
+            <p className="text-sm">你當時完成了</p>
+            <ul>
+              {todoTitles.map((title, index) => (
+                <li key={index} className="text-sm">
+                  - {title}
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
         <button
           onClick={onClose}
           className="mt-2 bg-blue-500 text-white p-1 rounded"

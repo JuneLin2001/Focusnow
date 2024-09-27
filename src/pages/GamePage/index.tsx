@@ -30,6 +30,7 @@ const GamePage = () => {
   const randomPositions: {
     position: [number, number, number];
     date: string;
+    focusDuration: number; // 專注時間
     hasTodo: boolean;
     todoTitles: string[];
   }[] = useMemo(() => {
@@ -40,6 +41,8 @@ const GamePage = () => {
       const focusDate = new Date(
         analytics.startTime.seconds * 1000
       ).toLocaleDateString();
+
+      const focusDuration = analytics.focusDuration;
 
       const todoTitles = Array.isArray(analytics.todos)
         ? analytics.todos
@@ -52,8 +55,9 @@ const GamePage = () => {
       return {
         position: [randomX, position[1], randomZ] as [number, number, number],
         date: focusDate,
-        hasTodo: hasTodo,
-        todoTitles: todoTitles,
+        focusDuration, // 專注時間
+        hasTodo,
+        todoTitles,
       };
     });
   }, [filteredAnalytics, minX, maxX, minZ, maxZ, position]);
@@ -66,7 +70,7 @@ const GamePage = () => {
 
   const handleModelClick = (id: number) => {
     console.log(`Model with id ${id} clicked`);
-    // 這裡可以添加更多的邏輯，例如取消跟隨或其他操作
+    // 可以添加更多的邏輯，例如取消跟隨或其他操作
   };
 
   return (
@@ -94,6 +98,7 @@ const GamePage = () => {
           maxZ={maxZ}
           speed={speed}
           focusDate={randomPosition.date} // 專注日期
+          focusDuration={randomPosition.focusDuration} // 專注時間
           hasTodo={randomPosition.hasTodo} // 是否有 Todo
           todoTitles={randomPosition.todoTitles} // 傳遞所有 Todo 標題的陣列
           onCloseInstructions={handleCloseInstructions}

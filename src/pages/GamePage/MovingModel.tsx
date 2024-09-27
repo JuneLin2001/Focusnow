@@ -13,8 +13,9 @@ interface MovingModelProps {
   maxZ: number;
   speed: number;
   focusDate: string; // 專注日期
+  focusDuration: number; // 專注時間
   hasTodo: boolean; // 是否有Todo
-  todoTitles: string[];
+  todoTitles: string[]; // Todo標題
   onCloseInstructions: () => void; // 新增屬性來處理關閉指示
   onModelClick: (id: number) => void; // 新增 onModelClick 屬性
 }
@@ -28,6 +29,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
   maxZ,
   speed,
   focusDate,
+  focusDuration, // 接收專注時間
   todoTitles,
   onCloseInstructions,
   onModelClick,
@@ -91,7 +93,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
   });
 
   const handleClick = () => {
-    console.log(`number ${id} Model clicked!`);
+    console.log(`Model with id ${id} clicked!`);
     setIsFollowing((prev) => !prev); // 切換跟隨狀態
     setShowInstructions((prev) => !prev); // 切換顯示 ModelInstructions
     if (showInstructions) {
@@ -126,6 +128,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
             modelRef.current.position.y + 2,
             modelRef.current.position.z,
           ]} // 將位置傳遞給 ModelInstructions
+          focusDuration={focusDuration} // 傳遞專注時間
         />
       )}
     </>
