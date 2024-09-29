@@ -25,7 +25,6 @@ const GamePage = () => {
     position: [number, number, number];
     date: string;
     focusDuration: number; // 專注時間
-    hasTodo: boolean;
     todoTitles: string[];
   }[] = useMemo(() => {
     return filteredAnalytics.map((analytics) => {
@@ -44,13 +43,10 @@ const GamePage = () => {
             .map((todo) => todo.title)
         : [];
 
-      const hasTodo = todoTitles.length > 0;
-
       return {
         position: [randomX, position[1], randomZ] as [number, number, number],
         date: focusDate,
         focusDuration, // 專注時間
-        hasTodo,
         todoTitles,
       };
     });
@@ -80,7 +76,6 @@ const GamePage = () => {
           speed={speed}
           focusDate={randomPosition.date} // 專注日期
           focusDuration={randomPosition.focusDuration} // 專注時間
-          hasTodo={randomPosition.hasTodo} // 是否有 Todo
           todoTitles={randomPosition.todoTitles} // 傳遞所有 Todo 標題的陣列
           onModelClick={handleModelClick} // 傳遞 onModelClick
         />
