@@ -113,18 +113,20 @@ const MovingModel: React.FC<MovingModelProps> = ({
         ref={modelRef}
         onClick={handleClick}
       />
-      <ModelInstructions
-        date={focusDate}
-        todoTitles={todoTitles}
-        onClose={handleCloseDialog}
-        position={[
-          modelRef.current.position.x,
-          modelRef.current.position.y + 2,
-          modelRef.current.position.z,
-        ]}
-        focusDuration={focusDuration} // 傳遞專注時間
-        open={openDialog} // 傳遞 open 狀態
-      />
+      {modelRef.current && (
+        <ModelInstructions
+          date={focusDate}
+          todoTitles={todoTitles}
+          onClose={handleCloseDialog}
+          position={[
+            modelRef.current.position.x,
+            modelRef.current.position.y + 2,
+            modelRef.current.position.z,
+          ]}
+          focusDuration={focusDuration} // 傳遞專注時間
+          open={openDialog} // 傳遞 open 狀態
+        />
+      )}
     </>
   );
 };
