@@ -18,7 +18,7 @@ const SignInstructions: React.FC<SignInstructionsProps> = ({
         <p className="mb-2">
           您過去 30 天的專注時間總和是 {last30DaysFocusDuration} 分鐘。
         </p>
-        <p className="mb-2">每專注 30 分鐘，場景中就會多出一隻企鵝！</p>
+        <p className="mb-2">一次專注超過15分鐘，場景中就會多出一隻企鵝！</p>
         <div className="flex justify-center">
           <button
             className="bg-blue-500 text-white p-2 rounded"
