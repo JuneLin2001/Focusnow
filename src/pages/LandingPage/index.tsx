@@ -81,7 +81,14 @@ const LandingPage = () => {
           }}
         />
         <FloatingIce position={[0, 2, -30]} />
-        <Analytics position={[0, 2, 0]} />
+        <Analytics
+          position={[0, 2, 0]}
+          onClick={() => {
+            setPage("analytics");
+            setTargetPosition([-105, 25, 100]);
+            setLookAtPosition([250, 0, 0]);
+          }}
+        />
 
         <Sign
           position={[0, 20, 0]}

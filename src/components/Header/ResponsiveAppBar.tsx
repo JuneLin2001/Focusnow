@@ -121,7 +121,8 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
                     setLookAtPosition([0, 0, 0]);
                     setPage("timer");
                   } else if (page === "Analytics") {
-                    setTargetPosition([-75, 25, 100]);
+                    setTargetPosition([-105, 25, 100]);
+                    setLookAtPosition([250, 0, 0]);
                     setPage("analytics");
                   } else if (page === "Game") {
                     setPage(null);

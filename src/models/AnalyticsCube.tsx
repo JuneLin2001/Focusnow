@@ -5,7 +5,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { ModelProps } from "../types/type";
 
 const AnalyticsCube: React.FC<ModelProps> = ({ children, onClick }) => {
-  const gltf = useLoader(GLTFLoader, "cube.glb");
+  const gltf = useLoader(GLTFLoader, "TreasureBox.glb");
 
   return (
     <group onClick={onClick}>
