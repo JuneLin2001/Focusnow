@@ -12,6 +12,8 @@ import { auth } from "./firebase/firebaseConfig";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Bounce from "./pages/GamePage/Bounce";
+import Mainland from "./models/Mainland";
+import { Environment } from "@react-three/drei";
 
 const App: React.FC = () => {
   const setUser = useAuthStore((state) => state.setUser);
@@ -34,6 +36,8 @@ const App: React.FC = () => {
           element={
             <Canvas>
               <GamePage />
+              <Environment preset="sunset" />
+              <Mainland position={[-16, 2, 0]} />
               <OrbitControls />
             </Canvas>
           }

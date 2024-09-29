@@ -20,6 +20,8 @@ import SignInstructions from "../LandingPage/SignInstructions";
 
 import Snowflakes from "./Snowflakes";
 
+import settingStore from "../../store/settingStore";
+
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
     [number, number, number]
@@ -44,6 +46,8 @@ const LandingPage = () => {
   const handleCloseInstructions = () => {
     setPage(null);
   };
+
+  const { themeMode } = settingStore(); // 讀取環境類型
 
   return (
     <>
@@ -71,7 +75,7 @@ const LandingPage = () => {
       )}
       <Canvas>
         {/* //TODO:黑夜模式 */}
-        <Environment preset="warehouse" />
+        <Environment preset={themeMode === "light" ? "warehouse" : "night"} />
         <GamePage />
         <Mainland position={[-16, 2, 0]} />
         <Snowflakes />

@@ -11,7 +11,7 @@ import {
   RadioGroup,
   FormControlLabel,
 } from "@mui/material";
-import useBgmStore from "../store/bgmStore"; // 引入 BgmStore
+import useSettingStore from "../store/settingStore"; // 引入 BgmStore
 
 interface SettingsDialogProps {
   open: boolean;
@@ -32,7 +32,8 @@ const musicOptions = [
 ];
 
 const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
-  const { isPlaying, toggleBgm, setBgmSource } = useBgmStore(); // 引入 BgmStore 的狀態和方法
+  const { isPlaying, toggleBgm, setBgmSource, themeMode, setThemeMode } =
+    useSettingStore(); // 引入 BgmStore 的狀態和方法
   const [selectedMusic, setSelectedMusic] = useState<string>(
     musicOptions[0].value
   ); // 預設選擇的音樂
@@ -54,6 +55,11 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
     toggleBgm(); // 播放新的背景音樂
   };
 
+  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const mode = event.target.value as "light" | "dark";
+    setThemeMode(mode); // 更新主題模式
+  };
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Settings</DialogTitle>
@@ -68,6 +74,16 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
               label={music.label}
             />
           ))}
+        </RadioGroup>
+
+        <Typography sx={{ mt: 2 }}>選擇主題模式：</Typography>
+        <RadioGroup value={themeMode} onChange={handleThemeChange}>
+          <FormControlLabel
+            value="light"
+            control={<Radio />}
+            label="白天模式"
+          />
+          <FormControlLabel value="dark" control={<Radio />} label="黑夜模式" />
         </RadioGroup>
       </DialogContent>
       <DialogActions>
