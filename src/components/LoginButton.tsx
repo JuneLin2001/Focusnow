@@ -10,6 +10,11 @@ import {
   Menu,
   MenuItem,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
 } from "@mui/material";
 
 interface LoginButtonProps {
@@ -19,6 +24,7 @@ interface LoginButtonProps {
 const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
   const { user, setUser, logout } = useAuthStore();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [openSettingsDialog, setOpenSettingsDialog] = useState(false); // 用於控制彈出視窗的狀態
 
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
@@ -37,11 +43,11 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
           ...taskData,
           startTime: {
             seconds: taskData.startTime.seconds,
-            nanoseconds: 0, // 或者設置為您想要的值
+            nanoseconds: 0,
           },
           endTime: {
             seconds: taskData.endTime.seconds,
-            nanoseconds: 0, // 或者設置為您想要的值
+            nanoseconds: 0,
           },
           todos: taskData.todos.map(
             (todo: {
@@ -51,12 +57,12 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
               ...todo,
               startTime: {
                 seconds: todo.startTime.seconds,
-                nanoseconds: 0, // 或者設置為您想要的值
+                nanoseconds: 0,
               },
               doneTime: todo.doneTime
                 ? {
                     seconds: todo.doneTime.seconds,
-                    nanoseconds: 0, // 或者設置為您想要的值
+                    nanoseconds: 0,
                   }
                 : null,
             })
@@ -86,6 +92,15 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleOpenSettingsDialog = () => {
+    setOpenSettingsDialog(true); // 打開彈出視窗
+    handleCloseUserMenu(); // 關閉用戶菜單
+  };
+
+  const handleCloseSettingsDialog = () => {
+    setOpenSettingsDialog(false); // 關閉彈出視窗
   };
 
   return (
@@ -137,8 +152,26 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
           <MenuItem onClick={handleLogout}>
             <Typography sx={{ textAlign: "center" }}>Logout</Typography>
           </MenuItem>
+          <MenuItem onClick={handleOpenSettingsDialog}>
+            <Typography sx={{ textAlign: "center" }}>Settings</Typography>
+          </MenuItem>
         </Menu>
       )}
+
+      {/* 設定彈出視窗 */}
+      <Dialog open={openSettingsDialog} onClose={handleCloseSettingsDialog}>
+        <DialogTitle>Settings</DialogTitle>
+        <DialogContent>
+          {/* 在這裡放置設定頁面的內容 */}
+          <Typography>這裡是設定頁面的內容。</Typography>
+          {/* 例如：可以放置表單或其他設定選項 */}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSettingsDialog} color="primary">
+            關閉
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

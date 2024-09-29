@@ -13,8 +13,8 @@ import LoginButton from "../LoginButton";
 import ToggleBgm from "./ToggleBgm";
 
 interface ResponsiveAppBarProps {
-  pages: string[]; // 新增 pages 屬性
-  setPage: (newPage: "timer" | "analytics" | "game" | null) => void; // 原始 setPage
+  pages: string[];
+  setPage: (newPage: "timer" | "analytics" | "game" | null) => void;
   setTargetPosition: (position: [number, number, number]) => void;
   setLookAtPosition: (position: [number, number, number]) => void;
 }
