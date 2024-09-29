@@ -10,12 +10,8 @@ import {
   Menu,
   MenuItem,
   Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
 } from "@mui/material";
+import SettingsDialog from "./SettingsDialog"; // 引入新的設定元件
 
 interface LoginButtonProps {
   onLoginSuccess: () => void;
@@ -158,20 +154,11 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
         </Menu>
       )}
 
-      {/* 設定彈出視窗 */}
-      <Dialog open={openSettingsDialog} onClose={handleCloseSettingsDialog}>
-        <DialogTitle>Settings</DialogTitle>
-        <DialogContent>
-          {/* 在這裡放置設定頁面的內容 */}
-          <Typography>這裡是設定頁面的內容。</Typography>
-          {/* 例如：可以放置表單或其他設定選項 */}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseSettingsDialog} color="primary">
-            關閉
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {/* 使用獨立的設定彈出視窗元件 */}
+      <SettingsDialog
+        open={openSettingsDialog}
+        onClose={handleCloseSettingsDialog}
+      />
     </>
   );
 };
