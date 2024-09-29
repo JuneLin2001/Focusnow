@@ -5,23 +5,30 @@ import { OrbitControls } from "@react-three/drei";
 
 interface CameraControllerProps {
   targetPosition: [number, number, number];
-  lookAtPosition?: [number, number, number]; // 新增的 lookAtPosition 參數
-  initialPosition?: [number, number, number]; // 可選的初始位置
+  lookAtPosition?: [number, number, number];
+  initialPosition?: [number, number, number];
+  minPolarAngle?: number;
+  maxPolarAngle?: number;
+  minDistance?: number;
+  maxDistance?: number;
 }
 
 const CameraController: React.FC<CameraControllerProps> = ({
   targetPosition,
   lookAtPosition = targetPosition,
   initialPosition = [-500, 60, 50],
+  minPolarAngle = Math.PI / 4,
+  maxPolarAngle = Math.PI / 2,
+  minDistance = 10,
+  maxDistance = 500,
 }) => {
   const { camera } = useThree();
-  const currentPosition = useRef<[number, number, number]>(initialPosition);
   const isFirstRender = useRef(true);
 
   useEffect(() => {
     if (isFirstRender.current) {
       camera.position.set(...initialPosition);
-      currentPosition.current = initialPosition;
+      camera.lookAt(...lookAtPosition);
       isFirstRender.current = false;
 
       gsap.to(camera.position, {
@@ -31,17 +38,7 @@ const CameraController: React.FC<CameraControllerProps> = ({
         duration: 2,
         ease: "power2.out",
         onUpdate: () => {
-          camera.lookAt(-200, 60, 50);
-          console.log(lookAtPosition);
-        },
-        onComplete: () => {
-          // 當移動完成後，更新 currentPosition
-          currentPosition.current = [-200, 60, 50];
-          camera.lookAt(
-            lookAtPosition[0],
-            lookAtPosition[1],
-            lookAtPosition[2]
-          );
+          camera.lookAt(...lookAtPosition);
         },
       });
     } else {
@@ -52,30 +49,26 @@ const CameraController: React.FC<CameraControllerProps> = ({
         duration: 2,
         ease: "power2.out",
         onUpdate: () => {
-          camera.lookAt(
-            lookAtPosition[0], // 相機看向 lookAtPosition
-            lookAtPosition[1],
-            lookAtPosition[2]
-          );
-        },
-        onComplete: () => {
-          // 更新 currentPosition
-          currentPosition.current = [
-            targetPosition[0] + 2,
-            targetPosition[1] + 2,
-            targetPosition[2] + 4,
-          ];
-          camera.lookAt(
-            lookAtPosition[0],
-            lookAtPosition[1],
-            lookAtPosition[2]
-          ); // 移動結束時再確保看向 lookAtPosition
+          camera.lookAt(...lookAtPosition);
         },
       });
     }
   }, [targetPosition, lookAtPosition, camera, initialPosition]);
 
-  return <OrbitControls target={lookAtPosition} />; // OrbitControls 也要更新成看向 lookAtPosition
+  return (
+    <>
+      <OrbitControls
+        target={lookAtPosition}
+        minPolarAngle={minPolarAngle}
+        maxPolarAngle={maxPolarAngle}
+        minDistance={minDistance}
+        maxDistance={maxDistance}
+        enableZoom={true}
+        enablePan={false}
+        makeDefault
+      />
+    </>
+  );
 };
 
 export default CameraController;
