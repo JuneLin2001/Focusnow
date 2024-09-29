@@ -18,6 +18,8 @@ import TimerDisplay from "../TimerPage/TimerDisplay";
 import Sign from "../LandingPage/Sign";
 import SignInstructions from "../LandingPage/SignInstructions";
 
+import Snowflakes from "./Snowflakes";
+
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
     [number, number, number]
@@ -72,6 +74,8 @@ const LandingPage = () => {
         <Environment preset="warehouse" />
         <GamePage />
         <Mainland position={[-16, 2, 0]} />
+        <Snowflakes />
+
         <Igloo
           position={[-114, 2, -16]}
           onClick={() => {
