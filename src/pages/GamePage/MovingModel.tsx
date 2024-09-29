@@ -15,7 +15,6 @@ interface MovingModelProps {
   focusDate: string;
   focusDuration: number;
   todoTitles: string[];
-  onModelClick: (id: number) => void;
 }
 
 const MovingModel: React.FC<MovingModelProps> = ({
@@ -29,7 +28,6 @@ const MovingModel: React.FC<MovingModelProps> = ({
   focusDate,
   focusDuration,
   todoTitles,
-  onModelClick,
 }) => {
   const { scene } = useGLTF("BBpenguinCenter.glb");
   const modelRef = useRef<THREE.Group>(null!);
@@ -93,7 +91,6 @@ const MovingModel: React.FC<MovingModelProps> = ({
     console.log(`Model with id ${id} clicked!`);
     setIsFollowing((prev) => !prev);
     setOpenDialog(true);
-    onModelClick(id);
   };
 
   const handleCloseDialog = () => {

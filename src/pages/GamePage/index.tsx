@@ -24,7 +24,7 @@ const GamePage = () => {
   const randomPositions: {
     position: [number, number, number];
     date: string;
-    focusDuration: number; // 專注時間
+    focusDuration: number;
     todoTitles: string[];
   }[] = useMemo(() => {
     return filteredAnalytics.map((analytics) => {
@@ -46,16 +46,11 @@ const GamePage = () => {
       return {
         position: [randomX, position[1], randomZ] as [number, number, number],
         date: focusDate,
-        focusDuration, // 專注時間
+        focusDuration,
         todoTitles,
       };
     });
   }, [filteredAnalytics, minX, maxX, minZ, maxZ, position]);
-
-  const handleModelClick = (id: number) => {
-    console.log(`Model with id ${id} clicked`);
-    // 可以添加更多的邏輯，例如取消跟隨或其他操作
-  };
 
   return (
     <group>
@@ -74,10 +69,9 @@ const GamePage = () => {
           minZ={minZ}
           maxZ={maxZ}
           speed={speed}
-          focusDate={randomPosition.date} // 專注日期
-          focusDuration={randomPosition.focusDuration} // 專注時間
-          todoTitles={randomPosition.todoTitles} // 傳遞所有 Todo 標題的陣列
-          onModelClick={handleModelClick} // 傳遞 onModelClick
+          focusDate={randomPosition.date}
+          focusDuration={randomPosition.focusDuration}
+          todoTitles={randomPosition.todoTitles}
         />
       ))}
     </group>
