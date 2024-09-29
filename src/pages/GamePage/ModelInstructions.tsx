@@ -13,8 +13,8 @@ interface ModelInstructionsProps {
   todoTitles: string[];
   onClose: () => void;
   position: [number, number, number];
-  focusDuration: number; // 接收專注時間
-  open: boolean; // 新增 open 屬性
+  focusDuration: number;
+  open: boolean;
 }
 
 const ModelInstructions: React.FC<ModelInstructionsProps> = ({
@@ -23,7 +23,7 @@ const ModelInstructions: React.FC<ModelInstructionsProps> = ({
   onClose,
   position,
   focusDuration,
-  open, // 新增 open 屬性
+  open,
 }) => {
   return (
     <Html position={position}>

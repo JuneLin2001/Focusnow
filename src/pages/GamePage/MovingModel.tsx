@@ -12,11 +12,10 @@ interface MovingModelProps {
   minZ: number;
   maxZ: number;
   speed: number;
-  focusDate: string; // 專注日期
-  focusDuration: number; // 專注時間
-  hasTodo: boolean; // 是否有Todo
-  todoTitles: string[]; // Todo標題
-  onModelClick: (id: number) => void; // 新增 onModelClick 屬性
+  focusDate: string;
+  focusDuration: number;
+  todoTitles: string[];
+  onModelClick: (id: number) => void;
 }
 
 const MovingModel: React.FC<MovingModelProps> = ({
@@ -32,7 +31,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
   todoTitles,
   onModelClick,
 }) => {
-  const { scene } = useGLTF("BBpenguinCenter.glb"); // 載入企鵝模型
+  const { scene } = useGLTF("BBpenguinCenter.glb");
   const modelRef = useRef<THREE.Group>(null!);
   const targetPosition = useRef<THREE.Vector3>(
     new THREE.Vector3(
@@ -42,9 +41,9 @@ const MovingModel: React.FC<MovingModelProps> = ({
     )
   );
 
-  const { camera } = useThree(); // 獲取相機
-  const [isFollowing, setIsFollowing] = useState(false); // 跟隨狀態
-  const [openDialog, setOpenDialog] = useState(false); // 控制 Dialog 開啟狀態
+  const { camera } = useThree();
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   useFrame(() => {
     if (modelRef.current) {
@@ -76,12 +75,11 @@ const MovingModel: React.FC<MovingModelProps> = ({
         );
       }
 
-      // 如果需要鏡頭跟隨
       if (isFollowing) {
         camera.position.lerp(
           new THREE.Vector3(
-            currentPosition.x,
-            currentPosition.y + 10,
+            currentPosition.x + 10,
+            currentPosition.y + 15,
             currentPosition.z + 3
           ),
           0.1
@@ -93,14 +91,14 @@ const MovingModel: React.FC<MovingModelProps> = ({
 
   const handleClick = () => {
     console.log(`Model with id ${id} clicked!`);
-    setIsFollowing((prev) => !prev); // 切換跟隨狀態
-    setOpenDialog(true); // 打開 Dialog
-    onModelClick(id); // 調用 onModelClick 並傳遞 id
+    setIsFollowing((prev) => !prev);
+    setOpenDialog(true);
+    onModelClick(id);
   };
 
   const handleCloseDialog = () => {
-    setOpenDialog(false); // 關閉 Dialog
-    setIsFollowing(false); // 取消跟隨
+    setOpenDialog(false);
+    setIsFollowing(false);
   };
 
   return (
@@ -123,8 +121,8 @@ const MovingModel: React.FC<MovingModelProps> = ({
             modelRef.current.position.y + 2,
             modelRef.current.position.z,
           ]}
-          focusDuration={focusDuration} // 傳遞專注時間
-          open={openDialog} // 傳遞 open 狀態
+          focusDuration={focusDuration}
+          open={openDialog}
         />
       )}
     </>
