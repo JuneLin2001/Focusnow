@@ -74,7 +74,6 @@ const LandingPage = () => {
         </div>
       )}
       <Canvas>
-        {/* //TODO:黑夜模式 */}
         <Environment preset={themeMode === "light" ? "warehouse" : "night"} />
         <GamePage />
         <Mainland position={[-16, 2, 0]} />
@@ -83,8 +82,8 @@ const LandingPage = () => {
         <Igloo
           position={[-114, 2, -16]}
           onClick={() => {
-            setTargetPosition([-40, 12, -50]);
-            setLookAtPosition([-4, 2, -16]);
+            setTargetPosition([-50, 12, -150]);
+            setLookAtPosition([0, 0, 0]);
             setPage("timer");
           }}
         />
