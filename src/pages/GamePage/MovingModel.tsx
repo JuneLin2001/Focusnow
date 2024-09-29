@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
-import ModelInstructions from "./ModelInstructions"; // 引入 ModelInstructions
+import ModelInstructions from "./ModelInstructions";
 
 interface MovingModelProps {
   id: number;
@@ -44,7 +44,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
 
   const { camera } = useThree(); // 獲取相機
   const [isFollowing, setIsFollowing] = useState(false); // 跟隨狀態
-  const [showInstructions, setShowInstructions] = useState(false); // 控制顯示 ModelInstructions
+  const [openDialog, setOpenDialog] = useState(false); // 控制 Dialog 開啟狀態
 
   useFrame(() => {
     if (modelRef.current) {
@@ -52,7 +52,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
       const direction = targetPosition.current.clone().sub(currentPosition);
       const distance = direction.length();
 
-      if (distance > 1000) {
+      if (distance > 0.1) {
         direction.normalize().multiplyScalar(speed * 0.1);
         currentPosition.add(direction);
 
@@ -76,6 +76,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
         );
       }
 
+      // 如果需要鏡頭跟隨
       if (isFollowing) {
         camera.position.lerp(
           new THREE.Vector3(
@@ -93,17 +94,13 @@ const MovingModel: React.FC<MovingModelProps> = ({
   const handleClick = () => {
     console.log(`Model with id ${id} clicked!`);
     setIsFollowing((prev) => !prev); // 切換跟隨狀態
-    setShowInstructions((prev) => !prev); // 切換顯示 ModelInstructions
-    if (showInstructions) {
-      handleCloseInstructions(); // 若指示已顯示，則關閉它
-    }
+    setOpenDialog(true); // 打開 Dialog
     onModelClick(id); // 調用 onModelClick 並傳遞 id
   };
 
-  const handleCloseInstructions = () => {
-    setShowInstructions(false); // 關閉 ModelInstructions
+  const handleCloseDialog = () => {
+    setOpenDialog(false); // 關閉 Dialog
     setIsFollowing(false); // 取消跟隨
-    handleCloseInstructions(); // 調用傳遞的關閉函數
   };
 
   return (
@@ -111,24 +108,23 @@ const MovingModel: React.FC<MovingModelProps> = ({
       <primitive
         object={scene.clone()}
         position={position}
-        scale={[2, 2, 2]}
+        scale={[5, 5, 5]}
         rotation={[0, Math.PI / 2, 0]}
         ref={modelRef}
         onClick={handleClick}
       />
-      {showInstructions && ( // 根據狀態顯示 ModelInstructions
-        <ModelInstructions
-          date={focusDate}
-          todoTitles={todoTitles}
-          onClose={() => handleCloseInstructions()}
-          position={[
-            modelRef.current.position.x,
-            modelRef.current.position.y + 2,
-            modelRef.current.position.z,
-          ]} // 將位置傳遞給 ModelInstructions
-          focusDuration={focusDuration} // 傳遞專注時間
-        />
-      )}
+      <ModelInstructions
+        date={focusDate}
+        todoTitles={todoTitles}
+        onClose={handleCloseDialog}
+        position={[
+          modelRef.current.position.x,
+          modelRef.current.position.y + 2,
+          modelRef.current.position.z,
+        ]}
+        focusDuration={focusDuration} // 傳遞專注時間
+        open={openDialog} // 傳遞 open 狀態
+      />
     </>
   );
 };
