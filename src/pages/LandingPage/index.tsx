@@ -28,7 +28,7 @@ const LandingPage = () => {
     "timer" | "analytics" | "game" | "SignInstructions" | null
   >(null);
 
-  const { themeMode } = settingStore(); // 讀取環境類型
+  const { themeMode } = settingStore();
 
   return (
     <>

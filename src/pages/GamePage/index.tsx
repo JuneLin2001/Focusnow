@@ -3,7 +3,7 @@ import MovingModel from "./MovingModel";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import AnalyticsFetcher from "../../components/AnalyticsFetcher";
 import * as THREE from "three";
-import FishModel from "./FishModel"; // 導入 FishModel
+import FishModel from "./FishModel";
 import { Html } from "@react-three/drei";
 import Sign from "./Sign";
 import SignInstructions from "./SignInstructions";
@@ -46,16 +46,16 @@ const GamePage = () => {
     });
   }, [filteredAnalytics, minX, maxX, minZ, maxZ]);
 
-  // 隨機放置魚的邏輯
   const handleDropFish = () => {
     const randomX = Math.random() * (maxX - minX) + minX;
     const randomZ = Math.random() * (maxZ - minZ) + minZ;
-    setFishPosition(new THREE.Vector3(randomX, 10, randomZ)); // 設定魚的高度
+    setFishPosition(new THREE.Vector3(randomX, 10, randomZ));
   };
 
   const handleClearFish = () => {
-    setFishPosition(null); // 清除魚的位置
+    setFishPosition(null);
   };
+
   useEffect(() => {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -85,8 +85,8 @@ const GamePage = () => {
       </Suspense>
 
       <group>
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={position}>
-          <boxGeometry args={[width, depth, 5]} />
+        <mesh position={position}>
+          <boxGeometry args={[width, 5, depth]} />
           <meshStandardMaterial transparent wireframe />
         </mesh>
 
@@ -111,8 +111,8 @@ const GamePage = () => {
             focusDate={randomPosition.date}
             focusDuration={randomPosition.focusDuration}
             todoTitles={randomPosition.todoTitles}
-            fishPosition={fishPosition} // 傳遞魚的位置
-            setFishPosition={setFishPosition} // 傳遞設置魚的位置的函數
+            fishPosition={fishPosition}
+            setFishPosition={setFishPosition}
           />
         ))}
 
@@ -125,7 +125,6 @@ const GamePage = () => {
           </div>
         </Html>
 
-        {/* 如果魚的位置存在，就顯示魚模型 */}
         {fishPosition && (
           <FishModel
             position={[fishPosition.x, fishPosition.y, fishPosition.z]}
