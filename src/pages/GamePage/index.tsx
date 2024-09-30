@@ -8,8 +8,8 @@ import { Html } from "@react-three/drei";
 import Sign from "./Sign";
 import SignInstructions from "./SignInstructions";
 import Snowflakes from "./Snowflakes";
-import FishesCountFetcher from "../../components/AchievementsFetcher";
-import { useAchievementsStore } from "../../store/achievementsStore"; // 引入 useAchievementsStore
+import FishesCountFetcher from "../../components/FishesCountFetcher";
+import { useFishesCountStore } from "../../store/fishesCountStore"; // 引入 useFishesCountStore
 import { doc, updateDoc, increment } from "firebase/firestore"; // 引入 Firestore 的更新方法
 import { db } from "../../firebase/firebaseConfig"; // 引入 Firebase 配置
 import useAuthStore from "../../store/authStore";
@@ -22,8 +22,8 @@ const GamePage = () => {
     useState<number>(0);
   const [showInstructions, setShowInstructions] = useState(false);
 
-  const fishesCount = useAchievementsStore((state) => state.FishesCount); // 從 Zustand 中獲取 fishesCount
-  const setFishesCount = useAchievementsStore((state) => state.setFishesCount); // 用來更新 Zustand 的 fishesCount
+  const fishesCount = useFishesCountStore((state) => state.FishesCount); // 從 Zustand 中獲取 fishesCount
+  const setFishesCount = useFishesCountStore((state) => state.setFishesCount); // 用來更新 Zustand 的 fishesCount
 
   const { user } = useAuthStore(); // 從 useAuthStore 中獲取 user
 
@@ -82,10 +82,6 @@ const GamePage = () => {
     } else {
       console.log("No more fishes to drop!");
     }
-  };
-
-  const handleClearFish = () => {
-    setFishPosition(null);
   };
 
   useEffect(() => {
@@ -154,7 +150,6 @@ const GamePage = () => {
             <button className="mr-4" onClick={handleDropFish}>
               放下魚
             </button>
-            <button onClick={handleClearFish}>清除魚</button>
           </div>
         </Html>
 

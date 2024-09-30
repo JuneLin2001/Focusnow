@@ -3,11 +3,11 @@ import { useEffect, useCallback } from "react";
 import { doc, getDoc } from "firebase/firestore"; // 用 doc 和 getDoc 來讀取單個文檔
 import { db } from "../firebase/firebaseConfig";
 import useAuthStore from "../store/authStore";
-import { useAchievementsStore } from "../store/achievementsStore"; // 假設你有一個用來管理 FishesCount 的 Zustand store
+import { useFishesCountStore } from "../store/fishesCountStore"; // 假設你有一個用來管理 FishesCount 的 Zustand store
 
 const FishesCountFetcher: React.FC = () => {
   const { user } = useAuthStore(); // 獲取用戶
-  const { setFishesCount } = useAchievementsStore(); // 獲取 setFishesCount 方法
+  const { setFishesCount } = useFishesCountStore(); // 獲取 setFishesCount 方法
 
   const fetchFishesCount = useCallback(async () => {
     if (user) {
