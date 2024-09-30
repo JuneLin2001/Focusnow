@@ -1,16 +1,20 @@
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, useState, useEffect } from "react";
 import MovingModel from "./MovingModel";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import AnalyticsFetcher from "../../components/AnalyticsFetcher";
-import { useState } from "react";
 import * as THREE from "three";
 import FishModel from "./FishModel"; // 導入 FishModel
 import { Html } from "@react-three/drei";
+import Sign from "./Sign";
+import SignInstructions from "./SignInstructions";
 
 const GamePage = () => {
   const position: [number, number, number] = useMemo(() => [80, 6, -30], []);
   const { analyticsList, setAnalyticsList } = useAnalyticsStore();
   const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
+  const [last30DaysFocusDuration, setLast30DaysFocusDuration] =
+    useState<number>(0);
+  const [showInstructions, setShowInstructions] = useState(false);
 
   const width = 190;
   const depth = 240;
@@ -52,6 +56,27 @@ const GamePage = () => {
   const handleClearFish = () => {
     setFishPosition(null); // 清除魚的位置
   };
+  useEffect(() => {
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const duration = analyticsList.reduce((total, analytics) => {
+      const analyticsDate = new Date(analytics.startTime.seconds * 1000);
+      if (analyticsDate >= thirtyDaysAgo) {
+        return total + analytics.focusDuration;
+      }
+      return total;
+    }, 0);
+
+    setLast30DaysFocusDuration(duration);
+  }, [analyticsList]);
+
+  const handleOpen = () => {
+    setShowInstructions(true);
+  };
+
+  const handleClose = () => {
+    setShowInstructions(false);
+  };
 
   return (
     <>
@@ -64,6 +89,14 @@ const GamePage = () => {
           <boxGeometry args={[width, depth, 5]} />
           <meshStandardMaterial transparent wireframe />
         </mesh>
+
+        <Sign position={[0, 20, 0]} onClick={handleOpen} />
+
+        <SignInstructions
+          showInstructions={showInstructions}
+          last30DaysFocusDuration={last30DaysFocusDuration}
+          onClose={handleClose}
+        />
 
         {randomPositions.map((randomPosition, index: number) => (
           <MovingModel

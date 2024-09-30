@@ -145,6 +145,12 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
           <Box sx={{ flexGrow: 0 }}>
             <LoginButton onLoginSuccess={handleLoginSuccess} />
             <ToggleBgm />
+            <Button //TODO:測試怎麼樣子企鵝位置會重置
+              sx={{ p: 1, backgroundColor: "red" }}
+              onClick={() => {
+                setPage(null);
+              }}
+            ></Button>
           </Box>
         </Toolbar>
       </Container>

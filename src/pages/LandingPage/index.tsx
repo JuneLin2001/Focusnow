@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Environment, GizmoHelper, GizmoViewport } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
@@ -11,11 +11,7 @@ import Analytics from "../../models/AnalyticsCube";
 import OceanModel from "../../models/OceanModel";
 import CameraController from "./CameraController";
 import ResponsiveAppBar from "../../components/Header/ResponsiveAppBar";
-import { useAnalyticsStore } from "../../store/analyticsStore";
 import TimerDisplay from "../TimerPage/TimerDisplay";
-
-import Sign from "../LandingPage/Sign";
-import SignInstructions from "../LandingPage/SignInstructions";
 
 import Snowflakes from "./Snowflakes";
 
@@ -31,28 +27,6 @@ const LandingPage = () => {
   const [page, setPage] = useState<
     "timer" | "analytics" | "game" | "SignInstructions" | null
   >(null);
-  const [last30DaysFocusDuration, setLast30DaysFocusDuration] =
-    useState<number>(0);
-
-  const { analyticsList } = useAnalyticsStore();
-
-  useEffect(() => {
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30); // 計算30天前的日期
-    const duration = analyticsList.reduce((total, analytics) => {
-      const analyticsDate = new Date(analytics.startTime.seconds * 1000);
-      if (analyticsDate >= thirtyDaysAgo) {
-        return total + analytics.focusDuration; // 累加符合條件的專注時間
-      }
-      return total;
-    }, 0);
-
-    setLast30DaysFocusDuration(duration);
-  }, [analyticsList]);
-
-  const handleCloseInstructions = () => {
-    setPage(null);
-  };
 
   const { themeMode } = settingStore(); // 讀取環境類型
 
@@ -71,13 +45,6 @@ const LandingPage = () => {
           {/* //TODO:頁面的透明度  */}
           {page === "timer" && <TimerPage />}
           {page === "analytics" && <AnalyticsPage />}
-          {page === "SignInstructions" && (
-            <SignInstructions
-              showInstructions={true}
-              last30DaysFocusDuration={last30DaysFocusDuration}
-              onClose={handleCloseInstructions}
-            />
-          )}
         </div>
       )}
       <Canvas>
@@ -101,15 +68,6 @@ const LandingPage = () => {
             setPage("analytics");
             setTargetPosition([-105, 25, 100]);
             setLookAtPosition([250, 0, 0]);
-          }}
-        />
-
-        <Sign
-          position={[0, 20, 0]}
-          onClick={() => {
-            setPage("SignInstructions");
-            setTargetPosition([10, 20, 10]);
-            setLookAtPosition([0, 20, 0]);
           }}
         />
 
