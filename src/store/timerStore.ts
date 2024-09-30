@@ -68,6 +68,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
     },
     resetTimer: () => {
       if (interval) {
+        clearInterval(interval);
         interval = null;
       }
       set((state) => ({
