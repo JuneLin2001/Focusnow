@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import useAuthStore from "../store/authStore";
-import { saveTaskData } from "../firebase/firebaseService"; // 確保導入正確
+import { useAnalyticsStore } from "../store/analyticsStore";
+import { saveTaskData } from "../firebase/firebaseService";
 import {
   IconButton,
   Avatar,
@@ -11,7 +12,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import SettingsDialog from "./SettingsDialog"; // 引入新的設定元件
+import SettingsDialog from "./SettingsDialog";
 
 interface LoginButtonProps {
   onLoginSuccess: () => void;
@@ -20,7 +21,8 @@ interface LoginButtonProps {
 const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
   const { user, setUser, logout } = useAuthStore();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const [openSettingsDialog, setOpenSettingsDialog] = useState(false); // 用於控制彈出視窗的狀態
+  const [openSettingsDialog, setOpenSettingsDialog] = useState(false);
+  const resetAnalytics = useAnalyticsStore((state) => state.reset);
 
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
@@ -77,6 +79,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
   const handleLogout = async () => {
     try {
       await logout();
+      resetAnalytics();
     } catch (error) {
       console.error("Logout error", error);
     }
@@ -145,11 +148,11 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          <MenuItem onClick={handleLogout}>
-            <Typography sx={{ textAlign: "center" }}>Logout</Typography>
-          </MenuItem>
           <MenuItem onClick={handleOpenSettingsDialog}>
             <Typography sx={{ textAlign: "center" }}>Settings</Typography>
+          </MenuItem>
+          <MenuItem onClick={handleLogout}>
+            <Typography sx={{ textAlign: "center" }}>Logout</Typography>
           </MenuItem>
         </Menu>
       )}

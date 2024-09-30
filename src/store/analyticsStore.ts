@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { UserAnalytics } from "../types/type";
+
 interface AnalyticsState {
   analyticsList: UserAnalytics[];
   filteredAnalytics: UserAnalytics[];
@@ -12,6 +13,7 @@ interface AnalyticsState {
   setStartDate: (date: string) => void;
   setEndDate: (date: string) => void;
   filterByDate: () => void;
+  reset: () => void; // 新增 reset 方法
 }
 
 export const useAnalyticsStore = create<AnalyticsState>((set) => ({
@@ -61,6 +63,15 @@ export const useAnalyticsStore = create<AnalyticsState>((set) => ({
         filteredAnalytics: filtered,
         totalFocusDuration: totalDuration,
       };
+    });
+  },
+  reset: () => {
+    set({
+      analyticsList: [],
+      filteredAnalytics: [],
+      totalFocusDuration: 0,
+      startDate: "",
+      endDate: "",
     });
   },
 }));

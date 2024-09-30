@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import MovingModel from "./MovingModel";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import AnalyticsFetcher from "../../components/AnalyticsFetcher";
@@ -16,10 +16,12 @@ const GamePage = () => {
   const minZ = position[2] - depth / 2;
   const maxZ = position[2] + depth / 2;
 
+  // 使用 useMemo 過濾數據
   const filteredAnalytics = useMemo(() => {
     return analyticsList.filter((analytics) => analytics.focusDuration > 15);
   }, [analyticsList]);
 
+  // 隨機位置
   const randomPositions = useMemo(() => {
     return filteredAnalytics.map((analytics) => {
       const randomX = Math.random() * (maxX - minX) + minX;
@@ -37,7 +39,9 @@ const GamePage = () => {
 
   return (
     <>
-      <AnalyticsFetcher onDataFetched={setAnalyticsList} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <AnalyticsFetcher onDataFetched={setAnalyticsList} />
+      </Suspense>
 
       <group>
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={position}>
