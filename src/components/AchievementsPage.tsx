@@ -7,7 +7,6 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Checkbox,
   DialogActions,
   Button,
 } from "@mui/material";
@@ -39,15 +38,20 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({
       <List>
         {achievements.map((achievement) => (
           <ListItem key={achievement.id}>
-            <ListItemIcon>
-              <Checkbox
-                edge="start"
-                checked={achievement.completed}
-                tabIndex={-1}
-                disableRipple
-              />
-            </ListItemIcon>
+            <ListItemIcon></ListItemIcon>
             <ListItemText primary={achievement.id} />
+            <ListItemText
+              primary={achievement.completed ? "已完成" : "未完成"}
+            />
+            <ListItemText
+              primary={
+                achievement.dateAchieved
+                  ? achievement.dateAchieved
+                      .toDate()
+                      .toLocaleDateString("zh-TW") // 格式化日期
+                  : "尚未完成" // 若為 null，顯示「尚未完成」
+              }
+            />
           </ListItem>
         ))}
       </List>
