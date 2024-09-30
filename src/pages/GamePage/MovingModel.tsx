@@ -11,7 +11,6 @@ interface MovingModelProps {
   maxX: number;
   minZ: number;
   maxZ: number;
-  speed: number;
   focusDate: string;
   focusDuration: number;
   todoTitles: string[];
@@ -26,7 +25,6 @@ const MovingModel: React.FC<MovingModelProps> = ({
   maxX,
   minZ,
   maxZ,
-  speed,
   focusDate,
   focusDuration,
   todoTitles,
@@ -46,6 +44,8 @@ const MovingModel: React.FC<MovingModelProps> = ({
   const { camera } = useThree();
   const [isFollowing, setIsFollowing] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+
+  const speed = 1;
 
   useFrame(() => {
     if (modelRef.current) {

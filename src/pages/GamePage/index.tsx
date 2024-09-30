@@ -19,7 +19,6 @@ const GamePage = () => {
 
   const width = 190;
   const depth = 240;
-  const speed = 1;
 
   const minX = position[0] - width / 2;
   const maxX = position[0] + width / 2;
@@ -109,7 +108,6 @@ const GamePage = () => {
             maxX={maxX}
             minZ={minZ}
             maxZ={maxZ}
-            speed={speed}
             focusDate={randomPosition.date}
             focusDuration={randomPosition.focusDuration}
             todoTitles={randomPosition.todoTitles}
