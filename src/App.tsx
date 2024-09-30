@@ -44,7 +44,7 @@ const App: React.FC = () => {
         />
         <Route path="/analytics" element={<AanalyticsPage />} />
         <Route path="/timer" element={<TimerPage />} />
-        <Route path="/bounce" element={<Bounce />} />
+        <Route path="/*" element={<Bounce />} />
       </Routes>
     </>
   );

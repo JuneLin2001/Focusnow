@@ -59,7 +59,7 @@ const BounceModel: React.FC<ModelProps> = ({ onClick, ...props }) => {
         transform
         occlude
       >
-        <div className="annotation">123</div>
+        <div className="annotation">error</div>
       </Html>
     </group>
   );
