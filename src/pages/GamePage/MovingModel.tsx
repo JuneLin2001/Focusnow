@@ -15,6 +15,7 @@ interface MovingModelProps {
   focusDate: string;
   focusDuration: number;
   todoTitles: string[];
+  fishPosition: THREE.Vector3 | null; // 新增 fishPosition 屬性
 }
 
 const MovingModel: React.FC<MovingModelProps> = ({
@@ -28,6 +29,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
   focusDate,
   focusDuration,
   todoTitles,
+  fishPosition,
 }) => {
   const { scene } = useGLTF("BBpenguinCenter.glb");
   const modelRef = useRef<THREE.Group>(null!);
@@ -49,28 +51,50 @@ const MovingModel: React.FC<MovingModelProps> = ({
       const direction = targetPosition.current.clone().sub(currentPosition);
       const distance = direction.length();
 
-      if (distance > 0.1) {
-        direction.normalize().multiplyScalar(speed * 0.1);
-        currentPosition.add(direction);
+      // 如果有魚的位置，就移動到魚的位置
+      if (fishPosition) {
+        const fishDirection = fishPosition.clone().sub(currentPosition);
+        const fishDistance = fishDirection.length();
 
-        const targetRotation = new THREE.Vector3(
-          targetPosition.current.x,
-          position[1],
-          targetPosition.current.z
-        );
-        const lookAtDirection = targetRotation.sub(currentPosition).normalize();
-        const angle = Math.atan2(lookAtDirection.x, lookAtDirection.z);
-        modelRef.current.rotation.y = THREE.MathUtils.lerp(
-          modelRef.current.rotation.y,
-          angle,
-          0.1
-        );
+        if (fishDistance > 0.5) {
+          // 當企鵝距離魚還有0.5的距離時，繼續向魚的位置移動
+          fishDirection.normalize().multiplyScalar(speed * 0.1);
+          currentPosition.add(fishDirection);
+        } else {
+          // 當企鵝到達魚的旁邊時，停止移動
+          targetPosition.current.set(
+            Math.random() * (maxX - minX) + minX,
+            position[1],
+            Math.random() * (maxZ - minZ) + minZ
+          );
+        }
       } else {
-        targetPosition.current.set(
-          Math.random() * (maxX - minX) + minX,
-          position[1],
-          Math.random() * (maxZ - minZ) + minZ
-        );
+        // 如果沒有魚的位置，則保持原有的隨機移動邏輯
+        if (distance > 0.1) {
+          direction.normalize().multiplyScalar(speed * 0.1);
+          currentPosition.add(direction);
+
+          const targetRotation = new THREE.Vector3(
+            targetPosition.current.x,
+            position[1],
+            targetPosition.current.z
+          );
+          const lookAtDirection = targetRotation
+            .sub(currentPosition)
+            .normalize();
+          const angle = Math.atan2(lookAtDirection.x, lookAtDirection.z);
+          modelRef.current.rotation.y = THREE.MathUtils.lerp(
+            modelRef.current.rotation.y,
+            angle,
+            0.1
+          );
+        } else {
+          targetPosition.current.set(
+            Math.random() * (maxX - minX) + minX,
+            position[1],
+            Math.random() * (maxZ - minZ) + minZ
+          );
+        }
       }
 
       if (isFollowing) {
@@ -86,7 +110,6 @@ const MovingModel: React.FC<MovingModelProps> = ({
       }
     }
   });
-
   const handleClick = () => {
     console.log(`Model with id ${id} clicked!`);
     setIsFollowing((prev) => !prev);
