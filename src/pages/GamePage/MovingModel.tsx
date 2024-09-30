@@ -6,7 +6,6 @@ import ModelInstructions from "./ModelInstructions";
 
 interface MovingModelProps {
   id: number;
-  position: [number, number, number];
   minX: number;
   maxX: number;
   minZ: number;
@@ -20,7 +19,6 @@ interface MovingModelProps {
 
 const MovingModel: React.FC<MovingModelProps> = ({
   id,
-  position,
   minX,
   maxX,
   minZ,
@@ -33,6 +31,17 @@ const MovingModel: React.FC<MovingModelProps> = ({
 }) => {
   const { scene } = useGLTF("BBpenguinCenter.glb");
   const modelRef = useRef<THREE.Group>(null!);
+
+  const { camera } = useThree();
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const speed = 1;
+
+  const randomX = Math.random() * (maxX - minX) + minX;
+  const randomZ = Math.random() * (maxZ - minZ) + minZ;
+  const position = [randomX, 6, randomZ];
+
   const targetPosition = useRef<THREE.Vector3>(
     new THREE.Vector3(
       Math.random() * (maxX - minX) + minX,
@@ -40,12 +49,6 @@ const MovingModel: React.FC<MovingModelProps> = ({
       Math.random() * (maxZ - minZ) + minZ
     )
   );
-
-  const { camera } = useThree();
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
-
-  const speed = 1;
 
   useFrame(() => {
     if (modelRef.current) {

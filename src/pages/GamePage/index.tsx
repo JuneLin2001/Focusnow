@@ -31,12 +31,9 @@ const GamePage = () => {
   }, [analyticsList]);
 
   // 隨機位置
-  const randomPositions = useMemo(() => {
+  const penguinDatas = useMemo(() => {
     return filteredAnalytics.map((analytics) => {
-      const randomX = Math.random() * (maxX - minX) + minX;
-      const randomZ = Math.random() * (maxZ - minZ) + minZ;
       return {
-        position: [randomX, 6, randomZ] as [number, number, number],
         date: new Date(analytics.startTime.seconds * 1000).toLocaleDateString(),
         focusDuration: analytics.focusDuration,
         todoTitles: analytics.todos
@@ -44,7 +41,7 @@ const GamePage = () => {
           .map((todo) => todo.title),
       };
     });
-  }, [filteredAnalytics, minX, maxX, minZ, maxZ]);
+  }, [filteredAnalytics]);
 
   const handleDropFish = () => {
     const randomX = Math.random() * (maxX - minX) + minX;
@@ -99,18 +96,17 @@ const GamePage = () => {
           onClose={handleClose}
         />
 
-        {randomPositions.map((randomPosition, index: number) => (
+        {penguinDatas.map((penguinData, index: number) => (
           <MovingModel
             key={index}
             id={index}
-            position={randomPosition.position}
             minX={minX}
             maxX={maxX}
             minZ={minZ}
             maxZ={maxZ}
-            focusDate={randomPosition.date}
-            focusDuration={randomPosition.focusDuration}
-            todoTitles={randomPosition.todoTitles}
+            focusDate={penguinData.date}
+            focusDuration={penguinData.focusDuration}
+            todoTitles={penguinData.todoTitles}
             fishPosition={fishPosition}
             setFishPosition={setFishPosition}
           />
