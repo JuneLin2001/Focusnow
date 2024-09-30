@@ -8,12 +8,12 @@ import FishModel from "./FishModel"; // 導入 FishModel
 import { Html } from "@react-three/drei";
 
 const GamePage = () => {
-  const position: [number, number, number] = useMemo(() => [80, 6, 0], []);
+  const position: [number, number, number] = useMemo(() => [80, 6, -30], []);
   const { analyticsList, setAnalyticsList } = useAnalyticsStore();
   const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
 
-  const width = 100;
-  const depth = 200;
+  const width = 190;
+  const depth = 240;
   const speed = 1;
 
   const minX = position[0] - width / 2;

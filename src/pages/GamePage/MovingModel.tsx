@@ -60,7 +60,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
 
         if (fishDistance > 0.5) {
           // 當企鵝距離魚還有0.5的距離時，繼續向魚的位置移動
-          fishDirection.normalize().multiplyScalar(speed * 0.1);
+          fishDirection.normalize().multiplyScalar(speed * 0.3);
           currentPosition.add(fishDirection);
         } else {
           // 當企鵝到達魚的旁邊時，停止移動
