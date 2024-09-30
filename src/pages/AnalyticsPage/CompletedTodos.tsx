@@ -1,7 +1,7 @@
 import React from "react";
 import { UserAnalytics } from "../../types/type";
 import { List, ListItem, ListItemText, Typography } from "@mui/material";
-import dayjs from "dayjs"; // 確保引入 Day.js
+import dayjs from "dayjs";
 
 interface CompletedTodosProps {
   filteredAnalytics: UserAnalytics[];
@@ -23,6 +23,7 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
                     border: "1px solid #ccc",
                     borderRadius: "4px",
                     marginBottom: "8px",
+                    backgroundColor: "#f5f5f5",
                   }}
                 >
                   <ListItemText>

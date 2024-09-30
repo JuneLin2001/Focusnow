@@ -169,8 +169,7 @@ const AnalyticsPage = () => {
           />
         </div>
       </div>
-      <div>
-        <p>CompletedTodos：</p>
+      <div className="ml-4 ">
         <CompletedTodos filteredAnalytics={filteredAnalytics} />
       </div>
       <AnalyticsFetcher onDataFetched={handleDataFetched} />
