@@ -13,8 +13,6 @@ import CameraController from "./CameraController";
 import ResponsiveAppBar from "../../components/Header/ResponsiveAppBar";
 import TimerDisplay from "../TimerPage/TimerDisplay";
 
-import Snowflakes from "./Snowflakes";
-
 import settingStore from "../../store/settingStore";
 
 const LandingPage = () => {
@@ -51,7 +49,6 @@ const LandingPage = () => {
         <Environment preset={themeMode === "light" ? "warehouse" : "night"} />
         <GamePage />
         <Mainland position={[-16, 2, 0]} />
-        <Snowflakes />
 
         <Igloo
           position={[-114, 2, -16]}
