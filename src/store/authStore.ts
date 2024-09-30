@@ -2,8 +2,6 @@ import { create } from "zustand";
 import { User, signOut } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
-import { useLast30DaysFocusDurationStore } from "../store/last30DaysFocusDurationStore";
-import { useAnalyticsStore } from "../store/analyticsStore";
 
 interface AuthState {
   user: User | null;
@@ -26,24 +24,15 @@ const useAuthStore = create<AuthState>((set) => ({
           email,
           photoURL,
         });
-
-        const { analyticsList } = useAnalyticsStore.getState();
-        const { setLast30DaysFocusDuration } =
-          useLast30DaysFocusDurationStore.getState();
-        setLast30DaysFocusDuration(analyticsList);
       } catch (error) {
         console.error("Error updating user data:", error);
       }
     }
   },
   logout: async () => {
-    const { setLast30DaysFocusDuration } =
-      useLast30DaysFocusDurationStore.getState();
-
     try {
       await signOut(auth);
       set({ user: null });
-      setLast30DaysFocusDuration([]);
     } catch (error) {
       console.error("Logout error", error);
     }

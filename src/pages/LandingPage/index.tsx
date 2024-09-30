@@ -12,7 +12,6 @@ import OceanModel from "../../models/OceanModel";
 import CameraController from "./CameraController";
 import ResponsiveAppBar from "../../components/Header/ResponsiveAppBar";
 import { useAnalyticsStore } from "../../store/analyticsStore";
-import { useLast30DaysFocusDurationStore } from "../../store/last30DaysFocusDurationStore";
 import TimerDisplay from "../TimerPage/TimerDisplay";
 
 import Sign from "../LandingPage/Sign";
@@ -32,16 +31,24 @@ const LandingPage = () => {
   const [page, setPage] = useState<
     "timer" | "analytics" | "game" | "SignInstructions" | null
   >(null);
+  const [last30DaysFocusDuration, setLast30DaysFocusDuration] =
+    useState<number>(0);
 
   const { analyticsList } = useAnalyticsStore();
-  const { setLast30DaysFocusDuration, last30DaysFocusDuration } =
-    useLast30DaysFocusDurationStore();
 
   useEffect(() => {
-    if (analyticsList.length > 0) {
-      setLast30DaysFocusDuration(analyticsList);
-    }
-  }, [analyticsList, setLast30DaysFocusDuration]);
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30); // 計算30天前的日期
+    const duration = analyticsList.reduce((total, analytics) => {
+      const analyticsDate = new Date(analytics.startTime.seconds * 1000);
+      if (analyticsDate >= thirtyDaysAgo) {
+        return total + analytics.focusDuration; // 累加符合條件的專注時間
+      }
+      return total;
+    }, 0);
+
+    setLast30DaysFocusDuration(duration);
+  }, [analyticsList]);
 
   const handleCloseInstructions = () => {
     setPage(null);
