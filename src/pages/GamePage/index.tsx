@@ -1,12 +1,11 @@
 import { useMemo } from "react";
 import MovingModel from "./MovingModel";
-
 import { useAnalyticsStore } from "../../store/analyticsStore";
+import AnalyticsFetcher from "../../components/AnalyticsFetcher";
 
 const GamePage = () => {
   const position: [number, number, number] = useMemo(() => [80, 6, 0], []);
-
-  const analyticsList = useAnalyticsStore((state) => state.analyticsList);
+  const { analyticsList, setAnalyticsList } = useAnalyticsStore();
 
   const width = 100;
   const depth = 200;
@@ -21,60 +20,48 @@ const GamePage = () => {
     return analyticsList.filter((analytics) => analytics.focusDuration > 15);
   }, [analyticsList]);
 
-  const randomPositions: {
-    position: [number, number, number];
-    date: string;
-    focusDuration: number;
-    todoTitles: string[];
-  }[] = useMemo(() => {
+  const randomPositions = useMemo(() => {
     return filteredAnalytics.map((analytics) => {
       const randomX = Math.random() * (maxX - minX) + minX;
       const randomZ = Math.random() * (maxZ - minZ) + minZ;
-
-      const focusDate = new Date(
-        analytics.startTime.seconds * 1000
-      ).toLocaleDateString();
-
-      const focusDuration = analytics.focusDuration;
-
-      const todoTitles = Array.isArray(analytics.todos)
-        ? analytics.todos
-            .filter((todo) => todo.completed)
-            .map((todo) => todo.title)
-        : [];
-
       return {
-        position: [randomX, position[1], randomZ] as [number, number, number],
-        date: focusDate,
-        focusDuration,
-        todoTitles,
+        position: [randomX, 6, randomZ] as [number, number, number],
+        date: new Date(analytics.startTime.seconds * 1000).toLocaleDateString(),
+        focusDuration: analytics.focusDuration,
+        todoTitles: analytics.todos
+          .filter((todo) => todo.completed)
+          .map((todo) => todo.title),
       };
     });
-  }, [filteredAnalytics, minX, maxX, minZ, maxZ, position]);
+  }, [filteredAnalytics, minX, maxX, minZ, maxZ]);
 
   return (
-    <group>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={position}>
-        <boxGeometry args={[width, depth, 5]} />
-        <meshStandardMaterial transparent wireframe />
-      </mesh>
+    <>
+      <AnalyticsFetcher onDataFetched={setAnalyticsList} />
 
-      {randomPositions.map((randomPosition, index: number) => (
-        <MovingModel
-          key={index}
-          id={index}
-          position={randomPosition.position}
-          minX={minX}
-          maxX={maxX}
-          minZ={minZ}
-          maxZ={maxZ}
-          speed={speed}
-          focusDate={randomPosition.date}
-          focusDuration={randomPosition.focusDuration}
-          todoTitles={randomPosition.todoTitles}
-        />
-      ))}
-    </group>
+      <group>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={position}>
+          <boxGeometry args={[width, depth, 5]} />
+          <meshStandardMaterial transparent wireframe />
+        </mesh>
+
+        {randomPositions.map((randomPosition, index: number) => (
+          <MovingModel
+            key={index}
+            id={index}
+            position={randomPosition.position}
+            minX={minX}
+            maxX={maxX}
+            minZ={minZ}
+            maxZ={maxZ}
+            speed={speed}
+            focusDate={randomPosition.date}
+            focusDuration={randomPosition.focusDuration}
+            todoTitles={randomPosition.todoTitles}
+          />
+        ))}
+      </group>
+    </>
   );
 };
 

@@ -1,14 +1,13 @@
-import { useEffect, useState, useCallback } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
-import useAuthStore from "../../store/authStore";
-import { useAnalyticsStore } from "../../store/analyticsStore";
-import { UserAnalytics } from "../../types/type";
+import { useState, useCallback } from "react";
 import dayjs from "dayjs";
-import DateSelector from "./DateSelector";
-import CompletedTodos from "./CompletedTodos";
 import { ChartData } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { UserAnalytics } from "../../types/type";
+import useAuthStore from "../../store/authStore";
+import { useAnalyticsStore } from "../../store/analyticsStore";
+import DateSelector from "./DateSelector";
+import CompletedTodos from "./CompletedTodos";
+import AnalyticsFetcher from "../../components/AnalyticsFetcher";
 
 import {
   Chart,
@@ -24,8 +23,7 @@ Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const AnalyticsPage = () => {
   const { user } = useAuthStore();
-  const { filteredAnalytics, setAnalyticsList, setFilteredAnalytics } =
-    useAnalyticsStore();
+  const { filteredAnalytics, setFilteredAnalytics } = useAnalyticsStore();
 
   const [filterType, setFilterType] = useState<"daily" | "weekly" | "monthly">(
     "daily"
@@ -61,7 +59,6 @@ const AnalyticsPage = () => {
 
       filteredData.forEach((analytics) => {
         const dateKey = dayjs.unix(analytics.startTime.seconds);
-
         const formattedKey =
           filterType === "daily"
             ? dateKey.startOf("hour").format("HH:mm")
@@ -97,76 +94,42 @@ const AnalyticsPage = () => {
     [filterType]
   );
 
-  useEffect(() => {
-    if (user) {
-      const fetchAnalytics = async () => {
-        try {
-          const analyticsCollectionRef = collection(
-            db,
-            "users",
-            user.uid,
-            "analytics"
-          );
-          const analyticsSnapshot = await getDocs(analyticsCollectionRef);
+  // 處理從 AnalyticsFetcher 獲取的數據
+  const handleDataFetched = useCallback(
+    (sortedAnalytics: UserAnalytics[]) => {
+      const { start, end } = calculateDateRange();
+      const filteredData = sortedAnalytics.filter((analytics) => {
+        const analyticsDate = dayjs.unix(analytics.startTime.seconds);
+        return (
+          analyticsDate.isSame(start, "day") ||
+          analyticsDate.isSame(end, "day") ||
+          (analyticsDate.isAfter(start) && analyticsDate.isBefore(end))
+        );
+      });
 
-          if (!analyticsSnapshot.empty) {
-            const data = analyticsSnapshot.docs.map((doc) =>
-              doc.data()
-            ) as UserAnalytics[];
+      setFilteredAnalytics(filteredData);
 
-            const sortedAnalytics = data.sort((a, b) =>
-              a.startTime.seconds < b.startTime.seconds ? 1 : -1
-            );
+      const mergedResults = mergeData(filteredData, start, end);
+      const chartLabels = mergedResults.map((item) => item.date);
+      const chartFocusDurations = mergedResults.map((item) => item.duration);
 
-            setAnalyticsList(sortedAnalytics);
+      setTotalFocusDuration(
+        mergedResults.reduce((acc, item) => acc + item.duration, 0)
+      );
 
-            const { start, end } = calculateDateRange();
-            const filteredData = sortedAnalytics.filter((analytics) => {
-              const analyticsDate = dayjs.unix(analytics.startTime.seconds);
-              return (
-                analyticsDate.isSame(start, "day") ||
-                analyticsDate.isSame(end, "day") ||
-                (analyticsDate.isAfter(start) && analyticsDate.isBefore(end))
-              );
-            });
-
-            setFilteredAnalytics(filteredData);
-
-            const mergedResults = mergeData(filteredData, start, end);
-            const chartLabels = mergedResults.map((item) => item.date);
-            const chartFocusDurations = mergedResults.map(
-              (item) => item.duration
-            );
-
-            setTotalFocusDuration(
-              mergedResults.reduce((acc, item) => acc + item.duration, 0)
-            );
-
-            setChartData({
-              labels: chartLabels,
-              datasets: [
-                {
-                  label: "專注時長（分鐘）",
-                  data: chartFocusDurations,
-                  backgroundColor: "rgba(75, 192, 192, 0.6)",
-                },
-              ],
-            });
-          }
-        } catch (error) {
-          console.error("Error fetching user analytics", error);
-        }
-      };
-
-      fetchAnalytics();
-    }
-  }, [
-    user,
-    calculateDateRange,
-    setAnalyticsList,
-    setFilteredAnalytics,
-    mergeData,
-  ]);
+      setChartData({
+        labels: chartLabels,
+        datasets: [
+          {
+            label: "專注時長（分鐘）",
+            data: chartFocusDurations,
+            backgroundColor: "rgba(75, 192, 192, 0.6)",
+          },
+        ],
+      });
+    },
+    [calculateDateRange, mergeData, setFilteredAnalytics]
+  );
 
   if (!user) {
     return (
@@ -177,7 +140,7 @@ const AnalyticsPage = () => {
   }
 
   return (
-    <div className="flex  pt-24">
+    <div className="flex pt-24">
       <div className="bg-gray-100 p-4">
         <h2 className="text-xl font-semibold">
           Total Focus Duration: {totalFocusDuration} minutes
@@ -210,6 +173,7 @@ const AnalyticsPage = () => {
         <p>CompletedTodos：</p>
         <CompletedTodos filteredAnalytics={filteredAnalytics} />
       </div>
+      <AnalyticsFetcher onDataFetched={handleDataFetched} />
     </div>
   );
 };

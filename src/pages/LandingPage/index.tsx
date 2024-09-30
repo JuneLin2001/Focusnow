@@ -116,7 +116,6 @@ const LandingPage = () => {
           <GizmoViewport labelColor="white" axisHeadScale={1} />
         </GizmoHelper>
       </Canvas>
-
       <TimerDisplay />
     </>
   );
