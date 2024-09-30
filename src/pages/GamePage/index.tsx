@@ -8,6 +8,7 @@ import { Html } from "@react-three/drei";
 import Sign from "./Sign";
 import SignInstructions from "./SignInstructions";
 import Snowflakes from "./Snowflakes";
+import FishesCountFetcher from "../../components/AchievementsFetcher";
 
 const GamePage = () => {
   const position: [number, number, number] = useMemo(() => [80, 6, -30], []);
@@ -77,6 +78,7 @@ const GamePage = () => {
 
   return (
     <>
+      <FishesCountFetcher />
       <Suspense fallback={<div>Loading...</div>}>
         <AnalyticsFetcher onDataFetched={setAnalyticsList} />
         <Snowflakes />
