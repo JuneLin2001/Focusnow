@@ -69,8 +69,8 @@ const GamePage = () => {
           db,
           "users",
           user.uid,
-          "achievements",
-          "FishesCount"
+          "fishesCount",
+          "fishesCount"
         );
 
         await updateDoc(fishesCountDocRef, {

@@ -17,8 +17,8 @@ const FishesCountFetcher: React.FC = () => {
           db,
           "users",
           user.uid,
-          "achievements",
-          "FishesCount"
+          "fishesCount",
+          "fishesCount"
         );
         const fishesCountDoc = await getDoc(fishesCountDocRef);
 
