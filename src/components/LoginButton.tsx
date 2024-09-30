@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import SettingsDialog from "./SettingsDialog";
+import AchievementsPage from "./AchievementsPage"; // 引入成就頁面組件
 
 interface LoginButtonProps {
   onLoginSuccess: () => void;
@@ -22,6 +23,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
   const { user, setUser, logout } = useAuthStore();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [openSettingsDialog, setOpenSettingsDialog] = useState(false);
+  const [openAchievements, setOpenAchievements] = useState(false); // 用於控制顯示成就頁面
   const resetAnalytics = useAnalyticsStore((state) => state.reset);
 
   const handleLogin = async () => {
@@ -31,12 +33,9 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
       const user = result.user;
       setUser(user);
 
-      // 獲取並儲存 localStorage 中的任務數據
       const taskDataString = localStorage.getItem("taskData");
       if (taskDataString) {
         const taskData = JSON.parse(taskDataString);
-
-        // 確保從 localStorage 獲取的 taskData 是符合格式的
         const taskDataToSave = {
           ...taskData,
           startTime: {
@@ -67,7 +66,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
           ),
         };
 
-        await saveTaskData(user, taskDataToSave); // 儲存任務數據到 Firestore
+        await saveTaskData(user, taskDataToSave);
       }
 
       onLoginSuccess();
@@ -94,12 +93,21 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
   };
 
   const handleOpenSettingsDialog = () => {
-    setOpenSettingsDialog(true); // 打開彈出視窗
-    handleCloseUserMenu(); // 關閉用戶菜單
+    setOpenSettingsDialog(true);
+    handleCloseUserMenu();
   };
 
   const handleCloseSettingsDialog = () => {
-    setOpenSettingsDialog(false); // 關閉彈出視窗
+    setOpenSettingsDialog(false);
+  };
+
+  const handleOpenAchievements = () => {
+    setOpenAchievements(true); // 打開成就頁面
+    handleCloseUserMenu();
+  };
+
+  const handleCloseAchievements = () => {
+    setOpenAchievements(false); // 關閉成就頁面
   };
 
   return (
@@ -151,6 +159,11 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
           <MenuItem onClick={handleOpenSettingsDialog}>
             <Typography sx={{ textAlign: "center" }}>Settings</Typography>
           </MenuItem>
+          <MenuItem onClick={handleOpenAchievements}>
+            {" "}
+            {/* 添加成就菜單項 */}
+            <Typography sx={{ textAlign: "center" }}>Achievements</Typography>
+          </MenuItem>
           <MenuItem onClick={handleLogout}>
             <Typography sx={{ textAlign: "center" }}>Logout</Typography>
           </MenuItem>
@@ -161,6 +174,11 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
       <SettingsDialog
         open={openSettingsDialog}
         onClose={handleCloseSettingsDialog}
+      />
+
+      <AchievementsPage
+        open={openAchievements}
+        onClose={handleCloseAchievements}
       />
     </>
   );
