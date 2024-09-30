@@ -144,7 +144,7 @@ const GamePage = () => {
           />
         ))}
 
-        <Html>
+        <Html position={[-100, 10, 0]}>
           <div className="flex">
             <p>fishesCount: {fishesCount}</p>
             <button className="mr-4" onClick={handleDropFish}>
