@@ -79,6 +79,7 @@ const GamePage = () => {
             focusDuration={randomPosition.focusDuration}
             todoTitles={randomPosition.todoTitles}
             fishPosition={fishPosition} // 傳遞魚的位置
+            setFishPosition={setFishPosition} // 傳遞設置魚的位置的函數
           />
         ))}
 

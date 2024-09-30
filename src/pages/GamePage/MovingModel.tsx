@@ -16,6 +16,7 @@ interface MovingModelProps {
   focusDuration: number;
   todoTitles: string[];
   fishPosition: THREE.Vector3 | null; // 新增 fishPosition 屬性
+  setFishPosition: (position: THREE.Vector3 | null) => void; // 接收設置魚位置的函數
 }
 
 const MovingModel: React.FC<MovingModelProps> = ({
@@ -30,6 +31,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
   focusDuration,
   todoTitles,
   fishPosition,
+  setFishPosition,
 }) => {
   const { scene } = useGLTF("BBpenguinCenter.glb");
   const modelRef = useRef<THREE.Group>(null!);
@@ -67,6 +69,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
             position[1],
             Math.random() * (maxZ - minZ) + minZ
           );
+          setFishPosition(null);
         }
       } else {
         // 如果沒有魚的位置，則保持原有的隨機移動邏輯
