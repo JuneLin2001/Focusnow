@@ -35,24 +35,26 @@ const MovingModel: React.FC<MovingModelProps> = ({
   const { camera } = useThree();
   const [isFollowing, setIsFollowing] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [currentPosition, setCurrentPosition] = useState<THREE.Vector3>(
+    new THREE.Vector3(
+      Math.random() * (maxX - minX) + minX,
+      6,
+      Math.random() * (maxZ - minZ) + minZ
+    )
+  );
 
   const speed = 1;
-
-  const randomX = Math.random() * (maxX - minX) + minX;
-  const randomZ = Math.random() * (maxZ - minZ) + minZ;
-  const position = [randomX, 6, randomZ];
 
   const targetPosition = useRef<THREE.Vector3>(
     new THREE.Vector3(
       Math.random() * (maxX - minX) + minX,
-      position[1],
+      currentPosition.y,
       Math.random() * (maxZ - minZ) + minZ
     )
   );
 
   useFrame(() => {
     if (modelRef.current) {
-      const currentPosition = modelRef.current.position;
       const direction = targetPosition.current.clone().sub(currentPosition);
       const distance = direction.length();
 
@@ -64,12 +66,12 @@ const MovingModel: React.FC<MovingModelProps> = ({
         if (fishDistance > 0.5) {
           // 當企鵝距離魚還有0.5的距離時，繼續向魚的位置移動
           fishDirection.normalize().multiplyScalar(speed * 0.3);
-          currentPosition.add(fishDirection);
+          setCurrentPosition((prev) => prev.clone().add(fishDirection));
         } else {
           // 當企鵝到達魚的旁邊時，停止移動
           targetPosition.current.set(
             Math.random() * (maxX - minX) + minX,
-            position[1],
+            currentPosition.y,
             Math.random() * (maxZ - minZ) + minZ
           );
           setFishPosition(null);
@@ -78,11 +80,11 @@ const MovingModel: React.FC<MovingModelProps> = ({
         // 如果沒有魚的位置，則保持原有的隨機移動邏輯
         if (distance > 0.1) {
           direction.normalize().multiplyScalar(speed * 0.1);
-          currentPosition.add(direction);
+          setCurrentPosition((prev) => prev.clone().add(direction));
 
           const targetRotation = new THREE.Vector3(
             targetPosition.current.x,
-            position[1],
+            currentPosition.y,
             targetPosition.current.z
           );
           const lookAtDirection = targetRotation
@@ -97,11 +99,14 @@ const MovingModel: React.FC<MovingModelProps> = ({
         } else {
           targetPosition.current.set(
             Math.random() * (maxX - minX) + minX,
-            position[1],
+            currentPosition.y,
             Math.random() * (maxZ - minZ) + minZ
           );
         }
       }
+
+      // 更新模型的位置
+      modelRef.current.position.copy(currentPosition);
 
       if (isFollowing) {
         camera.position.lerp(
@@ -116,6 +121,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
       }
     }
   });
+
   const handleClick = () => {
     console.log(`Model with id ${id} clicked!`);
     setIsFollowing((prev) => !prev);
@@ -131,7 +137,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
     <>
       <primitive
         object={scene.clone()}
-        position={position}
+        position={currentPosition} // 使用 currentPosition
         scale={[5, 5, 5]}
         rotation={[0, Math.PI / 2, 0]}
         ref={modelRef}
@@ -143,9 +149,9 @@ const MovingModel: React.FC<MovingModelProps> = ({
           todoTitles={todoTitles}
           onClose={handleCloseDialog}
           position={[
-            modelRef.current.position.x,
-            modelRef.current.position.y + 2,
-            modelRef.current.position.z,
+            currentPosition.x,
+            currentPosition.y + 2,
+            currentPosition.z,
           ]}
           focusDuration={focusDuration}
           open={openDialog}
