@@ -13,7 +13,6 @@ import {
   Typography,
 } from "@mui/material";
 import SettingsDialog from "./SettingsDialog";
-import AchievementsPage from "./AchievementsPage"; // 引入成就頁面組件
 
 interface LoginButtonProps {
   onLoginSuccess: () => void;
@@ -23,7 +22,6 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
   const { user, setUser, logout } = useAuthStore();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [openSettingsDialog, setOpenSettingsDialog] = useState(false);
-  const [openAchievements, setOpenAchievements] = useState(false); // 用於控制顯示成就頁面
   const resetAnalytics = useAnalyticsStore((state) => state.reset);
 
   const handleLogin = async () => {
@@ -101,15 +99,6 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
     setOpenSettingsDialog(false);
   };
 
-  const handleOpenAchievements = () => {
-    setOpenAchievements(true); // 打開成就頁面
-    handleCloseUserMenu();
-  };
-
-  const handleCloseAchievements = () => {
-    setOpenAchievements(false); // 關閉成就頁面
-  };
-
   return (
     <>
       <Tooltip
@@ -159,11 +148,6 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
           <MenuItem onClick={handleOpenSettingsDialog}>
             <Typography sx={{ textAlign: "center" }}>Settings</Typography>
           </MenuItem>
-          <MenuItem onClick={handleOpenAchievements}>
-            {" "}
-            {/* 添加成就菜單項 */}
-            <Typography sx={{ textAlign: "center" }}>Achievements</Typography>
-          </MenuItem>
           <MenuItem onClick={handleLogout}>
             <Typography sx={{ textAlign: "center" }}>Logout</Typography>
           </MenuItem>
@@ -174,11 +158,6 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
       <SettingsDialog
         open={openSettingsDialog}
         onClose={handleCloseSettingsDialog}
-      />
-
-      <AchievementsPage
-        open={openAchievements}
-        onClose={handleCloseAchievements}
       />
     </>
   );
