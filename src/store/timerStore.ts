@@ -4,6 +4,8 @@ import { saveTaskData } from "../firebase/firebaseService";
 import useAuthStore from "./authStore";
 import { useTodoStore } from "./todoStore";
 import { sendBrowserNotification } from "../utils/NotificationService";
+import { useFishesCountStore } from "./fishesCountStore"; // 確保你引入 FishesCountStore
+import FishesCountFetcher from "../components/FishesCountFetcher";
 
 interface TimerState {
   secondsLeft: number;
@@ -42,6 +44,10 @@ export const useTimerStore = create<TimerState>((set, get) => {
     setTimer: (minutes) => set({ secondsLeft: minutes * 60 }),
     setInputMinutes: (minutes) => set({ inputMinutes: minutes }),
     startTimer: () => {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
       set({ isPaused: false, startTime: new Date() });
       interval = setInterval(() => {
         set((state) => {
@@ -138,6 +144,11 @@ export const useTimerStore = create<TimerState>((set, get) => {
                   removeTodo(todo.id);
                 });
               localStorage.removeItem("taskData");
+
+              const { FishesCount, updateFishesCount } =
+                useFishesCountStore.getState();
+              updateFishesCount(inputMinutes);
+              FishesCountFetcher(user, FishesCount);
             })
             .catch((error) => {
               console.error("Error saving task data: ", error);

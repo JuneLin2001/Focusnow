@@ -10,8 +10,6 @@ import SignInstructions from "./SignInstructions";
 import Snowflakes from "./Snowflakes";
 import FishesCountFetcher from "../../components/FishesCountFetcher";
 import { useFishesCountStore } from "../../store/fishesCountStore"; // 引入 useFishesCountStore
-import { doc, updateDoc, increment } from "firebase/firestore"; // 引入 Firestore 的更新方法
-import { db } from "../../firebase/firebaseConfig"; // 引入 Firebase 配置
 import useAuthStore from "../../store/authStore";
 
 const GamePage = () => {
@@ -23,7 +21,9 @@ const GamePage = () => {
   const [showInstructions, setShowInstructions] = useState(false);
 
   const fishesCount = useFishesCountStore((state) => state.FishesCount); // 從 Zustand 中獲取 fishesCount
-  const setFishesCount = useFishesCountStore((state) => state.setFishesCount); // 用來更新 Zustand 的 fishesCount
+  const updateFishesCount = useFishesCountStore(
+    (state) => state.updateFishesCount
+  ); // 用來更新 fishesCount
 
   const { user } = useAuthStore(); // 從 useAuthStore 中獲取 user
 
@@ -54,33 +54,18 @@ const GamePage = () => {
   }, [filteredAnalytics]);
 
   const handleDropFish = async () => {
-    if (fishesCount > 0 && user) {
-      // 檢查 fishesCount 是否大於 0
-      const randomX = Math.random() * (maxX - minX) + minX;
-      const randomZ = Math.random() * (maxZ - minZ) + minZ;
-      setFishPosition(new THREE.Vector3(randomX, 10, randomZ));
+    if (user) {
+      if (fishesCount > 0) {
+        const randomX = Math.random() * (maxX - minX) + minX;
+        const randomZ = Math.random() * (maxZ - minZ) + minZ;
+        setFishPosition(new THREE.Vector3(randomX, 10, randomZ));
 
-      // 減少 Zustand 中的 fishesCount
-      setFishesCount(fishesCount - 1);
-
-      try {
-        // 減少 Firestore 中的 fishesCount
-        const fishesCountDocRef = doc(
-          db,
-          "users",
-          user.uid,
-          "fishesCount",
-          "fishesCount"
-        );
-
-        await updateDoc(fishesCountDocRef, {
-          FishesCount: increment(-1), // 使用 Firestore 的 increment 函數減少 fishesCount
-        });
-      } catch (error) {
-        console.error("Error updating Firestore fishes count:", error);
+        await updateFishesCount(-1);
+      } else {
+        alert("沒有魚可以放置了，每專注1分鐘可以獲得1條魚！");
       }
     } else {
-      console.log("No more fishes to drop!");
+      alert("尚未登入！");
     }
   };
 
@@ -144,7 +129,7 @@ const GamePage = () => {
           />
         ))}
 
-        <Html position={[-100, 10, 0]}>
+        <Html>
           <div className="flex">
             <p>fishesCount: {fishesCount}</p>
             <button className="mr-4" onClick={handleDropFish}>
