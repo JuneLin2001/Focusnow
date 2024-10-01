@@ -12,11 +12,10 @@ const TodoList = () => {
     setIsOpen(!isOpen);
   };
 
-  // 新增 todo 項目
   const handleAddTodo = () => {
-    if (newTodoTitle.trim() === "") return; // 避免空白的 todo
+    if (newTodoTitle.trim() === "") return;
     addTodo(newTodoTitle);
-    setNewTodoTitle(""); // 清空輸入框
+    setNewTodoTitle("");
   };
 
   return (
@@ -28,9 +27,11 @@ const TodoList = () => {
         {isOpen ? "Close" : "Open"}
       </button>
       <div
-        className={`fixed bottom-0 right-0 w-[500px] h-[600px] bg-white z-10 flex flex-col p-5 outline transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-y-0" : "translate-y-[580px]"
-        }`} //TODO: 改一下大小
+        className={`fixed top-1/2 left-1/2 w-[500px] h-auto bg-white z-10 flex flex-col p-5 outline transition-transform duration-500 ease-in-out transform ${
+          isOpen
+            ? "scale-100 translate-x-[200px] translate-y-[-50%]" // 冒出後向右移動 200px
+            : "scale-0 translate-x-[-50%] translate-y-[-50%]" // 初始狀態縮小並居中
+        }`}
       >
         <h2 className="text-xl mb-4">Todo List</h2>
 
@@ -63,7 +64,9 @@ const TodoList = () => {
                 type="text"
                 value={todo.title}
                 onChange={(e) => editTodoTitle(todo.id, e.target.value)}
-                className={`flex-grow p-1 ${todo.completed ? "line-through text-gray-500" : ""} text-xl`}
+                className={`flex-grow p-1 ${
+                  todo.completed ? "line-through text-gray-500" : ""
+                } text-xl`}
               />
               <button
                 onClick={() => removeTodo(todo.id)}
