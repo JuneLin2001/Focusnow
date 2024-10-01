@@ -68,7 +68,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
           fishDirection.normalize().multiplyScalar(speed * 0.3);
           setCurrentPosition((prev) => prev.clone().add(fishDirection));
         } else {
-          // 當企鵝到達魚的旁邊時，停止移動
+          // 當企鵝到達魚的旁邊時，隨機生成新的目標位置
           targetPosition.current.set(
             Math.random() * (maxX - minX) + minX,
             currentPosition.y,
@@ -122,7 +122,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
     }
   });
 
-  const handleClick = () => {
+  const handlePointerDown = () => {
     console.log(`Model with id ${id} clicked!`);
     setIsFollowing((prev) => !prev);
     setOpenDialog(true);
@@ -141,7 +141,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
         scale={[5, 5, 5]}
         rotation={[0, Math.PI / 2, 0]}
         ref={modelRef}
-        onClick={handleClick}
+        onPointerDown={handlePointerDown} // 使用 onPointerDown
       />
       {modelRef.current && (
         <ModelInstructions
