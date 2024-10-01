@@ -1,14 +1,14 @@
 import { Suspense, useMemo, useState, useEffect } from "react";
 import MovingModel from "./MovingModel";
 import { useAnalyticsStore } from "../../store/analyticsStore";
-import AnalyticsFetcher from "../../components/AnalyticsFetcher";
+import AnalyticsFetcher from "../../utils/AnalyticsFetcher";
 import * as THREE from "three";
 import FishModel from "./FishModel";
 import { Html } from "@react-three/drei";
 import Sign from "./Sign";
 import SignInstructions from "./SignInstructions";
 import Snowflakes from "./Snowflakes";
-import FishesCountFetcher from "../../components/FishesCountFetcher";
+import FishesCountFetcher from "../../utils/FishesCountFetcher";
 import { useFishesCountStore } from "../../store/fishesCountStore"; // 引入 useFishesCountStore
 import useAuthStore from "../../store/authStore";
 

@@ -1,6 +1,6 @@
 // FishesCountFetcher.tsx
 import { useEffect, useCallback } from "react";
-import { doc, getDoc } from "firebase/firestore"; // 用 doc 和 getDoc 來讀取單個文檔
+import { doc, getDoc, setDoc } from "firebase/firestore"; // 用 doc 和 getDoc 來讀取單個文檔
 import { db } from "../firebase/firebaseConfig";
 import useAuthStore from "../store/authStore";
 import { useFishesCountStore } from "../store/fishesCountStore"; // 假設你有一個用來管理 FishesCount 的 Zustand store
@@ -30,9 +30,19 @@ const FishesCountFetcher: React.FC = () => {
             console.log("FishesCount:", fishesCount);
           } else {
             console.error("FishesCount field is missing in the document");
+            // 如果沒有 FishesCount 欄位，您可以選擇初始化
+            await setDoc(
+              fishesCountDocRef,
+              { FishesCount: 0 },
+              { merge: true }
+            );
+            setFishesCount(0); // 設置默認值
           }
         } else {
           console.error("FishesCount document does not exist");
+          // 如果文檔不存在，您可以創建一個新的文檔並初始化
+          await setDoc(fishesCountDocRef, { FishesCount: 0 });
+          setFishesCount(0); // 設置默認值
         }
       } catch (error) {
         console.error("Error fetching user fishes count", error);

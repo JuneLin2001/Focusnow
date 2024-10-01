@@ -5,7 +5,7 @@ import useAuthStore from "./authStore";
 import { useTodoStore } from "./todoStore";
 import { sendBrowserNotification } from "../utils/NotificationService";
 import { useFishesCountStore } from "./fishesCountStore"; // 確保你引入 FishesCountStore
-import FishesCountFetcher from "../components/FishesCountFetcher";
+import FishesCountFetcher from "../utils/FishesCountFetcher";
 
 interface TimerState {
   secondsLeft: number;

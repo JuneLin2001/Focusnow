@@ -7,7 +7,7 @@ import useAuthStore from "../../store/authStore";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import DateSelector from "./DateSelector";
 import CompletedTodos from "./CompletedTodos";
-import AnalyticsFetcher from "../../components/AnalyticsFetcher";
+import AnalyticsFetcher from "../../utils/AnalyticsFetcher";
 
 import {
   Chart,
