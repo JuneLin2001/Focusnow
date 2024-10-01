@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useTodoStore } from "../../store/todoStore";
+import IconButton from "@mui/material/IconButton";
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 
 const TodoList = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -20,16 +23,26 @@ const TodoList = () => {
 
   return (
     <>
-      <button
+      <IconButton
         onClick={toggleSidebar}
-        className="absolute bottom-4 right-4 z-20 bg-purple-500 text-white p-2 ml-96 rounded"
+        sx={{
+          zIndex: 20,
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(150px, -50%)",
+        }}
       >
-        {isOpen ? "Close" : "Open"}
-      </button>
+        {isOpen ? (
+          <KeyboardDoubleArrowLeftIcon />
+        ) : (
+          <KeyboardDoubleArrowRightIcon />
+        )}
+      </IconButton>
       <div
         className={`fixed top-1/2 left-1/2 w-[500px] h-auto bg-white z-10 flex flex-col p-5 outline transition-transform duration-500 ease-in-out transform ${
           isOpen
-            ? "scale-100 translate-x-[200px] translate-y-[-50%]" // 冒出後向右移動 200px
+            ? "scale-100 translate-x-[250px] translate-y-[-50%]" // 冒出後向右移動 200px
             : "scale-0 translate-x-[-50%] translate-y-[-50%]" // 初始狀態縮小並居中
         }`}
       >

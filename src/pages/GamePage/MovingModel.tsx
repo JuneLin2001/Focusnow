@@ -137,7 +137,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
     <>
       <primitive
         object={scene.clone()}
-        position={currentPosition} // 使用 currentPosition
+        position={currentPosition}
         scale={[5, 5, 5]}
         rotation={[0, Math.PI / 2, 0]}
         ref={modelRef}
