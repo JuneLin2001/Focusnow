@@ -13,8 +13,8 @@ interface MovingModelProps {
   focusDate: string;
   focusDuration: number;
   todoTitles: string[];
-  fishPosition: THREE.Vector3 | null; // 新增 fishPosition 屬性
-  setFishPosition: (position: THREE.Vector3 | null) => void; // 接收設置魚位置的函數
+  fishPosition: THREE.Vector3 | null;
+  setFishPosition: (position: THREE.Vector3 | null) => void;
 }
 
 const MovingModel: React.FC<MovingModelProps> = ({
@@ -58,17 +58,14 @@ const MovingModel: React.FC<MovingModelProps> = ({
       const direction = targetPosition.current.clone().sub(currentPosition);
       const distance = direction.length();
 
-      // 如果有魚的位置，就移動到魚的位置
       if (fishPosition) {
         const fishDirection = fishPosition.clone().sub(currentPosition);
         const fishDistance = fishDirection.length();
 
         if (fishDistance > 0.5) {
-          // 當企鵝距離魚還有0.5的距離時，繼續向魚的位置移動
           fishDirection.normalize().multiplyScalar(speed * 0.3);
           setCurrentPosition((prev) => prev.clone().add(fishDirection));
         } else {
-          // 當企鵝到達魚的旁邊時，隨機生成新的目標位置
           targetPosition.current.set(
             Math.random() * (maxX - minX) + minX,
             currentPosition.y,
@@ -77,7 +74,6 @@ const MovingModel: React.FC<MovingModelProps> = ({
           setFishPosition(null);
         }
       } else {
-        // 如果沒有魚的位置，則保持原有的隨機移動邏輯
         if (distance > 0.1) {
           direction.normalize().multiplyScalar(speed * 0.1);
           setCurrentPosition((prev) => prev.clone().add(direction));
@@ -105,7 +101,6 @@ const MovingModel: React.FC<MovingModelProps> = ({
         }
       }
 
-      // 更新模型的位置
       modelRef.current.position.copy(currentPosition);
 
       if (isFollowing) {
@@ -141,7 +136,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
         scale={[5, 5, 5]}
         rotation={[0, Math.PI / 2, 0]}
         ref={modelRef}
-        onPointerDown={handlePointerDown} // 使用 onPointerDown
+        onPointerDown={handlePointerDown}
       />
       {modelRef.current && (
         <ModelInstructions

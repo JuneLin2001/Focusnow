@@ -130,9 +130,9 @@ const GamePage = () => {
         ))}
 
         <Html>
-          <div className="flex">
-            <p>fishesCount: {fishesCount}</p>
-            <button className="mr-4" onClick={handleDropFish}>
+          <div className="fixed bottom-40 right-0 p-4 bg-white opacity-80 z-10">
+            <p className="w-32 bg-white">fishesCount: {fishesCount}</p>
+            <button className="w-32 bg-white" onClick={handleDropFish}>
               放下魚
             </button>
           </div>
