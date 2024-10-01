@@ -1,18 +1,15 @@
-// FishesCountFetcher.tsx
 import { useEffect, useCallback } from "react";
-import { doc, getDoc, setDoc } from "firebase/firestore"; // 用 doc 和 getDoc 來讀取單個文檔
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import useAuthStore from "../store/authStore";
-import { useFishesCountStore } from "../store/fishesCountStore"; // 假設你有一個用來管理 FishesCount 的 Zustand store
-
+import { useFishesCountStore } from "../store/fishesCountStore";
 const FishesCountFetcher: React.FC = () => {
-  const { user } = useAuthStore(); // 獲取用戶
-  const { setFishesCount } = useFishesCountStore(); // 獲取 setFishesCount 方法
+  const { user } = useAuthStore();
+  const { setFishesCount } = useFishesCountStore();
 
   const fetchFishesCount = useCallback(async () => {
     if (user) {
       try {
-        // 指向特定用戶下的 FishesCount 文檔
         const fishesCountDocRef = doc(
           db,
           "users",
@@ -24,25 +21,23 @@ const FishesCountFetcher: React.FC = () => {
 
         if (fishesCountDoc.exists()) {
           const fishesCountData = fishesCountDoc.data();
-          const fishesCount = fishesCountData?.FishesCount; // 提取 FishesCount 欄位值
+          const fishesCount = fishesCountData?.FishesCount;
           if (fishesCount !== undefined) {
-            setFishesCount(fishesCount); // 更新 Zustand store
+            setFishesCount(fishesCount);
             console.log("FishesCount:", fishesCount);
           } else {
             console.error("FishesCount field is missing in the document");
-            // 如果沒有 FishesCount 欄位，您可以選擇初始化
             await setDoc(
               fishesCountDocRef,
               { FishesCount: 0 },
               { merge: true }
             );
-            setFishesCount(0); // 設置默認值
+            setFishesCount(0);
           }
         } else {
           console.error("FishesCount document does not exist");
-          // 如果文檔不存在，您可以創建一個新的文檔並初始化
           await setDoc(fishesCountDocRef, { FishesCount: 0 });
-          setFishesCount(0); // 設置默認值
+          setFishesCount(0);
         }
       } catch (error) {
         console.error("Error fetching user fishes count", error);

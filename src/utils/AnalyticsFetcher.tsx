@@ -1,4 +1,3 @@
-// src/components/AnalyticsFetcher.tsx
 import { useEffect, useCallback } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
