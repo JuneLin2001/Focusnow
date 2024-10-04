@@ -1,17 +1,9 @@
-// SettingsDialog.tsx
 import React, { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-} from "@mui/material";
-import useSettingStore from "../store/settingStore"; // 引入 BgmStore
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"; // 引入Shadcn的對話框組件
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label"; // 引入Shadcn的標籤組件
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"; // 引入自定義的RadioGroup
+import useSettingStore from "../store/settingStore"; // 引入SettingStore
 
 interface SettingsDialogProps {
   open: boolean;
@@ -33,64 +25,64 @@ const musicOptions = [
 
 const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
   const { isPlaying, toggleBgm, setBgmSource, themeMode, setThemeMode } =
-    useSettingStore(); // 引入 BgmStore 的狀態和方法
+    useSettingStore();
   const [selectedMusic, setSelectedMusic] = useState<string>(
     musicOptions[0].value
-  ); // 預設選擇的音樂
+  );
 
-  // 當開啟對話框時，設定預設音樂
   useEffect(() => {
     if (open) {
       setSelectedMusic(musicOptions[0].value);
     }
   }, [open]);
 
-  const handleMusicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newMusic = event.target.value;
-    setSelectedMusic(newMusic);
-    setBgmSource(newMusic); // 更新 BgmStore 中的音樂來源
+  const handleMusicChange = (value: string) => {
+    setSelectedMusic(value);
+    setBgmSource(value);
     if (isPlaying) {
-      toggleBgm(); // 如果正在播放，切換一下以重新播放新選擇的音樂
+      toggleBgm();
     }
-    toggleBgm(); // 播放新的背景音樂
+    toggleBgm();
   };
 
-  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const mode = event.target.value as "light" | "dark";
-    setThemeMode(mode); // 更新主題模式
+  const handleThemeChange = (value: string) => {
+    const mode = value as "light" | "dark";
+    setThemeMode(mode);
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Settings</DialogTitle>
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogTrigger asChild>
+        <Button>設定</Button> {/* 這裡添加一個觸發按鈕以便打開對話框 */}
+      </DialogTrigger>
       <DialogContent>
-        <Typography>選擇播放的背景音樂：</Typography>
-        <RadioGroup value={selectedMusic} onChange={handleMusicChange}>
+        <h3 className="text-lg font-medium">設定</h3>
+
+        <Label>選擇播放的背景音樂：</Label>
+        <RadioGroup value={selectedMusic} onValueChange={handleMusicChange}>
           {musicOptions.map((music) => (
-            <FormControlLabel
-              key={music.value}
-              value={music.value}
-              control={<Radio />}
-              label={music.label}
-            />
+            <div key={music.value}>
+              <RadioGroupItem value={music.value} id={music.value} />
+              <Label htmlFor={music.value}>{music.label}</Label>
+            </div>
           ))}
         </RadioGroup>
 
-        <Typography sx={{ mt: 2 }}>選擇主題模式：</Typography>
-        <RadioGroup value={themeMode} onChange={handleThemeChange}>
-          <FormControlLabel
-            value="light"
-            control={<Radio />}
-            label="白天模式"
-          />
-          <FormControlLabel value="dark" control={<Radio />} label="黑夜模式" />
+        <Label className="mt-4">選擇主題模式：</Label>
+        <RadioGroup value={themeMode} onValueChange={handleThemeChange}>
+          <div>
+            <RadioGroupItem value="light" id="light" />
+            <Label htmlFor="light">白天模式</Label>
+          </div>
+          <div>
+            <RadioGroupItem value="dark" id="dark" />
+            <Label htmlFor="dark">黑夜模式</Label>
+          </div>
         </RadioGroup>
+        <div className="mt-4">
+          <Button onClick={onClose}>關閉</Button>
+        </div>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="primary">
-          關閉
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };

@@ -4,14 +4,16 @@ import { auth } from "../firebase/firebaseConfig";
 import useAuthStore from "../store/authStore";
 import { useAnalyticsStore } from "../store/analyticsStore";
 import { saveTaskData } from "../firebase/firebaseService";
+import { CircleUser } from "lucide-react"; // 使用Lucide的圖標
+import { Button } from "@/components/ui/button"; // 使用自訂的Button組件
 import {
-  IconButton,
-  Avatar,
-  Tooltip,
-  Menu,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from "@/components/ui/dropdown-menu"; // 使用自訂的下拉菜單組件
 import SettingsDialog from "./SettingsDialog";
 
 interface LoginButtonProps {
@@ -20,7 +22,6 @@ interface LoginButtonProps {
 
 const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
   const { user, setUser, logout } = useAuthStore();
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [openSettingsDialog, setOpenSettingsDialog] = useState(false);
   const resetAnalytics = useAnalyticsStore((state) => state.reset);
 
@@ -82,17 +83,8 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
     }
   };
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   const handleOpenSettingsDialog = () => {
     setOpenSettingsDialog(true);
-    handleCloseUserMenu();
   };
 
   const handleCloseSettingsDialog = () => {
@@ -100,66 +92,49 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <>
-      <Tooltip
-        title={
-          user ? (
-            <>
-              {user.displayName}
-              <br />
-              {user.email}
-            </>
-          ) : (
-            "Login with Google"
-          )
-        }
-      >
-        <IconButton
-          onClick={user ? handleOpenUserMenu : handleLogin}
-          sx={{ p: 0, mr: 4 }}
-        >
-          {user ? (
-            <Avatar
-              alt={user.displayName || "User"}
-              src={user.photoURL || "/static/images/avatar/2.jpg"}
-            />
-          ) : (
-            <Avatar />
-          )}
-        </IconButton>
-      </Tooltip>
-      {user && (
-        <Menu
-          sx={{ mt: "45px" }}
-          id="menu-appbar"
-          anchorEl={anchorElUser}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={Boolean(anchorElUser)}
-          onClose={handleCloseUserMenu}
-        >
-          <MenuItem onClick={handleOpenSettingsDialog}>
-            <Typography sx={{ textAlign: "center" }}>Settings</Typography>
-          </MenuItem>
-          <MenuItem onClick={handleLogout}>
-            <Typography sx={{ textAlign: "center" }}>Logout</Typography>
-          </MenuItem>
-        </Menu>
-      )}
+    <div className="relative">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="secondary"
+            size="icon"
+            onClick={user ? handleLogout : handleLogin}
+            className="rounded-full flex items-center gap-2"
+          >
+            {user ? (
+              <>
+                <img
+                  src={user.photoURL || "/src/assets/icons/globePenguin.svg"}
+                  alt={user.displayName || "User"}
+                  className="h-8 w-8 rounded-full"
+                />
+              </>
+            ) : (
+              <>
+                <CircleUser className="h-5 w-5" /> {/* 未登入顯示圖標 */}
+                <span>Login</span>
+              </>
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        {user && ( // 只有在用戶登入後才顯示菜單
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleOpenSettingsDialog}>
+              Settings
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+          </DropdownMenuContent>
+        )}
+      </DropdownMenu>
 
       {/* 使用獨立的設定彈出視窗元件 */}
       <SettingsDialog
         open={openSettingsDialog}
         onClose={handleCloseSettingsDialog}
       />
-    </>
+    </div>
   );
 };
 

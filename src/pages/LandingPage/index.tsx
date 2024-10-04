@@ -10,7 +10,7 @@ import FloatingIce from "../../models/floatingIce";
 import Analytics from "../../models/AnalyticsCube";
 import OceanModel from "../../models/OceanModel";
 import CameraController from "./CameraController";
-import ResponsiveAppBar from "../../components/Header/ResponsiveAppBar";
+import { DashboardHeader } from "@/components/DashboardHeader";
 import TimerDisplay from "../TimerPage/TimerDisplay";
 
 import settingStore from "../../store/settingStore";
@@ -30,7 +30,7 @@ const LandingPage = () => {
 
   return (
     <>
-      <ResponsiveAppBar
+      <DashboardHeader
         pages={["Timer", "Game", "Analytics"]}
         setPage={setPage}
         setTargetPosition={setTargetPosition}
