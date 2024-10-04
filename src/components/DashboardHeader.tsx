@@ -2,7 +2,7 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
-// import LoginButton from "../components/LoginButton";
+import LoginButton from "../components/LoginButton";
 
 interface DashboardHeaderProps {
   pages: string[];
@@ -34,7 +34,7 @@ export function DashboardHeader({
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="shrink-0">
+              <Button variant="ghost" size="icon" className="shrink-0">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
@@ -42,7 +42,8 @@ export function DashboardHeader({
             <SheetContent side="left">
               <nav className="flex flex-col gap-6 text-lg font-medium">
                 {pages.map((page) => (
-                  <button
+                  <Button
+                    variant="ghost"
                     key={page}
                     onClick={() => {
                       handleCloseNavMenu();
@@ -61,7 +62,7 @@ export function DashboardHeader({
                     className="text-muted-foreground hover:text-foreground"
                   >
                     {page}
-                  </button>
+                  </Button>
                 ))}
               </nav>
             </SheetContent>
@@ -72,6 +73,7 @@ export function DashboardHeader({
         <nav className="hidden md:flex md:gap-5 text-lg font-medium">
           {pages.map((page) => (
             <Button
+              variant="ghost"
               key={page}
               onClick={() => {
                 if (page === "Timer") {
@@ -87,7 +89,6 @@ export function DashboardHeader({
                   setTargetPosition([5, 60, 10]);
                 }
               }}
-              variant="default"
               className="text-muted-foreground hover:text-foreground"
             >
               {page}
@@ -96,7 +97,7 @@ export function DashboardHeader({
         </nav>
 
         <div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          {/* <LoginButton onLoginSuccess={() => console.log("Login Success")} /> */}
+          <LoginButton />
         </div>
       </div>
     </header>

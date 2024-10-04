@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import useAuthStore from "../store/authStore";
@@ -14,24 +14,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu"; // 使用自訂的下拉菜單組件
-import SettingsDialog from "./SettingsDialog";
+import SettingsDialog from "./SettingsDialog"; // 引入設定對話框組件
 
-interface LoginButtonProps {
-  onLoginSuccess: () => void;
-}
-
-const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
+const LoginButton = () => {
   const { user, setUser, logout } = useAuthStore();
   const [openSettingsDialog, setOpenSettingsDialog] = useState(false);
   const resetAnalytics = useAnalyticsStore((state) => state.reset);
 
+  // 處理登錄功能
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      setUser(user);
+      setUser(user); // 設置用戶
 
+      // 檢查並保存任務數據
       const taskDataString = localStorage.getItem("taskData");
       if (taskDataString) {
         const taskData = JSON.parse(taskDataString);
@@ -65,28 +63,29 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
           ),
         };
 
-        await saveTaskData(user, taskDataToSave);
+        await saveTaskData(user, taskDataToSave); // 保存任務數據
       }
-
-      onLoginSuccess();
     } catch (error) {
       console.error("Login error", error);
     }
   };
 
+  // 處理登出功能
   const handleLogout = async () => {
     try {
-      await logout();
-      resetAnalytics();
+      await logout(); // 登出
+      resetAnalytics(); // 重置分析數據
     } catch (error) {
       console.error("Logout error", error);
     }
   };
 
+  // 打開設定對話框
   const handleOpenSettingsDialog = () => {
     setOpenSettingsDialog(true);
   };
 
+  // 關閉設定對話框
   const handleCloseSettingsDialog = () => {
     setOpenSettingsDialog(false);
   };
@@ -112,7 +111,6 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
             ) : (
               <>
                 <CircleUser className="h-5 w-5" /> {/* 未登入顯示圖標 */}
-                <span>Login</span>
               </>
             )}
           </Button>
@@ -130,10 +128,10 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onLoginSuccess }) => {
       </DropdownMenu>
 
       {/* 使用獨立的設定彈出視窗元件 */}
-      <SettingsDialog
+      {/* <SettingsDialog
         open={openSettingsDialog}
         onClose={handleCloseSettingsDialog}
-      />
+      /> */}
     </div>
   );
 };
