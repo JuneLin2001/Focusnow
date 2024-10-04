@@ -3,8 +3,9 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import useAuthStore from "../store/authStore";
 import { useFishesCountStore } from "../store/fishesCountStore";
+
 const FishesCountFetcher: React.FC = () => {
-  const { user } = useAuthStore();
+  const { user } = useAuthStore.getState();
   const { setFishesCount } = useFishesCountStore();
 
   const fetchFishesCount = useCallback(async () => {

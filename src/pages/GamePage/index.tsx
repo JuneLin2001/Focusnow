@@ -9,7 +9,7 @@ import Sign from "./Sign";
 import SignInstructions from "./SignInstructions";
 import Snowflakes from "./Snowflakes";
 import FishesCountFetcher from "../../utils/FishesCountFetcher";
-import { useFishesCountStore } from "../../store/fishesCountStore"; // 引入 useFishesCountStore
+import { useFishesCountStore } from "../../store/fishesCountStore";
 import useAuthStore from "../../store/authStore";
 
 const GamePage = () => {
@@ -35,12 +35,14 @@ const GamePage = () => {
   const minZ = position[2] - depth / 2;
   const maxZ = position[2] + depth / 2;
 
-  // 使用 useMemo 過濾數據
+  // 使用 useMemo 過濾數據，只包含 pomodoroCompleted 為 true 的資料
   const filteredAnalytics = useMemo(() => {
-    return analyticsList.filter((analytics) => analytics.focusDuration > 15);
+    return analyticsList.filter(
+      (analytics) => analytics.focusDuration > 15 && analytics.pomodoroCompleted
+    );
   }, [analyticsList]);
 
-  // 隨機位置
+  // 將過濾後的數據生成 penguinDatas
   const penguinDatas = useMemo(() => {
     return filteredAnalytics.map((analytics) => {
       return {
@@ -69,12 +71,13 @@ const GamePage = () => {
     }
   };
 
+  // 計算過去30天的專注時長，並且只統計 pomodoroCompleted 為 true 的數據
   useEffect(() => {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     const duration = analyticsList.reduce((total, analytics) => {
       const analyticsDate = new Date(analytics.startTime.seconds * 1000);
-      if (analyticsDate >= thirtyDaysAgo) {
+      if (analyticsDate >= thirtyDaysAgo && analytics.pomodoroCompleted) {
         return total + analytics.focusDuration;
       }
       return total;

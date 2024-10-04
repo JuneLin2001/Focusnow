@@ -8,7 +8,6 @@ import { useAnalyticsStore } from "../../store/analyticsStore";
 import DateSelector from "./DateSelector";
 import CompletedTodos from "./CompletedTodos";
 import AnalyticsFetcher from "../../utils/AnalyticsFetcher";
-
 import {
   Chart,
   CategoryScale,
@@ -24,7 +23,6 @@ Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 const AnalyticsPage = () => {
   const { user } = useAuthStore();
   const { filteredAnalytics, setFilteredAnalytics } = useAnalyticsStore();
-
   const [filterType, setFilterType] = useState<"daily" | "weekly" | "monthly">(
     "daily"
   );
@@ -94,16 +92,16 @@ const AnalyticsPage = () => {
     [filterType]
   );
 
-  // 處理從 AnalyticsFetcher 獲取的數據
   const handleDataFetched = useCallback(
     (sortedAnalytics: UserAnalytics[]) => {
       const { start, end } = calculateDateRange();
       const filteredData = sortedAnalytics.filter((analytics) => {
         const analyticsDate = dayjs.unix(analytics.startTime.seconds);
         return (
-          analyticsDate.isSame(start, "day") ||
-          analyticsDate.isSame(end, "day") ||
-          (analyticsDate.isAfter(start) && analyticsDate.isBefore(end))
+          analytics.pomodoroCompleted && // 只計算 pomodoroCompleted 為 true 的資料
+          (analyticsDate.isSame(start, "day") ||
+            analyticsDate.isSame(end, "day") ||
+            (analyticsDate.isAfter(start) && analyticsDate.isBefore(end)))
         );
       });
 

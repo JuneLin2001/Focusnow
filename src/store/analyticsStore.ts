@@ -13,7 +13,7 @@ interface AnalyticsState {
   setStartDate: (date: string) => void;
   setEndDate: (date: string) => void;
   filterByDate: () => void;
-  reset: () => void; // 新增 reset 方法
+  reset: () => void;
 }
 
 export const useAnalyticsStore = create<AnalyticsState>((set) => ({
