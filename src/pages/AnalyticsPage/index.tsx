@@ -18,6 +18,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid2";
 
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -156,41 +158,77 @@ const AnalyticsPage = () => {
   }
 
   return (
-    <div className="flex pt-24">
-      <div className="bg-gray-100 p-4">
-        <h2 className="text-xl font-semibold">
-          Total Focus Duration: {totalFocusDuration} minutes
-        </h2>
+    <Box sx={{ flexGrow: 1, p: 2 }}>
+      <Grid
+        container
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gridTemplateRows: "1fr 1fr",
+          gap: 0,
+          gridTemplateAreas: `
+            "left-top right-full"
+            "left-bottom right-full"
+          `,
+        }}
+      >
+        <Grid
+          sx={{
+            gridArea: "left-top",
+            backgroundColor: "lightblue",
+            height: "50vh",
+          }}
+        >
+          <div className="bg-gray-100 p-4">
+            <h2 className="text-xl font-semibold">
+              Total Focus Duration: {totalFocusDuration} minutes
+            </h2>
 
-        <DateSelector
-          filterType={filterType}
-          setFilterType={setFilterType}
-          currentDate={currentDate}
-          setCurrentDate={setCurrentDate}
-        />
+            <DateSelector
+              filterType={filterType}
+              setFilterType={setFilterType}
+              currentDate={currentDate}
+              setCurrentDate={setCurrentDate}
+            />
 
-        <div className="mt-6 w-[50vw]">
-          <Bar
-            data={chartData}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: { position: "top" },
-                title: {
-                  display: true,
-                  text: `專注時長（${filterType === "daily" ? "每日" : filterType === "weekly" ? "每週" : "每月"}）`,
-                },
-              },
-            }}
-          />
-        </div>
-        <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
-      </div>
-      <div className="ml-4 ">
-        <CompletedTodos filteredAnalytics={filteredAnalytics} />
-      </div>
+            <div className="mt-6">
+              <Bar
+                data={chartData}
+                options={{
+                  responsive: true,
+                  plugins: {
+                    legend: { position: "top" },
+                    title: {
+                      display: true,
+                      text: `專注時長（${filterType === "daily" ? "每日" : filterType === "weekly" ? "每週" : "每月"}）`,
+                    },
+                  },
+                }}
+              />
+            </div>
+          </div>
+        </Grid>
+        <Grid
+          sx={{
+            gridArea: "left-bottom",
+            backgroundColor: "lightgreen",
+            height: "50vh",
+          }}
+        >
+          <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
+        </Grid>
+        <Grid
+          sx={{
+            gridArea: "right-full",
+            backgroundColor: "lightcoral",
+            height: "100vh",
+          }}
+        >
+          <CompletedTodos filteredAnalytics={filteredAnalytics} />
+        </Grid>
+      </Grid>
       <AnalyticsFetcher onDataFetched={handleDataFetched} />
-    </div>
+    </Box>
   );
 };
 

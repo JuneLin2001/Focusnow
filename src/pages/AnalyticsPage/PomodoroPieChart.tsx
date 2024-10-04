@@ -29,8 +29,8 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
   };
 
   return (
-    <div className="mt-6 w-[50vw]">
-      <h2 className="text-xl font-semibold">Pomodoro 完成狀況</h2>
+    <div className="mt-6 ">
+      <h2 className="text-xl font-semibold">完成比率</h2>
       <Pie data={data} />
     </div>
   );
