@@ -80,16 +80,15 @@ const LoginButton = () => {
     }
   };
 
-  // 打開設定對話框
   const handleOpenSettingsDialog = () => {
+    console.log("Opening settings dialog"); // Debug
     setOpenSettingsDialog(true);
   };
 
-  // 關閉設定對話框
   const handleCloseSettingsDialog = () => {
+    console.log("Closing settings dialog"); // Debug
     setOpenSettingsDialog(false);
   };
-
   return (
     <div className="relative">
       <DropdownMenu>
@@ -117,7 +116,11 @@ const LoginButton = () => {
         </DropdownMenuTrigger>
         {user && ( // 只有在用戶登入後才顯示菜單
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              {user.displayName}
+              <br />
+              {user.email}
+            </DropdownMenuLabel>{" "}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleOpenSettingsDialog}>
               Settings
@@ -128,10 +131,10 @@ const LoginButton = () => {
       </DropdownMenu>
 
       {/* 使用獨立的設定彈出視窗元件 */}
-      {/* <SettingsDialog
+      <SettingsDialog
         open={openSettingsDialog}
         onClose={handleCloseSettingsDialog}
-      /> */}
+      />
     </div>
   );
 };

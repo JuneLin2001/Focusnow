@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"; // 引入Shadcn的對話框組件
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog"; // 引入 DialogDescription
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label"; // 引入Shadcn的標籤組件
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"; // 引入自定義的RadioGroup
-import useSettingStore from "../store/settingStore"; // 引入SettingStore
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import useSettingStore from "../store/settingStore"; // 引入 SettingStore
 
 interface SettingsDialogProps {
   open: boolean;
@@ -52,12 +58,14 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogTrigger asChild>
-        <Button>設定</Button> {/* 這裡添加一個觸發按鈕以便打開對話框 */}
-      </DialogTrigger>
+      <DialogTrigger asChild></DialogTrigger>
       <DialogContent>
+        <DialogTitle className="sr-only">設定</DialogTitle> {/* 隱藏標題 */}
+        <DialogDescription className="mb-4">
+          選擇你的背景音樂和主題模式。
+        </DialogDescription>{" "}
+        {/* 新增描述 */}
         <h3 className="text-lg font-medium">設定</h3>
-
         <Label>選擇播放的背景音樂：</Label>
         <RadioGroup value={selectedMusic} onValueChange={handleMusicChange}>
           {musicOptions.map((music) => (
@@ -67,7 +75,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
             </div>
           ))}
         </RadioGroup>
-
         <Label className="mt-4">選擇主題模式：</Label>
         <RadioGroup value={themeMode} onValueChange={handleThemeChange}>
           <div>

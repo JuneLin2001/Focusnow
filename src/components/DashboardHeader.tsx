@@ -1,7 +1,6 @@
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useState } from "react";
 import LoginButton from "../components/LoginButton";
 
 interface DashboardHeaderProps {
@@ -17,16 +16,6 @@ export function DashboardHeader({
   setTargetPosition,
   setLookAtPosition,
 }: DashboardHeaderProps) {
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
   return (
     <header className="fixed w-full bg-gray-200 z-50 flex items-center h-16 border-b px-4 md:px-6">
       <div className="flex-grow flex items-center justify-between">
@@ -46,7 +35,6 @@ export function DashboardHeader({
                     variant="ghost"
                     key={page}
                     onClick={() => {
-                      handleCloseNavMenu();
                       if (page === "Timer") {
                         setTargetPosition([-50, 12, -150]);
                         setLookAtPosition([0, 0, 0]);
@@ -57,6 +45,7 @@ export function DashboardHeader({
                       } else if (page === "Game") {
                         setPage(null);
                         setTargetPosition([5, 60, 10]);
+                        setLookAtPosition([0, 0, 0]);
                       }
                     }}
                     className="text-muted-foreground hover:text-foreground"
