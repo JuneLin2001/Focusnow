@@ -5,13 +5,9 @@ import {
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useTimerStore } from "../../store/timerStore";
-import {
-  DefaultButton,
-  ResetButton,
-  AddOrSubtractButton,
-} from "../../components/Button";
 import LoginButton from "../../components/LoginButton";
 import { requestNotificationPermission } from "../../utils/NotificationService";
+import { Button } from "@/components/ui/button";
 
 const Timer = () => {
   const {
@@ -79,9 +75,13 @@ const Timer = () => {
           })}
         >
           {isPaused && (
-            <AddOrSubtractButton onClick={addFiveMinutes} disabled={!isPaused}>
+            <Button
+              variant="addOrSubtract"
+              onClick={addFiveMinutes}
+              disabled={!isPaused}
+            >
               +
-            </AddOrSubtractButton>
+            </Button>
           )}
 
           <div className="flex items-center">
@@ -104,21 +104,26 @@ const Timer = () => {
             )}
           </div>
           {isPaused && (
-            <AddOrSubtractButton
+            <Button
+              variant="addOrSubtract"
               onClick={minusFiveMinutes}
               disabled={!isPaused}
             >
               -
-            </AddOrSubtractButton>
+            </Button>
           )}
         </CircularProgressbarWithChildren>
         <div className="mt-5 flex justify-center">
           {isPaused ? (
-            <DefaultButton onClick={handleStartTimer}>開始</DefaultButton>
+            <Button onClick={handleStartTimer}>開始</Button>
           ) : mode === "break" ? (
-            <ResetButton onClick={resetTimer}>跳過休息</ResetButton>
+            <Button variant="reset" onClick={resetTimer}>
+              跳過休息
+            </Button>
           ) : (
-            <ResetButton onClick={resetTimer}>放棄</ResetButton>
+            <Button variant="reset" onClick={resetTimer}>
+              放棄
+            </Button>
           )}
         </div>
 

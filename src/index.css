@@ -28,3 +28,9 @@ body {
     hsl(200deg, 80%, 90%) 100%
   );
 }
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
