@@ -1,7 +1,7 @@
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import LoginButton from "../components/LoginButton";
+import LoginButton from "./LoginButton";
 
 interface DashboardHeaderProps {
   pages: string[];
@@ -76,6 +76,7 @@ export function DashboardHeader({
                 } else if (page === "Game") {
                   setPage(null);
                   setTargetPosition([5, 60, 10]);
+                  setLookAtPosition([0, 0, 0]);
                 }
               }}
               className="text-muted-foreground hover:text-foreground"

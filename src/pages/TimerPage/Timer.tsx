@@ -5,7 +5,7 @@ import {
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useTimerStore } from "../../store/timerStore";
-import LoginButton from "../../components/LoginButton";
+import LoginButton from "../../components/Header/LoginButton";
 import { requestNotificationPermission } from "../../utils/NotificationService";
 import { Button } from "@/components/ui/button";
 

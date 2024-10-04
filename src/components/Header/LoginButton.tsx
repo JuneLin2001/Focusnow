@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../firebase/firebaseConfig";
-import useAuthStore from "../store/authStore";
-import { useAnalyticsStore } from "../store/analyticsStore";
-import { saveTaskData } from "../firebase/firebaseService";
+import { auth } from "../../firebase/firebaseConfig";
+import useAuthStore from "../../store/authStore";
+import { useAnalyticsStore } from "../../store/analyticsStore";
+import { saveTaskData } from "../../firebase/firebaseService";
 import { CircleUser } from "lucide-react"; // 使用Lucide的圖標
 import { Button } from "@/components/ui/button"; // 使用自訂的Button組件
 import {
@@ -13,23 +13,22 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuLabel,
-} from "@/components/ui/dropdown-menu"; // 使用自訂的下拉菜單組件
-import SettingsDialog from "./SettingsDialog"; // 引入設定對話框組件
+} from "@/components/ui/dropdown-menu";
+import SettingsDialog from "../SettingsDialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const LoginButton = () => {
   const { user, setUser, logout } = useAuthStore();
   const [openSettingsDialog, setOpenSettingsDialog] = useState(false);
   const resetAnalytics = useAnalyticsStore((state) => state.reset);
 
-  // 處理登錄功能
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      setUser(user); // 設置用戶
+      setUser(user);
 
-      // 檢查並保存任務數據
       const taskDataString = localStorage.getItem("taskData");
       if (taskDataString) {
         const taskData = JSON.parse(taskDataString);
@@ -100,21 +99,25 @@ const LoginButton = () => {
             className="rounded-full flex items-center gap-2"
           >
             {user ? (
-              <>
-                <img
+              <Avatar>
+                <AvatarImage
                   src={user.photoURL || "/src/assets/icons/globePenguin.svg"}
                   alt={user.displayName || "User"}
-                  className="h-8 w-8 rounded-full"
                 />
-              </>
+                <AvatarFallback>
+                  <CircleUser className="h-5 w-5" />
+                </AvatarFallback>
+              </Avatar>
             ) : (
-              <>
-                <CircleUser className="h-5 w-5" /> {/* 未登入顯示圖標 */}
-              </>
+              <Avatar>
+                <AvatarFallback>
+                  <CircleUser className="h-5 w-5" />
+                </AvatarFallback>
+              </Avatar>
             )}
           </Button>
         </DropdownMenuTrigger>
-        {user && ( // 只有在用戶登入後才顯示菜單
+        {user && (
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>
               {user.displayName}
@@ -130,7 +133,6 @@ const LoginButton = () => {
         )}
       </DropdownMenu>
 
-      {/* 使用獨立的設定彈出視窗元件 */}
       <SettingsDialog
         open={openSettingsDialog}
         onClose={handleCloseSettingsDialog}
