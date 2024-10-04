@@ -8,6 +8,7 @@ import { useAnalyticsStore } from "../../store/analyticsStore";
 import DateSelector from "./DateSelector";
 import CompletedTodos from "./CompletedTodos";
 import AnalyticsFetcher from "../../utils/AnalyticsFetcher";
+import PomodoroPieChart from "./PomodoroPieChart";
 import {
   Chart,
   CategoryScale,
@@ -95,7 +96,9 @@ const AnalyticsPage = () => {
   const handleDataFetched = useCallback(
     (sortedAnalytics: UserAnalytics[]) => {
       const { start, end } = calculateDateRange();
-      const filteredData = sortedAnalytics.filter((analytics) => {
+
+      // 過濾資料以取得 pomodoroCompleted 為 true 的資料
+      const filteredCompletedData = sortedAnalytics.filter((analytics) => {
         const analyticsDate = dayjs.unix(analytics.startTime.seconds);
         return (
           analytics.pomodoroCompleted && // 只計算 pomodoroCompleted 為 true 的資料
@@ -105,16 +108,29 @@ const AnalyticsPage = () => {
         );
       });
 
-      setFilteredAnalytics(filteredData);
+      // 過濾資料以取得所有的資料 (pomodoroCompleted 為 true 和 false)
+      const filteredAllData = sortedAnalytics.filter((analytics) => {
+        const analyticsDate = dayjs.unix(analytics.startTime.seconds);
+        return (
+          analyticsDate.isSame(start, "day") ||
+          analyticsDate.isSame(end, "day") ||
+          (analyticsDate.isAfter(start) && analyticsDate.isBefore(end))
+        );
+      });
 
-      const mergedResults = mergeData(filteredData, start, end);
+      setFilteredAnalytics(filteredAllData); // 設置過濾後的分析資料
+
+      // 計算完成的資料
+      const mergedResults = mergeData(filteredCompletedData, start, end);
       const chartLabels = mergedResults.map((item) => item.date);
       const chartFocusDurations = mergedResults.map((item) => item.duration);
 
+      // 計算總專注時長
       setTotalFocusDuration(
         mergedResults.reduce((acc, item) => acc + item.duration, 0)
       );
 
+      // 設置條形圖資料
       setChartData({
         labels: chartLabels,
         datasets: [
@@ -125,6 +141,8 @@ const AnalyticsPage = () => {
           },
         ],
       });
+
+      setFilteredAnalytics(filteredAllData);
     },
     [calculateDateRange, mergeData, setFilteredAnalytics]
   );
@@ -166,6 +184,7 @@ const AnalyticsPage = () => {
             }}
           />
         </div>
+        <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
       </div>
       <div className="ml-4 ">
         <CompletedTodos filteredAnalytics={filteredAnalytics} />
