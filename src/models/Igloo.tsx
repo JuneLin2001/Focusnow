@@ -3,11 +3,11 @@ import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { ModelProps } from "../types/type";
 
-const Igloo: React.FC<ModelProps> = ({ children, onClick }) => {
+const Igloo: React.FC<ModelProps> = ({ children }) => {
   const gltf = useLoader(GLTFLoader, "igloo.glb");
 
   return (
-    <group onClick={onClick}>
+    <group>
       <primitive object={gltf.scene} />
       {children}
     </group>

@@ -12,9 +12,10 @@ import OceanModel from "../../models/OceanModel";
 import CameraController from "./CameraController";
 import { DashboardHeader } from "@/components/Header/DashboardHeader";
 import TimerDisplay from "../TimerPage/TimerDisplay";
-import { useFishesCountStore } from "@/store/fishesCountStore"; // 引入 fishesCountStore
+import { useFishesCountStore } from "@/store/fishesCountStore";
 import settingStore from "../../store/settingStore";
-import Bubble from "./Bubble"; // 引入 Bubble 組件
+import Bubble from "./Bubble";
+import { AlarmClock, ChartColumn } from "lucide-react";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -28,7 +29,6 @@ const LandingPage = () => {
   >(null);
   const { themeMode } = settingStore();
 
-  // 從 store 獲取 fishesCount 和 update 函數
   const fishesCount = useFishesCountStore((state) => state.FishesCount);
   const updateFishesCount = useFishesCountStore(
     (state) => state.updateFishesCount
@@ -36,7 +36,7 @@ const LandingPage = () => {
 
   const handleDropFish = () => {
     if (fishesCount > 0) {
-      updateFishesCount(-1); // 更新 fishCount，減少一條魚
+      updateFishesCount(-1);
     } else {
       alert("沒有魚可以放置了，每專注1分鐘可以獲得1條魚！");
     }
@@ -72,23 +72,24 @@ const LandingPage = () => {
           setFishesCount={updateFishesCount} // 傳遞更新函數
           handleDropFish={handleDropFish}
         />
-        <Mainland position={[-16, 2, 0]} />
-
-        <Igloo
-          position={[0, 20, 0]}
+        <Mainland />
+        <Igloo />
+        <Bubble
+          Icon={AlarmClock}
+          position={[-20, 40, -100]}
           onClick={() => {
             setTargetPosition([-50, 12, -150]);
             setLookAtPosition([0, 0, 0]);
             setPage("timer");
           }}
         />
+        <FloatingIce />
+        <OceanModel />
+
+        <Analytics />
         <Bubble
-          position={[-20, 40, -100]} // 設定為 Igloo 的上方位置
-          onClick={() => console.log("Bubble clicked!")}
-        />
-        <FloatingIce position={[0, 2, -30]} />
-        <Analytics
-          position={[0, 2, 0]}
+          Icon={ChartColumn}
+          position={[-70, 40, 110]}
           onClick={() => {
             setPage("analytics");
             setTargetPosition([-105, 25, 100]);
@@ -100,7 +101,6 @@ const LandingPage = () => {
           targetPosition={targetPosition}
           lookAtPosition={lookAtPosition}
         />
-        <OceanModel position={[0, 0, 0]} />
 
         <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
           <GizmoViewport labelColor="white" axisHeadScale={1} />
