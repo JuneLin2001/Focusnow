@@ -135,7 +135,9 @@ const LoginButton = () => {
                 handleOpenSettingsDialog
               </Button>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleLogout}>登出</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Button onClick={handleLogout}>登出</Button>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         )}
       </DropdownMenu>

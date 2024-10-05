@@ -2,6 +2,7 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import LoginButton from "./LoginButton";
+import WebsiteLogo from "../../assets/icons/logo.png";
 
 interface DashboardHeaderProps {
   pages: string[];
@@ -17,10 +18,9 @@ export function DashboardHeader({
   setLookAtPosition,
 }: DashboardHeaderProps) {
   return (
-    <header className="fixed w-full bg-gray-200 z-50 flex items-center h-16 border-b px-4 md:px-6">
-      <div className="flex-grow flex items-center justify-between">
-        {/* Mobile Menu Button */}
-        <div className="md:hidden">
+    <header className="fixed w-full bg-gray-200 z-50 flex items-center h-24 border-b px-4 md:px-6">
+      <div className="relative flex-grow flex items-center justify-between">
+        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 md:hidden">
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="shrink-0">
@@ -58,8 +58,22 @@ export function DashboardHeader({
           </Sheet>
         </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex md:gap-5 text-lg font-medium">
+        {/* Logo Container */}
+        <div className="flex flex-1 justify-center md:justify-start">
+          <Button
+            variant={"link"}
+            onClick={() => {
+              setPage(null);
+              setTargetPosition([5, 60, 10]);
+              setLookAtPosition([0, 0, 0]);
+            }}
+            className="cursor-pointer"
+          >
+            <img src={WebsiteLogo} alt="logo" className="h-10 w-auto" />
+          </Button>
+        </div>
+
+        <nav className="hidden md:flex md:gap-5 text-lg font-medium flex-1 justify-center">
           {pages.map((page) => (
             <Button
               variant="ghost"
@@ -86,6 +100,7 @@ export function DashboardHeader({
           ))}
         </nav>
 
+        {/* Login Button */}
         <div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
           <LoginButton />
         </div>

@@ -58,7 +58,7 @@ const LandingPage = () => {
           {page === "analytics" && <AnalyticsPage />}
         </div>
       )}
-      <div className="fixed top-20 left-0 p-4 bg-white opacity-80 z-10">
+      <div className="fixed top-28 left-4 p-4 bg-white opacity-80 z-10">
         <p className="w-32 bg-white">fishesCount: {fishesCount}</p>
         <button className="w-32 bg-white" onClick={handleDropFish}>
           放下魚
