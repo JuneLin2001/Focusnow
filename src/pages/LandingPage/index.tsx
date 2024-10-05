@@ -14,6 +14,7 @@ import { DashboardHeader } from "@/components/Header/DashboardHeader";
 import TimerDisplay from "../TimerPage/TimerDisplay";
 import { useFishesCountStore } from "@/store/fishesCountStore"; // 引入 fishesCountStore
 import settingStore from "../../store/settingStore";
+import Bubble from "./Bubble"; // 引入 Bubble 組件
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -74,12 +75,16 @@ const LandingPage = () => {
         <Mainland position={[-16, 2, 0]} />
 
         <Igloo
-          position={[-114, 2, -16]}
+          position={[0, 20, 0]}
           onClick={() => {
             setTargetPosition([-50, 12, -150]);
             setLookAtPosition([0, 0, 0]);
             setPage("timer");
           }}
+        />
+        <Bubble
+          position={[-20, 40, -100]} // 設定為 Igloo 的上方位置
+          onClick={() => console.log("Bubble clicked!")}
         />
         <FloatingIce position={[0, 2, -30]} />
         <Analytics
