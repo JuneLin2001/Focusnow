@@ -69,33 +69,37 @@ const LandingPage = () => {
         <Environment preset={themeMode === "light" ? "warehouse" : "night"} />
         <GamePage
           fishesCount={fishesCount}
-          setFishesCount={updateFishesCount} // 傳遞更新函數
+          setFishesCount={updateFishesCount}
           handleDropFish={handleDropFish}
         />
         <Mainland />
         <Igloo />
-        <Bubble
-          Icon={AlarmClock}
-          position={[-20, 40, -100]}
-          onClick={() => {
-            setTargetPosition([-50, 12, -150]);
-            setLookAtPosition([0, 0, 0]);
-            setPage("timer");
-          }}
-        />
+        {page === null && (
+          <Bubble
+            Icon={AlarmClock}
+            position={[-20, 40, -100]}
+            onClick={() => {
+              setTargetPosition([-50, 12, -150]);
+              setLookAtPosition([0, 0, 0]);
+              setPage("timer");
+            }}
+          />
+        )}
         <FloatingIce />
         <OceanModel />
 
         <Analytics />
-        <Bubble
-          Icon={ChartColumn}
-          position={[-70, 40, 110]}
-          onClick={() => {
-            setPage("analytics");
-            setTargetPosition([-105, 25, 100]);
-            setLookAtPosition([250, 0, 0]);
-          }}
-        />
+        {page === null && (
+          <Bubble
+            Icon={ChartColumn}
+            position={[-70, 40, 110]}
+            onClick={() => {
+              setPage("analytics");
+              setTargetPosition([-105, 25, 100]);
+              setLookAtPosition([250, 0, 0]);
+            }}
+          />
+        )}
 
         <CameraController
           targetPosition={targetPosition}

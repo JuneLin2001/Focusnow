@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SettingsDialog from "../SettingsDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Settings } from "lucide-react";
 
 const LoginButton = () => {
   const { user, setUser, logout } = useAuthStore();
@@ -105,12 +106,9 @@ const LoginButton = () => {
             {user ? (
               <Avatar>
                 <AvatarImage
-                  src={user.photoURL || "/src/assets/icons/globePenguin.svg"}
+                  src={user.photoURL || ""}
                   alt={user.displayName || "User"}
                 />
-                <AvatarFallback>
-                  <CircleUser className="h-5 w-5" />
-                </AvatarFallback>
               </Avatar>
             ) : (
               <Avatar>
@@ -129,27 +127,21 @@ const LoginButton = () => {
               {user.email}
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {/* 使用 handleOpenSettingsDialog 開啟設定對話框 */}
-            <DropdownMenuItem>
-              <Button onClick={handleOpenSettingsDialog}>
-                handleOpenSettingsDialog
-              </Button>
-            </DropdownMenuItem>
+
             <DropdownMenuItem>
               <Button onClick={handleLogout}>登出</Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         )}
       </DropdownMenu>
-
+      <Button variant="ghost" size="icon" onClick={handleOpenSettingsDialog}>
+        <Settings className="h-6 w-6" />
+      </Button>
       {/* 加入 SettingsDialog */}
       <SettingsDialog
         onClose={handleCloseSettingsDialog} // 傳遞關閉函數
         open={openSettingsDialog} // 傳遞開關狀態
       />
-      <Button onClick={handleOpenSettingsDialog}>
-        handleOpenSettingsDialog
-      </Button>
     </div>
   );
 };

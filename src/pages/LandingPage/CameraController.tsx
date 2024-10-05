@@ -16,10 +16,10 @@ interface CameraControllerProps {
 const CameraController: React.FC<CameraControllerProps> = ({
   targetPosition,
   lookAtPosition = targetPosition,
-  initialPosition = [-500, 60, 50],
+  initialPosition = [-1500, 60, 500],
   minPolarAngle = Math.PI / 4,
   maxPolarAngle = Math.PI / 2,
-  minDistance = 10,
+  minDistance = 2,
   maxDistance = 600,
 }) => {
   const { camera } = useThree();
@@ -30,23 +30,12 @@ const CameraController: React.FC<CameraControllerProps> = ({
       camera.position.set(...initialPosition);
       camera.lookAt(...lookAtPosition);
       isFirstRender.current = false;
-
-      gsap.to(camera.position, {
-        x: -200,
-        y: 60,
-        z: 50,
-        duration: 2,
-        ease: "power2.out",
-        onUpdate: () => {
-          camera.lookAt(...lookAtPosition);
-        },
-      });
     } else {
       gsap.to(camera.position, {
         x: targetPosition[0] + 2,
         y: targetPosition[1] + 2,
         z: targetPosition[2] + 4,
-        duration: 2,
+        duration: 10,
         ease: "power2.out",
         onUpdate: () => {
           camera.lookAt(...lookAtPosition);
