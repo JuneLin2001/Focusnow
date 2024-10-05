@@ -1,19 +1,12 @@
 import { useState } from "react";
 import { useTodoStore } from "../../store/todoStore";
-import IconButton from "@mui/material/IconButton";
-import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 
-const TodoList = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+// 接收 isOpen 作為 props
+const TodoList = ({ isOpen }: { isOpen: boolean }) => {
   const [newTodoTitle, setNewTodoTitle] = useState<string>("");
 
   const { todos, addTodo, removeTodo, editTodoTitle, toggleComplete } =
     useTodoStore();
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
 
   const handleAddTodo = () => {
     if (newTodoTitle.trim() === "") return;
@@ -23,26 +16,10 @@ const TodoList = () => {
 
   return (
     <>
-      <IconButton
-        onClick={toggleSidebar}
-        sx={{
-          zIndex: 20,
-          position: "fixed",
-          top: "50%",
-          left: "50%",
-          transform: "translate(150px, -50%)",
-        }}
-      >
-        {isOpen ? (
-          <KeyboardDoubleArrowLeftIcon />
-        ) : (
-          <KeyboardDoubleArrowRightIcon />
-        )}
-      </IconButton>
       <div
         className={`fixed top-1/2 left-1/2 w-[500px] h-auto bg-white z-10 flex flex-col p-5 outline transition-transform duration-500 ease-in-out transform ${
           isOpen
-            ? "scale-100 translate-x-[250px] translate-y-[-50%]" // 冒出後向右移動 200px
+            ? "scale-100 translate-x-[250px] translate-y-[-50%]" // 冒出後向右移動 250px
             : "scale-0 translate-x-[-50%] translate-y-[-50%]" // 初始狀態縮小並居中
         }`}
       >

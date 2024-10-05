@@ -8,8 +8,15 @@ import { useTimerStore } from "../../store/timerStore";
 import LoginButton from "../../components/Header/LoginButton";
 import { requestNotificationPermission } from "../../utils/NotificationService";
 import { Button } from "@/components/ui/button";
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 
-const Timer = () => {
+interface TimerProps {
+  toggleSidebar: () => void;
+  isOpen: boolean;
+}
+
+const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
   const {
     secondsLeft,
     isPaused,
@@ -61,7 +68,7 @@ const Timer = () => {
 
   return (
     <div className="w-screen h-screen flex justify-center items-center ">
-      <div className="z-30 opacity-100">
+      <div className="z-30 opacity-100 w-[400px] ">
         <CircularProgressbarWithChildren
           value={
             mode === "work"
@@ -74,6 +81,19 @@ const Timer = () => {
             trailColor: "#d6d6d6",
           })}
         >
+          <Button
+            className="transition-transform"
+            variant="outline"
+            size="icon"
+            onClick={toggleSidebar}
+          >
+            {isOpen ? (
+              <KeyboardDoubleArrowLeftIcon />
+            ) : (
+              <KeyboardDoubleArrowRightIcon />
+            )}
+          </Button>
+
           {isPaused && (
             <Button
               variant="addOrSubtract"
@@ -103,6 +123,7 @@ const Timer = () => {
               </div>
             )}
           </div>
+
           {isPaused && (
             <Button
               variant="addOrSubtract"
@@ -113,6 +134,7 @@ const Timer = () => {
             </Button>
           )}
         </CircularProgressbarWithChildren>
+
         <div className="mt-5 flex justify-center">
           {isPaused ? (
             <Button onClick={handleStartTimer}>開始</Button>

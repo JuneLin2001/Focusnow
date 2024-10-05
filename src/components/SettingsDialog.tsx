@@ -103,7 +103,8 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
           value={breakTime}
           onChange={handleBreakTimeChange}
           className="border border-gray-300 rounded p-2 mt-2"
-          min={1} // 最小值為1分鐘
+          min={1}
+          max={120}
         />
         <div className="mt-4">
           <Button onClick={onClose}>關閉</Button>
