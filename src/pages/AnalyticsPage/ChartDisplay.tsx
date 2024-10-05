@@ -10,11 +10,13 @@ Chart.register(...registerables);
 interface ChartDisplayProps {
   filteredAnalytics: UserAnalytics[];
   filterType: "daily" | "weekly" | "monthly";
+  totalFocusDuration: number; // 新增這一行
 }
 
 const ChartDisplay: React.FC<ChartDisplayProps> = ({
   filteredAnalytics,
   filterType,
+  totalFocusDuration, // 新增這一行
 }) => {
   const [chartData, setChartData] = useState<ChartData<"bar">>({
     labels: [],
@@ -101,25 +103,31 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
   }, [filteredAnalytics, filterType, mergeData, calculateDateRange]);
 
   return (
-    <Bar
-      data={chartData}
-      options={{
-        responsive: true,
-        plugins: {
-          legend: { position: "top" },
-          title: {
-            display: true,
-            text: `專注時長（${
-              filterType === "daily"
-                ? "每日"
-                : filterType === "weekly"
-                  ? "每週"
-                  : "每月"
-            }）`,
+    <div className="text-center">
+      <h2 className="text-lg font-semibold mb-2">
+        總專注時長: {totalFocusDuration} 分鐘
+      </h2>
+      {/* 顯示總專注時長 */}
+      <Bar
+        data={chartData}
+        options={{
+          responsive: true,
+          plugins: {
+            legend: { position: "top" },
+            title: {
+              display: true,
+              text: `專注時長（${
+                filterType === "daily"
+                  ? "每日"
+                  : filterType === "weekly"
+                    ? "每週"
+                    : "每月"
+              }）`,
+            },
           },
-        },
-      }}
-    />
+        }}
+      />
+    </div>
   );
 };
 

@@ -86,9 +86,6 @@ const AnalyticsPage = () => {
                 setCurrentDate={setCurrentDate}
               />
             </Card>
-            <Card className="p-4">
-              <p>Total Focus Duration: {totalFocusDuration} minutes</p>
-            </Card>
           </div>
           {/* 下方的圖表和完成的 Todo */}
           <div className="flex flex-grow flex-wrap justify-between mt-4">
@@ -99,6 +96,7 @@ const AnalyticsPage = () => {
               <ChartDisplay
                 filteredAnalytics={filteredAnalytics}
                 filterType={filterType}
+                totalFocusDuration={totalFocusDuration} // 傳遞總專注時長
               />
             </Card>
             <Card className="flex-1 m-2 p-4 h-2/3">

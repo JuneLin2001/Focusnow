@@ -35,35 +35,33 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   };
 
   return (
-    <div className="mt-4">
-      <label>篩選方式:</label>
+    <div className="mt-4 flex items-center">
+      <label className="mr-2">篩選方式:</label>
       <select
         value={filterType}
         onChange={(e) =>
           setFilterType(e.target.value as "daily" | "weekly" | "monthly")
         }
-        className="border border-gray-300 rounded p-2 ml-2"
+        className="border border-gray-300 rounded p-2 mr-2"
       >
         <option value="daily">每日</option>
         <option value="weekly">每週</option>
         <option value="monthly">每月</option>
       </select>
 
-      <div className="mt-4 flex items-center">
-        <button onClick={handlePrev} className="bg-gray-300 p-2 rounded-l">
-          ←
-        </button>
-        <div className="px-4">
-          {filterType === "daily"
-            ? currentDate.format("YYYY-MM-DD")
-            : filterType === "weekly"
-              ? `${currentDate.startOf("week").format("YYYY-MM-DD")} - ${currentDate.endOf("week").format("YYYY-MM-DD")}`
-              : `${currentDate.format("YYYY-MM")}`}
-        </div>
-        <button onClick={handleNext} className="bg-gray-300 p-2 rounded-r">
-          →
-        </button>
+      <button onClick={handlePrev} className="bg-gray-300 p-2 rounded-l">
+        ←
+      </button>
+      <div className="px-4">
+        {filterType === "daily"
+          ? currentDate.format("YYYY-MM-DD")
+          : filterType === "weekly"
+            ? `${currentDate.startOf("week").format("YYYY-MM-DD")} - ${currentDate.endOf("week").format("YYYY-MM-DD")}`
+            : `${currentDate.format("YYYY-MM")}`}
       </div>
+      <button onClick={handleNext} className="bg-gray-300 p-2 rounded-r">
+        →
+      </button>
     </div>
   );
 };

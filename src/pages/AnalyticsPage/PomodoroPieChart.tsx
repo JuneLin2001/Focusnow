@@ -36,8 +36,9 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
 
   return (
     <div className="text-center">
-      <h2 className="text-lg font-semibold mb-2">Pomodoro 完成狀況</h2>
-      <p className="text-md mb-2">完成率: {completionRate.toFixed(2)}%</p>
+      <h2 className="text-lg font-semibold mb-2">
+        完成率: {completionRate.toFixed(2)}%
+      </h2>
       <Pie data={data} />
     </div>
   );
