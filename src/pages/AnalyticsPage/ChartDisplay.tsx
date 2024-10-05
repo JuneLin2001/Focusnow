@@ -1,10 +1,17 @@
 // src/components/ChartDisplay.tsx
 import React from "react";
-import { Bar } from "react-chartjs-2";
-import { ChartData } from "chart.js";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 interface ChartDisplayProps {
-  chartData: ChartData<"bar">;
+  chartData: { date: string; duration: number }[]; // 更新數據結構
   filterType: "daily" | "weekly" | "monthly";
 }
 
@@ -13,21 +20,30 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
   filterType,
 }) => {
   return (
-    <div className="mt-6">
-      <Bar
-        data={chartData}
-        options={{
-          responsive: true,
-          plugins: {
-            legend: { position: "top" },
-            title: {
-              display: true,
-              text: `專注時長（${filterType === "daily" ? "每日" : filterType === "weekly" ? "每週" : "每月"}）`,
-            },
-          },
-        }}
-      />
-    </div>
+    <ResponsiveContainer width="100%" height="100%">
+      <BarChart data={chartData}>
+        <XAxis dataKey="date" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="duration" fill="#82ca9d" />
+        <text
+          x={300}
+          y={20}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          className="text-lg font-semibold"
+        >
+          專注時長（
+          {filterType === "daily"
+            ? "每日"
+            : filterType === "weekly"
+              ? "每週"
+              : "每月"}
+          ）
+        </text>
+      </BarChart>
+    </ResponsiveContainer>
   );
 };
 

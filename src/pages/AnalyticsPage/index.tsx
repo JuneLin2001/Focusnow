@@ -18,6 +18,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { Card } from "@/components/ui/card";
 
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -149,46 +150,57 @@ const AnalyticsPage = () => {
 
   if (!user) {
     return (
-      <div className="w-full h-full flex jus">
+      <div className="box-border w-full h-full flex jus">
         <p className="p-96">Please login to see analytics.</p>
       </div>
     );
   }
 
   return (
-    <div className="flex pt-24">
-      <div className="bg-gray-100 p-4">
-        <h2 className="text-xl font-semibold">
-          Total Focus Duration: {totalFocusDuration} minutes
-        </h2>
-
-        <DateSelector
-          filterType={filterType}
-          setFilterType={setFilterType}
-          currentDate={currentDate}
-          setCurrentDate={setCurrentDate}
-        />
-
-        <div className="mt-6 w-[50vw]">
-          <Bar
-            data={chartData}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: { position: "top" },
-                title: {
-                  display: true,
-                  text: `專注時長（${filterType === "daily" ? "每日" : filterType === "weekly" ? "每週" : "每月"}）`,
-                },
-              },
-            }}
-          />
+    <div className="flex justify-center items-center h-full box-border">
+      <Card className="box-border w-full h-full  bg-red-200">
+        <div className="flex mt-10">
+          <Card>Total Focus Duration: {totalFocusDuration} minutes</Card>
+          <Card>
+            <DateSelector
+              filterType={filterType}
+              setFilterType={setFilterType}
+              currentDate={currentDate}
+              setCurrentDate={setCurrentDate}
+            />
+          </Card>
+          <Card>
+            <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
+          </Card>
         </div>
-        <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
-      </div>
-      <div className="ml-4 ">
-        <CompletedTodos filteredAnalytics={filteredAnalytics} />
-      </div>
+        <div className="flex">
+          <div className="w-full flex flex-col">
+            <div className="flex flex-col gap-4">
+              <Card className="w-full h-[50vh]">
+                <Bar
+                  data={chartData}
+                  options={{
+                    responsive: true,
+                    plugins: {
+                      legend: { position: "top" },
+                      title: {
+                        display: true,
+                        text: `專注時長（${filterType === "daily" ? "每日" : filterType === "weekly" ? "每週" : "每月"}）`,
+                      },
+                    },
+                  }}
+                />
+              </Card>
+            </div>
+          </div>
+
+          <Card className="p-4">
+            <Card>
+              <CompletedTodos filteredAnalytics={filteredAnalytics} />
+            </Card>
+          </Card>
+        </div>
+      </Card>
       <AnalyticsFetcher onDataFetched={handleDataFetched} />
     </div>
   );
