@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useState } from "react"; // 引入 Suspense
 import { Canvas } from "@react-three/fiber";
-import { Environment, GizmoHelper, GizmoViewport } from "@react-three/drei";
+import {
+  Environment,
+  GizmoHelper,
+  GizmoViewport,
+  Sky,
+} from "@react-three/drei"; // 引入 Sky
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
 import Mainland from "../../models/Mainland";
@@ -16,6 +21,8 @@ import { useFishesCountStore } from "@/store/fishesCountStore";
 import settingStore from "../../store/settingStore";
 import Bubble from "./Bubble";
 import { AlarmClock, ChartColumn } from "lucide-react";
+import InitialInstructions from "./InitialInstructions";
+import Snowflakes from "./Snowflakes";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -42,6 +49,14 @@ const LandingPage = () => {
     }
   };
 
+  const [showInstructions, setShowInstructions] = useState(true); // 預設為顯示操作說明
+  const [isCameraMoveEnabled, setIsCameraMoveEnabled] = useState(false); // 控制鏡頭移動的狀態
+
+  const handleCloseInstructions = () => {
+    setShowInstructions(false); // 隱藏操作說明
+    setIsCameraMoveEnabled(true); // 啟用鏡頭移動
+  };
+
   return (
     <>
       <DashboardHeader
@@ -54,7 +69,6 @@ const LandingPage = () => {
         <div className="fixed z-10"></div>
       ) : (
         <div className="fixed z-10 w-full h-full">
-          {/* //TODO:頁面的透明度  */}
           {page === "timer" && <TimerPage />}
           {page === "analytics" && <AnalyticsPage />}
         </div>
@@ -67,13 +81,18 @@ const LandingPage = () => {
       </div>
       <Canvas>
         <Environment preset={themeMode === "light" ? "warehouse" : "night"} />
+        {themeMode === "dark" && <Sky sunPosition={[0, 0, 0]} />}
+        <Mainland />
+        <Igloo />
+        <FloatingIce />
+        <OceanModel />
+        <Analytics />
+        <Snowflakes />
         <GamePage
           fishesCount={fishesCount}
           setFishesCount={updateFishesCount}
           handleDropFish={handleDropFish}
         />
-        <Mainland />
-        <Igloo />
         {page === null && (
           <Bubble
             Icon={AlarmClock}
@@ -85,10 +104,6 @@ const LandingPage = () => {
             }}
           />
         )}
-        <FloatingIce />
-        <OceanModel />
-
-        <Analytics />
         {page === null && (
           <Bubble
             Icon={ChartColumn}
@@ -100,17 +115,20 @@ const LandingPage = () => {
             }}
           />
         )}
-
         <CameraController
           targetPosition={targetPosition}
           lookAtPosition={lookAtPosition}
+          isCameraMoveEnabled={isCameraMoveEnabled} // 將鏡頭移動的狀態傳入
         />
-
         <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
           <GizmoViewport labelColor="white" axisHeadScale={1} />
         </GizmoHelper>
       </Canvas>
       <TimerDisplay />
+      <InitialInstructions
+        showInstructions={showInstructions}
+        handleCloseInstructions={handleCloseInstructions}
+      />
     </>
   );
 };

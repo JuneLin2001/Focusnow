@@ -3,7 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 const Snowflakes = () => {
-  const particleNum = 10000;
+  const particleNum = 5000;
   const maxRange = 1000;
   const minRange = maxRange / 2;
   const textureSize = 64.0;

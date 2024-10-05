@@ -6,7 +6,6 @@ import * as THREE from "three";
 import FishModel from "./FishModel";
 import Sign from "./Sign";
 import SignInstructions from "./SignInstructions";
-import Snowflakes from "./Snowflakes";
 import FishesCountFetcher from "../../utils/FishesCountFetcher";
 
 interface GamePageProps {
@@ -31,14 +30,12 @@ const GamePage: React.FC<GamePageProps> = () => {
   const minZ = position[2] - depth / 2;
   const maxZ = position[2] + depth / 2;
 
-  // 使用 useMemo 過濾數據，只包含 pomodoroCompleted 為 true 的資料
   const filteredAnalytics = useMemo(() => {
     return analyticsList.filter(
       (analytics) => analytics.focusDuration > 15 && analytics.pomodoroCompleted
     );
   }, [analyticsList]);
 
-  // 將過濾後的數據生成 penguinDatas
   const penguinDatas = useMemo(() => {
     return filteredAnalytics.map((analytics) => {
       return {
@@ -51,7 +48,6 @@ const GamePage: React.FC<GamePageProps> = () => {
     });
   }, [filteredAnalytics]);
 
-  // 計算過去30天的專注時長，並且只統計 pomodoroCompleted 為 true 的數據
   useEffect(() => {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -79,7 +75,6 @@ const GamePage: React.FC<GamePageProps> = () => {
       <FishesCountFetcher />
       <Suspense fallback={<div>Loading...</div>}>
         <AnalyticsFetcher onDataFetched={setAnalyticsList} />
-        <Snowflakes />
       </Suspense>
 
       <group>
