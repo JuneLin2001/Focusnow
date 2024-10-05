@@ -15,6 +15,7 @@ const Timer = () => {
     isPaused,
     mode,
     inputMinutes,
+    breakMinutes,
     startTimer,
     resetTimer,
     addFiveMinutes,
@@ -22,7 +23,6 @@ const Timer = () => {
     setInputMinutes,
     setTimer,
     showLoginButton,
-    toggleLoginButton,
   } = useTimerStore();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -66,7 +66,7 @@ const Timer = () => {
           value={
             mode === "work"
               ? (secondsLeft / (inputMinutes * 60)) * 100
-              : (secondsLeft / (5 * 60)) * 100
+              : (secondsLeft / (breakMinutes * 60)) * 100
           }
           styles={buildStyles({
             textColor: "#000",
@@ -131,7 +131,7 @@ const Timer = () => {
           <div className="flex justify-center items-center bg-gray-800 bg-opacity-50 fixed inset-0">
             <div className="bg-white p-5 rounded shadow-lg">
               <h2 className="text-xl mb-4">請登入以保存數據</h2>
-              <LoginButton onLoginSuccess={toggleLoginButton} />
+              <LoginButton />
             </div>
           </div>
         )}

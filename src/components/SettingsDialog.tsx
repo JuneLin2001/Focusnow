@@ -5,11 +5,12 @@ import {
   DialogContent,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog"; // 引入 DialogDescription
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import useSettingStore from "../store/settingStore"; // 引入 SettingStore
+import { useTimerStore } from "../store/timerStore"; // 引入 TimerStore
 
 interface SettingsDialogProps {
   open: boolean;
@@ -32,23 +33,26 @@ const musicOptions = [
 const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
   const { isPlaying, toggleBgm, setBgmSource, themeMode, setThemeMode } =
     useSettingStore();
+  const { breakMinutes, setBreakMinutes } = useTimerStore(); // 從 timerStore 獲取休息時間
   const [selectedMusic, setSelectedMusic] = useState<string>(
     musicOptions[0].value
   );
+  const [breakTime, setBreakTime] = useState<number>(breakMinutes); // 用於保存用戶輸入的休息時間
 
   useEffect(() => {
     if (open) {
       setSelectedMusic(musicOptions[0].value);
+      setBreakTime(breakMinutes); // 設置為從 store 中獲取的值
     }
-  }, [open]);
+  }, [open, breakMinutes]);
 
   const handleMusicChange = (value: string) => {
     setSelectedMusic(value);
     setBgmSource(value);
     if (isPlaying) {
-      toggleBgm();
+      toggleBgm(); // 停止目前播放的音樂
     }
-    toggleBgm();
+    toggleBgm(); // 播放選擇的音樂
   };
 
   const handleThemeChange = (value: string) => {
@@ -56,15 +60,22 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
     setThemeMode(mode);
   };
 
+  const handleBreakTimeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = parseInt(event.target.value);
+    setBreakTime(value);
+    setBreakMinutes(value); // 更新 timerStore 中的休息時間
+  };
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogTrigger asChild></DialogTrigger>
       <DialogContent>
-        <DialogTitle className="sr-only">設定</DialogTitle> {/* 隱藏標題 */}
+        <DialogTitle className="sr-only">設定</DialogTitle>
         <DialogDescription className="mb-4">
           選擇你的背景音樂和主題模式。
-        </DialogDescription>{" "}
-        {/* 新增描述 */}
+        </DialogDescription>
         <h3 className="text-lg font-medium">設定</h3>
         <Label>選擇播放的背景音樂：</Label>
         <RadioGroup value={selectedMusic} onValueChange={handleMusicChange}>
@@ -86,6 +97,14 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
             <Label htmlFor="dark">黑夜模式</Label>
           </div>
         </RadioGroup>
+        <Label className="mt-4">設定休息時間（分鐘）：</Label>
+        <input
+          type="number"
+          value={breakTime}
+          onChange={handleBreakTimeChange}
+          className="border border-gray-300 rounded p-2 mt-2"
+          min={1} // 最小值為1分鐘
+        />
         <div className="mt-4">
           <Button onClick={onClose}>關閉</Button>
         </div>

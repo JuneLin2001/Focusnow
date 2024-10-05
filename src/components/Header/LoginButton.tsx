@@ -3,6 +3,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import useAuthStore from "../../store/authStore";
 import { useAnalyticsStore } from "../../store/analyticsStore";
+import { useFishesCountStore } from "../../store/fishesCountStore";
 import { saveTaskData } from "../../firebase/firebaseService";
 import { CircleUser } from "lucide-react"; // 使用Lucide的圖標
 import { Button } from "@/components/ui/button"; // 使用自訂的Button組件
@@ -19,8 +20,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const LoginButton = () => {
   const { user, setUser, logout } = useAuthStore();
-  const [openSettingsDialog, setOpenSettingsDialog] = useState(false);
   const resetAnalytics = useAnalyticsStore((state) => state.reset);
+  const setFishesCount = useFishesCountStore((state) => state.setFishesCount);
+
+  // 新增狀態來控制 SettingsDialog 的開關
+  const [openSettingsDialog, setOpenSettingsDialog] = useState(false);
 
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
@@ -74,20 +78,20 @@ const LoginButton = () => {
     try {
       await logout(); // 登出
       resetAnalytics(); // 重置分析數據
+      setFishesCount(0); // 重置魚數
     } catch (error) {
       console.error("Logout error", error);
     }
   };
 
   const handleOpenSettingsDialog = () => {
-    console.log("Opening settings dialog"); // Debug
     setOpenSettingsDialog(true);
   };
 
   const handleCloseSettingsDialog = () => {
-    console.log("Closing settings dialog"); // Debug
     setOpenSettingsDialog(false);
   };
+
   return (
     <div className="relative">
       <DropdownMenu>
@@ -123,20 +127,27 @@ const LoginButton = () => {
               {user.displayName}
               <br />
               {user.email}
-            </DropdownMenuLabel>{" "}
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleOpenSettingsDialog}>
-              Settings
+            {/* 使用 handleOpenSettingsDialog 開啟設定對話框 */}
+            <DropdownMenuItem>
+              <Button onClick={handleOpenSettingsDialog}>
+                handleOpenSettingsDialog
+              </Button>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>登出</DropdownMenuItem>
           </DropdownMenuContent>
         )}
       </DropdownMenu>
 
+      {/* 加入 SettingsDialog */}
       <SettingsDialog
-        open={openSettingsDialog}
-        onClose={handleCloseSettingsDialog}
+        onClose={handleCloseSettingsDialog} // 傳遞關閉函數
+        open={openSettingsDialog} // 傳遞開關狀態
       />
+      <Button onClick={handleOpenSettingsDialog}>
+        handleOpenSettingsDialog
+      </Button>
     </div>
   );
 };

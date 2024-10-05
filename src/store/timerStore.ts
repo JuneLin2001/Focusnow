@@ -12,9 +12,11 @@ interface TimerState {
   isPaused: boolean;
   mode: "work" | "break";
   inputMinutes: number;
+  breakMinutes: number; // 新增屬性以設定休息時間
   startTime: Date | null;
   setTimer: (minutes: number) => void;
   setInputMinutes: (minutes: number) => void;
+  setBreakMinutes: (minutes: number) => void; // 新增設置休息時間的方法
   startTimer: () => void;
   resetTimer: () => void;
   addFiveMinutes: () => void;
@@ -38,6 +40,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
     isPaused: true,
     mode: "work",
     inputMinutes: 25,
+    breakMinutes: 5, // 預設休息時間為5分鐘
     startTime: null,
     showLoginButton: false,
 
@@ -47,6 +50,8 @@ export const useTimerStore = create<TimerState>((set, get) => {
     setTimer: (minutes) => set({ secondsLeft: minutes * 60 }),
 
     setInputMinutes: (minutes) => set({ inputMinutes: minutes }),
+
+    setBreakMinutes: (minutes) => set({ breakMinutes: minutes }), // 設置休息時間的方法
 
     startTimer: () => {
       if (interval) {
@@ -65,7 +70,9 @@ export const useTimerStore = create<TimerState>((set, get) => {
             console.log("Timer is done!");
             nextState.mode = state.mode === "work" ? "break" : "work";
             nextState.secondsLeft =
-              nextState.mode === "work" ? state.inputMinutes * 60 : 5 * 60;
+              nextState.mode === "work"
+                ? state.inputMinutes * 60
+                : state.breakMinutes * 60; // 使用用戶自定義的休息時間
 
             get().checkEndCondition(
               state.startTime,
