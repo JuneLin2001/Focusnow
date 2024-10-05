@@ -24,7 +24,9 @@ const CameraController: React.FC<CameraControllerProps> = ({
 }) => {
   const { camera } = useThree();
   const isFirstRender = useRef(true);
-  camera.position.set(-1000, 100, 100);
+  if (isFirstRender) {
+    camera.position.set(-1000, 100, 100);
+  }
 
   useEffect(() => {
     if (isFirstRender.current && isCameraMoveEnabled) {
