@@ -12,7 +12,7 @@ import OceanModel from "../../models/OceanModel";
 import CameraController from "./CameraController";
 import { DashboardHeader } from "@/components/Header/DashboardHeader";
 import TimerDisplay from "../TimerPage/TimerDisplay";
-
+import { useFishesCountStore } from "@/store/fishesCountStore"; // 引入 fishesCountStore
 import settingStore from "../../store/settingStore";
 
 const LandingPage = () => {
@@ -25,8 +25,21 @@ const LandingPage = () => {
   const [page, setPage] = useState<
     "timer" | "analytics" | "game" | "SignInstructions" | null
   >(null);
-
   const { themeMode } = settingStore();
+
+  // 從 store 獲取 fishesCount 和 update 函數
+  const fishesCount = useFishesCountStore((state) => state.FishesCount);
+  const updateFishesCount = useFishesCountStore(
+    (state) => state.updateFishesCount
+  );
+
+  const handleDropFish = () => {
+    if (fishesCount > 0) {
+      updateFishesCount(-1); // 更新 fishCount，減少一條魚
+    } else {
+      alert("沒有魚可以放置了，每專注1分鐘可以獲得1條魚！");
+    }
+  };
 
   return (
     <>
@@ -45,9 +58,19 @@ const LandingPage = () => {
           {page === "analytics" && <AnalyticsPage />}
         </div>
       )}
+      <div className="fixed top-20 left-0 p-4 bg-white opacity-80 z-10">
+        <p className="w-32 bg-white">fishesCount: {fishesCount}</p>
+        <button className="w-32 bg-white" onClick={handleDropFish}>
+          放下魚
+        </button>
+      </div>
       <Canvas>
         <Environment preset={themeMode === "light" ? "warehouse" : "night"} />
-        <GamePage />
+        <GamePage
+          fishesCount={fishesCount}
+          setFishesCount={updateFishesCount} // 傳遞更新函數
+          handleDropFish={handleDropFish}
+        />
         <Mainland position={[-16, 2, 0]} />
 
         <Igloo
