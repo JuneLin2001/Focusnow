@@ -76,7 +76,6 @@ const AnalyticsPage = () => {
     <div className="flex justify-center items-start h-full box-border mt-20">
       <Card className="box-border w-full h-full bg-red-200 p-4">
         <div className="flex flex-col space-y-4 h-full">
-          {/* 上方的 Card */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <Card className="p-4">
               <DateSelector
