@@ -1,7 +1,6 @@
 import { useState, useCallback } from "react";
 import dayjs from "dayjs";
 import { ChartData } from "chart.js";
-import { Bar } from "react-chartjs-2";
 import { UserAnalytics } from "../../types/type";
 import useAuthStore from "../../store/authStore";
 import { useAnalyticsStore } from "../../store/analyticsStore";
@@ -9,6 +8,7 @@ import DateSelector from "./DateSelector";
 import CompletedTodos from "./CompletedTodos";
 import AnalyticsFetcher from "../../utils/AnalyticsFetcher";
 import PomodoroPieChart from "./PomodoroPieChart";
+import ChartDisplay from "./ChartDisplay";
 import {
   Chart,
   CategoryScale,
@@ -174,25 +174,9 @@ const AnalyticsPage = () => {
           </Card>
         </div>
         <div className="flex">
-          <div className="w-full flex flex-col">
-            <div className="flex flex-col gap-4">
-              <Card className="w-full h-[50vh]">
-                <Bar
-                  data={chartData}
-                  options={{
-                    responsive: true,
-                    plugins: {
-                      legend: { position: "top" },
-                      title: {
-                        display: true,
-                        text: `專注時長（${filterType === "daily" ? "每日" : filterType === "weekly" ? "每週" : "每月"}）`,
-                      },
-                    },
-                  }}
-                />
-              </Card>
-            </div>
-          </div>
+          <Card className="w-[50vh] h-[50vh]">
+            <ChartDisplay chartData={chartData} filterType={filterType} />
+          </Card>
 
           <Card className="p-4">
             <Card>
