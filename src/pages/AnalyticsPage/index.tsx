@@ -1,6 +1,6 @@
+// src/components/AnalyticsPage.tsx
 import { useState, useCallback } from "react";
 import dayjs from "dayjs";
-import { ChartData } from "chart.js";
 import { UserAnalytics } from "../../types/type";
 import useAuthStore from "../../store/authStore";
 import { useAnalyticsStore } from "../../store/analyticsStore";
@@ -9,18 +9,7 @@ import CompletedTodos from "./CompletedTodos";
 import AnalyticsFetcher from "../../utils/AnalyticsFetcher";
 import PomodoroPieChart from "./PomodoroPieChart";
 import ChartDisplay from "./ChartDisplay";
-import {
-  Chart,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
 import { Card } from "@/components/ui/card";
-
-Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const AnalyticsPage = () => {
   const { user } = useAuthStore();
@@ -30,10 +19,6 @@ const AnalyticsPage = () => {
   );
   const [totalFocusDuration, setTotalFocusDuration] = useState<number>(0);
   const [currentDate, setCurrentDate] = useState(dayjs());
-  const [chartData, setChartData] = useState<ChartData<"bar">>({
-    labels: [],
-    datasets: [],
-  });
 
   const calculateDateRange = useCallback(() => {
     let start = dayjs();
@@ -53,63 +38,11 @@ const AnalyticsPage = () => {
     return { start, end };
   }, [filterType, currentDate]);
 
-  const mergeData = useCallback(
-    (filteredData: UserAnalytics[], start: dayjs.Dayjs, end: dayjs.Dayjs) => {
-      const mergedData: { [key: string]: number } = {};
-
-      filteredData.forEach((analytics) => {
-        const dateKey = dayjs.unix(analytics.startTime.seconds);
-        const formattedKey =
-          filterType === "daily"
-            ? dateKey.startOf("hour").format("HH:mm")
-            : filterType === "weekly"
-              ? dateKey.format("MM-DD")
-              : dateKey.format("MM-DD");
-
-        if (!mergedData[formattedKey]) {
-          mergedData[formattedKey] = 0;
-        }
-        mergedData[formattedKey] += analytics.focusDuration;
-      });
-
-      const allDates = [];
-      let current = start.clone();
-      while (current.isBefore(end) || current.isSame(end)) {
-        const dateKey =
-          filterType === "daily"
-            ? current.startOf("hour").format("HH:mm")
-            : filterType === "weekly"
-              ? current.format("MM-DD")
-              : current.format("MM-DD");
-
-        allDates.push({
-          date: dateKey,
-          duration: mergedData[dateKey] || 0,
-        });
-        current = current.add(1, filterType === "daily" ? "hour" : "day");
-      }
-
-      return allDates;
-    },
-    [filterType]
-  );
-
   const handleDataFetched = useCallback(
     (sortedAnalytics: UserAnalytics[]) => {
       const { start, end } = calculateDateRange();
 
-      // 過濾資料以取得 pomodoroCompleted 為 true 的資料
-      const filteredCompletedData = sortedAnalytics.filter((analytics) => {
-        const analyticsDate = dayjs.unix(analytics.startTime.seconds);
-        return (
-          analytics.pomodoroCompleted && // 只計算 pomodoroCompleted 為 true 的資料
-          (analyticsDate.isSame(start, "day") ||
-            analyticsDate.isSame(end, "day") ||
-            (analyticsDate.isAfter(start) && analyticsDate.isBefore(end)))
-        );
-      });
-
-      // 過濾資料以取得所有的資料 (pomodoroCompleted 為 true 和 false)
+      // 過濾資料以取得所有的資料
       const filteredAllData = sortedAnalytics.filter((analytics) => {
         const analyticsDate = dayjs.unix(analytics.startTime.seconds);
         return (
@@ -121,68 +54,57 @@ const AnalyticsPage = () => {
 
       setFilteredAnalytics(filteredAllData); // 設置過濾後的分析資料
 
-      // 計算完成的資料
-      const mergedResults = mergeData(filteredCompletedData, start, end);
-      const chartLabels = mergedResults.map((item) => item.date);
-      const chartFocusDurations = mergedResults.map((item) => item.duration);
-
       // 計算總專注時長
-      setTotalFocusDuration(
-        mergedResults.reduce((acc, item) => acc + item.duration, 0)
+      const totalDuration = filteredAllData.reduce(
+        (acc, analytics) => acc + analytics.focusDuration,
+        0
       );
-
-      // 設置條形圖資料
-      setChartData({
-        labels: chartLabels,
-        datasets: [
-          {
-            label: "專注時長（分鐘）",
-            data: chartFocusDurations,
-            backgroundColor: "rgba(75, 192, 192, 0.6)",
-          },
-        ],
-      });
-
-      setFilteredAnalytics(filteredAllData);
+      setTotalFocusDuration(totalDuration);
     },
-    [calculateDateRange, mergeData, setFilteredAnalytics]
+    [calculateDateRange, setFilteredAnalytics]
   );
 
   if (!user) {
     return (
-      <div className="box-border w-full h-full flex jus">
+      <div className="box-border w-full h-full flex justify-center items-center">
         <p className="p-96">Please login to see analytics.</p>
       </div>
     );
   }
 
   return (
-    <div className="flex justify-center items-center h-full box-border">
-      <Card className="box-border w-full h-full  bg-red-200">
-        <div className="flex mt-10">
-          <Card>Total Focus Duration: {totalFocusDuration} minutes</Card>
-          <Card>
-            <DateSelector
-              filterType={filterType}
-              setFilterType={setFilterType}
-              currentDate={currentDate}
-              setCurrentDate={setCurrentDate}
-            />
-          </Card>
-          <Card>
-            <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
-          </Card>
-        </div>
-        <div className="flex">
-          <Card className="w-[50vh] h-[50vh]">
-            <ChartDisplay chartData={chartData} filterType={filterType} />
-          </Card>
-
-          <Card className="p-4">
-            <Card>
+    <div className="flex justify-center items-start h-full box-border mt-20">
+      <Card className="box-border w-full h-full bg-red-200 p-4">
+        <div className="flex flex-col space-y-4 h-full">
+          {/* 上方的 Card */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <Card className="p-4">
+              <DateSelector
+                filterType={filterType}
+                setFilterType={setFilterType}
+                currentDate={currentDate}
+                setCurrentDate={setCurrentDate}
+              />
+            </Card>
+            <Card className="p-4">
+              <p>Total Focus Duration: {totalFocusDuration} minutes</p>
+            </Card>
+          </div>
+          {/* 下方的圖表和完成的 Todo */}
+          <div className="flex flex-grow flex-wrap justify-between mt-4">
+            <Card className="flex-1 m-2 p-4 h-2/3">
+              <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
+            </Card>
+            <Card className="flex-1 m-2 p-4 h-2/3">
+              <ChartDisplay
+                filteredAnalytics={filteredAnalytics}
+                filterType={filterType}
+              />
+            </Card>
+            <Card className="flex-1 m-2 p-4 h-2/3">
               <CompletedTodos filteredAnalytics={filteredAnalytics} />
             </Card>
-          </Card>
+          </div>
         </div>
       </Card>
       <AnalyticsFetcher onDataFetched={handleDataFetched} />

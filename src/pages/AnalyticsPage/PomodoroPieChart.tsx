@@ -12,10 +12,16 @@ interface PomodoroPieChartProps {
 const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
   filteredAnalytics,
 }) => {
+  // 計算完成的和未完成的 Pomodoros 數量
   const completedCount = filteredAnalytics.filter(
     (analytics) => analytics.pomodoroCompleted
   ).length;
-  const notCompletedCount = filteredAnalytics.length - completedCount;
+  const totalCount = filteredAnalytics.length;
+
+  const notCompletedCount = totalCount - completedCount;
+
+  const completionRate =
+    totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
   const data = {
     labels: ["完成的 Pomodoros", "未完成的 Pomodoros"],
@@ -29,9 +35,11 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
   };
 
   return (
-    <>
+    <div className="text-center">
+      <h2 className="text-lg font-semibold mb-2">Pomodoro 完成狀況</h2>
+      <p className="text-md mb-2">完成率: {completionRate.toFixed(2)}%</p>
       <Pie data={data} />
-    </>
+    </div>
   );
 };
 
