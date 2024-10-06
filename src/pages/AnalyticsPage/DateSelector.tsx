@@ -23,15 +23,13 @@ const DateSelector: React.FC<DateSelectorProps> = ({
 }) => {
   const [isCalendarOpen, setCalendarOpen] = useState(false);
 
-  // 將日曆選擇的日期轉換為 dayjs 對象
   const handleDateSelect = (date: Date | undefined) => {
     if (date) {
-      setCurrentDate(dayjs(date)); // 將選擇的日期設置為 currentDate
+      setCurrentDate(dayjs(date));
     }
-    setCalendarOpen(false); // 選擇日期後關閉日曆
+    setCalendarOpen(false);
   };
 
-  // 根據篩選方式返回顯示的日期範圍
   const getDisplayDate = () => {
     if (filterType === "daily") {
       return currentDate.format("YYYY-MM-DD");
@@ -40,10 +38,9 @@ const DateSelector: React.FC<DateSelectorProps> = ({
     } else if (filterType === "monthly") {
       return currentDate.format("YYYY-MM");
     }
-    return ""; // 預設返回空字串
+    return "";
   };
 
-  // 處理上一個日期的邏輯
   const handlePrev = () => {
     if (filterType === "daily") {
       setCurrentDate(currentDate.subtract(1, "day"));
@@ -54,7 +51,6 @@ const DateSelector: React.FC<DateSelectorProps> = ({
     }
   };
 
-  // 處理下一個日期的邏輯
   const handleNext = () => {
     if (filterType === "daily") {
       setCurrentDate(currentDate.add(1, "day"));
@@ -66,21 +62,20 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full">
+    <div className="flex flex-col w-full">
       <label className="mb-2 sm:mb-0">篩選方式:</label>
       <select
         value={filterType}
         onChange={(e) =>
           setFilterType(e.target.value as "daily" | "weekly" | "monthly")
         }
-        className="border border-gray-300 rounded p-2 mb-2 sm:mb-0"
+        className="border border-gray-300 rounded p-2 mb-2 sm:mb-0 w-20"
       >
         <option value="daily">每日</option>
         <option value="weekly">每週</option>
         <option value="monthly">每月</option>
       </select>
 
-      {/* 左右箭頭按鈕 */}
       <div className="flex items-center space-x-2">
         <Button onClick={handlePrev} className="bg-gray-300">
           ←
@@ -90,16 +85,16 @@ const DateSelector: React.FC<DateSelectorProps> = ({
             <Button
               variant={"outline"}
               className="w-[240px] pl-3 text-left font-normal"
-              onClick={() => setCalendarOpen((prev) => !prev)} // 點擊按鈕切換日曆顯示
+              onClick={() => setCalendarOpen((prev) => !prev)}
             >
-              {getDisplayDate()} {/* 顯示當前日期範圍 */}
+              {getDisplayDate()}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single"
-              selected={currentDate.toDate()} // 轉換為 Date 對象
-              onSelect={handleDateSelect} // 當選擇日期時調用
+              selected={currentDate.toDate()}
+              onSelect={handleDateSelect}
               disabled={(date) =>
                 date > new Date() || date < new Date("1900-01-01")
               }

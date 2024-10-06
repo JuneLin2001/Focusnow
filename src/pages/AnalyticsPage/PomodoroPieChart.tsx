@@ -1,4 +1,3 @@
-// PomodoroPieChart.tsx
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { UserAnalytics } from "../../types/type";
@@ -12,7 +11,6 @@ interface PomodoroPieChartProps {
 const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
   filteredAnalytics,
 }) => {
-  // 計算完成的和未完成的 Pomodoros 數量
   const completedCount = filteredAnalytics.filter(
     (analytics) => analytics.pomodoroCompleted
   ).length;
@@ -24,10 +22,10 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
     totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
   const data = {
-    labels: ["完成的 Pomodoros", "未完成的 Pomodoros"],
+    labels: ["完成的Pomodoro", "中斷的Pomodoro"],
     datasets: [
       {
-        label: "Pomodoro 完成狀況",
+        label: "數量",
         data: [completedCount, notCompletedCount],
         backgroundColor: ["rgba(75, 192, 192, 0.6)", "rgba(255, 99, 132, 0.6)"],
       },
@@ -35,11 +33,13 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center h-full flex flex-col justify-between">
       <h2 className="text-lg font-semibold mb-2">
         完成率: {completionRate.toFixed(2)}%
       </h2>
-      <Pie data={data} />
+      <div className="w-full max-w-md mx-auto flex-1">
+        <Pie data={data} />
+      </div>
     </div>
   );
 };

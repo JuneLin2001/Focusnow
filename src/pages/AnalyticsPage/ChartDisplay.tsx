@@ -10,13 +10,15 @@ Chart.register(...registerables);
 interface ChartDisplayProps {
   filteredAnalytics: UserAnalytics[];
   filterType: "daily" | "weekly" | "monthly";
-  totalFocusDuration: number; // 新增這一行
+  currentDate: dayjs.Dayjs; // 添加 currentDate
+  totalFocusDuration: number;
 }
 
 const ChartDisplay: React.FC<ChartDisplayProps> = ({
   filteredAnalytics,
   filterType,
-  totalFocusDuration, // 新增這一行
+  currentDate, // 確保這裡也接受 currentDate
+  totalFocusDuration,
 }) => {
   const [chartData, setChartData] = useState<ChartData<"bar">>({
     labels: [],
@@ -24,7 +26,6 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
   });
 
   const calculateDateRange = useCallback(() => {
-    const currentDate = dayjs();
     let start = currentDate;
     let end = currentDate;
 
@@ -40,7 +41,7 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
     }
 
     return { start, end };
-  }, [filterType]);
+  }, [currentDate, filterType]);
 
   const mergeData = useCallback(
     (filteredData: UserAnalytics[], start: dayjs.Dayjs, end: dayjs.Dayjs) => {
@@ -77,10 +78,11 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
         });
         current = current.add(1, filterType === "daily" ? "hour" : "day");
       }
-
+      console.log(filterType);
+      console.log(currentDate);
       return allDates;
     },
-    [filterType]
+    [currentDate, filterType]
   );
 
   useEffect(() => {
@@ -100,14 +102,13 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
         },
       ],
     });
-  }, [filteredAnalytics, filterType, mergeData, calculateDateRange]);
+  }, [filteredAnalytics, filterType, mergeData, calculateDateRange]); // 監聽 filteredAnalytics 和 filterType 變化
 
   return (
     <div className="text-center">
       <h2 className="text-lg font-semibold mb-2">
         總專注時長: {totalFocusDuration} 分鐘
       </h2>
-      {/* 顯示總專注時長 */}
       <Bar
         data={chartData}
         options={{

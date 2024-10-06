@@ -1,4 +1,3 @@
-// CompletedTodos.tsx
 import React from "react";
 import { UserAnalytics } from "../../types/type";
 import dayjs from "dayjs";
@@ -10,14 +9,13 @@ interface CompletedTodosProps {
 const CompletedTodos: React.FC<CompletedTodosProps> = ({
   filteredAnalytics,
 }) => {
-  // 計算總共完成的 Todo 數量
   const completedTodosCount = filteredAnalytics.reduce(
     (acc, analytics) => acc + analytics.todos.length,
     0
   );
 
   return (
-    <div className="h-1/3 overflow-y-auto">
+    <div className="h-full max-h-[66vh] overflow-y-auto">
       <h2 className="font-semibold mb-2">
         總共完成了: {completedTodosCount} 個 Todo
       </h2>

@@ -1,4 +1,3 @@
-// src/components/AnalyticsPage.tsx
 import { useState, useCallback } from "react";
 import dayjs from "dayjs";
 import { UserAnalytics } from "../../types/type";
@@ -42,7 +41,6 @@ const AnalyticsPage = () => {
     (sortedAnalytics: UserAnalytics[]) => {
       const { start, end } = calculateDateRange();
 
-      // 過濾資料以取得所有的資料
       const filteredAllData = sortedAnalytics.filter((analytics) => {
         const analyticsDate = dayjs.unix(analytics.startTime.seconds);
         return (
@@ -52,9 +50,8 @@ const AnalyticsPage = () => {
         );
       });
 
-      setFilteredAnalytics(filteredAllData); // 設置過濾後的分析資料
+      setFilteredAnalytics(filteredAllData);
 
-      // 計算總專注時長
       const totalDuration = filteredAllData.reduce(
         (acc, analytics) => acc + analytics.focusDuration,
         0
@@ -74,31 +71,29 @@ const AnalyticsPage = () => {
 
   return (
     <div className="flex justify-center items-start h-full box-border mt-20">
-      <Card className="box-border w-full h-full bg-red-200 p-4">
-        <div className="flex flex-col space-y-4 h-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="p-4">
-              <DateSelector
-                filterType={filterType}
-                setFilterType={setFilterType}
-                currentDate={currentDate}
-                setCurrentDate={setCurrentDate}
-              />
-            </Card>
-          </div>
-          {/* 下方的圖表和完成的 Todo */}
+      <Card className="box-border w-full h-full bg-gray-200 bg-opacity-50 p-4 mx-4 overflow-y-auto max-h-[calc(100vh-100px)] ">
+        <div className="flex flex-col h-full">
+          <Card className="p-4">
+            <DateSelector
+              filterType={filterType}
+              setFilterType={setFilterType}
+              currentDate={currentDate}
+              setCurrentDate={setCurrentDate}
+            />
+          </Card>
           <div className="flex flex-grow flex-wrap justify-between mt-4">
-            <Card className="flex-1 m-2 p-4 h-2/3">
+            <Card className="flex-1 m-2 p-4 h-auto">
               <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
             </Card>
-            <Card className="flex-1 m-2 p-4 h-2/3">
+            <Card className="flex-1 m-2 p-4 h-auto">
               <ChartDisplay
                 filteredAnalytics={filteredAnalytics}
                 filterType={filterType}
-                totalFocusDuration={totalFocusDuration} // 傳遞總專注時長
+                totalFocusDuration={totalFocusDuration}
+                currentDate={currentDate}
               />
             </Card>
-            <Card className="flex-1 m-2 p-4 h-2/3">
+            <Card className="flex-1 m-2 p-4 h-auto">
               <CompletedTodos filteredAnalytics={filteredAnalytics} />
             </Card>
           </div>
