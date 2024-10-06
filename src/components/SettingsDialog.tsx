@@ -9,8 +9,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import useSettingStore from "../store/settingStore"; // 引入 SettingStore
-import { useTimerStore } from "../store/timerStore"; // 引入 TimerStore
+import useSettingStore from "../store/settingStore";
+import { useTimerStore } from "../store/timerStore";
 
 interface SettingsDialogProps {
   open: boolean;

@@ -69,11 +69,9 @@ const MovingModel: React.FC<MovingModelProps> = ({
         const fishDistance = fishDirection.length();
 
         if (fishDistance > 0.5) {
-          // 模型向魚的方向移動
           fishDirection.normalize().multiplyScalar(speed * 0.3);
           setCurrentPosition((prev) => prev.clone().add(fishDirection));
 
-          // 更新模型的朝向朝向魚的位置，並向左轉90度
           const angle =
             Math.atan2(fishDirection.x, fishDirection.z) + Math.PI / 2;
           modelRef.current.rotation.y = angle;
@@ -90,14 +88,13 @@ const MovingModel: React.FC<MovingModelProps> = ({
           direction.normalize().multiplyScalar(speed * 0.1);
           setCurrentPosition((prev) => prev.clone().add(direction));
 
-          // 計算模型的朝向並向左轉90度
           const targetRotation = targetPosition.current.clone();
           const lookAtDirection = targetRotation
             .sub(currentPosition)
             .normalize();
           const angle =
             Math.atan2(lookAtDirection.x, lookAtDirection.z) + Math.PI / 2;
-          modelRef.current.rotation.y = angle; // 設置模型的旋轉角度
+          modelRef.current.rotation.y = angle;
         } else {
           targetPosition.current.set(
             Math.random() * (maxX - minX) + minX,

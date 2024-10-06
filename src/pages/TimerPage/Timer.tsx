@@ -8,8 +8,9 @@ import { useTimerStore } from "../../store/timerStore";
 import LoginButton from "../../components/Header/LoginButton";
 import { requestNotificationPermission } from "../../utils/NotificationService";
 import { Button } from "@/components/ui/button";
-import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import { Settings } from "lucide-react";
+import SettingsDialog from "../../components/SettingsDialog";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 interface TimerProps {
   toggleSidebar: () => void;
@@ -66,6 +67,15 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
     setIsEditing(false);
   };
 
+  const [openSettingsDialog, setOpenSettingsDialog] = useState(false);
+  const handleOpenSettingsDialog = () => {
+    setOpenSettingsDialog(true);
+  };
+
+  const handleCloseSettingsDialog = () => {
+    setOpenSettingsDialog(false);
+  };
+
   return (
     <div className="w-screen h-screen flex justify-center items-center">
       <div className="z-30 bg-white bg-opacity-60 w-[600px] h-[600px] flex flex-col justify-center items-center bg-cover bg-center">
@@ -87,12 +97,20 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
             size="icon"
             onClick={toggleSidebar}
           >
-            {isOpen ? (
-              <KeyboardDoubleArrowLeftIcon />
-            ) : (
-              <KeyboardDoubleArrowRightIcon />
-            )}
+            {isOpen ? <ChevronsLeft /> : <ChevronsRight />}
           </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleOpenSettingsDialog}
+          >
+            <Settings />
+          </Button>
+          <SettingsDialog
+            onClose={handleCloseSettingsDialog}
+            open={openSettingsDialog}
+          />
 
           {isPaused && (
             <Button

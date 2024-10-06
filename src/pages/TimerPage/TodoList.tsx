@@ -17,7 +17,7 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
   return (
     <>
       <Card
-        className={`fixed top-1/2 left-1/2 w-[90%] sm:w-[500px] h-auto bg-white z-10 flex flex-col p-5 outline transition-transform duration-500 ease-in-out transform ${
+        className={`fixed top-1/2 left-1/2 w-[90%] sm:w-[500px] h-auto bg-white z-30 flex flex-col p-5 outline transition-transform duration-500 ease-in-out transform ${
           isOpen
             ? "scale-100 translate-x-[-50%] translate-y-[-50%] sm:translate-x-[250px]" // 冒出後在手機上居中，桌面版向右移動
             : "scale-0 translate-x-[-50%] translate-y-[-50%]" // 初始狀態縮小並居中
