@@ -1,14 +1,11 @@
 import { useRef, useEffect } from "react";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import IconButton from "@mui/material/IconButton";
-import useSettingStore from "../../store/settingStore"; // 引入 BgmStore
-
+import { Button } from "@/components/ui/button";
+import useSettingStore from "../../store/settingStore";
+import { Volume2, VolumeOff } from "lucide-react";
 const ToggleBgm = () => {
-  const { isPlaying, bgmSource, toggleBgm } = useSettingStore(); // 從 BgmStore 獲取狀態和方法
+  const { isPlaying, bgmSource, toggleBgm } = useSettingStore();
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // 當音樂來源改變時，更新 audio 元素的 src
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.src = bgmSource;
@@ -16,17 +13,17 @@ const ToggleBgm = () => {
         audioRef.current.play();
       }
     }
-  }, [bgmSource, isPlaying]); // 當 bgmSource 或 isPlaying 改變時觸發
+  }, [bgmSource, isPlaying]);
 
   const handleToggleBgm = () => {
-    toggleBgm(); // 使用 BgmStore 的 toggleBgm 方法
+    toggleBgm();
   };
 
   return (
     <>
-      <IconButton onClick={handleToggleBgm} color="inherit" sx={{ mr: 1 }}>
-        {isPlaying ? <VolumeOffIcon /> : <VolumeUpIcon />}
-      </IconButton>
+      <Button variant="ghost" onClick={handleToggleBgm} color="inherit">
+        {isPlaying ? <VolumeOff /> : <Volume2 />}
+      </Button>
       <audio ref={audioRef} loop>
         Your browser does not support the audio element.
       </audio>

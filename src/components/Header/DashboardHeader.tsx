@@ -1,6 +1,11 @@
 import { Button } from "@/components/ui/button";
 import LoginButton from "./LoginButton";
 import WebsiteLogo from "../../assets/icons/logo.png";
+import ToggleBgm from "./ToggleBgm";
+import ThemeSwitcher from "./ThemeSwitcher";
+import { Settings } from "lucide-react";
+import { useState } from "react";
+import SettingsDialog from "../SettingsDialog";
 
 interface DashboardHeaderProps {
   pages: string[];
@@ -14,6 +19,15 @@ export function DashboardHeader({
   setTargetPosition,
   setLookAtPosition,
 }: DashboardHeaderProps) {
+  const [openSettingsDialog, setOpenSettingsDialog] = useState(false);
+  const handleOpenSettingsDialog = () => {
+    setOpenSettingsDialog(true);
+  };
+
+  const handleCloseSettingsDialog = () => {
+    setOpenSettingsDialog(false);
+  };
+
   return (
     <header className="fixed w-full bg-transparent border-transparent z-50 flex items-center h-24 border-b px-4 md:px-6">
       <div className="relative flex-grow flex items-center justify-between">
@@ -33,8 +47,21 @@ export function DashboardHeader({
 
         <div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
           <LoginButton />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleOpenSettingsDialog}
+          >
+            <Settings />
+          </Button>
+          <ToggleBgm />
+          <ThemeSwitcher />
         </div>
       </div>
+      <SettingsDialog
+        onClose={handleCloseSettingsDialog}
+        open={openSettingsDialog}
+      />
     </header>
   );
 }

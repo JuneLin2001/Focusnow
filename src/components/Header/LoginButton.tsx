@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import useAuthStore from "../../store/authStore";
@@ -15,17 +14,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import SettingsDialog from "../SettingsDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Settings } from "lucide-react";
 
 const LoginButton = () => {
   const { user, setUser, logout } = useAuthStore();
   const resetAnalytics = useAnalyticsStore((state) => state.reset);
   const setFishesCount = useFishesCountStore((state) => state.setFishesCount);
-
-  // 新增狀態來控制 SettingsDialog 的開關
-  const [openSettingsDialog, setOpenSettingsDialog] = useState(false);
 
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
@@ -85,14 +79,6 @@ const LoginButton = () => {
     }
   };
 
-  const handleOpenSettingsDialog = () => {
-    setOpenSettingsDialog(true);
-  };
-
-  const handleCloseSettingsDialog = () => {
-    setOpenSettingsDialog(false);
-  };
-
   return (
     <div className="relative">
       <DropdownMenu>
@@ -134,14 +120,6 @@ const LoginButton = () => {
           </DropdownMenuContent>
         )}
       </DropdownMenu>
-      <Button variant="ghost" size="icon" onClick={handleOpenSettingsDialog}>
-        <Settings className="h-6 w-6" />
-      </Button>
-      {/* 加入 SettingsDialog */}
-      <SettingsDialog
-        onClose={handleCloseSettingsDialog} // 傳遞關閉函數
-        open={openSettingsDialog} // 傳遞開關狀態
-      />
     </div>
   );
 };

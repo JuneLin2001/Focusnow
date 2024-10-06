@@ -14,6 +14,7 @@ import { useTimerStore } from "../store/timerStore"; // 引入 TimerStore
 
 interface SettingsDialogProps {
   open: boolean;
+
   onClose: () => void;
 }
 
@@ -31,18 +32,17 @@ const musicOptions = [
 ];
 
 const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
-  const { isPlaying, toggleBgm, setBgmSource, themeMode, setThemeMode } =
-    useSettingStore();
-  const { breakMinutes, setBreakMinutes } = useTimerStore(); // 從 timerStore 獲取休息時間
+  const { isPlaying, toggleBgm, setBgmSource } = useSettingStore();
+  const { breakMinutes, setBreakMinutes } = useTimerStore();
   const [selectedMusic, setSelectedMusic] = useState<string>(
     musicOptions[0].value
   );
-  const [breakTime, setBreakTime] = useState<number>(breakMinutes); // 用於保存用戶輸入的休息時間
+  const [breakTime, setBreakTime] = useState<number>(breakMinutes);
 
   useEffect(() => {
     if (open) {
       setSelectedMusic(musicOptions[0].value);
-      setBreakTime(breakMinutes); // 設置為從 store 中獲取的值
+      setBreakTime(breakMinutes);
     }
   }, [open, breakMinutes]);
 
@@ -50,14 +50,9 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
     setSelectedMusic(value);
     setBgmSource(value);
     if (isPlaying) {
-      toggleBgm(); // 停止目前播放的音樂
+      toggleBgm();
     }
-    toggleBgm(); // 播放選擇的音樂
-  };
-
-  const handleThemeChange = (value: string) => {
-    const mode = value as "light" | "dark";
-    setThemeMode(mode);
+    toggleBgm();
   };
 
   const handleBreakTimeChange = (
@@ -65,7 +60,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
   ) => {
     const value = parseInt(event.target.value);
     setBreakTime(value);
-    setBreakMinutes(value); // 更新 timerStore 中的休息時間
+    setBreakMinutes(value);
   };
 
   return (
@@ -85,17 +80,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
               <Label htmlFor={music.value}>{music.label}</Label>
             </div>
           ))}
-        </RadioGroup>
-        <Label className="mt-4">選擇主題模式：</Label>
-        <RadioGroup value={themeMode} onValueChange={handleThemeChange}>
-          <div>
-            <RadioGroupItem value="light" id="light" />
-            <Label htmlFor="light">白天模式</Label>
-          </div>
-          <div>
-            <RadioGroupItem value="dark" id="dark" />
-            <Label htmlFor="dark">黑夜模式</Label>
-          </div>
         </RadioGroup>
         <Label className="mt-4">設定休息時間（分鐘）：</Label>
         <input
