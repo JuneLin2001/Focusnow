@@ -29,7 +29,10 @@ const MovingModel: React.FC<MovingModelProps> = ({
   fishPosition,
   setFishPosition,
 }) => {
-  const modelPaths = ["BBpenguinCenter.glb", "fish_low_poly.glb"];
+  const modelPaths = [
+    "BBpenguinCenter.glb",
+    // , "fish_low_poly.glb"
+  ];
 
   const [modelPath] = useState(
     modelPaths[Math.floor(Math.random() * modelPaths.length)]
