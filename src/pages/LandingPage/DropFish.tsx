@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import { Html } from "@react-three/drei";
 import { Button } from "@/components/ui/button";
+import { FishSymbol } from "lucide-react";
 
-interface BubbleProps {
+interface DropFishProps {
   position: [number, number, number];
-  onClick: () => void;
-  Icon: React.ComponentType;
+  fishesCount: number; // 接收魚的數量
+  handleDropFish: () => void; // 接收放下魚的函數
 }
 
-const Bubble: React.FC<BubbleProps> = ({ position, onClick, Icon }) => {
+const DropFish: React.FC<DropFishProps> = ({
+  position,
+  fishesCount,
+  handleDropFish,
+}) => {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -16,14 +21,14 @@ const Bubble: React.FC<BubbleProps> = ({ position, onClick, Icon }) => {
       <Button
         variant="default"
         color={hovered ? "primary" : "secondary"}
-        onClick={onClick}
+        onClick={handleDropFish}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        <Icon />
+        <FishSymbol /> {fishesCount}
       </Button>
     </Html>
   );
 };
 
-export default Bubble;
+export default DropFish;

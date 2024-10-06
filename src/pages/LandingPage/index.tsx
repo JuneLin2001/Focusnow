@@ -25,6 +25,7 @@ import InitialInstructions from "./InitialInstructions";
 import Snowflakes from "./Snowflakes";
 import useAuthStore from "../../store/authStore";
 import * as THREE from "three";
+import DropFish from "./DropFish";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -83,16 +84,18 @@ const LandingPage = () => {
           {page === "analytics" && <AnalyticsPage />}
         </div>
       )}
-      <div className="fixed top-28 left-4 p-4 bg-white opacity-80 z-10">
-        <p className="w-32 bg-white">fishesCount: {fishesCount}</p>
-        <button className="w-32 bg-white" onClick={handleDropFish}>
-          放下魚
-        </button>
-      </div>
+
       <Canvas>
         <Environment preset={themeMode === "light" ? "warehouse" : "night"} />
         {themeMode === "dark" && <Sky sunPosition={[0, 0, 0]} />}
         <Mainland />
+        {page === null && (
+          <DropFish
+            position={[100, 80, 0]}
+            fishesCount={fishesCount}
+            handleDropFish={handleDropFish}
+          />
+        )}
         <Igloo />
         <FloatingIce />
         <OceanModel />
