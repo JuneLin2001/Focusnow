@@ -89,27 +89,28 @@ export const useTimerStore = create<TimerState>((set, get) => {
 
     resetTimer: () => {
       const { startTime, inputMinutes } = get();
+      const { mode } = get();
 
       if (interval) {
         clearInterval(interval);
         interval = null;
       }
 
-      // 重置計時器並保留未完成的 pomodoro 狀態
       set((state) => ({
         isPaused: true,
         mode: "work",
         secondsLeft: state.inputMinutes * 60,
       }));
 
-      // 將未完成的 pomodoro 狀態保存到 Firestore
-      get().checkEndCondition(
-        startTime,
-        "work", // 保持當前的模式為工作模式
-        inputMinutes,
-        new Date(),
-        false // 未完成的 pomodoro
-      );
+      if (mode === "work") {
+        get().checkEndCondition(
+          startTime,
+          "work",
+          inputMinutes,
+          new Date(),
+          false
+        );
+      }
     },
 
     addFiveMinutes: () =>
