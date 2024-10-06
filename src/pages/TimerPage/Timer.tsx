@@ -110,6 +110,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
           <SettingsDialog
             onClose={handleCloseSettingsDialog}
             open={openSettingsDialog}
+            isPaused={isPaused}
           />
 
           {isPaused && (

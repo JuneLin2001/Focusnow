@@ -1,4 +1,3 @@
-// src/components/ChartDisplay.tsx
 import React, { useEffect, useState, useCallback } from "react";
 import { Bar } from "react-chartjs-2";
 import { ChartData, Chart, registerables } from "chart.js";
@@ -10,14 +9,14 @@ Chart.register(...registerables);
 interface ChartDisplayProps {
   filteredAnalytics: UserAnalytics[];
   filterType: "daily" | "weekly" | "monthly";
-  currentDate: dayjs.Dayjs; // 添加 currentDate
+  currentDate: dayjs.Dayjs;
   totalFocusDuration: number;
 }
 
 const ChartDisplay: React.FC<ChartDisplayProps> = ({
   filteredAnalytics,
   filterType,
-  currentDate, // 確保這裡也接受 currentDate
+  currentDate,
   totalFocusDuration,
 }) => {
   const [chartData, setChartData] = useState<ChartData<"bar">>({
@@ -48,18 +47,20 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
       const mergedData: { [key: string]: number } = {};
 
       filteredData.forEach((analytics) => {
-        const dateKey = dayjs.unix(analytics.startTime.seconds);
-        const formattedKey =
-          filterType === "daily"
-            ? dateKey.startOf("hour").format("HH:mm")
-            : filterType === "weekly"
-              ? dateKey.format("MM-DD")
-              : dateKey.format("MM-DD");
+        if (analytics.pomodoroCompleted) {
+          const dateKey = dayjs.unix(analytics.startTime.seconds);
+          const formattedKey =
+            filterType === "daily"
+              ? dateKey.startOf("hour").format("HH:mm")
+              : filterType === "weekly"
+                ? dateKey.format("MM-DD")
+                : dateKey.format("MM-DD");
 
-        if (!mergedData[formattedKey]) {
-          mergedData[formattedKey] = 0;
+          if (!mergedData[formattedKey]) {
+            mergedData[formattedKey] = 0;
+          }
+          mergedData[formattedKey] += analytics.focusDuration;
         }
-        mergedData[formattedKey] += analytics.focusDuration;
       });
 
       const allDates = [];

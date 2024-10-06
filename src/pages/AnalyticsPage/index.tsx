@@ -52,10 +52,13 @@ const AnalyticsPage = () => {
 
       setFilteredAnalytics(filteredAllData);
 
-      const totalDuration = filteredAllData.reduce(
-        (acc, analytics) => acc + analytics.focusDuration,
-        0
-      );
+      const totalDuration = filteredAllData.reduce((acc, analytics) => {
+        if (analytics.pomodoroCompleted) {
+          return acc + analytics.focusDuration;
+        }
+        return acc;
+      }, 0);
+
       setTotalFocusDuration(totalDuration);
     },
     [calculateDateRange, setFilteredAnalytics]

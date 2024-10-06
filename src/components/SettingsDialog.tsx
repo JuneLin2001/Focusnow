@@ -6,7 +6,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import useSettingStore from "../store/settingStore";
@@ -14,8 +13,8 @@ import { useTimerStore } from "../store/timerStore";
 
 interface SettingsDialogProps {
   open: boolean;
-
   onClose: () => void;
+  isPaused: boolean;
 }
 
 const musicOptions = [
@@ -31,7 +30,11 @@ const musicOptions = [
   },
 ];
 
-const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
+const SettingsDialog: React.FC<SettingsDialogProps> = ({
+  open,
+  onClose,
+  isPaused,
+}) => {
   const { isPlaying, toggleBgm, setBgmSource } = useSettingStore();
   const { breakMinutes, setBreakMinutes } = useTimerStore();
   const [selectedMusic, setSelectedMusic] = useState<string>(
@@ -58,7 +61,16 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
   const handleBreakTimeChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const value = parseInt(event.target.value);
+    let value = parseInt(event.target.value);
+
+    if (isNaN(value)) {
+      value = 1;
+    } else if (value < 1) {
+      value = 1;
+    } else if (value > 120) {
+      value = 120;
+    }
+
     setBreakTime(value);
     setBreakMinutes(value);
   };
@@ -81,18 +93,18 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
             </div>
           ))}
         </RadioGroup>
-        <Label className="mt-4">設定休息時間（分鐘）：</Label>
-        <input
-          type="number"
-          value={breakTime}
-          onChange={handleBreakTimeChange}
-          className="border border-gray-300 rounded p-2 mt-2"
-          min={1}
-          max={120}
-        />
-        <div className="mt-4">
-          <Button onClick={onClose}>關閉</Button>
-        </div>
+        <Label className="mt-4">
+          設定休息時間（分鐘）：
+          {
+            <input
+              type="text"
+              value={breakTime}
+              onChange={handleBreakTimeChange}
+              className="border border-gray-300 rounded p-2 mt-2"
+              disabled={!isPaused}
+            />
+          }
+        </Label>
       </DialogContent>
     </Dialog>
   );

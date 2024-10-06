@@ -55,7 +55,8 @@ export const useAnalyticsStore = create<AnalyticsState>((set) => ({
       });
 
       const totalDuration = filtered.reduce(
-        (acc, analytics) => acc + analytics.focusDuration,
+        (acc, analytics) =>
+          acc + (analytics.pomodoroCompleted ? analytics.focusDuration : 0),
         0
       );
 

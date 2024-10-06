@@ -5,8 +5,8 @@ import { FishSymbol } from "lucide-react";
 
 interface DropFishProps {
   position: [number, number, number];
-  fishesCount: number; // 接收魚的數量
-  handleDropFish: () => void; // 接收放下魚的函數
+  fishesCount: number;
+  handleDropFish: () => void;
 }
 
 const DropFish: React.FC<DropFishProps> = ({
