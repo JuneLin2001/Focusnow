@@ -23,6 +23,8 @@ import Bubble from "./Bubble";
 import { AlarmClock, ChartColumn } from "lucide-react";
 import InitialInstructions from "./InitialInstructions";
 import Snowflakes from "./Snowflakes";
+import useAuthStore from "../../store/authStore";
+import * as THREE from "three";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -35,26 +37,34 @@ const LandingPage = () => {
     "timer" | "analytics" | "game" | "SignInstructions" | null
   >(null);
   const { themeMode } = settingStore();
+  const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
+  const { user } = useAuthStore();
 
   const fishesCount = useFishesCountStore((state) => state.FishesCount);
   const updateFishesCount = useFishesCountStore(
     (state) => state.updateFishesCount
   );
 
-  const handleDropFish = () => {
-    if (fishesCount > 0) {
-      updateFishesCount(-1);
+  const handleDropFish = async () => {
+    if (user) {
+      if (fishesCount > 0) {
+        const randomX = Math.random() * (175 - -15) + -15;
+        const randomZ = Math.random() * (90 - -150) + -150;
+        setFishPosition(new THREE.Vector3(randomX, 10, randomZ));
+
+        await updateFishesCount(-1);
+      } else {
+        alert("沒有魚可以放置了，每專注1分鐘可以獲得1條魚！");
+      }
     } else {
-      alert("沒有魚可以放置了，每專注1分鐘可以獲得1條魚！");
+      alert("尚未登入！");
     }
   };
 
   const [showInstructions, setShowInstructions] = useState(true); // 預設為顯示操作說明
-  const [isCameraMoveEnabled, setIsCameraMoveEnabled] = useState(false); // 控制鏡頭移動的狀態
 
   const handleCloseInstructions = () => {
     setShowInstructions(false); // 隱藏操作說明
-    setIsCameraMoveEnabled(true); // 啟用鏡頭移動
   };
 
   return (
@@ -92,6 +102,8 @@ const LandingPage = () => {
           fishesCount={fishesCount}
           setFishesCount={updateFishesCount}
           handleDropFish={handleDropFish}
+          fishPosition={fishPosition}
+          setFishPosition={setFishPosition}
         />
         {page === null && (
           <Bubble
@@ -118,7 +130,6 @@ const LandingPage = () => {
         <CameraController
           targetPosition={targetPosition}
           lookAtPosition={lookAtPosition}
-          isCameraMoveEnabled={isCameraMoveEnabled} // 將鏡頭移動的狀態傳入
         />
         <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
           <GizmoViewport labelColor="white" axisHeadScale={1} />

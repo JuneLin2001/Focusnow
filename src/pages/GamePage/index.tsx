@@ -12,12 +12,16 @@ interface GamePageProps {
   fishesCount: number;
   setFishesCount: (count: number) => void;
   handleDropFish: () => void;
+  fishPosition: THREE.Vector3 | null;
+  setFishPosition: (position: THREE.Vector3 | null) => void;
 }
 
-const GamePage: React.FC<GamePageProps> = () => {
+const GamePage: React.FC<GamePageProps> = ({
+  fishPosition,
+  setFishPosition,
+}) => {
   const position: [number, number, number] = useMemo(() => [80, 6, -30], []);
   const { analyticsList, setAnalyticsList } = useAnalyticsStore();
-  const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
   const [last30DaysFocusDuration, setLast30DaysFocusDuration] =
     useState<number>(0);
   const [showInstructions, setShowInstructions] = useState(false);

@@ -17,8 +17,7 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
   );
 
   return (
-    <div className="h-full overflow-y-auto">
-      {/* 設定高度並添加滾動條 */}
+    <div className="h-1/3 overflow-y-auto">
       <h2 className="font-semibold mb-2">
         總共完成了: {completedTodosCount} 個 Todo
       </h2>
