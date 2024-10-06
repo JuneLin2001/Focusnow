@@ -1,11 +1,11 @@
-import { useState } from "react"; // 引入 Suspense
+import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
   Environment,
   GizmoHelper,
   GizmoViewport,
   Sky,
-} from "@react-three/drei"; // 引入 Sky
+} from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
 import Mainland from "../../models/Mainland";
@@ -62,11 +62,27 @@ const LandingPage = () => {
     }
   };
 
-  const [showInstructions, setShowInstructions] = useState(true); // 預設為顯示操作說明
-
+  const [showInstructions, setShowInstructions] = useState(true);
   const handleCloseInstructions = () => {
-    setShowInstructions(false); // 隱藏操作說明
+    setShowInstructions(false);
   };
+
+  const [displayedPage, setDisplayedPage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (page === null) {
+      setDisplayedPage(null);
+      return;
+    }
+
+    // 延遲2秒後切換頁面
+    const timer = setTimeout(() => {
+      setDisplayedPage(page);
+    }, 2000);
+
+    // 清除計時器
+    return () => clearTimeout(timer);
+  }, [page]);
 
   return (
     <>
@@ -76,12 +92,12 @@ const LandingPage = () => {
         setTargetPosition={setTargetPosition}
         setLookAtPosition={setLookAtPosition}
       />
-      {page === null ? (
-        <div className="fixed z-10"></div>
+      {displayedPage === null ? (
+        ""
       ) : (
         <div className="fixed z-10 w-full h-full">
-          {page === "timer" && <TimerPage />}
-          {page === "analytics" && <AnalyticsPage />}
+          {displayedPage === "timer" && <TimerPage />}
+          {displayedPage === "analytics" && <AnalyticsPage />}
         </div>
       )}
 
@@ -111,6 +127,7 @@ const LandingPage = () => {
         {page === null && (
           <Bubble
             Icon={AlarmClock}
+            content="Timer"
             position={[-20, 40, -100]}
             onClick={() => {
               setTargetPosition([-50, 12, -150]);
@@ -122,6 +139,7 @@ const LandingPage = () => {
         {page === null && (
           <Bubble
             Icon={ChartColumn}
+            content="Analytics"
             position={[-70, 40, 110]}
             onClick={() => {
               setPage("analytics");

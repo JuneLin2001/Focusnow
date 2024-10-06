@@ -67,8 +67,8 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
   };
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center ">
-      <div className="z-30 opacity-100 w-[400px] ">
+    <div className="w-screen h-screen flex justify-center items-center">
+      <div className="z-30 bg-white bg-opacity-60 w-[600px] h-[600px] flex flex-col justify-center items-center bg-cover bg-center">
         <CircularProgressbarWithChildren
           value={
             mode === "work"

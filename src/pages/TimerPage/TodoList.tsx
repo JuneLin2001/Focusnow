@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTodoStore } from "../../store/todoStore";
+import { Card, CardTitle } from "@/components/ui/card";
 
-// 接收 isOpen 作為 props
 const TodoList = ({ isOpen }: { isOpen: boolean }) => {
   const [newTodoTitle, setNewTodoTitle] = useState<string>("");
 
@@ -16,14 +16,14 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
 
   return (
     <>
-      <div
-        className={`fixed top-1/2 left-1/2 w-[500px] h-auto bg-white z-10 flex flex-col p-5 outline transition-transform duration-500 ease-in-out transform ${
+      <Card
+        className={`fixed top-1/2 left-1/2 w-[90%] sm:w-[500px] h-auto bg-white z-10 flex flex-col p-5 outline transition-transform duration-500 ease-in-out transform ${
           isOpen
-            ? "scale-100 translate-x-[250px] translate-y-[-50%]" // 冒出後向右移動 250px
+            ? "scale-100 translate-x-[-50%] translate-y-[-50%] sm:translate-x-[250px]" // 冒出後在手機上居中，桌面版向右移動
             : "scale-0 translate-x-[-50%] translate-y-[-50%]" // 初始狀態縮小並居中
         }`}
       >
-        <h2 className="text-xl mb-4">Todo List</h2>
+        <CardTitle className="text-xl mb-4">Todo List</CardTitle>
 
         <div className="mb-4 flex">
           <input
@@ -67,7 +67,7 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
             </li>
           ))}
         </ul>
-      </div>
+      </Card>
     </>
   );
 };

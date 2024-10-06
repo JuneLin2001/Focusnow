@@ -6,9 +6,15 @@ interface BubbleProps {
   position: [number, number, number];
   onClick: () => void;
   Icon: React.ComponentType;
+  content: string;
 }
 
-const Bubble: React.FC<BubbleProps> = ({ position, onClick, Icon }) => {
+const Bubble: React.FC<BubbleProps> = ({
+  position,
+  onClick,
+  Icon,
+  content,
+}) => {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -21,6 +27,7 @@ const Bubble: React.FC<BubbleProps> = ({ position, onClick, Icon }) => {
         onMouseLeave={() => setHovered(false)}
       >
         <Icon />
+        {content}
       </Button>
     </Html>
   );
