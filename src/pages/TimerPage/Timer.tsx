@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
 import SettingsDialog from "../../components/SettingsDialog";
 import { ChevronsLeft, ChevronsRight, Plus, Minus } from "lucide-react";
+import settingStore from "../../store/settingStore";
 
 interface TimerProps {
   toggleSidebar: () => void;
@@ -33,6 +34,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
     showLoginButton,
   } = useTimerStore();
 
+  const { themeMode } = settingStore();
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -76,6 +78,15 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
     setOpenSettingsDialog(false);
   };
 
+  const pathColor =
+    mode === "work"
+      ? themeMode === "dark"
+        ? "#1e3a8a"
+        : "#3b82f6"
+      : themeMode === "dark"
+        ? "#0b4f22"
+        : "#22e964";
+
   return (
     <div className="w-screen h-screen flex justify-center items-center">
       <div className="z-30 bg-white bg-opacity-60 w-[500px] h-[500px] flex flex-col justify-center items-center bg-cover bg-center">
@@ -87,7 +98,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
           }
           styles={buildStyles({
             textColor: "#000",
-            pathColor: mode === "work" ? "blue" : "green",
+            pathColor: pathColor,
             trailColor: "#d6d6d6",
           })}
         >
