@@ -28,8 +28,8 @@ const ModelInstructions: React.FC<ModelInstructionsProps> = ({
   return (
     <Html position={position}>
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>詳細資料</DialogTitle>
         <DialogContent>
+          <DialogTitle>詳細資料</DialogTitle>
           <Typography variant="body1">
             {`這隻企鵝是你在 ${date} 專注了 ${focusDuration} 分鐘，而來到這裡的`}
           </Typography>

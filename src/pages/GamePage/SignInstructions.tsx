@@ -22,8 +22,8 @@ const SignInstructions: React.FC<SignInstructionsProps> = ({
   return (
     <Html>
       <Dialog open={showInstructions} onClose={onClose}>
-        <DialogTitle>操作說明</DialogTitle>
         <DialogContent>
+          <DialogTitle>操作說明</DialogTitle>
           <Typography variant="body1">
             您過去 30 天的專注時間總和是 {last30DaysFocusDuration} 分鐘。
           </Typography>
