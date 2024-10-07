@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { UserAnalytics } from "../../types/type";
@@ -21,15 +22,48 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
   const completionRate =
     totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    };
+
+    checkDarkMode();
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, { attributes: true });
+
+    return () => observer.disconnect();
+  }, []);
+
   const data = {
-    labels: ["完成的Pomodoro", "中斷的Pomodoro"],
+    labels: ["完成的專注", "中斷的專注"],
     datasets: [
       {
         label: "數量",
         data: [completedCount, notCompletedCount],
-        backgroundColor: ["rgba(75, 192, 192, 0.6)", "rgba(255, 99, 132, 0.6)"],
+        backgroundColor: isDarkMode
+          ? ["#1a7f7f4e", "#992b454e"]
+          : ["#4BC0C0", "#FF6384"],
       },
     ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: {
+          color: isDarkMode ? "white" : "black", // 根據模式改變字體顏色
+        },
+      },
+      tooltip: {
+        // 你也可以這裡設定 tooltip 的字體顏色
+        titleColor: isDarkMode ? "white" : "black",
+        bodyColor: isDarkMode ? "white" : "black",
+      },
+    },
   };
 
   return (
@@ -38,10 +72,7 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
         完成率: {completionRate.toFixed(2)}%
       </h2>
       <div className="w-full h-full flex-1 flex justify-center items-center">
-        <Pie
-          data={data}
-          options={{ responsive: true, maintainAspectRatio: false }}
-        />
+        <Pie data={data} options={options} />
       </div>
     </div>
   );
