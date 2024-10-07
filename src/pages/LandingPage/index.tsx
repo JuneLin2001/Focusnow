@@ -26,6 +26,7 @@ import Snowflakes from "./Snowflakes";
 import useAuthStore from "../../store/authStore";
 import * as THREE from "three";
 import DropFish from "./DropFish";
+import ToggleBgm from "@/components/ToggleBgm";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -157,6 +158,7 @@ const LandingPage = () => {
         </GizmoHelper>
       </Canvas>
       <TimerDisplay />
+      <ToggleBgm />
       <InitialInstructions
         showInstructions={showInstructions}
         handleCloseInstructions={handleCloseInstructions}

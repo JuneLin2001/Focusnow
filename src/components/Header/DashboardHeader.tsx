@@ -3,7 +3,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import LoginButton from "./LoginButton";
 import WebsiteLogo from "../../assets/icons/logo.png";
-import ToggleBgm from "./ToggleBgm";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 interface DashboardHeaderProps {
@@ -22,7 +21,6 @@ export function DashboardHeader({
   return (
     <header className="fixed w-full h-16 bg-gray-200 dark:bg-gray-900 shadow-md z-50 flex items-center px-4 md:px-8 transition-colors duration-300">
       <div className="relative flex-grow flex items-center justify-between">
-        {/* Mobile Layout: Menu and Logo */}
         <div className="flex items-center md:hidden">
           <Sheet>
             <SheetTrigger asChild>
@@ -61,19 +59,18 @@ export function DashboardHeader({
           </Sheet>
 
           <Button
-            variant="link"
+            variant="ghost"
             onClick={() => {
               setPage(null);
               setTargetPosition([5, 60, 10]);
               setLookAtPosition([0, 0, 0]);
             }}
-            className="ml-4 cursor-pointer"
+            className="cursor-pointer"
           >
             <img src={WebsiteLogo} alt="logo" className="h-10 w-auto" />
           </Button>
         </div>
 
-        {/* Desktop Layout: Logo and Navigation */}
         <div className="hidden md:flex md:items-center md:w-full md:justify-start">
           <Button
             variant="link"
@@ -87,7 +84,6 @@ export function DashboardHeader({
             <img src={WebsiteLogo} alt="logo" className="h-10 w-auto" />
           </Button>
 
-          {/* Navigation */}
           <nav className="flex gap-8 text-base font-semibold">
             {pages.map((page) => (
               <Button
@@ -115,10 +111,8 @@ export function DashboardHeader({
             ))}
           </nav>
 
-          {/* Right Side (Login, BGM, ThemeSwitcher) */}
           <div className="flex items-center gap-4 ml-auto">
             <LoginButton />
-            <ToggleBgm />
             <ThemeSwitcher />
           </div>
         </div>
