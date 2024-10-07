@@ -10,7 +10,7 @@ import { requestNotificationPermission } from "../../utils/NotificationService";
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
 import SettingsDialog from "../../components/SettingsDialog";
-import { ChevronsLeft, ChevronsRight } from "lucide-react";
+import { ChevronsLeft, ChevronsRight, Plus, Minus } from "lucide-react";
 
 interface TimerProps {
   toggleSidebar: () => void;
@@ -98,14 +98,14 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
                 open={openSettingsDialog}
                 isPaused={isPaused}
               />
-              <div className="flex items-center justify-center space-x-4">
+              <div className="flex items-center justify-center">
                 {isPaused && (
                   <Button
-                    variant="addOrSubtract"
+                    variant="ghost"
                     onClick={minusFiveMinutes}
                     disabled={!isPaused}
                   >
-                    -
+                    <Minus />
                   </Button>
                 )}
                 <div className="flex items-center">
@@ -133,11 +133,11 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
                 </div>
                 {isPaused && (
                   <Button
-                    variant="addOrSubtract"
+                    variant="ghost"
                     onClick={addFiveMinutes}
                     disabled={!isPaused}
                   >
-                    +
+                    <Plus />
                   </Button>
                 )}
               </div>
