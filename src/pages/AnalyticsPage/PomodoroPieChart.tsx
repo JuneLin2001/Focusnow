@@ -55,13 +55,8 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
     plugins: {
       legend: {
         labels: {
-          color: isDarkMode ? "white" : "black", // 根據模式改變字體顏色
+          color: isDarkMode ? "white" : "black",
         },
-      },
-      tooltip: {
-        // 你也可以這裡設定 tooltip 的字體顏色
-        titleColor: isDarkMode ? "white" : "black",
-        bodyColor: isDarkMode ? "white" : "black",
       },
     },
   };
