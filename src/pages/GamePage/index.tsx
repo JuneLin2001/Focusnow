@@ -14,11 +14,15 @@ interface GamePageProps {
   handleDropFish: () => void;
   fishPosition: THREE.Vector3 | null;
   setFishPosition: (position: THREE.Vector3 | null) => void;
+  pages: string[];
+  setPage: (newPage: "Setting" | null) => void;
 }
 
 const GamePage: React.FC<GamePageProps> = ({
   fishPosition,
   setFishPosition,
+  pages,
+  setPage,
 }) => {
   const position: [number, number, number] = useMemo(() => [80, 6, -30], []);
   const { analyticsList, setAnalyticsList } = useAnalyticsStore();
@@ -68,10 +72,13 @@ const GamePage: React.FC<GamePageProps> = ({
 
   const handleOpen = () => {
     setShowInstructions(true);
+    setPage("Setting");
+    console.log(pages);
   };
 
   const handleClose = () => {
     setShowInstructions(false);
+    setPage(null);
   };
 
   return (

@@ -16,8 +16,8 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
   }, [showInstructions]);
 
   const handleClose = () => {
-    setIsVisible(false); // 隱藏組件
-    handleCloseInstructions(); // 呼叫父組件的關閉函數
+    setIsVisible(false);
+    handleCloseInstructions();
   };
 
   return (

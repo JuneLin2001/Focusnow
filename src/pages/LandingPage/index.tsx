@@ -36,8 +36,8 @@ const LandingPage = () => {
     [number, number, number]
   >([0, 0, 0]);
   const [page, setPage] = useState<
-    "timer" | "analytics" | "game" | "SignInstructions" | null
-  >(null);
+    "timer" | "analytics" | "game" | "Setting" | null
+  >("Setting");
   const { themeMode } = settingStore();
   const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
   const { user } = useAuthStore();
@@ -66,6 +66,7 @@ const LandingPage = () => {
   const [showInstructions, setShowInstructions] = useState(true);
   const handleCloseInstructions = () => {
     setShowInstructions(false);
+    setPage(null);
   };
 
   const [displayedPage, setDisplayedPage] = useState<string | null>(null);
@@ -125,6 +126,7 @@ const LandingPage = () => {
           handleDropFish={handleDropFish}
           fishPosition={fishPosition}
           setFishPosition={setFishPosition}
+          setPage={setPage}
         />
         {page === null && (
           <Bubble
