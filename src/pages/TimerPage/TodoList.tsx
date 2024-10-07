@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useTodoStore } from "../../store/todoStore";
 import { Card, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Plus, Trash2 } from "lucide-react";
 
 const TodoList = ({ isOpen }: { isOpen: boolean }) => {
   const [newTodoTitle, setNewTodoTitle] = useState<string>("");
@@ -35,12 +37,13 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
             className="flex-grow p-2 border rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             placeholder="New Todo"
           />
-          <button
+          <Button
+            value="add"
             onClick={handleAddTodo}
-            className="bg-green-500 text-white p-2 ml-2 rounded hover:bg-green-600"
+            className="bg-green-500 dark:bg-green-800 dark:hover:bg-green-900 text-white p-1 ml-2 rounded "
           >
-            +
-          </button>
+            <Plus />
+          </Button>
         </div>
 
         <ul className="flex-grow overflow-y-auto">
@@ -62,12 +65,13 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
                     : "text-gray-800 dark:text-white"
                 }`}
               />
-              <button
+              <Button
+                variant="reset"
                 onClick={() => removeTodo(todo.id)}
-                className="bg-red-500 text-white p-1 ml-2 rounded hover:bg-red-600"
+                className="bg-red-500 text-white p-1 ml-2 rounded "
               >
-                刪除
-              </button>
+                <Trash2 />
+              </Button>
             </li>
           ))}
         </ul>

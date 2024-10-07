@@ -126,6 +126,7 @@ const LandingPage = () => {
           handleDropFish={handleDropFish}
           fishPosition={fishPosition}
           setFishPosition={setFishPosition}
+          pages={["Timer", "Game", "Analytics", "Setting"]}
           setPage={setPage}
         />
         {page === null && (

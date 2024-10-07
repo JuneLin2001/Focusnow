@@ -85,7 +85,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
         : "#3b82f6"
       : themeMode === "dark"
         ? "#0b4f22"
-        : "#22e964";
+        : "#009b00";
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">
