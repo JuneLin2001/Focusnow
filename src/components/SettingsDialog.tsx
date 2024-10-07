@@ -80,8 +80,8 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
       <DialogTrigger asChild></DialogTrigger>
       <DialogContent>
         <DialogTitle className="sr-only">設定</DialogTitle>
-        <DialogDescription className="mb-4">
-          選擇你的背景音樂和主題模式。
+        <DialogDescription className="mb-1">
+          設定背景音樂和休息時間長度。
         </DialogDescription>
         <h3 className="text-lg font-medium">設定</h3>
         <Label>選擇播放的背景音樂：</Label>
