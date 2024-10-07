@@ -1,5 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import LoginButton from "./LoginButton";
 import WebsiteLogo from "../../assets/icons/logo.png";
@@ -24,16 +29,17 @@ export function DashboardHeader({
         <div className="flex items-center md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="shrink-0">
+              <Button variant="header" size="icon" className="shrink-0">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="bg-white dark:bg-gray-900 p-6">
-              <nav className="flex flex-col gap-4 text-lg font-medium">
+              <nav className="flex flex-col items-center gap-4 text-lg font-medium">
+                <SheetTitle className="">Navigation</SheetTitle>
                 {pages.map((page) => (
                   <Button
-                    variant="ghost"
+                    variant="header"
                     key={page}
                     onClick={() => {
                       if (page === "Timer") {
@@ -84,10 +90,10 @@ export function DashboardHeader({
             <img src={WebsiteLogo} alt="logo" className="h-10 w-auto" />
           </Button>
 
-          <nav className="flex gap-8 text-base font-semibold">
+          <nav className="flex gap-2 text-base font-semibold">
             {pages.map((page) => (
               <Button
-                variant="ghost"
+                variant="header"
                 key={page}
                 onClick={() => {
                   if (page === "Timer") {

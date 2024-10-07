@@ -1,11 +1,11 @@
 import {
   Dialog,
-  DialogTitle,
+  DialogTrigger,
   DialogContent,
-  DialogActions,
-  Button,
-  Typography,
-} from "@mui/material";
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Html } from "@react-three/drei";
 
 interface SignInstructionsProps {
@@ -21,21 +21,20 @@ const SignInstructions: React.FC<SignInstructionsProps> = ({
 }) => {
   return (
     <Html>
-      <Dialog open={showInstructions} onClose={onClose}>
+      <Dialog open={showInstructions} onOpenChange={onClose}>
+        <DialogTrigger asChild>
+          <Button onClick={onClose} className="hidden">
+            Open Instructions
+          </Button>
+        </DialogTrigger>
         <DialogContent>
           <DialogTitle>操作說明</DialogTitle>
-          <Typography variant="body1">
+          <DialogDescription variant="sign">
             您過去 30 天的專注時間總和是 {last30DaysFocusDuration} 分鐘。
-          </Typography>
-          <Typography variant="body1" className="mt-2">
+            <br />
             一次專注超過 15 分鐘，場景中就會多出一隻企鵝！
-          </Typography>
+          </DialogDescription>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} color="primary" variant="contained">
-            關閉
-          </Button>
-        </DialogActions>
       </Dialog>
     </Html>
   );
