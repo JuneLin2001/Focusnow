@@ -110,11 +110,10 @@ const GamePage: React.FC<GamePageProps> = ({
             setFishPosition={setFishPosition}
           />
         ))}
-
+        <FishModel position={[0, -5, 0]} />
         {fishPosition && (
           <FishModel
             position={[fishPosition.x, fishPosition.y, fishPosition.z]}
-            onClick={() => console.log("Fish clicked!")}
           />
         )}
       </group>
