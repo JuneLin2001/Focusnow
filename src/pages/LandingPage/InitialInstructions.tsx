@@ -35,10 +35,9 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
             <div className="bg-white p-5 rounded shadow-lg">
               <h2 className="text-xl mb-4">場景介紹</h2>
               <p className="mb-4">
-                歡迎來到我們的互動場景！以下是一些關於場景的介紹：
+                歡迎來到Focusnow！這是一個番茄鐘結合3D養成遊戲的網站：
               </p>
               <ul className="list-disc ml-5 mb-4">
-                <li>您現在身處一個虛擬的環境中，充滿了各種互動元素。</li>
                 <li>可以通過移動鏡頭來查看周圍的景觀和模型。</li>
                 <li>點擊不同的物體可以觸發互動效果，例如計時器和遊戲。</li>
               </ul>
@@ -48,7 +47,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
                   className="bg-blue-500 text-white p-2 rounded"
                   onClick={handleClose}
                 >
-                  不再顯示
+                  關閉
                 </button>
               </div>
             </div>
