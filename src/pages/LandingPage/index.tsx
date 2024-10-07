@@ -102,8 +102,8 @@ const LandingPage = () => {
       )}
 
       <Canvas>
-        <Environment preset={themeMode === "light" ? "warehouse" : "night"} />
-        {themeMode === "dark" && <Sky sunPosition={[0, 0, 0]} />}
+        <Environment preset={themeMode === "light" ? "warehouse" : "park"} />
+        {themeMode === "dark" && <Sky sunPosition={[0, -1, 0]} />}
         <Mainland />
         {page === null && (
           <DropFish
