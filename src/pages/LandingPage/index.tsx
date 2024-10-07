@@ -71,17 +71,16 @@ const LandingPage = () => {
   const [displayedPage, setDisplayedPage] = useState<string | null>(null);
 
   useEffect(() => {
+    setDisplayedPage(null);
+
     if (page === null) {
-      setDisplayedPage(null);
       return;
     }
 
-    // 延遲2秒後切換頁面
     const timer = setTimeout(() => {
       setDisplayedPage(page);
     }, 2000);
 
-    // 清除計時器
     return () => clearTimeout(timer);
   }, [page]);
 
