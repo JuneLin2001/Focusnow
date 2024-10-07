@@ -34,14 +34,20 @@ const Sign: React.FC<ModelProps> = ({ children, onClick }) => {
                   ? originalColors.current
                       .get(mesh)!
                       .clone()
-                      .multiplyScalar(0.7)
+                      .multiplyScalar(0.3)
                   : originalColors.current.get(mesh)!.clone()
               );
             }
           });
         }
       });
+
+      document.body.style.cursor = hovered ? "pointer" : "auto";
     }
+
+    return () => {
+      document.body.style.cursor = "auto";
+    };
   }, [scene, hovered]);
 
   return (
