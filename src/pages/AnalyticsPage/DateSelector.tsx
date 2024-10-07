@@ -69,7 +69,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
         onChange={(e) =>
           setFilterType(e.target.value as "daily" | "weekly" | "monthly")
         }
-        className="border border-gray-300 rounded p-2 mb-0 w-20"
+        className="border dark:border-2 border-gray-300 bg-white dark:bg-black dark:border-gray-600 text-black dark:text-white rounded p-2 mb-0 w-20"
       >
         <option value="daily">每日</option>
         <option value="weekly">每週</option>
@@ -77,9 +77,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
       </select>
 
       <div className="flex items-center space-x-2 ml-4">
-        <Button onClick={handlePrev} className="bg-gray-300">
-          ←
-        </Button>
+        <Button onClick={handlePrev}>←</Button>
         <Popover open={isCalendarOpen} onOpenChange={setCalendarOpen}>
           <PopoverTrigger asChild>
             <Button
@@ -102,9 +100,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
             />
           </PopoverContent>
         </Popover>
-        <Button onClick={handleNext} className="bg-gray-300">
-          →
-        </Button>
+        <Button onClick={handleNext}>→</Button>
       </div>
     </div>
   );
