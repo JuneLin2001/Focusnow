@@ -41,7 +41,7 @@ const ToggleBgm = () => {
           onClick={handleToggleBgm}
           className="w-12 h-12 flex items-center justify-center rounded-full shadow-lg"
         >
-          {isPlaying ? <VolumeOff /> : <Volume2 />}
+          {isPlaying ? <Volume2 /> : <VolumeOff />}
         </Button>
       </div>
       <audio ref={audioRef} loop>
