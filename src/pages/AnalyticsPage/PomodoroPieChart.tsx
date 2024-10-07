@@ -37,8 +37,11 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
       <h2 className="text-lg font-semibold mb-2">
         完成率: {completionRate.toFixed(2)}%
       </h2>
-      <div className="w-full max-w-md mx-auto flex-1">
-        <Pie data={data} />
+      <div className="w-full h-full flex-1 flex justify-center items-center">
+        <Pie
+          data={data}
+          options={{ responsive: true, maintainAspectRatio: false }}
+        />
       </div>
     </div>
   );

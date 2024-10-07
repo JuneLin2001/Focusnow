@@ -62,21 +62,21 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   };
 
   return (
-    <div className="flex flex-col w-full">
-      <label className="mb-2 sm:mb-0">篩選方式:</label>
+    <div className="flex items-center w-full">
+      <label className="mr-2">篩選方式:</label>
       <select
         value={filterType}
         onChange={(e) =>
           setFilterType(e.target.value as "daily" | "weekly" | "monthly")
         }
-        className="border border-gray-300 rounded p-2 mb-2 sm:mb-0 w-20"
+        className="border border-gray-300 rounded p-2 mb-0 w-20"
       >
         <option value="daily">每日</option>
         <option value="weekly">每週</option>
         <option value="monthly">每月</option>
       </select>
 
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2 ml-4">
         <Button onClick={handlePrev} className="bg-gray-300">
           ←
         </Button>

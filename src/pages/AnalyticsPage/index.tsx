@@ -74,7 +74,7 @@ const AnalyticsPage = () => {
 
   return (
     <div className="flex justify-center items-start h-full box-border mt-20">
-      <Card className="box-border w-full h-full bg-gray-200 bg-opacity-50 p-4 mx-4 overflow-y-auto max-h-[calc(100vh-100px)] ">
+      <Card className="box-border w-full h-full bg-gray-200 bg-opacity-50 p-4 mx-4  max-h-[calc(100vh-100px)] ">
         <div className="flex flex-col h-full">
           <Card className="p-4">
             <DateSelector
