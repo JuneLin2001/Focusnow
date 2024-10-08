@@ -7,12 +7,12 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import LoginButton from "./LoginButton";
-import WebsiteLogo from "../../assets/icons/logo.png";
+import WebsiteLogo from "../../assets/icons/globePenguin.svg";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 interface DashboardHeaderProps {
   pages: string[];
-  setPage: (newPage: "timer" | "analytics" | null) => void;
+  setPage: (newPage: "timer" | "analytics" | "Setting" | null) => void;
   setTargetPosition: (position: [number, number, number]) => void;
   setLookAtPosition: (position: [number, number, number]) => void;
   handleAnalyticsClick: () => void;
@@ -31,7 +31,12 @@ export function DashboardHeader({
         <div className="flex items-center md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="header" size="icon" className="shrink-0">
+              <Button
+                variant="header"
+                size="icon"
+                className="shrink-0"
+                onClick={() => setPage("Setting")}
+              >
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
@@ -80,7 +85,7 @@ export function DashboardHeader({
 
         <div className="hidden md:flex md:items-center md:w-full md:justify-start">
           <Button
-            variant="link"
+            variant="ghost"
             onClick={() => {
               setPage(null);
               setTargetPosition([5, 60, 10]);
@@ -89,6 +94,7 @@ export function DashboardHeader({
             className="cursor-pointer"
           >
             <img src={WebsiteLogo} alt="logo" className="h-10 w-auto" />
+            <p className="text-2xl font-bold ml-2">Focusnow</p>
           </Button>
 
           <nav className="flex gap-2 text-base font-semibold">
@@ -116,7 +122,7 @@ export function DashboardHeader({
             ))}
           </nav>
 
-          <div className="flex items-center gap-4 ml-auto md:flex md:gap-4">
+          <div className="flex items-center gap-4 ml-auto">
             <LoginButton />
             <ThemeSwitcher />
           </div>

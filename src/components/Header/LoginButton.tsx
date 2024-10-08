@@ -4,8 +4,8 @@ import useAuthStore from "../../store/authStore";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import { useFishesCountStore } from "../../store/fishesCountStore";
 import { saveTaskData } from "../../firebase/firebaseService";
-import { CircleUser } from "lucide-react"; // 使用Lucide的圖標
-import { Button } from "@/components/ui/button"; // 使用自訂的Button組件
+import { CircleUser, LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -61,19 +61,18 @@ const LoginButton = () => {
           ),
         };
 
-        await saveTaskData(user, taskDataToSave); // 保存任務數據
+        await saveTaskData(user, taskDataToSave);
       }
     } catch (error) {
       console.error("Login error", error);
     }
   };
 
-  // 處理登出功能
   const handleLogout = async () => {
     try {
-      await logout(); // 登出
-      resetAnalytics(); // 重置分析數據
-      setFishesCount(0); // 重置魚數
+      await logout();
+      resetAnalytics();
+      setFishesCount(0);
     } catch (error) {
       console.error("Logout error", error);
     }
@@ -114,8 +113,9 @@ const LoginButton = () => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem>
-              <Button onClick={handleLogout}>登出</Button>
+            <DropdownMenuItem onClick={handleLogout}>
+              <LogOut />
+              &nbsp; 登出
             </DropdownMenuItem>
           </DropdownMenuContent>
         )}

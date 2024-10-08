@@ -7,6 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface DateSelectorProps {
   filterType: "daily" | "weekly" | "monthly";
@@ -77,11 +78,13 @@ const DateSelector: React.FC<DateSelectorProps> = ({
       </select>
 
       <div className="flex items-center space-x-2 ml-4">
-        <Button onClick={handlePrev}>←</Button>
+        <Button variant="analytics" onClick={handlePrev}>
+          <ChevronLeft />
+        </Button>
         <Popover open={isCalendarOpen} onOpenChange={setCalendarOpen}>
           <PopoverTrigger asChild>
             <Button
-              variant={"outline"}
+              variant="outline"
               className="w-[240px] pl-3 text-left font-normal"
               onClick={() => setCalendarOpen((prev) => !prev)}
             >
@@ -100,7 +103,9 @@ const DateSelector: React.FC<DateSelectorProps> = ({
             />
           </PopoverContent>
         </Popover>
-        <Button onClick={handleNext}>→</Button>
+        <Button variant="analytics" onClick={handleNext}>
+          <ChevronRight />
+        </Button>
       </div>
     </div>
   );
