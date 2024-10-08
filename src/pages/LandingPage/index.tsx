@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
   Environment,
-  GizmoHelper,
-  GizmoViewport,
+  // GizmoHelper,
+  // GizmoViewport,
   Sky,
 } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
@@ -210,9 +210,9 @@ const LandingPage = () => {
           lookAtPosition={lookAtPosition}
           isCompleted={isCompleted}
         />
-        <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
+        {/* <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
           <GizmoViewport labelColor="white" axisHeadScale={1} />
-        </GizmoHelper>
+        </GizmoHelper> */}
       </Canvas>
       {page === null && (
         <TimerDisplay
