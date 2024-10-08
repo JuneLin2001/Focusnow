@@ -15,9 +15,8 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
   const completedCount = filteredAnalytics.filter(
     (analytics) => analytics.pomodoroCompleted
   ).length;
-  const totalCount = filteredAnalytics.length;
 
-  const notCompletedCount = totalCount - completedCount;
+  const totalCount = filteredAnalytics.length;
 
   const completionRate =
     totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
@@ -41,7 +40,7 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
     datasets: [
       {
         label: "數量",
-        data: [completedCount, notCompletedCount],
+        data: [completedCount, totalCount - completedCount],
         backgroundColor: isDarkMode
           ? ["#1a7f7f4e", "#992b454e"]
           : ["#4BC0C0", "#FF6384"],
@@ -61,13 +60,21 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
     },
   };
 
+  const hasData = totalCount > 0;
+
   return (
     <div className="text-center h-full flex flex-col justify-between">
-      <h2 className="text-lg font-semibold mb-2">
-        完成率: {completionRate.toFixed(2)}%
-      </h2>
+      {hasData && (
+        <h2 className="text-lg font-semibold mb-2">
+          完成率: {completionRate.toFixed(2)}%
+        </h2>
+      )}
       <div className="w-full h-full flex-1 flex justify-center items-center">
-        <Pie data={data} options={options} />
+        {hasData ? (
+          <Pie data={data} options={options} />
+        ) : (
+          <p className="text-gray-500">沒有資料</p>
+        )}
       </div>
     </div>
   );

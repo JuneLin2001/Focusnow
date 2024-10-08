@@ -79,11 +79,10 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
         });
         current = current.add(1, filterType === "daily" ? "hour" : "day");
       }
-      console.log(filterType);
-      console.log(currentDate);
+
       return allDates;
     },
-    [currentDate, filterType]
+    [filterType]
   );
 
   useEffect(() => {
@@ -103,32 +102,42 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
         },
       ],
     });
-  }, [filteredAnalytics, filterType, mergeData, calculateDateRange]); // 監聽 filteredAnalytics 和 filterType 變化
+  }, [filteredAnalytics, filterType, mergeData, calculateDateRange]);
+
+  const hasData = totalFocusDuration > 0;
 
   return (
-    <div className="text-center">
-      <h2 className="text-lg font-semibold mb-2">
-        總專注時長: {totalFocusDuration} 分鐘
-      </h2>
-      <Bar
-        data={chartData}
-        options={{
-          responsive: true,
-          plugins: {
-            legend: { position: "top" },
-            title: {
-              display: true,
-              text: `專注時長（${
-                filterType === "daily"
-                  ? "每日"
-                  : filterType === "weekly"
-                    ? "每週"
-                    : "每月"
-              }）`,
-            },
-          },
-        }}
-      />
+    <div className="text-center h-full flex flex-col justify-between">
+      {hasData && (
+        <h2 className="text-lg font-semibold mb-2">
+          總專注時長: {totalFocusDuration} 分鐘
+        </h2>
+      )}
+      <div className="flex flex-grow justify-center items-center">
+        {hasData ? (
+          <Bar
+            data={chartData}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: { position: "top" },
+                title: {
+                  display: true,
+                  text: `專注時長（${
+                    filterType === "daily"
+                      ? "每日"
+                      : filterType === "weekly"
+                        ? "每週"
+                        : "每月"
+                  }）`,
+                },
+              },
+            }}
+          />
+        ) : (
+          <p className="text-gray-500">沒有資料</p>
+        )}
+      </div>
     </div>
   );
 };

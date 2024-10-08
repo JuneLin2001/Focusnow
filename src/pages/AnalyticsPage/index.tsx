@@ -64,7 +64,7 @@ const AnalyticsPage = () => {
 
   return (
     <div className="flex justify-center items-start h-full box-border mt-20">
-      <Card className="box-border w-full h-full bg-gray-200 bg-opacity-50 p-4 mx-4  max-h-[calc(100vh-100px)] ">
+      <Card className="box-border w-full h-full bg-gray-200 bg-opacity-50 p-4 mx-4 max-h-[calc(100vh-100px)]">
         <div className="flex flex-col h-full">
           <Card className="p-4">
             <DateSelector
@@ -75,10 +75,11 @@ const AnalyticsPage = () => {
             />
           </Card>
           <div className="flex flex-grow flex-wrap justify-between mt-4">
-            <Card className="flex-1 m-2 p-4 h-auto">
+            {/* 調整 ChartDisplay 的寬度，增加為 2 倍 */}
+            <Card className="flex-[2] m-2 p-4 h-auto">
               <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
             </Card>
-            <Card className="flex-1 m-2 p-4 h-auto">
+            <Card className="flex-[4] m-2 p-4 h-auto">
               <ChartDisplay
                 filteredAnalytics={filteredAnalytics}
                 filterType={filterType}
@@ -86,7 +87,8 @@ const AnalyticsPage = () => {
                 currentDate={currentDate}
               />
             </Card>
-            <Card className="flex-1 m-2 p-4 h-auto">
+            {/* 減少 CompletedTodos 的寬度 */}
+            <Card className="flex-[1] m-2 p-4 h-auto">
               <CompletedTodos filteredAnalytics={filteredAnalytics} />
             </Card>
           </div>
