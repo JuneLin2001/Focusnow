@@ -13,7 +13,7 @@ const buttonVariants = cva(
           "bg-blue-500 text-zinc-50 shadow hover:bg-blue-700/90 dark:bg-black dark:text-gray-50 dark:hover:bg-zinc-50/90",
         reset:
           "bg-red-500 text-zinc-50 shadow-sm hover:bg-red-700/90 dark:bg-red-800 dark:text-zinc-50 dark:hover:bg-red-900/90",
-        add: "bg-green-500 text-zinc-50 shadow-sm hover:bg-green-700/90 dark:bg-green-400 dark:text-zinc-50 dark:hover:bg-green-900/90",
+        add: "bg-green-500 dark:bg-green-800 dark:hover:bg-green-900 text-zinc-50 shadow-sm hover:bg-green-700/90 dark:text-zinc-50 ",
         outline:
           "border border-zinc-200 bg-white shadow-sm hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
         secondary:
@@ -23,8 +23,8 @@ const buttonVariants = cva(
         header:
           "hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-50 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
         link: "text-zinc-900 underline-offset-4 hover:underline dark:text-zinc-50",
-        addOrSubtract:
-          "bg-blue-500 text-zinc-50 shadow hover:bg-blue-700/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90",
+        timerGhost:
+          "hover:bg-zinc-100 hover:text-zinc-900 dark:text-black dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
       },
       size: {
         default: "h-9 px-4 py-2",

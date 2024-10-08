@@ -112,7 +112,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
               <div className="flex items-center justify-center">
                 {isPaused && (
                   <Button
-                    variant="ghost"
+                    variant="timerGhost"
                     onClick={minusFiveMinutes}
                     disabled={!isPaused}
                   >
@@ -144,7 +144,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
                 </div>
                 {isPaused && (
                   <Button
-                    variant="ghost"
+                    variant="timerGhost"
                     onClick={addFiveMinutes}
                     disabled={!isPaused}
                   >
@@ -155,7 +155,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
             </div>
             <div className="flex justify-center items-center space-x-4 mt-4">
               <Button
-                variant="ghost"
+                variant="timerGhost"
                 size="icon"
                 onClick={handleOpenSettingsDialog}
               >
@@ -163,7 +163,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
               </Button>
               <Button
                 className="transition-transform"
-                variant="ghost"
+                variant="timerGhost"
                 size="icon"
                 onClick={toggleSidebar}
               >
@@ -175,7 +175,9 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
 
         <div className="mt-5 flex justify-center">
           {isPaused ? (
-            <Button onClick={handleStartTimer}>開始</Button>
+            <Button variant="add" onClick={handleStartTimer}>
+              開始
+            </Button>
           ) : mode === "break" ? (
             <Button variant="reset" onClick={resetTimer}>
               跳過休息

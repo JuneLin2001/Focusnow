@@ -20,15 +20,15 @@ const CameraController: React.FC<CameraControllerProps> = ({
   useEffect(() => {
     let duration = 2;
     if (isFirstEntry) {
-      duration = 1;
+      duration = 4;
     } else if (isCompleted) {
       duration = 3;
     }
 
     gsap.to(camera.position, {
       x: targetPosition[0] + 2,
-      y: isFirstEntry ? targetPosition[1] + 200 : targetPosition[1] + 2,
-      z: isFirstEntry ? targetPosition[2] + 1500 : targetPosition[2] + 4,
+      y: targetPosition[1] + 2,
+      z: targetPosition[2] + 4,
       duration: duration,
       ease: "power2.out",
       onUpdate: () => {

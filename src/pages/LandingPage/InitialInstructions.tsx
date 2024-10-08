@@ -1,6 +1,12 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { AlarmClock, ChartColumn, FishSymbol } from "lucide-react";
+import {
+  AlarmClock,
+  ChartColumn,
+  FishSymbol,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 interface InitialInstructionsProps {
   showInstructions: boolean;
@@ -23,38 +29,38 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
       {
         title: "場景介紹",
         description: "歡迎來到Focusnow！這是一個番茄鐘結合3D養成遊戲的網站。",
-        targetPosition: [-300, 60, 10] as [number, number, number],
+        targetPosition: [-50, 12, -1500] as [number, number, number],
       },
       {
         title: "功能介紹",
         description: "可以透過移動鏡頭來自由探索場景。",
-        targetPosition: [-50, 12, -1500] as [number, number, number],
+        targetPosition: [-100, 60, 10] as [number, number, number],
       },
       {
         title: "互動操作",
         description: (
           <>
-            點擊
+            點擊 &nbsp;
             <Button variant="default" disabled>
               <AlarmClock /> Timer
             </Button>
-            可以進入番茄鐘頁面，在登入後能將資料儲存在資料庫。
+            &nbsp; 可以進入番茄鐘頁面，在登入後能將資料儲存在資料庫。
           </>
         ),
-        targetPosition: [-300, 60, 10] as [number, number, number],
+        targetPosition: [-100, 60, 10] as [number, number, number],
       },
       {
         title: "互動操作",
         description: (
           <>
-            登入後點擊
+            登入後點擊 &nbsp;
             <Button variant="default" disabled>
               <ChartColumn /> Analytics
             </Button>
-            可以查看統計資料。
+            &nbsp; 可以查看統計資料。
           </>
         ),
-        targetPosition: [-50, 12, -1500] as [number, number, number],
+        targetPosition: [-100, 60, 10] as [number, number, number],
       },
       {
         title: "互動操作",
@@ -65,7 +71,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
             一次專注15分鐘以上，場景中就會多出一隻可互動的企鵝。
           </>
         ),
-        targetPosition: [-50, 12, -1500] as [number, number, number],
+        targetPosition: [-100, 60, 10] as [number, number, number],
       },
       {
         title: "互動操作",
@@ -73,14 +79,14 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
           <>
             完成專注時，每專注1分鐘能獲得1條魚
             <br />
-            可以點擊
+            可以點擊 &nbsp;
             <Button variant="default" disabled>
               <FishSymbol /> 0
             </Button>
-            放下魚來和企鵝互動。
+            &nbsp; 放下魚來和企鵝互動。
           </>
         ),
-        targetPosition: [-50, 12, -1500] as [number, number, number],
+        targetPosition: [-100, 60, 10] as [number, number, number],
       },
       {
         title: "互動操作",
@@ -110,6 +116,12 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
     }
   };
 
+  const handlePrevious = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
   const handleClose = () => {
     setIsVisible(false);
     handleCloseInstructions();
@@ -119,19 +131,30 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
   return (
     <>
       {isVisible && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-40">
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[60]">
           <div className="fixed inset-0 flex justify-center items-center bg-transparent z-40">
             <div className="bg-white p-5 rounded shadow-lg">
               <h2 className="text-xl mb-4">{steps[currentStep].title}</h2>
               <p className="mb-4">{steps[currentStep].description}</p>
 
-              <div className="flex justify-center">
-                <button
-                  className="bg-blue-500 text-white p-2 rounded"
-                  onClick={handleNext}
+              <div className="flex justify-between">
+                <Button
+                  variant="ghost"
+                  onClick={handlePrevious}
+                  disabled={currentStep === 0}
                 >
-                  {currentStep < steps.length - 1 ? "下一步" : "開始！"}
-                </button>
+                  {<ChevronLeft />}&nbsp;上一步
+                </Button>
+                <Button variant="ghost" onClick={handleNext}>
+                  {currentStep < steps.length - 1 ? (
+                    <>
+                      下一步&nbsp;
+                      <ChevronRight />
+                    </>
+                  ) : (
+                    "開始！"
+                  )}
+                </Button>
               </div>
             </div>
           </div>
