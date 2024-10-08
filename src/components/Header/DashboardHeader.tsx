@@ -123,8 +123,8 @@ export function DashboardHeader({
           </nav>
 
           <div className="flex items-center gap-4 ml-auto">
-            <LoginButton />
             <ThemeSwitcher />
+            <LoginButton />
           </div>
         </div>
       </div>
