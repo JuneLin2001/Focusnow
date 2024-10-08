@@ -32,7 +32,7 @@ import { Progress } from "@/components/ui/progress";
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
     [number, number, number]
-  >([-50, 12, -150]);
+  >([-300, 60, 10]);
   const [lookAtPosition, setLookAtPosition] = useState<
     [number, number, number]
   >([0, 0, 0]);
@@ -50,6 +50,7 @@ const LandingPage = () => {
 
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -127,6 +128,10 @@ const LandingPage = () => {
     );
   }
 
+  const handleComplete = () => {
+    setIsCompleted(true);
+  };
+
   return (
     <>
       <DashboardHeader
@@ -195,6 +200,7 @@ const LandingPage = () => {
         <CameraController
           targetPosition={targetPosition}
           lookAtPosition={lookAtPosition}
+          isCompleted={isCompleted}
         />
         <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
           <GizmoViewport labelColor="white" axisHeadScale={1} />
@@ -205,6 +211,7 @@ const LandingPage = () => {
       <InitialInstructions
         showInstructions={showInstructions}
         handleCloseInstructions={handleCloseInstructions}
+        handleComplete={handleComplete}
       />
     </>
   );

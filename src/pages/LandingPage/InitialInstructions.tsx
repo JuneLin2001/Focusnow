@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 interface InitialInstructionsProps {
   showInstructions: boolean;
   handleCloseInstructions: () => void;
+  handleComplete: () => void;
 }
 
 const InitialInstructions: React.FC<InitialInstructionsProps> = ({
   showInstructions,
   handleCloseInstructions,
+  handleComplete,
 }) => {
   const [isVisible, setIsVisible] = useState(showInstructions);
 
@@ -18,6 +20,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
   const handleClose = () => {
     setIsVisible(false);
     handleCloseInstructions();
+    handleComplete();
   };
 
   return (

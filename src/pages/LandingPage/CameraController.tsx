@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useThree } from "@react-three/fiber";
 import gsap from "gsap";
 import { OrbitControls } from "@react-three/drei";
@@ -6,26 +6,37 @@ import { OrbitControls } from "@react-three/drei";
 interface CameraControllerProps {
   targetPosition: [number, number, number];
   lookAtPosition?: [number, number, number];
+  isCompleted: boolean;
 }
 
 const CameraController: React.FC<CameraControllerProps> = ({
   targetPosition,
   lookAtPosition = targetPosition,
+  isCompleted,
 }) => {
   const { camera } = useThree();
+  const [isFirstEntry, setIsFirstEntry] = useState(true);
 
   useEffect(() => {
+    const duration = isFirstEntry || isCompleted ? 5 : 2;
+
     gsap.to(camera.position, {
       x: targetPosition[0] + 2,
       y: targetPosition[1] + 2,
-      z: targetPosition[2] + 4,
-      duration: 2,
+      z: isFirstEntry ? targetPosition[2] + 1500 : targetPosition[2] + 4,
+      duration: duration,
       ease: "power2.out",
       onUpdate: () => {
         camera.lookAt(...lookAtPosition);
       },
     });
-  }, [targetPosition, lookAtPosition, camera]);
+  }, [isFirstEntry, isCompleted, targetPosition, lookAtPosition, camera]);
+
+  useEffect(() => {
+    if (isCompleted) {
+      setIsFirstEntry(false);
+    }
+  }, [isCompleted]);
 
   return (
     <>
