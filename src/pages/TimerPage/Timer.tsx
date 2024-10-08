@@ -8,9 +8,14 @@ import { useTimerStore } from "../../store/timerStore";
 import LoginButton from "../../components/Header/LoginButton";
 import { requestNotificationPermission } from "../../utils/NotificationService";
 import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
 import SettingsDialog from "../../components/SettingsDialog";
-import { ChevronsLeft, ChevronsRight, Plus, Minus } from "lucide-react";
+import {
+  ChevronsLeft,
+  ChevronsRight,
+  Plus,
+  Minus,
+  Settings,
+} from "lucide-react";
 import settingStore from "../../store/settingStore";
 import { Card } from "@/components/ui/card";
 
@@ -91,14 +96,17 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
   return (
     <div className="w-screen h-screen flex justify-center items-center">
       <Card className="z-30 bg-white bg-opacity-60 w-[500px] h-[500px] flex flex-col justify-center items-center bg-cover bg-center relative">
-        <div className="absolute top-[50%] right-0">
+        <div className="absolute top-2 right-2">
           <Button
             variant="timerGhost"
             size="icon"
             onClick={handleOpenSettingsDialog}
           >
             <Settings />
-          </Button>
+          </Button>{" "}
+        </div>
+
+        <div className="absolute top-[50%] right-2">
           <Button
             className="transition-transform"
             variant="timerGhost"
