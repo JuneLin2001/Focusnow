@@ -34,37 +34,38 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
         Todo List
       </CardTitle>
 
-      <div className="mb-4 flex">
+      <div className="mb-4 flex w-full">
         <input
           type="text"
           value={newTodoTitle}
           onChange={(e) => setNewTodoTitle(e.target.value)}
-          className="flex-grow p-2 border rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          className="flex-grow p-2 border rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white w-[70%]"
           placeholder={errorMessage ? errorMessage : "New Todo"}
         />
         <Button
+          variant="add"
+          className="p-1 ml-2 rounded"
           onClick={handleAddTodo}
-          className="bg-green-500 dark:bg-green-800 dark:hover:bg-green-900 text-white p-1 ml-2 rounded"
         >
           <Plus />
         </Button>
       </div>
 
-      <ul className="flex-grow overflow-y-auto">
+      <ul className="flex-grow overflow-y-auto w-full">
         {todos.length > 0 ? (
           todos.map((todo) => (
-            <li key={todo.id} className="flex items-center mb-2">
+            <li key={todo.id} className="flex items-center mb-2 w-full">
               <input
                 type="checkbox"
                 checked={todo.completed}
                 onChange={() => toggleComplete(todo.id)}
-                className="mr-2 w-6 h-6"
+                className="mr-2 w-6 h-6 "
               />
               <input
                 type="text"
                 value={todo.title}
                 onChange={(e) => editTodoTitle(todo.id, e.target.value)}
-                className={`flex-grow p-1 text-xl dark:bg-gray-700 ${
+                className={`flex-grow p-1 text-xl dark:bg-gray-700 w-full ${
                   todo.completed
                     ? "line-through text-gray-500 dark:text-gray-400"
                     : "text-gray-800 dark:text-white"
@@ -73,7 +74,7 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
               <Button
                 variant="reset"
                 onClick={() => removeTodo(todo.id)}
-                className="bg-red-500 text-white p-1 ml-2 rounded"
+                className="p-1 ml-2 rounded"
               >
                 <Trash2 />
               </Button>
