@@ -115,7 +115,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
               : (secondsLeft / (breakMinutes * 60)) * 100
           }
           styles={buildStyles({
-            textColor: "#000",
+            textColor: themeMode === "dark" ? "#e5e7eb" : "#000",
             pathColor: pathColor,
             trailColor: "#d6d6d6",
           })}
@@ -144,7 +144,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
                       value={`${Math.floor(secondsLeft / 60)}`}
                       onChange={handleInputChange}
                       disabled={!isPaused}
-                      className="text-5xl border-4 border-black w-24 bg-transparent focus:outline-none text-center"
+                      className="text-5xl border-4 border-black w-24 bg-transparent focus:outline-none text-center dark:text-gray-200"
                       onBlur={handleInputBlur}
                     />
                   ) : (

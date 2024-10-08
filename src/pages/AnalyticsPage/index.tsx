@@ -75,8 +75,7 @@ const AnalyticsPage = () => {
             />
           </Card>
           <div className="flex flex-grow flex-wrap justify-between mt-4">
-            {/* 調整 ChartDisplay 的寬度，增加為 2 倍 */}
-            <Card className="flex-[2] m-2 p-4 h-auto">
+            <Card className="flex-[2] m-2 p-4 h-auto ">
               <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
             </Card>
             <Card className="flex-[4] m-2 p-4 h-auto">
@@ -87,7 +86,6 @@ const AnalyticsPage = () => {
                 currentDate={currentDate}
               />
             </Card>
-            {/* 減少 CompletedTodos 的寬度 */}
             <Card className="flex-[1] m-2 p-4 h-auto">
               <CompletedTodos filteredAnalytics={filteredAnalytics} />
             </Card>

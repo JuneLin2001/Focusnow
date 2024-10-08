@@ -26,7 +26,7 @@ const buttonVariants = cva(
           "hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-50 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 text-lg",
         link: "text-zinc-900 underline-offset-4 hover:underline dark:text-zinc-50",
         timerGhost:
-          "hover:bg-zinc-100 hover:text-zinc-900 dark:text-black dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
+          "hover:bg-zinc-100 hover:text-zinc-900 dark:text-gray-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -63,4 +63,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-export { Button, buttonVariants };
+export { Button };
