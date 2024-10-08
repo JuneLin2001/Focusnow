@@ -27,7 +27,7 @@ export function DashboardHeader({
 }: DashboardHeaderProps) {
   return (
     <header className="fixed w-full h-16 bg-gray-200 dark:bg-gray-900 shadow-md z-50 flex items-center px-4 md:px-8 transition-colors duration-300">
-      <div className="relative flex-grow flex items-center justify-between">
+      <div className="relative flex-grow flex items-center ">
         <div className="flex items-center md:hidden">
           <Sheet>
             <SheetTrigger asChild>
@@ -43,7 +43,10 @@ export function DashboardHeader({
             </SheetTrigger>
             <SheetContent side="left" className="bg-white dark:bg-gray-900 p-6">
               <nav className="flex flex-col items-center gap-4 text-lg font-medium">
-                <SheetTitle className="">Navigation</SheetTitle>
+                <SheetTitle className="text-2xl font-bold ml-2">
+                  Focusnow
+                </SheetTitle>
+
                 {pages.map((page) => (
                   <Button
                     variant="header"
@@ -83,7 +86,7 @@ export function DashboardHeader({
           </Button>
         </div>
 
-        <div className="hidden md:flex md:items-center md:w-full md:justify-start">
+        <div className="hidden md:flex md:items-center  md:justify-start">
           <Button
             variant="header"
             onClick={() => {
@@ -121,11 +124,10 @@ export function DashboardHeader({
               </Button>
             ))}
           </nav>
-
-          <div className="flex items-center gap-4 ml-auto">
-            <ThemeSwitcher />
-            <LoginButton />
-          </div>
+        </div>
+        <div className="flex gap-4 ml-auto">
+          <ThemeSwitcher />
+          <LoginButton />
         </div>
       </div>
     </header>
