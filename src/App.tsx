@@ -14,8 +14,6 @@ import { OrbitControls } from "@react-three/drei";
 import Bounce from "./pages/GamePage/Bounce";
 import Mainland from "./models/Mainland";
 import { Environment } from "@react-three/drei";
-// import { ThemeProvider } from "@/components/theme-provider";
-// import { ModeToggle } from "./components/mode-toggle";
 
 const App: React.FC = () => {
   const setUser = useAuthStore((state) => state.setUser);
@@ -30,8 +28,6 @@ const App: React.FC = () => {
 
   return (
     <>
-      {/* <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <ModeToggle /> */}
       <Routes>
         <Route path="/" element={<LandingPage />} />
 
