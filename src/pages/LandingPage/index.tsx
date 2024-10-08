@@ -212,7 +212,6 @@ const LandingPage = () => {
         showInstructions={showInstructions}
         handleCloseInstructions={handleCloseInstructions}
         setTargetPosition={setTargetPosition}
-        setLookAtPosition={setLookAtPosition}
         handleComplete={handleComplete}
       />
     </>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-
 import { AlarmClock, ChartColumn, FishSymbol } from "lucide-react";
 
 interface InitialInstructionsProps {
@@ -8,7 +7,6 @@ interface InitialInstructionsProps {
   handleCloseInstructions: () => void;
   handleComplete: () => void;
   setTargetPosition: (position: [number, number, number]) => void;
-  setLookAtPosition: (position: [number, number, number]) => void;
 }
 
 const InitialInstructions: React.FC<InitialInstructionsProps> = ({
@@ -16,7 +14,6 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
   handleCloseInstructions,
   handleComplete,
   setTargetPosition,
-  setLookAtPosition,
 }) => {
   const [isVisible, setIsVisible] = useState(showInstructions);
   const [currentStep, setCurrentStep] = useState(0);
@@ -26,14 +23,12 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
       {
         title: "場景介紹",
         description: "歡迎來到Focusnow！這是一個番茄鐘結合3D養成遊戲的網站。",
-        targetPosition: [1000, 10, 50] as [number, number, number],
-        lookAtPosition: [0, 0, 0] as [number, number, number],
+        targetPosition: [-300, 60, 10] as [number, number, number],
       },
       {
         title: "功能介紹",
         description: "可以透過移動鏡頭來自由探索場景。",
         targetPosition: [-50, 12, -1500] as [number, number, number],
-        lookAtPosition: [0, 0, 0] as [number, number, number],
       },
       {
         title: "互動操作",
@@ -46,8 +41,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
             可以進入番茄鐘頁面，在登入後能將資料儲存在資料庫。
           </>
         ),
-        targetPosition: [100, 12, -1400] as [number, number, number],
-        lookAtPosition: [0, 0, 0] as [number, number, number],
+        targetPosition: [-300, 60, 10] as [number, number, number],
       },
       {
         title: "互動操作",
@@ -60,12 +54,10 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
             可以查看統計資料。
           </>
         ),
-        targetPosition: [-5, 12, -15] as [number, number, number],
-        lookAtPosition: [0, 0, 0] as [number, number, number],
+        targetPosition: [-50, 12, -1500] as [number, number, number],
       },
       {
         title: "互動操作",
-
         description: (
           <>
             點擊告示牌可以看到最近30天的專注分鐘數
@@ -73,8 +65,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
             一次專注15分鐘以上，場景中就會多出一隻可互動的企鵝。
           </>
         ),
-        targetPosition: [-5, 12, -15] as [number, number, number],
-        lookAtPosition: [0, 0, 0] as [number, number, number],
+        targetPosition: [-50, 12, -1500] as [number, number, number],
       },
       {
         title: "互動操作",
@@ -89,14 +80,12 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
             放下魚來和企鵝互動。
           </>
         ),
-        targetPosition: [-5, 12, -15] as [number, number, number],
-        lookAtPosition: [0, 0, 0] as [number, number, number],
+        targetPosition: [-50, 12, -1500] as [number, number, number],
       },
       {
         title: "互動操作",
         description: "現在就來使用Focusnow開始專注吧！",
         targetPosition: [-300, 60, 10] as [number, number, number],
-        lookAtPosition: [0, 0, 0] as [number, number, number],
       },
     ],
     []
@@ -110,9 +99,8 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
   useEffect(() => {
     if (isVisible && steps[currentStep]) {
       setTargetPosition(steps[currentStep].targetPosition);
-      setLookAtPosition(steps[currentStep].lookAtPosition);
     }
-  }, [currentStep, isVisible, setTargetPosition, setLookAtPosition, steps]);
+  }, [currentStep, isVisible, setTargetPosition, steps]);
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -131,14 +119,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
   return (
     <>
       {isVisible && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            zIndex: 40,
-          }}
-        >
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-40">
           <div className="fixed inset-0 flex justify-center items-center bg-transparent z-40">
             <div className="bg-white p-5 rounded shadow-lg">
               <h2 className="text-xl mb-4">{steps[currentStep].title}</h2>
@@ -149,7 +130,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
                   className="bg-blue-500 text-white p-2 rounded"
                   onClick={handleNext}
                 >
-                  {currentStep < steps.length - 1 ? "下一步" : "完成"}
+                  {currentStep < steps.length - 1 ? "下一步" : "開始！"}
                 </button>
               </div>
             </div>
