@@ -12,9 +12,11 @@ interface TimerState {
   isPaused: boolean;
   mode: "work" | "break";
   inputMinutes: number;
+  breakMinutes: number;
   startTime: Date | null;
   setTimer: (minutes: number) => void;
   setInputMinutes: (minutes: number) => void;
+  setBreakMinutes: (minutes: number) => void;
   startTimer: () => void;
   resetTimer: () => void;
   addFiveMinutes: () => void;
@@ -38,6 +40,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
     isPaused: true,
     mode: "work",
     inputMinutes: 25,
+    breakMinutes: 5,
     startTime: null,
     showLoginButton: false,
 
@@ -47,6 +50,8 @@ export const useTimerStore = create<TimerState>((set, get) => {
     setTimer: (minutes) => set({ secondsLeft: minutes * 60 }),
 
     setInputMinutes: (minutes) => set({ inputMinutes: minutes }),
+
+    setBreakMinutes: (minutes) => set({ breakMinutes: minutes }), // 設置休息時間的方法
 
     startTimer: () => {
       if (interval) {
@@ -65,7 +70,9 @@ export const useTimerStore = create<TimerState>((set, get) => {
             console.log("Timer is done!");
             nextState.mode = state.mode === "work" ? "break" : "work";
             nextState.secondsLeft =
-              nextState.mode === "work" ? state.inputMinutes * 60 : 5 * 60;
+              nextState.mode === "work"
+                ? state.inputMinutes * 60
+                : state.breakMinutes * 60; // 使用用戶自定義的休息時間
 
             get().checkEndCondition(
               state.startTime,
@@ -82,27 +89,28 @@ export const useTimerStore = create<TimerState>((set, get) => {
 
     resetTimer: () => {
       const { startTime, inputMinutes } = get();
+      const { mode } = get();
 
       if (interval) {
         clearInterval(interval);
         interval = null;
       }
 
-      // 重置計時器並保留未完成的 pomodoro 狀態
       set((state) => ({
         isPaused: true,
         mode: "work",
         secondsLeft: state.inputMinutes * 60,
       }));
 
-      // 將未完成的 pomodoro 狀態保存到 Firestore
-      get().checkEndCondition(
-        startTime,
-        "work", // 保持當前的模式為工作模式
-        inputMinutes,
-        new Date(),
-        false // 未完成的 pomodoro
-      );
+      if (mode === "work") {
+        get().checkEndCondition(
+          startTime,
+          "work",
+          inputMinutes,
+          new Date(),
+          false
+        );
+      }
     },
 
     addFiveMinutes: () =>

@@ -29,7 +29,16 @@ const MovingModel: React.FC<MovingModelProps> = ({
   fishPosition,
   setFishPosition,
 }) => {
-  const { scene } = useGLTF("BBpenguinCenter.glb");
+  const modelPaths = [
+    "BBpenguinCenter.glb",
+    // , "fish_low_poly.glb"
+  ];
+
+  const [modelPath] = useState(
+    modelPaths[Math.floor(Math.random() * modelPaths.length)]
+  );
+
+  const { scene } = useGLTF(modelPath);
   const modelRef = useRef<THREE.Group>(null!);
 
   const { camera } = useThree();
@@ -65,6 +74,10 @@ const MovingModel: React.FC<MovingModelProps> = ({
         if (fishDistance > 0.5) {
           fishDirection.normalize().multiplyScalar(speed * 0.3);
           setCurrentPosition((prev) => prev.clone().add(fishDirection));
+
+          const angle =
+            Math.atan2(fishDirection.x, fishDirection.z) + Math.PI / 2;
+          modelRef.current.rotation.y = angle;
         } else {
           targetPosition.current.set(
             Math.random() * (maxX - minX) + minX,
@@ -78,20 +91,13 @@ const MovingModel: React.FC<MovingModelProps> = ({
           direction.normalize().multiplyScalar(speed * 0.1);
           setCurrentPosition((prev) => prev.clone().add(direction));
 
-          const targetRotation = new THREE.Vector3(
-            targetPosition.current.x,
-            currentPosition.y,
-            targetPosition.current.z
-          );
+          const targetRotation = targetPosition.current.clone();
           const lookAtDirection = targetRotation
             .sub(currentPosition)
             .normalize();
-          const angle = Math.atan2(lookAtDirection.x, lookAtDirection.z);
-          modelRef.current.rotation.y = THREE.MathUtils.lerp(
-            modelRef.current.rotation.y,
-            angle,
-            0.1
-          );
+          const angle =
+            Math.atan2(lookAtDirection.x, lookAtDirection.z) + Math.PI / 2;
+          modelRef.current.rotation.y = angle;
         } else {
           targetPosition.current.set(
             Math.random() * (maxX - minX) + minX,
@@ -134,7 +140,6 @@ const MovingModel: React.FC<MovingModelProps> = ({
         object={scene.clone()}
         position={currentPosition}
         scale={[5, 5, 5]}
-        rotation={[0, Math.PI / 2, 0]}
         ref={modelRef}
         onPointerDown={handlePointerDown}
       />

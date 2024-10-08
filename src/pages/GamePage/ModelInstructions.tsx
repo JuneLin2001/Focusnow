@@ -1,12 +1,11 @@
 import { Html } from "@react-three/drei";
 import {
   Dialog,
-  DialogTitle,
+  DialogTrigger,
   DialogContent,
-  DialogActions,
-  Button,
-  Typography,
-} from "@mui/material";
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 interface ModelInstructionsProps {
   date: string;
@@ -27,32 +26,29 @@ const ModelInstructions: React.FC<ModelInstructionsProps> = ({
 }) => {
   return (
     <Html position={position}>
-      <Dialog open={open} onClose={onClose}>
-        <DialogTitle>詳細資料</DialogTitle>
+      <Dialog open={open} onOpenChange={onClose}>
+        <DialogTrigger asChild></DialogTrigger>
         <DialogContent>
-          <Typography variant="body1">
+          <DialogTitle>詳細資料</DialogTitle>
+          <DialogDescription variant="sign">
             {`這隻企鵝是你在 ${date} 專注了 ${focusDuration} 分鐘，而來到這裡的`}
-          </Typography>
-
-          {todoTitles.length > 0 ? (
-            <>
-              <br />
-              <Typography variant="body1">你當時完成了:</Typography>
-              <ul>
-                {todoTitles.map((title, index) => (
-                  <li key={index}>
-                    <Typography variant="body2">- {title}</Typography>
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : null}
+            <br />
+            {todoTitles.length > 0 ? (
+              <>
+                <DialogDescription>你當時完成了:</DialogDescription>
+                <ul>
+                  {todoTitles.map((title, index) => (
+                    <li key={index}>
+                      <DialogDescription variant="default">
+                        - {title}
+                      </DialogDescription>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
+          </DialogDescription>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} color="primary" variant="contained">
-            關閉
-          </Button>
-        </DialogActions>
       </Dialog>
     </Html>
   );

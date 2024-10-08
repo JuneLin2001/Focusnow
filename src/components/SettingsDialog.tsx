@@ -1,21 +1,20 @@
-// SettingsDialog.tsx
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
-  DialogTitle,
+  DialogTrigger,
   DialogContent,
-  DialogActions,
-  Button,
-  Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-} from "@mui/material";
-import useSettingStore from "../store/settingStore"; // 引入 BgmStore
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import useSettingStore from "../store/settingStore";
+import { useTimerStore } from "../store/timerStore";
 
 interface SettingsDialogProps {
   open: boolean;
   onClose: () => void;
+  isPaused: boolean;
 }
 
 const musicOptions = [
@@ -31,66 +30,82 @@ const musicOptions = [
   },
 ];
 
-const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
-  const { isPlaying, toggleBgm, setBgmSource, themeMode, setThemeMode } =
-    useSettingStore(); // 引入 BgmStore 的狀態和方法
+const SettingsDialog: React.FC<SettingsDialogProps> = ({
+  open,
+  onClose,
+  isPaused,
+}) => {
+  const { isPlaying, toggleBgm, setBgmSource } = useSettingStore();
+  const { breakMinutes, setBreakMinutes } = useTimerStore();
   const [selectedMusic, setSelectedMusic] = useState<string>(
     musicOptions[0].value
-  ); // 預設選擇的音樂
+  );
+  const [breakTime, setBreakTime] = useState<number>(breakMinutes);
 
-  // 當開啟對話框時，設定預設音樂
   useEffect(() => {
     if (open) {
       setSelectedMusic(musicOptions[0].value);
+      setBreakTime(breakMinutes);
     }
-  }, [open]);
+  }, [open, breakMinutes]);
 
-  const handleMusicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newMusic = event.target.value;
-    setSelectedMusic(newMusic);
-    setBgmSource(newMusic); // 更新 BgmStore 中的音樂來源
+  const handleMusicChange = (value: string) => {
+    setSelectedMusic(value);
+    setBgmSource(value);
     if (isPlaying) {
-      toggleBgm(); // 如果正在播放，切換一下以重新播放新選擇的音樂
+      toggleBgm();
     }
-    toggleBgm(); // 播放新的背景音樂
+    toggleBgm();
   };
 
-  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const mode = event.target.value as "light" | "dark";
-    setThemeMode(mode); // 更新主題模式
+  const handleBreakTimeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    let value = parseInt(event.target.value);
+
+    if (isNaN(value)) {
+      value = 1;
+    } else if (value < 1) {
+      value = 1;
+    } else if (value > 120) {
+      value = 120;
+    }
+
+    setBreakTime(value);
+    setBreakMinutes(value);
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Settings</DialogTitle>
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogTrigger asChild></DialogTrigger>
       <DialogContent>
-        <Typography>選擇播放的背景音樂：</Typography>
-        <RadioGroup value={selectedMusic} onChange={handleMusicChange}>
+        <DialogTitle className="sr-only">設定</DialogTitle>
+        <DialogDescription className="mb-1">
+          設定背景音樂和休息時間長度。
+        </DialogDescription>
+        <h3 className="text-lg font-medium">設定</h3>
+        <Label>選擇播放的背景音樂：</Label>
+        <RadioGroup value={selectedMusic} onValueChange={handleMusicChange}>
           {musicOptions.map((music) => (
-            <FormControlLabel
-              key={music.value}
-              value={music.value}
-              control={<Radio />}
-              label={music.label}
-            />
+            <div key={music.value}>
+              <RadioGroupItem value={music.value} id={music.value} />
+              <Label htmlFor={music.value}>{music.label}</Label>
+            </div>
           ))}
         </RadioGroup>
-
-        <Typography sx={{ mt: 2 }}>選擇主題模式：</Typography>
-        <RadioGroup value={themeMode} onChange={handleThemeChange}>
-          <FormControlLabel
-            value="light"
-            control={<Radio />}
-            label="白天模式"
-          />
-          <FormControlLabel value="dark" control={<Radio />} label="黑夜模式" />
-        </RadioGroup>
+        <Label className="mt-4">
+          設定休息時間（分鐘）：
+          {
+            <input
+              type="text"
+              value={breakTime}
+              onChange={handleBreakTimeChange}
+              className="border border-gray-300 rounded p-2 mt-2"
+              disabled={!isPaused}
+            />
+          }
+        </Label>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="primary">
-          關閉
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };

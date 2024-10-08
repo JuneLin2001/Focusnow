@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import TimerPage from "./pages/TimerPage";
-import GamePage from "./pages/GamePage";
+// import GamePage from "./pages/GamePage";
 import AanalyticsPage from "./pages/AnalyticsPage";
 // import Sidebar from "./components/Sidebar";
 import LandingPage from "./pages/LandingPage";
@@ -35,7 +35,7 @@ const App: React.FC = () => {
           path="/game"
           element={
             <Canvas>
-              <GamePage />
+              {/* <GamePage /> */}
               <Environment preset="sunset" />
               <Mainland position={[-16, 2, 0]} />
               <OrbitControls />
@@ -46,6 +46,7 @@ const App: React.FC = () => {
         <Route path="/timer" element={<TimerPage />} />
         <Route path="/*" element={<Bounce />} />
       </Routes>
+      {/* </ThemeProvider> */}
     </>
   );
 };

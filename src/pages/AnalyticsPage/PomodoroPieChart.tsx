@@ -1,4 +1,4 @@
-// PomodoroPieChart.tsx
+import React, { useEffect, useState } from "react";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { UserAnalytics } from "../../types/type";
@@ -15,23 +15,67 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
   const completedCount = filteredAnalytics.filter(
     (analytics) => analytics.pomodoroCompleted
   ).length;
-  const notCompletedCount = filteredAnalytics.length - completedCount;
+
+  const totalCount = filteredAnalytics.length;
+
+  const completionRate =
+    totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    };
+
+    checkDarkMode();
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, { attributes: true });
+
+    return () => observer.disconnect();
+  }, []);
 
   const data = {
-    labels: ["完成的 Pomodoros", "未完成的 Pomodoros"],
+    labels: ["完成的專注", "中斷的專注"],
     datasets: [
       {
-        label: "Pomodoro 完成狀況",
-        data: [completedCount, notCompletedCount],
-        backgroundColor: ["rgba(75, 192, 192, 0.6)", "rgba(255, 99, 132, 0.6)"],
+        label: "數量",
+        data: [completedCount, totalCount - completedCount],
+        backgroundColor: isDarkMode
+          ? ["#1a7f7f4e", "#992b454e"]
+          : ["#4BC0C0", "#FF6384"],
       },
     ],
   };
 
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: {
+          color: isDarkMode ? "white" : "black",
+        },
+      },
+    },
+  };
+
+  const hasData = totalCount > 0;
+
   return (
-    <div className="mt-6 ">
-      <h2 className="text-xl font-semibold">完成比率</h2>
-      <Pie data={data} />
+    <div className="text-center h-full flex flex-col justify-between">
+      {hasData && (
+        <h2 className="text-lg font-semibold mb-2">
+          完成率: {completionRate.toFixed(2)}%
+        </h2>
+      )}
+      <div className="w-full h-full flex-1 flex justify-center items-center">
+        {hasData ? (
+          <Pie data={data} options={options} />
+        ) : (
+          <p className="text-gray-500">沒有資料</p>
+        )}
+      </div>
     </div>
   );
 };

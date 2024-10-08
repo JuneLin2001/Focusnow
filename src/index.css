@@ -9,6 +9,7 @@ button {
 
 * {
   box-sizing: border-box;
+  font-family: "Nunito";
 }
 
 html,
@@ -27,4 +28,10 @@ body {
     hsl(200deg, 80%, 78%),
     hsl(200deg, 80%, 90%) 100%
   );
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
 }

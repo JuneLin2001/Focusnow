@@ -1,5 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
+import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface DateSelectorProps {
   filterType: "daily" | "weekly" | "monthly";
@@ -14,6 +22,26 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   currentDate,
   setCurrentDate,
 }) => {
+  const [isCalendarOpen, setCalendarOpen] = useState(false);
+
+  const handleDateSelect = (date: Date | undefined) => {
+    if (date) {
+      setCurrentDate(dayjs(date));
+    }
+    setCalendarOpen(false);
+  };
+
+  const getDisplayDate = () => {
+    if (filterType === "daily") {
+      return currentDate.format("YYYY-MM-DD");
+    } else if (filterType === "weekly") {
+      return `${currentDate.startOf("week").format("YYYY-MM-DD")} - ${currentDate.endOf("week").format("YYYY-MM-DD")}`;
+    } else if (filterType === "monthly") {
+      return currentDate.format("YYYY-MM");
+    }
+    return "";
+  };
+
   const handlePrev = () => {
     if (filterType === "daily") {
       setCurrentDate(currentDate.subtract(1, "day"));
@@ -35,34 +63,49 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   };
 
   return (
-    <div className="mt-4">
-      <label>篩選方式:</label>
+    <div className="flex items-center w-full">
+      <label className="mr-2">篩選方式:</label>
       <select
         value={filterType}
         onChange={(e) =>
           setFilterType(e.target.value as "daily" | "weekly" | "monthly")
         }
-        className="border border-gray-300 rounded p-2 ml-2"
+        className="border dark:border-2 border-gray-300 bg-white dark:bg-black dark:border-gray-600 text-black dark:text-white rounded p-2 mb-0 w-20"
       >
         <option value="daily">每日</option>
         <option value="weekly">每週</option>
         <option value="monthly">每月</option>
       </select>
 
-      <div className="mt-4 flex items-center">
-        <button onClick={handlePrev} className="bg-gray-300 p-2 rounded-l">
-          ←
-        </button>
-        <div className="px-4">
-          {filterType === "daily"
-            ? currentDate.format("YYYY-MM-DD")
-            : filterType === "weekly"
-              ? `${currentDate.startOf("week").format("YYYY-MM-DD")} - ${currentDate.endOf("week").format("YYYY-MM-DD")}`
-              : `${currentDate.format("YYYY-MM")}`}
-        </div>
-        <button onClick={handleNext} className="bg-gray-300 p-2 rounded-r">
-          →
-        </button>
+      <div className="flex items-center space-x-2 ml-4">
+        <Button variant="analytics" onClick={handlePrev}>
+          <ChevronLeft />
+        </Button>
+        <Popover open={isCalendarOpen} onOpenChange={setCalendarOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-[240px] pl-3 text-left font-normal"
+              onClick={() => setCalendarOpen((prev) => !prev)}
+            >
+              {getDisplayDate()}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={currentDate.toDate()}
+              onSelect={handleDateSelect}
+              disabled={(date) =>
+                date > new Date() || date < new Date("1900-01-01")
+              }
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+        <Button variant="analytics" onClick={handleNext}>
+          <ChevronRight />
+        </Button>
       </div>
     </div>
   );

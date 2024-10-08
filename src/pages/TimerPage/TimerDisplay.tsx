@@ -1,15 +1,58 @@
 import { useTimerStore } from "../../store/timerStore";
+import {
+  CircularProgressbarWithChildren,
+  buildStyles,
+} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import settingStore from "../../store/settingStore";
+import { Card } from "@/components/ui/card";
 
-const TimerDisplay = () => {
-  const { secondsLeft } = useTimerStore();
+interface TimerDisplayProps {
+  onClick: React.MouseEventHandler<HTMLDivElement>;
+}
+
+const TimerDisplay: React.FC<TimerDisplayProps> = ({ onClick }) => {
+  const { secondsLeft, inputMinutes, mode } = useTimerStore();
+  const { themeMode } = settingStore();
+
+  if (secondsLeft >= inputMinutes * 60) {
+    return null;
+  }
+
+  const percentage = (secondsLeft / (inputMinutes * 60)) * 100;
+
+  const pathColor =
+    mode === "work"
+      ? themeMode === "dark"
+        ? "#1e3a8a"
+        : "#3b82f6"
+      : themeMode === "dark"
+        ? "#0b4f22"
+        : "#009b00";
 
   return (
-    <div className="fixed bottom-40 right-0 p-4 bg-white opacity-80 z-10">
-      <h3>
-        倒數時間: {Math.floor(secondsLeft / 60)}:
-        {secondsLeft % 60 < 10 ? "0" + (secondsLeft % 60) : secondsLeft % 60}
-      </h3>
-    </div>
+    <Card
+      className="fixed bottom-40 right-6 p-4 bg-white opacity-80 z-10 w-36 cursor-pointer"
+      onClick={onClick}
+    >
+      <CircularProgressbarWithChildren
+        value={percentage}
+        styles={buildStyles({
+          textColor: "#000",
+          pathColor: pathColor,
+          trailColor: "#d6d6d6",
+        })}
+      >
+        <div>
+          <h3 className="text-xl">
+            {Math.floor(secondsLeft / 60)}:
+            {secondsLeft % 60 < 10
+              ? "0" + (secondsLeft % 60)
+              : secondsLeft % 60}
+          </h3>
+        </div>
+      </CircularProgressbarWithChildren>
+    </Card>
   );
 };
 

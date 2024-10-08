@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useThree } from "@react-three/fiber";
 import gsap from "gsap";
 import { OrbitControls } from "@react-three/drei";
@@ -6,63 +6,51 @@ import { OrbitControls } from "@react-three/drei";
 interface CameraControllerProps {
   targetPosition: [number, number, number];
   lookAtPosition?: [number, number, number];
-  initialPosition?: [number, number, number];
-  minPolarAngle?: number;
-  maxPolarAngle?: number;
-  minDistance?: number;
-  maxDistance?: number;
+  isCompleted: boolean;
 }
 
 const CameraController: React.FC<CameraControllerProps> = ({
   targetPosition,
   lookAtPosition = targetPosition,
-  initialPosition = [-500, 60, 50],
-  minPolarAngle = Math.PI / 4,
-  maxPolarAngle = Math.PI / 2,
-  minDistance = 10,
-  maxDistance = 600,
+  isCompleted,
 }) => {
   const { camera } = useThree();
-  const isFirstRender = useRef(true);
+  const [isFirstEntry, setIsFirstEntry] = useState(true);
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      camera.position.set(...initialPosition);
-      camera.lookAt(...lookAtPosition);
-      isFirstRender.current = false;
-
-      gsap.to(camera.position, {
-        x: -200,
-        y: 60,
-        z: 50,
-        duration: 2,
-        ease: "power2.out",
-        onUpdate: () => {
-          camera.lookAt(...lookAtPosition);
-        },
-      });
-    } else {
-      gsap.to(camera.position, {
-        x: targetPosition[0] + 2,
-        y: targetPosition[1] + 2,
-        z: targetPosition[2] + 4,
-        duration: 2,
-        ease: "power2.out",
-        onUpdate: () => {
-          camera.lookAt(...lookAtPosition);
-        },
-      });
+    let duration = 2;
+    if (isFirstEntry) {
+      duration = 4;
+    } else if (isCompleted) {
+      duration = 3;
     }
-  }, [targetPosition, lookAtPosition, camera, initialPosition]);
+
+    gsap.to(camera.position, {
+      x: targetPosition[0] + 2,
+      y: targetPosition[1] + 2,
+      z: targetPosition[2] + 4,
+      duration: duration,
+      ease: "power2.out",
+      onUpdate: () => {
+        camera.lookAt(...lookAtPosition);
+      },
+    });
+  }, [isFirstEntry, isCompleted, targetPosition, lookAtPosition, camera]);
+
+  useEffect(() => {
+    if (isCompleted) {
+      setIsFirstEntry(false);
+    }
+  }, [isCompleted]);
 
   return (
     <>
       <OrbitControls
         target={lookAtPosition}
-        minPolarAngle={minPolarAngle}
-        maxPolarAngle={maxPolarAngle}
-        minDistance={minDistance}
-        maxDistance={maxDistance}
+        minPolarAngle={Math.PI / 4}
+        maxPolarAngle={Math.PI / 2}
+        minDistance={10}
+        maxDistance={600}
         enableZoom={true}
         enablePan={false}
         makeDefault

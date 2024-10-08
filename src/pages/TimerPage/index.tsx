@@ -4,6 +4,7 @@ import TodoList from "./TodoList.js";
 
 const TimerPage = () => {
   const [showInstructions, setShowInstructions] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const hasSeenInstructions = localStorage.getItem("hasSeenInstructions");
@@ -15,6 +16,10 @@ const TimerPage = () => {
   const handleCloseInstructions = () => {
     setShowInstructions(false);
     localStorage.setItem("hasSeenInstructions", "true");
+  };
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -49,8 +54,8 @@ const TimerPage = () => {
           </div>
         </div>
       )}
-      <Timer />
-      <TodoList />
+      <Timer toggleSidebar={toggleSidebar} isOpen={isOpen} />
+      <TodoList isOpen={isOpen} />
     </div>
   );
 };

@@ -19,7 +19,7 @@ export interface UserAnalytics {
 }
 
 export interface ModelProps {
-  position: [number, number, number];
+  position?: [number, number, number];
   children?: React.ReactNode;
   onClick?: () => void;
 }
