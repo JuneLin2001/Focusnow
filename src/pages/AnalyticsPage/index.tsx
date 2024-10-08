@@ -2,6 +2,8 @@ import { useState, useCallback } from "react";
 import dayjs from "dayjs";
 import { UserAnalytics } from "../../types/type";
 import { useAnalyticsStore } from "../../store/analyticsStore";
+import DateSelector from "./DateSelector";
+import CompletedTodos from "./CompletedTodos";
 import AnalyticsFetcher from "../../utils/AnalyticsFetcher";
 import PomodoroPieChart from "./PomodoroPieChart";
 import ChartDisplay from "./ChartDisplay";
@@ -93,7 +95,7 @@ const AnalyticsPage = () => {
         </div>
       </Card>
       <AnalyticsFetcher onDataFetched={handleDataFetched} />
-    </>
+    </div>
   );
 };
 
