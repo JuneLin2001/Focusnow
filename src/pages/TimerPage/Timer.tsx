@@ -90,6 +90,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
   return (
     <div className="w-screen h-screen flex justify-center items-center">
       <div className="z-30 bg-white bg-opacity-60 w-[500px] h-[500px] flex flex-col justify-center items-center bg-cover bg-center">
+        {" "}
         <CircularProgressbarWithChildren
           value={
             mode === "work"
@@ -172,7 +173,6 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
             </div>
           </div>
         </CircularProgressbarWithChildren>
-
         <div className="mt-5 flex justify-center">
           {isPaused ? (
             <Button variant="add" onClick={handleStartTimer}>
@@ -188,7 +188,6 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
             </Button>
           )}
         </div>
-
         {showLoginButton && (
           <div className="flex justify-center items-center bg-gray-800 bg-opacity-50 fixed inset-0">
             <div className="bg-white p-5 rounded shadow-lg">
