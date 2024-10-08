@@ -12,6 +12,7 @@ import { Settings } from "lucide-react";
 import SettingsDialog from "../../components/SettingsDialog";
 import { ChevronsLeft, ChevronsRight, Plus, Minus } from "lucide-react";
 import settingStore from "../../store/settingStore";
+import { Card } from "@/components/ui/card";
 
 interface TimerProps {
   toggleSidebar: () => void;
@@ -89,8 +90,24 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">
-      <div className="z-30 bg-white bg-opacity-60 w-[500px] h-[500px] flex flex-col justify-center items-center bg-cover bg-center">
-        {" "}
+      <Card className="z-30 bg-white bg-opacity-60 w-[500px] h-[500px] flex flex-col justify-center items-center bg-cover bg-center relative">
+        <div className="absolute top-[50%] right-0">
+          <Button
+            variant="timerGhost"
+            size="icon"
+            onClick={handleOpenSettingsDialog}
+          >
+            <Settings />
+          </Button>
+          <Button
+            className="transition-transform"
+            variant="timerGhost"
+            size="icon"
+            onClick={toggleSidebar}
+          >
+            {isOpen ? <ChevronsRight /> : <ChevronsLeft />}
+          </Button>
+        </div>
         <CircularProgressbarWithChildren
           value={
             mode === "work"
@@ -154,23 +171,6 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
                 )}
               </div>
             </div>
-            <div className="flex justify-center items-center space-x-4 mt-4">
-              <Button
-                variant="timerGhost"
-                size="icon"
-                onClick={handleOpenSettingsDialog}
-              >
-                <Settings />
-              </Button>
-              <Button
-                className="transition-transform"
-                variant="timerGhost"
-                size="icon"
-                onClick={toggleSidebar}
-              >
-                {isOpen ? <ChevronsLeft /> : <ChevronsRight />}
-              </Button>
-            </div>
           </div>
         </CircularProgressbarWithChildren>
         <div className="mt-5 flex justify-center">
@@ -196,7 +196,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
             </div>
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 };
