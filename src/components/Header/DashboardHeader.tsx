@@ -12,9 +12,10 @@ import ThemeSwitcher from "./ThemeSwitcher";
 
 interface DashboardHeaderProps {
   pages: string[];
-  setPage: (newPage: "timer" | "analytics" | "game" | null) => void;
+  setPage: (newPage: "timer" | "analytics" | null) => void;
   setTargetPosition: (position: [number, number, number]) => void;
   setLookAtPosition: (position: [number, number, number]) => void;
+  handleAnalyticsClick: () => void;
 }
 
 export function DashboardHeader({
@@ -22,6 +23,7 @@ export function DashboardHeader({
   setPage,
   setTargetPosition,
   setLookAtPosition,
+  handleAnalyticsClick,
 }: DashboardHeaderProps) {
   return (
     <header className="fixed w-full h-16 bg-gray-200 dark:bg-gray-900 shadow-md z-50 flex items-center px-4 md:px-8 transition-colors duration-300">
@@ -47,8 +49,7 @@ export function DashboardHeader({
                         setLookAtPosition([0, 0, 0]);
                         setPage("timer");
                       } else if (page === "Analytics") {
-                        setTargetPosition([-75, 25, 100]);
-                        setPage("analytics");
+                        handleAnalyticsClick();
                       } else if (page === "Game") {
                         setPage(null);
                         setTargetPosition([5, 60, 10]);
@@ -101,9 +102,7 @@ export function DashboardHeader({
                     setLookAtPosition([0, 0, 0]);
                     setPage("timer");
                   } else if (page === "Analytics") {
-                    setTargetPosition([-105, 25, 100]);
-                    setLookAtPosition([250, 0, 0]);
-                    setPage("analytics");
+                    handleAnalyticsClick();
                   } else if (page === "Game") {
                     setPage(null);
                     setTargetPosition([5, 60, 10]);
@@ -117,7 +116,7 @@ export function DashboardHeader({
             ))}
           </nav>
 
-          <div className="flex items-center gap-4 ml-auto">
+          <div className="flex items-center gap-4 ml-auto md:flex md:gap-4">
             <LoginButton />
             <ThemeSwitcher />
           </div>

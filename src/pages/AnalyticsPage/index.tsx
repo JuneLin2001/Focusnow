@@ -1,7 +1,6 @@
 import { useState, useCallback } from "react";
 import dayjs from "dayjs";
 import { UserAnalytics } from "../../types/type";
-import useAuthStore from "../../store/authStore";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import DateSelector from "./DateSelector";
 import CompletedTodos from "./CompletedTodos";
@@ -11,7 +10,6 @@ import ChartDisplay from "./ChartDisplay";
 import { Card } from "@/components/ui/card";
 
 const AnalyticsPage = () => {
-  const { user } = useAuthStore();
   const { filteredAnalytics, setFilteredAnalytics } = useAnalyticsStore();
   const [filterType, setFilterType] = useState<"daily" | "weekly" | "monthly">(
     "daily"
@@ -63,14 +61,6 @@ const AnalyticsPage = () => {
     },
     [calculateDateRange, setFilteredAnalytics]
   );
-
-  if (!user) {
-    return (
-      <div className="box-border w-full h-full flex justify-center items-center">
-        <p className="p-96">Please login to see analytics.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="flex justify-center items-start h-full box-border mt-20">

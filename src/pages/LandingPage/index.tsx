@@ -52,7 +52,7 @@ const LandingPage = () => {
       if (fishesCount > 0) {
         const randomX = Math.random() * (175 - -15) + -15;
         const randomZ = Math.random() * (90 - -150) + -150;
-        setFishPosition(new THREE.Vector3(randomX, 10, randomZ));
+        setFishPosition(new THREE.Vector3(randomX, 6, randomZ));
 
         await updateFishesCount(-1);
       } else {
@@ -60,6 +60,16 @@ const LandingPage = () => {
       }
     } else {
       alert("尚未登入！");
+    }
+  };
+
+  const handleAnalyticsClick = () => {
+    if (user) {
+      setPage("analytics");
+      setTargetPosition([-105, 25, 100]);
+      setLookAtPosition([250, 0, 0]);
+    } else {
+      alert("尚未登入");
     }
   };
 
@@ -88,10 +98,11 @@ const LandingPage = () => {
   return (
     <>
       <DashboardHeader
-        pages={["Timer", "Game", "Analytics"]}
+        pages={["Timer", "Analytics"]}
         setPage={setPage}
         setTargetPosition={setTargetPosition}
         setLookAtPosition={setLookAtPosition}
+        handleAnalyticsClick={handleAnalyticsClick}
       />
       {displayedPage === null ? (
         ""
@@ -146,11 +157,7 @@ const LandingPage = () => {
             Icon={ChartColumn}
             content="Analytics"
             position={[-70, 40, 110]}
-            onClick={() => {
-              setPage("analytics");
-              setTargetPosition([-105, 25, 100]);
-              setLookAtPosition([250, 0, 0]);
-            }}
+            onClick={handleAnalyticsClick}
           />
         )}
         <CameraController
