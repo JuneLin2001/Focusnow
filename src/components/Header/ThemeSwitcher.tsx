@@ -4,12 +4,14 @@ import useSettingStore from "../../store/settingStore";
 import { Moon, Sun } from "lucide-react";
 
 const ThemeSwitcher = () => {
-  const { setThemeMode } = useSettingStore();
+  const { setThemeMode, saveUserSettings } = useSettingStore();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const toggleTheme = () => {
+  const toggleTheme = async () => {
+    const newThemeMode = !isDarkMode ? "dark" : "light";
     setIsDarkMode(!isDarkMode);
-    setThemeMode(isDarkMode ? "light" : "dark");
+    setThemeMode(newThemeMode);
+    await saveUserSettings();
   };
 
   useEffect(() => {
@@ -19,6 +21,11 @@ const ThemeSwitcher = () => {
       document.documentElement.classList.remove("dark");
     }
   }, [isDarkMode]);
+
+  useEffect(() => {
+    const currentTheme = useSettingStore.getState().themeMode;
+    setIsDarkMode(currentTheme === "dark");
+  }, []);
 
   return (
     <div className="flex items-center space-x-2">

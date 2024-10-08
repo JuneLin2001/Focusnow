@@ -28,6 +28,7 @@ import * as THREE from "three";
 import DropFish from "./DropFish";
 import ToggleBgm from "@/components/ToggleBgm";
 import { Progress } from "@/components/ui/progress";
+import usesettingStore from "@/store/settingStore";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -42,6 +43,7 @@ const LandingPage = () => {
   const { themeMode } = settingStore();
   const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
   const { user } = useAuthStore();
+  const loadUserSettings = usesettingStore((state) => state.loadUserSettings);
 
   const fishesCount = useFishesCountStore((state) => state.FishesCount);
   const updateFishesCount = useFishesCountStore(
@@ -94,6 +96,12 @@ const LandingPage = () => {
       alert("尚未登入");
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      loadUserSettings(user.uid);
+    }
+  }, [user, loadUserSettings]);
 
   const [showInstructions, setShowInstructions] = useState(true);
   const handleCloseInstructions = () => {
@@ -150,7 +158,7 @@ const LandingPage = () => {
         </div>
       )}
 
-      <Canvas>
+      <Canvas className="z-0">
         <Environment preset={themeMode === "light" ? "warehouse" : "night"} />
         {themeMode === "dark" && (
           <Sky sunPosition={[0, -1, 0]} distance={100000} />
@@ -206,7 +214,15 @@ const LandingPage = () => {
           <GizmoViewport labelColor="white" axisHeadScale={1} />
         </GizmoHelper>
       </Canvas>
-      <TimerDisplay />
+      {page === null && (
+        <TimerDisplay
+          onClick={() => {
+            setTargetPosition([-50, 12, -150]);
+            setLookAtPosition([0, 0, 0]);
+            setPage("timer");
+          }}
+        />
+      )}
       <ToggleBgm />
       <InitialInstructions
         showInstructions={showInstructions}

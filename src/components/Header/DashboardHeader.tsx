@@ -71,7 +71,7 @@ export function DashboardHeader({
           </Sheet>
 
           <Button
-            variant="ghost"
+            variant="header"
             onClick={() => {
               setPage(null);
               setTargetPosition([5, 60, 10]);
@@ -85,7 +85,7 @@ export function DashboardHeader({
 
         <div className="hidden md:flex md:items-center md:w-full md:justify-start">
           <Button
-            variant="ghost"
+            variant="header"
             onClick={() => {
               setPage(null);
               setTargetPosition([5, 60, 10]);
