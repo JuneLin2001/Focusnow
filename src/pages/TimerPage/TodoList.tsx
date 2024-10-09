@@ -23,8 +23,9 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
   };
 
   return (
+    // TODO:在不同高度TODO視窗的高度會亂掉
     <Card
-      className={`fixed top-[16%] left-1/2 h-[500px] w-[300px] z-30 flex flex-col p-5 transition-all duration-500 ease-in-out transform ${
+      className={`fixed top-[14vh] left-1/2 h-[500px] w-[300px] z-30 flex flex-col p-5 transition-all duration-500 ease-in-out transform ${
         isOpen
           ? "sm:translate-x-[-50px] z-0 shadow-none opacity-0"
           : "sm:translate-x-[250px] opacity-100"
