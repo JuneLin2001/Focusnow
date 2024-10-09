@@ -58,10 +58,6 @@ export function DashboardHeader({
                         setPage("timer");
                       } else if (page === "Analytics") {
                         handleAnalyticsClick();
-                      } else if (page === "Game") {
-                        setPage(null);
-                        setTargetPosition([5, 60, 10]);
-                        setLookAtPosition([0, 0, 0]);
                       }
                     }}
                     className="text-muted-foreground hover:text-primary transition-colors duration-200"
@@ -77,7 +73,7 @@ export function DashboardHeader({
             variant="header"
             onClick={() => {
               setPage(null);
-              setTargetPosition([5, 60, 10]);
+              setTargetPosition([-300, 60, 10]);
               setLookAtPosition([0, 0, 0]);
             }}
             className="cursor-pointer"
@@ -91,7 +87,7 @@ export function DashboardHeader({
             variant="header"
             onClick={() => {
               setPage(null);
-              setTargetPosition([5, 60, 10]);
+              setTargetPosition([-300, 60, 10]);
               setLookAtPosition([0, 0, 0]);
             }}
             className="cursor-pointer"
@@ -112,10 +108,6 @@ export function DashboardHeader({
                     setPage("timer");
                   } else if (page === "Analytics") {
                     handleAnalyticsClick();
-                  } else if (page === "Game") {
-                    setPage(null);
-                    setTargetPosition([5, 60, 10]);
-                    setLookAtPosition([0, 0, 0]);
                   }
                 }}
                 className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white transition-colors duration-200"
