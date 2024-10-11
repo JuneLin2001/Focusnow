@@ -168,6 +168,7 @@ const LandingPage = () => {
           <DropFish
             position={[100, 80, 0]}
             fishesCount={fishesCount}
+            fishPosition={fishPosition}
             handleDropFish={handleDropFish}
           />
         )}
