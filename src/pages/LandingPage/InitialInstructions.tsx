@@ -28,7 +28,13 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
     () => [
       {
         title: "場景介紹",
-        description: "歡迎來到Focusnow！這是一個番茄鐘結合3D養成遊戲的網站。",
+        description: (
+          <>
+            歡迎來到Focusnow！
+            <br />
+            這是一個番茄鐘結合3D養成遊戲的網站。
+          </>
+        ),
         targetPosition: [-50, 12, -1500] as [number, number, number],
       },
       {
@@ -41,10 +47,12 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
         description: (
           <>
             點擊 &nbsp;
-            <Button variant="default" disabled>
+            <Button variant="default">
               <AlarmClock /> Timer
             </Button>
-            &nbsp; 可以進入番茄鐘頁面，在登入後能將資料儲存在資料庫。
+            &nbsp; 可以進入番茄鐘頁面
+            <br />
+            在登入後能將資料儲存在資料庫。
           </>
         ),
         targetPosition: [-100, 60, 10] as [number, number, number],
@@ -54,10 +62,10 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
         description: (
           <>
             登入後點擊 &nbsp;
-            <Button variant="default" disabled>
+            <Button variant="default">
               <ChartColumn /> Analytics
             </Button>
-            &nbsp; 可以查看統計資料。
+            &nbsp; 可查看統計資料。
           </>
         ),
         targetPosition: [-100, 60, 10] as [number, number, number],
@@ -80,7 +88,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
             完成專注時，每專注1分鐘能獲得1條魚
             <br />
             可以點擊 &nbsp;
-            <Button variant="default" disabled>
+            <Button variant="default">
               <FishSymbol /> 0
             </Button>
             &nbsp; 放下魚來和企鵝互動。
@@ -133,13 +141,14 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
       {isVisible && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[60]">
           <div className="fixed inset-0 flex justify-center items-center bg-transparent z-40">
-            <div className="bg-white p-5 rounded shadow-lg">
+            <div className="bg-white p-5 rounded shadow-lg w-96">
               <h2 className="text-xl mb-4">{steps[currentStep].title}</h2>
               <p className="mb-4">{steps[currentStep].description}</p>
 
               <div className="flex justify-between">
                 <Button
                   variant="ghost"
+                  className="disabled:cursor-not-allowed "
                   onClick={handlePrevious}
                   disabled={currentStep === 0}
                 >
