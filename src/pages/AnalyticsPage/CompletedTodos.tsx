@@ -24,8 +24,9 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
           總共完成了 {completedTodosCount} 個 Todo
         </h2>
       )}
+      {/* TODO:不要寫死55vh */}
       <div
-        className={`${hasData ? "max-h-[60vh]" : "max-h-screen"} h-full overflow-y-auto`}
+        className={`${hasData ? "max-h-[55vh]" : "max-h-screen"} h-full overflow-y-auto`}
       >
         {hasData ? (
           <>
