@@ -134,7 +134,9 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
               open={openSettingsDialog}
               isPaused={isPaused}
             />
-            <div className="flex justify-between items-center w-5/6">
+            <div
+              className={`flex  items-center ${isPaused ? "w-5/6 justify-between" : "w-full justify-center"}`}
+            >
               {isPaused && (
                 <Button
                   variant="timerGhost"

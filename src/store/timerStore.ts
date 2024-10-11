@@ -156,8 +156,11 @@ export const useTimerStore = create<TimerState>((set, get) => {
 
     addFiveMinutes: () => {
       set((state) => {
-        const newMinutes = Math.min(state.inputMinutes + 5, 120);
+        const currentMinutes = Math.floor(state.secondsLeft / 60);
+        const newMinutes =
+          currentMinutes === 1 ? 5 : Math.min(currentMinutes + 5, 120);
         const newSecondsLeft = newMinutes * 60;
+
         return {
           secondsLeft: newSecondsLeft,
           inputMinutes: newMinutes,
