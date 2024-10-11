@@ -99,7 +99,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
       {
         title: "互動操作",
         description: "現在就來使用Focusnow開始專注吧！",
-        targetPosition: [-300, 60, 10] as [number, number, number],
+        targetPosition: [-250, 60, 10] as [number, number, number],
       },
     ],
     []

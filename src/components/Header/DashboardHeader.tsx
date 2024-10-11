@@ -73,7 +73,7 @@ export function DashboardHeader({
             variant="header"
             onClick={() => {
               setPage(null);
-              setTargetPosition([-300, 60, 10]);
+              setTargetPosition([-250, 60, 10]);
               setLookAtPosition([0, 0, 0]);
             }}
             className="cursor-pointer"
@@ -87,7 +87,7 @@ export function DashboardHeader({
             variant="header"
             onClick={() => {
               setPage(null);
-              setTargetPosition([-300, 60, 10]);
+              setTargetPosition([-250, 60, 10]);
               setLookAtPosition([0, 0, 0]);
             }}
             className="cursor-pointer"

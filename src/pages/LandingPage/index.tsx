@@ -33,7 +33,7 @@ import usesettingStore from "@/store/settingStore";
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
     [number, number, number]
-  >([-300, 60, 10]);
+  >([-250, 60, 10]);
   const [lookAtPosition, setLookAtPosition] = useState<
     [number, number, number]
   >([0, 0, 0]);
