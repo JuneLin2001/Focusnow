@@ -183,7 +183,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
         </CircularProgressbarWithChildren>
         <div className="mt-5 flex justify-center">
           {isPaused ? (
-            <Button variant="add" onClick={handleStartTimer}>
+            <Button variant="default" onClick={handleStartTimer}>
               開始
             </Button>
           ) : mode === "break" ? (

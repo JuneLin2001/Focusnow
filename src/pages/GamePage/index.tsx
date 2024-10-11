@@ -40,7 +40,8 @@ const GamePage: React.FC<GamePageProps> = ({
 
   const filteredAnalytics = useMemo(() => {
     return analyticsList.filter(
-      (analytics) => analytics.focusDuration > 15 && analytics.pomodoroCompleted
+      (analytics) =>
+        analytics.focusDuration >= 15 && analytics.pomodoroCompleted
     );
   }, [analyticsList]);
 

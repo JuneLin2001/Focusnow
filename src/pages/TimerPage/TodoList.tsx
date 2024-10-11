@@ -39,7 +39,7 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
           type="text"
           value={newTodoTitle}
           onChange={(e) => setNewTodoTitle(e.target.value)}
-          className="flex-grow p-2 border rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white w-[70%]"
+          className="flex-grow p-2 border rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
           placeholder={errorMessage ? errorMessage : "New Todo"}
         />
         <Button
@@ -65,7 +65,7 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
                 type="text"
                 value={todo.title}
                 onChange={(e) => editTodoTitle(todo.id, e.target.value)}
-                className={`flex-grow p-1 text-xl dark:bg-gray-700 w-full ${
+                className={`flex-grow p-1 text-xl leading-5	w-full bg-white bg-opacity-0 ${
                   todo.completed
                     ? "line-through text-gray-500 dark:text-gray-400"
                     : "text-gray-800 dark:text-white"

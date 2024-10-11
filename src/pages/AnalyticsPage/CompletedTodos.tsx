@@ -20,11 +20,13 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
   return (
     <>
       {hasData && (
-        <h2 className="font-semibold mb-2 text-gray-800 dark:text-white">
+        <h2 className="font-semibold mb-2 text-gray-800 dark:text-white pb-2">
           總共完成了 {completedTodosCount} 個 Todo
         </h2>
       )}
-      <div className="h-full max-h-[60vh] overflow-y-auto">
+      <div
+        className={`${hasData ? "max-h-[60vh]" : "max-h-screen"} h-full overflow-y-auto`}
+      >
         {hasData ? (
           <>
             {filteredAnalytics.map((analytics, index) => {
@@ -62,8 +64,8 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
             })}
           </>
         ) : (
-          <div className="w-full h-full flex-1 flex justify-center items-center">
-            <p className="text-gray-500 text-center">沒有完成的 Todos</p>
+          <div className="w-full h-full flex justify-center items-center">
+            <p className="text-gray-500">沒有完成的 Todos</p>
           </div>
         )}
       </div>

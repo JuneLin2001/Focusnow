@@ -12,14 +12,17 @@ interface TimerDisplayProps {
 }
 
 const TimerDisplay: React.FC<TimerDisplayProps> = ({ onClick }) => {
-  const { secondsLeft, inputMinutes, mode } = useTimerStore();
+  const { secondsLeft, inputMinutes, breakMinutes, mode } = useTimerStore();
   const { themeMode } = settingStore();
 
-  if (secondsLeft >= inputMinutes * 60) {
+  if (mode === "work" && secondsLeft >= inputMinutes * 60) {
     return null;
   }
 
-  const percentage = (secondsLeft / (inputMinutes * 60)) * 100;
+  const percentage =
+    mode === "work"
+      ? (secondsLeft / (inputMinutes * 60)) * 100
+      : (secondsLeft / (breakMinutes * 60)) * 100;
 
   const pathColor =
     mode === "work"

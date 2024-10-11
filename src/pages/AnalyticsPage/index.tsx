@@ -74,7 +74,7 @@ const AnalyticsPage = () => {
               setCurrentDate={setCurrentDate}
             />
           </Card>
-          <div className="flex flex-grow flex-wrap justify-between mt-4">
+          <div className="flex flex-grow flex-wrap justify-between mt-1">
             <Card className="flex-[2] m-2 p-4 h-auto ">
               <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
             </Card>
