@@ -56,6 +56,9 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
         labels: {
           color: isDarkMode ? "white" : "black",
         },
+        onClick: () => {
+          console.log("Legend clicked");
+        },
       },
     },
   };
