@@ -24,7 +24,6 @@ import DropFish from "./DropFish";
 import ToggleBgm from "@/components/ToggleBgm";
 import { Progress } from "@/components/ui/progress";
 import usesettingStore from "@/store/settingStore";
-import { useTimerStore } from "@/store/timerStore";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -52,8 +51,6 @@ const LandingPage = () => {
   const [progress, setProgress] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
-  const { mode, secondsLeft, inputMinutes } = useTimerStore();
-
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress((prevProgress) => {
@@ -80,24 +77,20 @@ const LandingPage = () => {
 
         await updateFishesCount(-1);
       } else {
-        alert("沒有魚可以放置了，每專注1分鐘可以獲得1條魚！");
+        toast.warning("沒有魚可以放置了，每專注1分鐘可以獲得1條魚！");
       }
     } else {
-      alert("尚未登入！");
+      toast.error("尚未登入");
     }
   };
 
   const handleAnalyticsClick = () => {
     if (user) {
-      if (mode === "work" && secondsLeft <= inputMinutes * 60) {
-        toast.warning("先專心完成工作吧"); // 使用 toast 顯示警告
-      } else {
-        setPage("analytics");
-        setTargetPosition([-105, 25, 100]);
-        setLookAtPosition([250, 0, 0]);
-      }
+      setPage("analytics");
+      setTargetPosition([-105, 25, 100]);
+      setLookAtPosition([250, 0, 0]);
     } else {
-      toast.error("尚未登入"); // 使用 toast 顯示錯誤
+      toast.error("尚未登入");
     }
   };
 
