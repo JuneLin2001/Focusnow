@@ -141,6 +141,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
     },
 
     resetTimer: () => {
+      console.log("Reset timer");
       const { mode, startTime } = get();
 
       if (animationFrameId !== null) {
@@ -219,17 +220,20 @@ export const useTimerStore = create<TimerState>((set, get) => {
         .filter((todo) => todo.completed)
         .map((todo) => ({
           ...todo,
-          startTime:
-            todo.startTime instanceof Timestamp
-              ? todo.startTime
-              : Timestamp.fromDate(todo.startTime),
-          doneTime:
-            todo.doneTime instanceof Timestamp
-              ? todo.doneTime
-              : todo.doneTime
-                ? Timestamp.fromDate(todo.doneTime)
-                : null,
+          startTime: isTimestamp(todo.startTime)
+            ? Timestamp.fromDate(todo.startTime.toDate())
+            : Timestamp.now(),
+
+          doneTime: todo.doneTime
+            ? isTimestamp(todo.doneTime)
+              ? Timestamp.fromDate(todo.doneTime.toDate())
+              : null
+            : null,
         }));
+
+      function isTimestamp(value: unknown): value is Timestamp {
+        return value instanceof Timestamp;
+      }
 
       const taskData = {
         startTime,

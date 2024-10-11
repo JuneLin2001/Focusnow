@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import {
-  Environment,
-  // GizmoHelper,
-  // GizmoViewport,
-  Sky,
-} from "@react-three/drei";
+import { Environment, Sky } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
 import Mainland from "../../models/Mainland";
@@ -29,6 +24,9 @@ import DropFish from "./DropFish";
 import ToggleBgm from "@/components/ToggleBgm";
 import { Progress } from "@/components/ui/progress";
 import usesettingStore from "@/store/settingStore";
+import { useTimerStore } from "@/store/timerStore";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -39,7 +37,7 @@ const LandingPage = () => {
   >([0, 0, 0]);
   const [page, setPage] = useState<
     "timer" | "analytics" | "game" | "Setting" | null
-  >("Setting");
+  >(null);
   const { themeMode } = settingStore();
   const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
   const { user } = useAuthStore();
@@ -53,6 +51,8 @@ const LandingPage = () => {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
+
+  const { mode, secondsLeft, inputMinutes } = useTimerStore();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -89,11 +89,15 @@ const LandingPage = () => {
 
   const handleAnalyticsClick = () => {
     if (user) {
-      setPage("analytics");
-      setTargetPosition([-105, 25, 100]);
-      setLookAtPosition([250, 0, 0]);
+      if (mode === "work" && secondsLeft <= inputMinutes * 60) {
+        toast.warning("先專心完成工作吧"); // 使用 toast 顯示警告
+      } else {
+        setPage("analytics");
+        setTargetPosition([-105, 25, 100]);
+        setLookAtPosition([250, 0, 0]);
+      }
     } else {
-      alert("尚未登入");
+      toast.error("尚未登入"); // 使用 toast 顯示錯誤
     }
   };
 
@@ -108,22 +112,6 @@ const LandingPage = () => {
     setShowInstructions(false);
     setPage(null);
   };
-
-  const [displayedPage, setDisplayedPage] = useState<string | null>(null);
-
-  useEffect(() => {
-    setDisplayedPage(null);
-
-    if (page === null) {
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      setDisplayedPage(page);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [page]);
 
   if (loading) {
     return (
@@ -149,14 +137,26 @@ const LandingPage = () => {
         setLookAtPosition={setLookAtPosition}
         handleAnalyticsClick={handleAnalyticsClick}
       />
-      {displayedPage === null ? (
+      {page === null ? (
         ""
       ) : (
         <div className="fixed z-10 w-full h-full">
-          {displayedPage === "timer" && <TimerPage />}
-          {displayedPage === "analytics" && <AnalyticsPage />}
+          {page === "timer" && <TimerPage />}
+          {page === "analytics" && <AnalyticsPage />}
         </div>
       )}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={themeMode === "light" ? "light" : "dark"}
+      />
 
       <Canvas className="z-0">
         <Environment preset={themeMode === "light" ? "warehouse" : "night"} />
@@ -211,9 +211,6 @@ const LandingPage = () => {
           lookAtPosition={lookAtPosition}
           isCompleted={isCompleted}
         />
-        {/* <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
-          <GizmoViewport labelColor="white" axisHeadScale={1} />
-        </GizmoHelper> */}
       </Canvas>
       {page === null && (
         <TimerDisplay
