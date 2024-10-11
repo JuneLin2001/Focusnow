@@ -31,3 +31,14 @@ export interface TaskData {
   startTime: Timestamp;
   todos: Todos[];
 }
+
+export type WorkerMessage = {
+  action: "start" | "stop";
+  startTime?: number;
+  endTime?: number;
+};
+
+export type WorkerResponse = {
+  type: "tick" | "timerComplete";
+  secondsLeft?: number;
+};
