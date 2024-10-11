@@ -26,7 +26,8 @@ interface TimerState {
   minusFiveMinutes: () => void;
   checkEndCondition: (pomodoroCompleted: boolean) => void;
   showLoginButton: boolean;
-  toggleLoginButton: () => void;
+  showLogin: () => void;
+  hideLogin: () => void;
 }
 
 export const useTimerStore = create<TimerState>((set, get) => {
@@ -98,8 +99,8 @@ export const useTimerStore = create<TimerState>((set, get) => {
     rotationCount: 0,
     showLoginButton: false,
 
-    toggleLoginButton: () =>
-      set((state) => ({ showLoginButton: !state.showLoginButton })),
+    showLogin: () => set({ showLoginButton: true }),
+    hideLogin: () => set({ showLoginButton: false }),
 
     setTimer: (minutes) => set({ secondsLeft: minutes * 60 }),
 
@@ -140,9 +141,16 @@ export const useTimerStore = create<TimerState>((set, get) => {
     },
 
     resetTimer: () => {
+      const { mode, startTime } = get();
+
       if (animationFrameId !== null) {
         cancelAnimationFrame(animationFrameId);
       }
+
+      if (startTime && mode === "work") {
+        get().checkEndCondition(false);
+      }
+
       set((state) => ({
         isPaused: true,
         mode: "work",
@@ -151,7 +159,6 @@ export const useTimerStore = create<TimerState>((set, get) => {
         endTime: null,
         rotationCount: 0,
       }));
-      get().checkEndCondition(false);
     },
 
     addFiveMinutes: () => {
@@ -261,7 +268,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
           .forEach((todo) => {
             removeTodo(todo.id);
           });
-        get().toggleLoginButton();
+        get().showLogin();
       }
     },
   };

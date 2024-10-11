@@ -3,6 +3,7 @@ import { auth } from "../../firebase/firebaseConfig";
 import useAuthStore from "../../store/authStore";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import { useFishesCountStore } from "../../store/fishesCountStore";
+import { useTimerStore } from "../../store/timerStore"; // 引入 useTimerStore
 import { saveTaskData } from "../../firebase/firebaseService";
 import { CircleUser, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ const LoginButton = () => {
   const { user, setUser, logout } = useAuthStore();
   const resetAnalytics = useAnalyticsStore((state) => state.reset);
   const setFishesCount = useFishesCountStore((state) => state.setFishesCount);
+  const { hideLogin } = useTimerStore();
 
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
@@ -27,6 +29,8 @@ const LoginButton = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       setUser(user);
+
+      hideLogin();
 
       const taskDataString = localStorage.getItem("taskData");
       if (taskDataString) {

@@ -135,7 +135,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
               isPaused={isPaused}
             />
             <div
-              className={`flex  items-center ${isPaused ? "w-5/6 justify-between" : "w-full justify-center"}`}
+              className={`flex items-center ${isPaused ? "w-5/6 justify-between" : "w-full justify-center"}`}
             >
               {isPaused && (
                 <Button
@@ -200,7 +200,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
         </div>
         {showLoginButton && (
           <div className="flex justify-center items-center bg-gray-800 bg-opacity-50 fixed inset-0">
-            <div className="bg-white p-5 rounded shadow-lg">
+            <div className="bg-white p-5 rounded shadow-lg flex flex-col items-center ">
               <h2 className="text-xl mb-4">請登入以保存數據</h2>
               <LoginButton />
             </div>
