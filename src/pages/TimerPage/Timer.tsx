@@ -128,56 +128,56 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
             trailColor: "#d6d6d6",
           })}
         >
-          <div>
-            <div className="flex flex-col justify-center items-center h-full w-full">
-              <SettingsDialog
-                onClose={handleCloseSettingsDialog}
-                open={openSettingsDialog}
-                isPaused={isPaused}
-              />
+          <div className="flex flex-col justify-center items-center h-full w-full">
+            <SettingsDialog
+              onClose={handleCloseSettingsDialog}
+              open={openSettingsDialog}
+              isPaused={isPaused}
+            />
+            <div className="flex justify-between items-center w-5/6">
+              {isPaused && (
+                <Button
+                  variant="timerGhost"
+                  size="timerGhost"
+                  onClick={minusFiveMinutes}
+                  disabled={!isPaused}
+                >
+                  <Minus />
+                </Button>
+              )}
               <div className="flex items-center justify-center">
-                {isPaused && (
-                  <Button
-                    variant="timerGhost"
-                    onClick={minusFiveMinutes}
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={`${Math.floor(secondsLeft / 60)}`}
+                    onChange={handleInputChange}
                     disabled={!isPaused}
+                    className="text-5xl border-4 border-black w-24 bg-transparent focus:outline-none text-center dark:text-gray-200"
+                    onBlur={handleInputBlur}
+                  />
+                ) : (
+                  <div
+                    className="text-5xl cursor-pointer"
+                    onClick={handleInputClick}
                   >
-                    <Minus />
-                  </Button>
-                )}
-                <div className="flex items-center">
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={`${Math.floor(secondsLeft / 60)}`}
-                      onChange={handleInputChange}
-                      disabled={!isPaused}
-                      className="text-5xl border-4 border-black w-24 bg-transparent focus:outline-none text-center dark:text-gray-200"
-                      onBlur={handleInputBlur}
-                    />
-                  ) : (
-                    <div
-                      className="text-5xl cursor-pointer"
-                      onClick={handleInputClick}
-                    >
-                      {`${Math.floor(secondsLeft / 60)}:${
-                        secondsLeft % 60 < 10
-                          ? "0" + (secondsLeft % 60)
-                          : secondsLeft % 60
-                      }`}
-                    </div>
-                  )}
-                </div>
-                {isPaused && (
-                  <Button
-                    variant="timerGhost"
-                    onClick={addFiveMinutes}
-                    disabled={!isPaused}
-                  >
-                    <Plus />
-                  </Button>
+                    {`${Math.floor(secondsLeft / 60)}:${
+                      secondsLeft % 60 < 10
+                        ? "0" + (secondsLeft % 60)
+                        : secondsLeft % 60
+                    }`}
+                  </div>
                 )}
               </div>
+              {isPaused && (
+                <Button
+                  variant="timerGhost"
+                  size="timerGhost"
+                  onClick={addFiveMinutes}
+                  disabled={!isPaused}
+                >
+                  <Plus />
+                </Button>
+              )}
             </div>
           </div>
         </CircularProgressbarWithChildren>

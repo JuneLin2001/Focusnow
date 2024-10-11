@@ -26,7 +26,7 @@ const buttonVariants = cva(
           "hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-50 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 text-lg",
         link: "text-zinc-900 underline-offset-4 hover:underline dark:text-zinc-50",
         timerGhost:
-          "hover:bg-zinc-100 hover:text-zinc-900 dark:text-gray-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
+          " hover:bg-zinc-400 hover:text-zinc-900 hover:bg-opacity-50  dark:text-gray-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -34,6 +34,7 @@ const buttonVariants = cva(
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
+        timerGhost: "px-2 py-2",
       },
     },
     defaultVariants: {
