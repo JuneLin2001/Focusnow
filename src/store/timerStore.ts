@@ -13,27 +13,79 @@ interface TimerState {
   mode: "work" | "break";
   inputMinutes: number;
   breakMinutes: number;
-  startTime: Date | null;
+  startTime: Timestamp | null;
+  endTime: Timestamp | null;
+  rotationCount: number;
   setTimer: (minutes: number) => void;
   setInputMinutes: (minutes: number) => void;
   setBreakMinutes: (minutes: number) => void;
   startTimer: () => void;
+  resumeTimer: () => void;
   resetTimer: () => void;
   addFiveMinutes: () => void;
   minusFiveMinutes: () => void;
-  checkEndCondition: (
-    startTime: Date | null,
-    mode: "work" | "break",
-    inputMinutes: number,
-    endTime: Date,
-    pomodoroCompleted: boolean
-  ) => void;
+  checkEndCondition: (pomodoroCompleted: boolean) => void;
   showLoginButton: boolean;
   toggleLoginButton: () => void;
 }
 
 export const useTimerStore = create<TimerState>((set, get) => {
-  let interval: NodeJS.Timeout | null = null;
+  let animationFrameId: number | null = null;
+
+  const updateTimer = () => {
+    const state = get();
+    if (state.isPaused || !state.startTime || !state.endTime) return;
+
+    const now = Timestamp.now();
+    const elapsedSeconds = Math.floor(now.seconds - state.startTime.seconds);
+    const totalSeconds = Math.floor(
+      state.endTime.seconds - state.startTime.seconds
+    );
+    const remainingSeconds = Math.max(0, totalSeconds - elapsedSeconds);
+
+    if (remainingSeconds === 0) {
+      const nextMode = state.mode === "work" ? "break" : "work";
+      const nextMinutes =
+        nextMode === "work" ? state.inputMinutes : state.breakMinutes;
+
+      set((prevState) => ({
+        rotationCount: prevState.rotationCount + 1,
+      }));
+
+      if (get().rotationCount >= 4) {
+        set({
+          isPaused: true,
+          mode: "work",
+          secondsLeft: get().inputMinutes * 60,
+          startTime: null,
+          endTime: null,
+          rotationCount: 0,
+        });
+
+        sendBrowserNotification(
+          "計時結束",
+          "恭喜您已完成四輪工作與休息的循環。"
+        );
+
+        return;
+      }
+
+      set({
+        mode: nextMode,
+        secondsLeft: nextMinutes * 60,
+        startTime: now,
+        endTime: Timestamp.fromMillis(now.toMillis() + nextMinutes * 60 * 1000),
+        isPaused: false,
+      });
+
+      get().checkEndCondition(true);
+
+      animationFrameId = requestAnimationFrame(updateTimer);
+    } else {
+      set({ secondsLeft: remainingSeconds });
+      animationFrameId = requestAnimationFrame(updateTimer);
+    }
+  };
 
   return {
     secondsLeft: 25 * 60,
@@ -42,6 +94,8 @@ export const useTimerStore = create<TimerState>((set, get) => {
     inputMinutes: 25,
     breakMinutes: 5,
     startTime: null,
+    endTime: null,
+    rotationCount: 0,
     showLoginButton: false,
 
     toggleLoginButton: () =>
@@ -51,101 +105,99 @@ export const useTimerStore = create<TimerState>((set, get) => {
 
     setInputMinutes: (minutes) => set({ inputMinutes: minutes }),
 
-    setBreakMinutes: (minutes) => set({ breakMinutes: minutes }), // 設置休息時間的方法
+    setBreakMinutes: (minutes) => set({ breakMinutes: minutes }),
 
     startTimer: () => {
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
-      }
+      const now = Timestamp.now();
+      const currentMinutes =
+        get().mode === "work" ? get().inputMinutes : get().breakMinutes;
 
-      set({ isPaused: false, startTime: new Date() });
+      set({
+        isPaused: false,
+        startTime: now,
+        endTime: Timestamp.fromMillis(
+          now.toMillis() + currentMinutes * 60 * 1000
+        ),
+        secondsLeft: currentMinutes * 60,
+      });
+      animationFrameId = requestAnimationFrame(updateTimer);
+    },
 
-      interval = setInterval(() => {
-        set((state) => {
-          const newSecondsLeft = Math.max(0, state.secondsLeft - 1);
-          const nextState = { secondsLeft: newSecondsLeft, mode: state.mode };
+    resumeTimer: () => {
+      const now = Timestamp.now();
+      const currentMinutes =
+        get().mode === "work" ? get().inputMinutes : get().breakMinutes;
 
-          if (newSecondsLeft === 0) {
-            console.log("Timer is done!");
-            nextState.mode = state.mode === "work" ? "break" : "work";
-            nextState.secondsLeft =
-              nextState.mode === "work"
-                ? state.inputMinutes * 60
-                : state.breakMinutes * 60; // 使用用戶自定義的休息時間
-
-            get().checkEndCondition(
-              state.startTime,
-              nextState.mode,
-              state.inputMinutes,
-              new Date(),
-              true // 完成的 pomodoro
-            );
-          }
-          return nextState;
-        });
-      }, 1000);
+      set((state) => ({
+        isPaused: false,
+        startTime: now,
+        endTime: Timestamp.fromMillis(
+          now.toMillis() + state.secondsLeft * 1000
+        ),
+        secondsLeft: currentMinutes * 60,
+      }));
+      animationFrameId = requestAnimationFrame(updateTimer);
     },
 
     resetTimer: () => {
-      const { startTime, inputMinutes } = get();
-      const { mode } = get();
-
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
       }
-
       set((state) => ({
         isPaused: true,
         mode: "work",
         secondsLeft: state.inputMinutes * 60,
+        startTime: null,
+        endTime: null,
+        rotationCount: 0,
       }));
-
-      if (mode === "work") {
-        get().checkEndCondition(
-          startTime,
-          "work",
-          inputMinutes,
-          new Date(),
-          false
-        );
-      }
+      get().checkEndCondition(false);
     },
 
-    addFiveMinutes: () =>
+    addFiveMinutes: () => {
       set((state) => {
         const newMinutes = Math.min(state.inputMinutes + 5, 120);
+        const newSecondsLeft = newMinutes * 60;
         return {
-          secondsLeft: newMinutes * 60,
+          secondsLeft: newSecondsLeft,
           inputMinutes: newMinutes,
+          endTime: state.startTime
+            ? Timestamp.fromMillis(
+                state.startTime.toMillis() + newSecondsLeft * 1000
+              )
+            : null,
         };
-      }),
+      });
+    },
 
-    minusFiveMinutes: () =>
+    minusFiveMinutes: () => {
       set((state) => {
         const newMinutes = Math.max(state.inputMinutes - 5, 1);
+        const newSecondsLeft = newMinutes * 60;
         return {
-          secondsLeft: newMinutes * 60,
+          secondsLeft: newSecondsLeft,
           inputMinutes: newMinutes,
+          endTime: state.startTime
+            ? Timestamp.fromMillis(
+                state.startTime.toMillis() + newSecondsLeft * 1000
+              )
+            : null,
         };
-      }),
+      });
+    },
 
-    checkEndCondition: (
-      startTime,
-      mode,
-      inputMinutes,
-      endTime,
-      pomodoroCompleted
-    ) => {
-      if (!startTime) {
-        console.error("Start time is null");
-        return;
-      }
+    checkEndCondition: (pomodoroCompleted: boolean) => {
+      const { startTime, mode, inputMinutes } = get();
+      if (!startTime) return;
+
+      const endTime = Timestamp.now();
 
       if (pomodoroCompleted) {
+        const currentRotation = get().rotationCount;
         sendBrowserNotification(
-          mode === "break" ? "工作時間結束！" : "休息時間結束！",
+          mode === "break"
+            ? `第 ${currentRotation} 輪工作時間結束！`
+            : `第 ${currentRotation} 輪休息時間結束！`,
           mode === "break" ? "切換到休息模式！" : "切換到工作模式"
         );
       }
@@ -157,15 +209,21 @@ export const useTimerStore = create<TimerState>((set, get) => {
         .filter((todo) => todo.completed)
         .map((todo) => ({
           ...todo,
-          startTime: Timestamp.fromDate(todo.startTime.toDate()),
-          doneTime: todo.doneTime
-            ? Timestamp.fromDate(todo.doneTime.toDate())
-            : null,
+          startTime:
+            todo.startTime instanceof Timestamp
+              ? todo.startTime
+              : Timestamp.fromDate(todo.startTime),
+          doneTime:
+            todo.doneTime instanceof Timestamp
+              ? todo.doneTime
+              : todo.doneTime
+                ? Timestamp.fromDate(todo.doneTime)
+                : null,
         }));
 
       const taskData = {
-        startTime: Timestamp.fromDate(startTime),
-        endTime: Timestamp.fromDate(endTime),
+        startTime,
+        endTime,
         focusDuration: inputMinutes,
         pomodoroCompleted,
         todos: formattedTodos,
@@ -185,7 +243,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
             if (pomodoroCompleted) {
               const { FishesCount, updateFishesCount } =
                 useFishesCountStore.getState();
-              updateFishesCount(inputMinutes); // 只有在 pomodoro 完成時才更新魚數量
+              updateFishesCount(inputMinutes);
               FishesCountFetcher(user, FishesCount);
             }
           })
