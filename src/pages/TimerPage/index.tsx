@@ -25,7 +25,7 @@ const TimerPage = () => {
 
   return (
     <>
-      <TimerDisplay />
+      <TimerDisplay page={"timer"} />
       <div className="z-30 ">
         {showInstructions && (
           <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-40">
