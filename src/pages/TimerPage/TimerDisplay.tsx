@@ -10,7 +10,11 @@ import { Button } from "@/components/ui/button";
 import { PictureInPicture } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
-const TimerDisplay = () => {
+interface TimerDisplayProps {
+  page: string | null;
+}
+
+const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
   const { secondsLeft, inputMinutes, breakMinutes, mode } = useTimerStore();
   const { themeMode } = settingStore();
   const [isPipActive, setIsPipActive] = useState(false);
@@ -52,12 +56,12 @@ const TimerDisplay = () => {
         ctx.arc(0, 0, pipWindowWidth / 2 - 20, 0, Math.PI * 2); // 大圓環半徑
 
         ctx.strokeStyle = "#d6d6d6"; // 底色圓環顏色
-        ctx.lineWidth = 20; // 圓環的寬度
+        ctx.lineWidth = 24; // 圓環的寬度
         ctx.stroke(); // 繪製圓環
 
         // 設定文本樣式
         ctx.fillStyle = themeMode === "dark" ? "#fff" : "#000";
-        ctx.font = `${pipWindowWidth / 9}px Arial`;
+        ctx.font = `${pipWindowWidth / 8}px Arial`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
@@ -81,7 +85,7 @@ const TimerDisplay = () => {
           (Math.PI * 2 * percentage) / 100
         ); // 半徑改為 (pipWindowWidth / 2 - 20)
         ctx.strokeStyle = pathColor;
-        ctx.lineWidth = 20;
+        ctx.lineWidth = 24;
         ctx.lineCap = "round"; // 設置圓角效果
         ctx.stroke();
 
@@ -132,7 +136,7 @@ const TimerDisplay = () => {
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.hidden) {
+      if (document.hidden || page !== "timer") {
         enterPiP();
       } else {
         exitPiP();
@@ -144,7 +148,7 @@ const TimerDisplay = () => {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [enterPiP, exitPiP]);
+  }, [enterPiP, exitPiP, page]);
 
   useEffect(() => {
     const pipHandler = () => {
@@ -213,13 +217,18 @@ const TimerDisplay = () => {
 
       <video ref={videoRef} style={{ display: "none" }} muted playsInline />
 
-      <div className="fixed bottom-28 right-6">
+      <div className="fixed ">
         {!isPipActive ? (
-          <Button onClick={enterPiP} disabled={!isPiPSupported}>
+          <Button
+            variant="timerGhost"
+            size="icon"
+            onClick={enterPiP}
+            disabled={!isPiPSupported}
+          >
             <PictureInPicture />
           </Button>
         ) : (
-          <Button onClick={exitPiP}>
+          <Button variant="timerGhost" size="icon" onClick={exitPiP}>
             <PictureInPicture />
           </Button>
         )}

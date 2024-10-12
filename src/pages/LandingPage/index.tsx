@@ -205,7 +205,7 @@ const LandingPage = () => {
           isCompleted={isCompleted}
         />
       </Canvas>
-      {page === null && <TimerDisplay />}
+      {page === null && <TimerDisplay page={page} />}
       <ToggleBgm />
       <InitialInstructions
         showInstructions={showInstructions}

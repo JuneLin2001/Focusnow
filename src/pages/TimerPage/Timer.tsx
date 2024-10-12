@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import settingStore from "../../store/settingStore";
 import { Card } from "@/components/ui/card";
+import TimerDisplay from "./TimerDisplay";
 
 interface TimerProps {
   toggleSidebar: () => void;
@@ -104,6 +105,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
           >
             <Settings />
           </Button>{" "}
+          <TimerDisplay page={"timer"} />
         </div>
 
         <div className="absolute top-[50%] right-2">
