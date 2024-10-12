@@ -53,7 +53,7 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
         ctx.translate(pipWindowWidth / 2, pipWindowWidth / 2);
 
         ctx.beginPath();
-        ctx.arc(0, 0, pipWindowWidth / 2 - 20, 0, Math.PI * 2); // 大圓環半徑
+        ctx.arc(0, 0, pipWindowWidth / 2 - 40, 0, Math.PI * 2); // 大圓環半徑
 
         ctx.strokeStyle = "#d6d6d6"; // 底色圓環顏色
         ctx.lineWidth = 24; // 圓環的寬度
@@ -75,15 +75,15 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
 
         ctx.rotate(-Math.PI / 2);
 
-        // 開始繪製圓形，考慮到 padding，半徑改為 (pipWindowWidth / 2 - 20)
+        // 開始繪製圓形，考慮到 padding，半徑改為 (pipWindowWidth / 2 - 40)
         ctx.beginPath();
         ctx.arc(
           0,
           0,
-          pipWindowWidth / 2 - 20,
+          pipWindowWidth / 2 - 40,
           0,
           (Math.PI * 2 * percentage) / 100
-        ); // 半徑改為 (pipWindowWidth / 2 - 20)
+        ); // 半徑改為 (pipWindowWidth / 2 - 40)
         ctx.strokeStyle = pathColor;
         ctx.lineWidth = 24;
         ctx.lineCap = "round"; // 設置圓角效果
