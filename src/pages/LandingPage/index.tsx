@@ -205,15 +205,7 @@ const LandingPage = () => {
           isCompleted={isCompleted}
         />
       </Canvas>
-      {page === null && (
-        <TimerDisplay
-          onClick={() => {
-            setTargetPosition([-50, 12, -150]);
-            setLookAtPosition([0, 0, 0]);
-            setPage("timer");
-          }}
-        />
-      )}
+      {page === null && <TimerDisplay />}
       <ToggleBgm />
       <InitialInstructions
         showInstructions={showInstructions}

@@ -1,14 +1,16 @@
-import React, { useRef, useEffect, useCallback, useState } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 import { useTimerStore } from "../../store/timerStore";
+import {
+  CircularProgressbarWithChildren,
+  buildStyles,
+} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import settingStore from "../../store/settingStore";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { PictureInPicture } from "lucide-react";
+import { Card } from "@/components/ui/card";
 
-interface TimerDisplayProps {
-  onClick: React.MouseEventHandler<HTMLDivElement>;
-}
-
-const TimerDisplay: React.FC<TimerDisplayProps> = ({ onClick }) => {
+const TimerDisplay = () => {
   const { secondsLeft, inputMinutes, breakMinutes, mode } = useTimerStore();
   const { themeMode } = settingStore();
   const [isPipActive, setIsPipActive] = useState(false);
@@ -30,31 +32,62 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ onClick }) => {
         ? "#0b4f22"
         : "#009b00";
 
+  const pipWindowWidth = 360;
+
   const drawOnCanvas = useCallback(() => {
     if (canvasRef.current) {
       const ctx = canvasRef.current.getContext("2d");
       if (ctx) {
-        ctx.clearRect(0, 0, 400, 400);
+        // 清除畫布
+        ctx.clearRect(0, 0, pipWindowWidth, pipWindowWidth); // 畫布大小 pipWindowWidth x pipWindowWidth
 
-        ctx.fillStyle = themeMode === "dark" ? "#000" : "#fff";
-        ctx.fillRect(0, 0, 400, 400);
+        // 設定背景顏色
+        ctx.fillStyle = themeMode === "dark" ? "#000" : "#fff"; // 背景顏色改回純色
+        ctx.fillRect(0, 0, pipWindowWidth, pipWindowWidth); // 背景填滿 pipWindowWidth x pipWindowWidth
 
+        // 將原點移到圓心（考慮 padding，圓心改為 pipWindowWidth / 2，pipWindowWidth / 2）
+        ctx.translate(pipWindowWidth / 2, pipWindowWidth / 2);
+
+        ctx.beginPath();
+        ctx.arc(0, 0, pipWindowWidth / 2 - 20, 0, Math.PI * 2); // 大圓環半徑
+
+        ctx.strokeStyle = "#d6d6d6"; // 底色圓環顏色
+        ctx.lineWidth = 20; // 圓環的寬度
+        ctx.stroke(); // 繪製圓環
+
+        // 設定文本樣式
         ctx.fillStyle = themeMode === "dark" ? "#fff" : "#000";
-        ctx.font = "40px Arial";
+        ctx.font = `${pipWindowWidth / 9}px Arial`;
         ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
         ctx.fillText(
           `${Math.floor(secondsLeft / 60)}:${
             secondsLeft % 60 < 10 ? "0" + (secondsLeft % 60) : secondsLeft % 60
           }`,
-          200,
-          200
+          0,
+          0
         );
 
+        ctx.rotate(-Math.PI / 2);
+
+        // 開始繪製圓形，考慮到 padding，半徑改為 (pipWindowWidth / 2 - 20)
         ctx.beginPath();
-        ctx.arc(200, 200, 180, 0, (Math.PI * 2 * percentage) / 100);
+        ctx.arc(
+          0,
+          0,
+          pipWindowWidth / 2 - 20,
+          0,
+          (Math.PI * 2 * percentage) / 100
+        ); // 半徑改為 (pipWindowWidth / 2 - 20)
         ctx.strokeStyle = pathColor;
-        ctx.lineWidth = 10;
+        ctx.lineWidth = 20;
+        ctx.lineCap = "round"; // 設置圓角效果
         ctx.stroke();
+
+        // 還原旋轉
+        ctx.rotate(Math.PI / 2); // 將旋轉恢復到原來的狀態
+        ctx.translate(-pipWindowWidth / 2, -pipWindowWidth / 2); // 將原點移回左上角
       }
     }
   }, [themeMode, secondsLeft, percentage, pathColor]);
@@ -142,39 +175,56 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ onClick }) => {
     };
   }, [drawOnCanvas]);
 
+  // 檢查瀏覽器是否支援 Picture-in-Picture
+  const isPiPSupported = document.pictureInPictureEnabled;
+
   return (
-    <div>
-      <Card
-        className="fixed bottom-40 right-6 p-4 bg-white opacity-80 z-10 w-36 cursor-pointer"
-        onClick={onClick}
-      >
-        <canvas
-          ref={canvasRef}
-          width="400"
-          height="400"
-          style={{ display: "none" }}
-        />
+    <>
+      <canvas
+        ref={canvasRef}
+        width={pipWindowWidth}
+        height={pipWindowWidth}
+        style={{ display: "none" }}
+      />
 
-        <div>
-          <h3 className="text-xl">
-            {Math.floor(secondsLeft / 60)}:
-            {secondsLeft % 60 < 10
-              ? "0" + (secondsLeft % 60)
-              : secondsLeft % 60}
-          </h3>
-        </div>
+      {!isPipActive && !isPiPSupported ? (
+        <Card className="fixed bottom-40 right-6 p-4 bg-white opacity-80 z-10 w-36">
+          <CircularProgressbarWithChildren
+            value={percentage}
+            styles={buildStyles({
+              textColor: "#000",
+              pathColor: pathColor,
+              trailColor: "#d6d6d6",
+            })}
+            strokeWidth={10}
+            className="w-full h-full"
+          >
+            <div>
+              <h3 className="text-xl">
+                {Math.floor(secondsLeft / 60)}:
+                {secondsLeft % 60 < 10
+                  ? "0" + (secondsLeft % 60)
+                  : secondsLeft % 60}
+              </h3>
+            </div>
+          </CircularProgressbarWithChildren>
+        </Card>
+      ) : null}
 
-        <video ref={videoRef} style={{ display: "none" }} muted playsInline />
+      <video ref={videoRef} style={{ display: "none" }} muted playsInline />
 
-        <div>
-          {!isPipActive ? (
-            <Button onClick={enterPiP}>Enter PiP</Button>
-          ) : (
-            <Button onClick={exitPiP}>Exit PiP</Button>
-          )}
-        </div>
-      </Card>
-    </div>
+      <div className="fixed bottom-28 right-6">
+        {!isPipActive ? (
+          <Button onClick={enterPiP} disabled={!isPiPSupported}>
+            <PictureInPicture />
+          </Button>
+        ) : (
+          <Button onClick={exitPiP}>
+            <PictureInPicture />
+          </Button>
+        )}
+      </div>
+    </>
   );
 };
 
