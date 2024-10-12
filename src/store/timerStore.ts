@@ -45,7 +45,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
     worker.onmessage = (e: MessageEvent<WorkerResponse>) => {
       if (e.data.type === "tick" && e.data.secondsLeft !== undefined) {
         set({ secondsLeft: e.data.secondsLeft });
-        updateTitle(); // 每次接收到 tick 訊息時更新 title
+        updateTitle();
       } else if (e.data.type === "timerComplete") {
         handleTimerComplete();
       }
@@ -60,8 +60,12 @@ export const useTimerStore = create<TimerState>((set, get) => {
     const { secondsLeft, mode } = get();
     const minutes = Math.floor(secondsLeft / 60);
     const displaySeconds =
-      secondsLeft % 60 < 10 ? `0${secondsLeft % 60}` : secondsLeft % 60; // 確保秒數為兩位數
+      secondsLeft % 60 < 10 ? `0${secondsLeft % 60}` : secondsLeft % 60;
     document.title = `${mode === "work" ? "工作中" : "休息中"} | 剩餘時間: ${minutes}:${displaySeconds}`;
+  };
+
+  const resetTitle = () => {
+    document.title = "Focusnow";
   };
 
   const handleTimerComplete = () => {
@@ -86,7 +90,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
 
       sendBrowserNotification("計時結束", "恭喜您已完成四輪工作與休息的循環。");
 
-      updateTitle(); // 在計時結束後更新 title
+      resetTitle();
       return;
     }
 
@@ -102,7 +106,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
     get().checkEndCondition(true);
     get().startTimer();
 
-    updateTitle(); // 在切換模式後更新 title
+    updateTitle();
   };
 
   return {
@@ -117,6 +121,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
     showLoginButton: false,
     worker: null,
     updateTitle,
+    resetTitle,
 
     showLogin: () => set({ showLoginButton: true }),
     hideLogin: () => set({ showLoginButton: false }),
@@ -180,8 +185,8 @@ export const useTimerStore = create<TimerState>((set, get) => {
       const { mode, startTime } = get();
 
       worker?.postMessage({ action: "stop" });
-      worker?.terminate(); // 終止 Worker
-      worker = null; // 將 worker 設為 null
+      worker?.terminate();
+      worker = null;
 
       if (startTime && mode === "work") {
         get().checkEndCondition(false);
@@ -195,7 +200,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
         endTime: null,
         rotationCount: 0,
       }));
-      updateTitle();
+      resetTitle();
     },
 
     addFiveMinutes: () => {
@@ -273,7 +278,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
           mode === "break" ? "切換到休息模式！" : "切換到工作模式"
         );
 
-        updateTitle(); // 在計時完成時更新 title
+        updateTitle();
       }
 
       const { user } = useAuthStore.getState();
@@ -337,7 +342,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
         get().showLogin();
       }
 
-      updateTitle(); // 在檢查結束條件後更新 title
+      updateTitle();
     },
   };
 });
