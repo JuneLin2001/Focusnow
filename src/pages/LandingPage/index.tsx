@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Environment, Sky } from "@react-three/drei";
+import {
+  Environment,
+  Sky,
+  GizmoHelper,
+  GizmoViewport,
+} from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
 import Mainland from "../../models/Mainland";
@@ -27,6 +32,7 @@ import usesettingStore from "@/store/settingStore";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SnowPenguin from "../GamePage/snowPenguin";
+import ShowInstructions from "./ShowInstructions";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -188,6 +194,12 @@ const LandingPage = () => {
         <OceanModel />
         <Analytics />
         <Snowflakes />
+        {page === null && (
+          <ShowInstructions
+            position={[114, 45, 143]}
+            onClick={handleShowInnitialInstructions}
+          />
+        )}
         <SnowPenguin onClick={handleShowInnitialInstructions} />
         <GamePage
           fishesCount={fishesCount}
@@ -223,6 +235,9 @@ const LandingPage = () => {
           lookAtPosition={lookAtPosition}
           isCompleted={isCompleted}
         />
+        <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
+          <GizmoViewport labelColor="white" axisHeadScale={1} />
+        </GizmoHelper>
       </Canvas>
       {page === null && <TimerDisplay page={page} />}
       <ToggleBgm />

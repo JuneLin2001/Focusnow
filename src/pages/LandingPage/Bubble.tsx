@@ -6,7 +6,20 @@ interface BubbleProps {
   position: [number, number, number];
   onClick: () => void;
   Icon: React.ComponentType;
-  content: string;
+  content?: string;
+  variant?:
+    | "default"
+    | "add"
+    | "link"
+    | "analytics"
+    | "reset"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "header"
+    | "timerGhost"
+    | null
+    | undefined;
 }
 
 const Bubble: React.FC<BubbleProps> = ({
@@ -14,13 +27,14 @@ const Bubble: React.FC<BubbleProps> = ({
   onClick,
   Icon,
   content,
+  variant,
 }) => {
   const [hovered, setHovered] = useState(false);
 
   return (
     <Html position={position} center>
       <Button
-        variant="default"
+        variant={variant}
         color={hovered ? "primary" : "secondary"}
         onClick={onClick}
         onMouseEnter={() => setHovered(true)}
