@@ -118,7 +118,7 @@ const GamePage: React.FC<GamePageProps> = ({
             setFishPosition={setFishPosition}
           />
         ))}
-        <FishModel position={[0, -5, 0]} />
+        <FishModel position={[0, -10, 0]} />
         {fishPosition && (
           <FishModel
             position={[fishPosition.x, fishPosition.y, fishPosition.z]}
