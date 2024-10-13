@@ -7,6 +7,7 @@ import FishModel from "./FishModel";
 import Sign from "./Sign";
 import SignInstructions from "./SignInstructions";
 import FishesCountFetcher from "../../utils/FishesCountFetcher";
+import SnowPenguin from "./snowPenguin";
 
 interface GamePageProps {
   fishesCount: number;
@@ -96,6 +97,8 @@ const GamePage: React.FC<GamePageProps> = ({
         </mesh>
 
         <Sign position={[0, 20, 0]} onClick={handleOpen} />
+
+        <SnowPenguin position={[0, 40, 0]} onClick={handleOpen} />
 
         <SignInstructions
           showInstructions={showInstructions}
