@@ -194,12 +194,7 @@ const LandingPage = () => {
         <OceanModel />
         <Analytics />
         <Snowflakes />
-        {page === null && (
-          <ShowInstructions
-            position={[114, 45, 143]}
-            onClick={handleShowInnitialInstructions}
-          />
-        )}
+        {page === null && <ShowInstructions position={[114, 45, 143]} />}
         <SnowPenguin onClick={handleShowInnitialInstructions} />
         <GamePage
           fishesCount={fishesCount}
