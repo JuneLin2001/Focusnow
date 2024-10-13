@@ -26,6 +26,7 @@ import { Progress } from "@/components/ui/progress";
 import usesettingStore from "@/store/settingStore";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SnowPenguin from "../GamePage/snowPenguin";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -50,6 +51,25 @@ const LandingPage = () => {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(true);
+
+  useEffect(() => {
+    const hasSeenInitialInstructions = localStorage.getItem(
+      "hasSeenInitialInstructions"
+    );
+
+    if (hasSeenInitialInstructions === "true") {
+      setShowInstructions(false);
+    } else {
+      setShowInstructions(true);
+    }
+  }, []);
+
+  const handleCloseInstructions = () => {
+    setShowInstructions(false);
+    localStorage.setItem("hasSeenInitialInstructions", "true");
+    setPage(null);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -100,12 +120,6 @@ const LandingPage = () => {
     }
   }, [user, loadUserSettings]);
 
-  const [showInstructions, setShowInstructions] = useState(true);
-  const handleCloseInstructions = () => {
-    setShowInstructions(false);
-    setPage(null);
-  };
-
   if (loading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center h-screen z-50 bg-black bg-opacity-75">
@@ -119,6 +133,10 @@ const LandingPage = () => {
 
   const handleComplete = () => {
     setIsCompleted(true);
+  };
+
+  const handleShowInnitialInstructions = () => {
+    setShowInstructions(true);
   };
 
   return (
@@ -170,6 +188,7 @@ const LandingPage = () => {
         <OceanModel />
         <Analytics />
         <Snowflakes />
+        <SnowPenguin onClick={handleShowInnitialInstructions} />
         <GamePage
           fishesCount={fishesCount}
           setFishesCount={updateFishesCount}
