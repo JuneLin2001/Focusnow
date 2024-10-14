@@ -7,6 +7,7 @@ import { sendBrowserNotification } from "../utils/NotificationService";
 import { useFishesCountStore } from "./fishesCountStore";
 import FishesCountFetcher from "../utils/FishesCountFetcher";
 import { WorkerResponse } from "../types/type";
+import { toast } from "react-toastify";
 
 interface TimerState {
   secondsLeft: number;
@@ -318,6 +319,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
               .filter((todo) => todo.completed)
               .forEach((todo) => {
                 removeTodo(todo.id);
+                toast.success(`你完成的 「 ${todo.title} 」 已經儲存成功！`);
               });
             localStorage.removeItem("taskData");
 
