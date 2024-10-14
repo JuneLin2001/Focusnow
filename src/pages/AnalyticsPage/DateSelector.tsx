@@ -63,21 +63,23 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   };
 
   return (
-    <div className="flex items-center w-full">
-      <label className="mr-2">篩選方式:</label>
-      <select
-        value={filterType}
-        onChange={(e) =>
-          setFilterType(e.target.value as "daily" | "weekly" | "monthly")
-        }
-        className="border dark:border-2 border-gray-300 bg-white dark:bg-black dark:border-gray-600 text-black dark:text-white rounded p-2 mb-0 w-20"
-      >
-        <option value="daily">每日</option>
-        <option value="weekly">每週</option>
-        <option value="monthly">每月</option>
-      </select>
+    <div className="flex flex-col lg:flex-row lg:items-center w-full space-y-4 lg:space-y-0 lg:space-x-4">
+      <div className="flex w-full lg:w-auto items-center space-x-2">
+        <label className="whitespace-nowrap">篩選方式:</label>
+        <select
+          value={filterType}
+          onChange={(e) =>
+            setFilterType(e.target.value as "daily" | "weekly" | "monthly")
+          }
+          className="border dark:border-2 border-gray-300 bg-white dark:bg-black dark:border-gray-600 text-black dark:text-white rounded p-2 w-28"
+        >
+          <option value="daily">每日</option>
+          <option value="weekly">每週</option>
+          <option value="monthly">每月</option>
+        </select>
+      </div>
 
-      <div className="flex items-center space-x-2 ml-4">
+      <div className="flex w-full lg:w-auto items-center space-x-2">
         <Button variant="analytics" onClick={handlePrev}>
           <ChevronLeft />
         </Button>
