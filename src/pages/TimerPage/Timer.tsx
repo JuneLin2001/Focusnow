@@ -15,6 +15,7 @@ import {
   Plus,
   Minus,
   Settings,
+  X,
 } from "lucide-react";
 import settingStore from "../../store/settingStore";
 import { Card } from "@/components/ui/card";
@@ -23,9 +24,20 @@ import TimerDisplay from "./TimerDisplay";
 interface TimerProps {
   toggleSidebar: () => void;
   isOpen: boolean;
+  page: string | null;
+  setPage: (newPage: "timer" | "analytics" | "Setting" | null) => void;
+  setTargetPosition: (position: [number, number, number]) => void;
+  setLookAtPosition: (position: [number, number, number]) => void;
 }
 
-const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
+const Timer: React.FC<TimerProps> = ({
+  toggleSidebar,
+  isOpen,
+  page,
+  setPage,
+  setTargetPosition,
+  setLookAtPosition,
+}) => {
   const {
     secondsLeft,
     isPaused,
@@ -85,6 +97,12 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
     setOpenSettingsDialog(false);
   };
 
+  const handleCloseTimerPage = () => {
+    setPage(null);
+    setTargetPosition([-250, 60, 10]);
+    setLookAtPosition([0, 0, 0]);
+  };
+
   const pathColor =
     mode === "work"
       ? themeMode === "dark"
@@ -97,7 +115,17 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
   return (
     <div className="w-screen h-screen flex justify-center items-center">
       <Card className="z-30 bg-white bg-opacity-60 w-[500px] h-[500px] flex flex-col justify-center items-center bg-cover bg-center relative">
-        <div className="absolute top-2 right-2">
+        <div className="absolute top-4 right-4">
+          <Button
+            variant="timerGhost"
+            size="icon"
+            onClick={handleCloseTimerPage}
+          >
+            <X />
+          </Button>
+        </div>
+
+        <div className="absolute top-4 left-4">
           <Button
             variant="timerGhost"
             size="icon"
@@ -105,7 +133,7 @@ const Timer: React.FC<TimerProps> = ({ toggleSidebar, isOpen }) => {
           >
             <Settings />
           </Button>{" "}
-          <TimerDisplay page={"timer"} />
+          <TimerDisplay page={page} />
         </div>
 
         <div className="absolute top-[50%] right-2">

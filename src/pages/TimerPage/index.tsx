@@ -3,7 +3,19 @@ import Timer from "./Timer.js";
 import TodoList from "./TodoList.js";
 import TimerDisplay from "./TimerDisplay";
 
-const TimerPage = () => {
+interface TimerPageProps {
+  page: string | null;
+  setPage: (newPage: "timer" | "analytics" | "Setting" | null) => void;
+  setTargetPosition: (position: [number, number, number]) => void;
+  setLookAtPosition: (position: [number, number, number]) => void;
+}
+
+const TimerPage: React.FC<TimerPageProps> = ({
+  page,
+  setPage,
+  setTargetPosition,
+  setLookAtPosition,
+}) => {
   const [showInstructions, setShowInstructions] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -25,7 +37,7 @@ const TimerPage = () => {
 
   return (
     <>
-      <TimerDisplay page={"timer"} />
+      <TimerDisplay page={"Timer"} />
       <div className="z-30 ">
         {showInstructions && (
           <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-40">
@@ -57,7 +69,14 @@ const TimerPage = () => {
             </div>
           </div>
         )}
-        <Timer toggleSidebar={toggleSidebar} isOpen={isOpen} />
+        <Timer
+          toggleSidebar={toggleSidebar}
+          isOpen={isOpen}
+          page={page}
+          setPage={setPage}
+          setTargetPosition={setTargetPosition}
+          setLookAtPosition={setLookAtPosition}
+        />
         <TodoList isOpen={isOpen} />
       </div>
     </>

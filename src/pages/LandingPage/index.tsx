@@ -3,8 +3,8 @@ import { Canvas } from "@react-three/fiber";
 import {
   Environment,
   Sky,
-  GizmoHelper,
-  GizmoViewport,
+  // GizmoHelper,
+  // GizmoViewport,
 } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
@@ -31,7 +31,7 @@ import { Progress } from "@/components/ui/progress";
 import usesettingStore from "@/store/settingStore";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import SnowPenguin from "../GamePage/SnowPenguin";
+import SnowPenguin from "./SnowPenguin";
 import ShowInstructions from "./ShowInstructions";
 
 const LandingPage = () => {
@@ -158,7 +158,14 @@ const LandingPage = () => {
         ""
       ) : (
         <div className="fixed z-10 w-full h-full">
-          {page === "timer" && <TimerPage />}
+          {page === "timer" && (
+            <TimerPage
+              page={"Timer"}
+              setPage={setPage}
+              setTargetPosition={setTargetPosition}
+              setLookAtPosition={setLookAtPosition}
+            />
+          )}
           {page === "analytics" && <AnalyticsPage />}
         </div>
       )}
@@ -230,11 +237,11 @@ const LandingPage = () => {
           lookAtPosition={lookAtPosition}
           isCompleted={isCompleted}
         />
-        <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
+        {/* <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
           <GizmoViewport labelColor="white" axisHeadScale={1} />
-        </GizmoHelper>
+        </GizmoHelper> */}
       </Canvas>
-      {page === null && <TimerDisplay page={page} />}
+      {page === null && <TimerDisplay page={"Timer"} />}
       <ToggleBgm />
       <InitialInstructions
         showInstructions={showInstructions}
