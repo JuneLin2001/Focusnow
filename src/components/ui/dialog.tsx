@@ -62,7 +62,6 @@ const DialogHeader = ({
 );
 DialogHeader.displayName = "DialogHeader";
 
-// DialogFooter 組件定義
 const DialogFooter = ({
   className,
   ...props
@@ -77,7 +76,6 @@ const DialogFooter = ({
 );
 DialogFooter.displayName = "DialogFooter";
 
-// DialogTitle 組件定義
 const DialogTitle = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
@@ -85,7 +83,7 @@ const DialogTitle = React.forwardRef<
   <DialogPrimitive.Title
     ref={ref}
     className={cn(
-      "text-lg font-semibold leading-none tracking-tight dark:text-zinc-50",
+      "text-lg font-semibold leading-none tracking-tight mb-4 dark:text-white",
       className
     )}
     {...props}
@@ -96,7 +94,7 @@ DialogTitle.displayName = DialogPrimitive.Title.displayName;
 const descriptionVariants = cva("text-sm", {
   variants: {
     variant: {
-      default: "text-zinc-500 dark:text-zinc-400",
+      default: "text-zinc-500 dark:text-white",
       sign: "text-md text-black dark:text-white",
       error: "text-red-600 dark:text-red-400",
       success: "text-green-600 dark:text-green-400",
