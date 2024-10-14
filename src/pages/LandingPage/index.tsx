@@ -169,6 +169,7 @@ const LandingPage = () => {
           {page === "analytics" && <AnalyticsPage />}
         </div>
       )}
+
       <ToastContainer
         position="top-center"
         autoClose={5000}

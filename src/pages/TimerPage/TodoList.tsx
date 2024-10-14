@@ -3,6 +3,7 @@ import { useTodoStore } from "../../store/todoStore";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const TodoList = ({ isOpen }: { isOpen: boolean }) => {
   const [newTodoTitle, setNewTodoTitle] = useState<string>("");
@@ -37,7 +38,7 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
       </CardTitle>
 
       <div className="mb-4 flex w-full">
-        <input
+        <Input
           type="text"
           value={newTodoTitle}
           onChange={(e) => setNewTodoTitle(e.target.value)}

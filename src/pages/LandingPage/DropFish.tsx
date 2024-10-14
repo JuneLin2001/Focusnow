@@ -29,7 +29,7 @@ const DropFish: React.FC<DropFishProps> = ({
         onMouseLeave={() => setHovered(false)}
         disabled={fishPosition !== null}
       >
-        <FishSymbol /> {fishesCount}
+        <FishSymbol /> <div className="ml-2">{fishesCount}</div>
       </Button>
     </Html>
   );

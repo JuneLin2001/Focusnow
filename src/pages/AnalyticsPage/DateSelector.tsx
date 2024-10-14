@@ -71,7 +71,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
           onChange={(e) =>
             setFilterType(e.target.value as "daily" | "weekly" | "monthly")
           }
-          className="border dark:border-2 border-gray-300 bg-white dark:bg-black dark:border-gray-600 text-black dark:text-white rounded p-2 w-28"
+          className="w-auto dark:shadow-[4px_4px_4px_rgba(255,255,255,0.2)] bg-white dark:bg-black dark:border-gray-600 text-black dark:text-white rounded p-2"
         >
           <option value="daily">每日</option>
           <option value="weekly">每週</option>

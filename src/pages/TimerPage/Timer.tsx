@@ -138,7 +138,7 @@ const Timer: React.FC<TimerProps> = ({
           <TimerDisplay page={page} />
         </div>
 
-        <div className="absolute top-4 right-[50%] lg:top-[50%] lg:right-2 z-40">
+        <div className="absolute top-2 right-1/2 lg:top-[50%] lg:right-2 z-40">
           <Button
             className="transition-transform "
             variant="timerGhost"

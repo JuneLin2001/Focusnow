@@ -9,6 +9,7 @@ import settingStore from "../../store/settingStore";
 import { Button } from "@/components/ui/button";
 import { PictureInPicture } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { toast } from "react-toastify";
 
 interface TimerDisplayProps {
   page: string | null;
@@ -97,7 +98,12 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
   }, [themeMode, secondsLeft, percentage, pathColor]);
 
   const enterPiP = useCallback(async () => {
-    if (!document.pictureInPictureEnabled || isPipActive) {
+    if (!document.pictureInPictureEnabled) {
+      toast.error("您的瀏覽器不支援進入 Picture-in-Picture 模式");
+      return;
+    }
+
+    if (isPipActive) {
       return;
     }
 
@@ -219,12 +225,7 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
 
       <div className="fixed ">
         {!isPipActive ? (
-          <Button
-            variant="timerGhost"
-            size="icon"
-            onClick={enterPiP}
-            disabled={!isPiPSupported}
-          >
+          <Button variant="timerGhost" size="icon" onClick={enterPiP}>
             <PictureInPicture />
           </Button>
         ) : (

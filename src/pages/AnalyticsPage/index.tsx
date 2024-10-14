@@ -8,9 +8,8 @@ import AnalyticsFetcher from "../../utils/AnalyticsFetcher";
 import PomodoroPieChart from "./PomodoroPieChart";
 import ChartDisplay from "./ChartDisplay";
 import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ChartPie, ChartColumn, ListChecks } from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const AnalyticsPage = () => {
   const { filteredAnalytics, setFilteredAnalytics } = useAnalyticsStore();
@@ -80,33 +79,38 @@ const AnalyticsPage = () => {
               setCurrentDate={setCurrentDate}
             />
             <div className="my-4 lg:hidden ">
-              <RadioGroup
+              <ToggleGroup
+                type="single"
                 defaultValue="pie"
                 onValueChange={(value) =>
                   setSelectedCard(value as "pie" | "chart" | "todos")
                 }
+                className="flex flex-row space-x-4 justify-between"
               >
-                <div className="flex flex-row space-x-4 justify-between ">
-                  <div className="flex items-center space-x-2 ">
-                    <RadioGroupItem value="pie" id="pie" />
-                    <Label htmlFor="pie">
-                      <ChartPie />
-                    </Label>
-                  </div>
+                <ToggleGroupItem value="pie" aria-label="Toggle pie chart">
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="chart" id="chart" />
-                    <Label htmlFor="chart">
-                      <ChartColumn />
-                    </Label>
+                    <ChartPie />
+                    <span>完成率</span>
                   </div>
+                </ToggleGroupItem>
+
+                <ToggleGroupItem value="chart" aria-label="Toggle bar chart">
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="todos" id="todos" />
-                    <Label htmlFor="todos">
-                      <ListChecks />
-                    </Label>
+                    <ChartColumn />
+                    <span>時間分析</span>
                   </div>
-                </div>
-              </RadioGroup>
+                </ToggleGroupItem>
+
+                <ToggleGroupItem
+                  value="todos"
+                  aria-label="Toggle completed todos"
+                >
+                  <div className="flex items-center space-x-2">
+                    <ListChecks />
+                    <span>完成的Todos</span>
+                  </div>
+                </ToggleGroupItem>
+              </ToggleGroup>
             </div>
           </Card>
 
