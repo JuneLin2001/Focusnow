@@ -12,6 +12,8 @@ import SettingsDialog from "../../components/SettingsDialog";
 import {
   ChevronsLeft,
   ChevronsRight,
+  ChevronsUp,
+  ChevronsDown,
   Plus,
   Minus,
   Settings,
@@ -136,97 +138,111 @@ const Timer: React.FC<TimerProps> = ({
           <TimerDisplay page={page} />
         </div>
 
-        <div className="absolute top-[50%] right-2">
+        <div className="absolute top-4 right-[50%] lg:top-[50%] lg:right-2 z-40">
           <Button
-            className="transition-transform"
+            className="transition-transform "
             variant="timerGhost"
             size="icon"
             onClick={toggleSidebar}
           >
-            {isOpen ? <ChevronsRight /> : <ChevronsLeft />}
+            {isOpen ? (
+              <>
+                <ChevronsRight className="hidden lg:block" />
+                <ChevronsDown className="block lg:hidden" />
+              </>
+            ) : (
+              <>
+                <ChevronsLeft className="hidden lg:block" />
+                <ChevronsUp className="block lg:hidden" />
+              </>
+            )}{" "}
           </Button>
         </div>
-        <CircularProgressbarWithChildren
-          value={
-            mode === "work"
-              ? (secondsLeft / (inputMinutes * 60)) * 100
-              : (secondsLeft / (breakMinutes * 60)) * 100
-          }
-          styles={buildStyles({
-            textColor: themeMode === "dark" ? "#e5e7eb" : "#000",
-            pathColor: pathColor,
-            trailColor: "#d6d6d6",
-          })}
+        <div
+          className={`transition-all duration-500 ease-in-out transform ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
         >
-          <div className="flex flex-col justify-center items-center h-full w-full">
-            <SettingsDialog
-              onClose={handleCloseSettingsDialog}
-              open={openSettingsDialog}
-              isPaused={isPaused}
-            />
-            <div
-              className={`flex items-center ${isPaused ? "w-5/6 justify-between" : "w-full justify-center"}`}
-            >
-              {isPaused && (
-                <Button
-                  variant="timerGhost"
-                  size="timerGhost"
-                  onClick={minusFiveMinutes}
-                  disabled={!isPaused}
-                >
-                  <Minus />
-                </Button>
-              )}
-              <div className="flex items-center justify-center">
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={`${Math.floor(secondsLeft / 60)}`}
-                    onChange={handleInputChange}
+          <CircularProgressbarWithChildren
+            value={
+              mode === "work"
+                ? (secondsLeft / (inputMinutes * 60)) * 100
+                : (secondsLeft / (breakMinutes * 60)) * 100
+            }
+            styles={buildStyles({
+              textColor: themeMode === "dark" ? "#e5e7eb" : "#000",
+              pathColor: pathColor,
+              trailColor: "#d6d6d6",
+            })}
+          >
+            <div className="flex flex-col justify-center items-center h-full w-full">
+              <SettingsDialog
+                onClose={handleCloseSettingsDialog}
+                open={openSettingsDialog}
+                isPaused={isPaused}
+              />
+              <div
+                className={`flex items-center ${isPaused ? "w-5/6 justify-between" : "w-full justify-center"}`}
+              >
+                {isPaused && (
+                  <Button
+                    variant="timerGhost"
+                    size="timerGhost"
+                    onClick={minusFiveMinutes}
                     disabled={!isPaused}
-                    className="text-5xl border-4 border-black w-24 bg-transparent focus:outline-none text-center dark:text-gray-200"
-                    onBlur={handleInputBlur}
-                  />
-                ) : (
-                  <div
-                    className="text-5xl cursor-pointer"
-                    onClick={handleInputClick}
                   >
-                    {`${Math.floor(secondsLeft / 60)}:${
-                      secondsLeft % 60 < 10
-                        ? "0" + (secondsLeft % 60)
-                        : secondsLeft % 60
-                    }`}
-                  </div>
+                    <Minus />
+                  </Button>
+                )}
+                <div className="flex items-center justify-center">
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={`${Math.floor(secondsLeft / 60)}`}
+                      onChange={handleInputChange}
+                      disabled={!isPaused}
+                      className="text-5xl border-4 border-black w-24 bg-transparent focus:outline-none text-center dark:text-gray-200"
+                      onBlur={handleInputBlur}
+                    />
+                  ) : (
+                    <div
+                      className="text-5xl cursor-pointer"
+                      onClick={handleInputClick}
+                    >
+                      {`${Math.floor(secondsLeft / 60)}:${
+                        secondsLeft % 60 < 10
+                          ? "0" + (secondsLeft % 60)
+                          : secondsLeft % 60
+                      }`}
+                    </div>
+                  )}
+                </div>
+                {isPaused && (
+                  <Button
+                    variant="timerGhost"
+                    size="timerGhost"
+                    onClick={addFiveMinutes}
+                    disabled={!isPaused}
+                  >
+                    <Plus />
+                  </Button>
                 )}
               </div>
-              {isPaused && (
-                <Button
-                  variant="timerGhost"
-                  size="timerGhost"
-                  onClick={addFiveMinutes}
-                  disabled={!isPaused}
-                >
-                  <Plus />
-                </Button>
-              )}
             </div>
+          </CircularProgressbarWithChildren>
+          <div className="mt-5 flex justify-center">
+            {isPaused ? (
+              <Button variant="default" onClick={handleStartTimer}>
+                開始
+              </Button>
+            ) : mode === "break" ? (
+              <Button variant="reset" onClick={resetTimer}>
+                跳過休息
+              </Button>
+            ) : (
+              <Button variant="reset" onClick={resetTimer}>
+                放棄
+              </Button>
+            )}
           </div>
-        </CircularProgressbarWithChildren>
-        <div className="mt-5 flex justify-center">
-          {isPaused ? (
-            <Button variant="default" onClick={handleStartTimer}>
-              開始
-            </Button>
-          ) : mode === "break" ? (
-            <Button variant="reset" onClick={resetTimer}>
-              跳過休息
-            </Button>
-          ) : (
-            <Button variant="reset" onClick={resetTimer}>
-              放棄
-            </Button>
-          )}
         </div>
         {showLoginButton && (
           <div className="flex justify-center items-center bg-gray-800 bg-opacity-50 fixed inset-0">

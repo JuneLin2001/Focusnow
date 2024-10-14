@@ -24,11 +24,13 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
 
   return (
     <Card
-      className={`fixed top-1/2 left-1/2 h-[500px] w-[300px] z-30 flex flex-col p-5 transition-all duration-500 ease-in-out transform ${
-        isOpen
-          ? "sm:translate-x-[-50px] z-0 shadow-none opacity-0"
-          : "sm:translate-x-[250px] opacity-100"
-      } -translate-y-[250px]`}
+      className={`fixed top-1/2 left-1/2 h-[450px] lg:h-[500px] w-[500px] lg:w-[300px] flex flex-col p-5 transition-all duration-500 ease-in-out transform z-30
+    ${
+      isOpen
+        ? "translate-y-[-1050px] lg:translate-x-[-250px] lg:translate-y-[-50%] opacity-0"
+        : "translate-y-[-200px] lg:translate-x-[250px] lg:translate-y-[-50%] opacity-100"
+    }
+    translate-x-[-50%]`}
     >
       <CardTitle className="text-xl mb-4 text-gray-800 dark:text-white">
         Todo List
