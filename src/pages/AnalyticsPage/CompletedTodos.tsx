@@ -2,6 +2,7 @@ import React from "react";
 import { UserAnalytics } from "../../types/type";
 import dayjs from "dayjs";
 import { Card } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface CompletedTodosProps {
   filteredAnalytics: UserAnalytics[];
@@ -25,8 +26,8 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
         </h2>
       )}
       {/* TODO:不要寫死55vh */}
-      <div
-        className={`${hasData ? "max-h-[55vh]" : "max-h-screen"} h-full overflow-y-auto`}
+      <ScrollArea
+        className={`${hasData ? "max-h-[55vh]" : "max-h-screen"} h-full`}
       >
         {hasData ? (
           <>
@@ -69,7 +70,7 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
             <p className="text-gray-500 dark:text-gray-200">沒有完成的 Todos</p>
           </div>
         )}
-      </div>
+      </ScrollArea>
     </>
   );
 };

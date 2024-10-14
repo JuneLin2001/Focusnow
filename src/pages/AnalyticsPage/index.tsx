@@ -63,7 +63,8 @@ const AnalyticsPage = () => {
   );
 
   return (
-    <div className="flex justify-center items-start h-full box-border mt-20">
+    <div className="flex justify-center items-start h-full box-border mt-20 overflow-auto">
+      {" "}
       <Card className="box-border w-full h-full bg-gray-200 bg-opacity-50 p-4 mx-4 max-h-[calc(100vh-100px)]">
         <div className="flex flex-col h-full">
           <Card className="p-4">
@@ -74,8 +75,8 @@ const AnalyticsPage = () => {
               setCurrentDate={setCurrentDate}
             />
           </Card>
-          <div className="flex flex-grow flex-wrap justify-between mt-1">
-            <Card className="flex-[2] m-2 p-4 h-auto ">
+          <div className="flex flex-col lg:flex-row flex-grow flex-wrap justify-between mt-1 space-y-4 lg:space-y-0 lg:space-x-4">
+            <Card className="flex-[2] m-2 p-4 h-auto w-auto">
               <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
             </Card>
             <Card className="flex-[4] m-2 p-4 h-auto">
