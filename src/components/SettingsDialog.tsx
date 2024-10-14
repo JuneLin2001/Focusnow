@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import useSettingStore from "../store/settingStore";
 import { useTimerStore } from "../store/timerStore";
+import { DualRangeSlider } from "@/components/ui/dual-range-slider";
 
 interface SettingsDialogProps {
   open: boolean;
@@ -20,7 +21,7 @@ const musicOptions = [
   {
     value:
       "/yt5s.io - 大自然的白噪音 1小時｜森林鳥鳴聲，身心放鬆，平靜學習輔助 (320 kbps).mp3",
-    label: "大自然的白噪音",
+    label: "【白噪音】大自然",
   },
   {
     value:
@@ -57,29 +58,16 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
     toggleBgm();
   };
 
-  const handleBreakTimeChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    let value = parseInt(event.target.value);
-
-    if (isNaN(value)) {
-      value = 1;
-    } else if (value < 1) {
-      value = 1;
-    } else if (value > 120) {
-      value = 120;
-    }
-
-    setBreakTime(value);
-    setBreakMinutes(value);
+  const handleSliderChange = (value: number[]) => {
+    setBreakTime(value[0]);
+    setBreakMinutes(value[0]);
   };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogTrigger asChild></DialogTrigger>
       <DialogContent>
-        <DialogTitle className="sr-only">設定</DialogTitle>
-        <h3 className="text-lg font-medium">設定</h3>
+        <DialogTitle>設定</DialogTitle>
         <Label>選擇播放的背景音樂：</Label>
         <RadioGroup value={selectedMusic} onValueChange={handleMusicChange}>
           {musicOptions.map((music) => (
@@ -90,17 +78,18 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
           ))}
         </RadioGroup>
         <Label className="mt-4">
-          設定休息時間（分鐘）：
-          {
-            <input
-              type="text"
-              value={breakTime}
-              onChange={handleBreakTimeChange}
-              className="border border-gray-300 rounded p-2 mt-2"
-              disabled={!isPaused}
-            />
-          }
+          {isPaused
+            ? `設定休息時間為 ${breakTime} 分鐘`
+            : `現在的休息時間為 ${breakTime} 分鐘，專注狀態時不可編輯`}
         </Label>
+        <DualRangeSlider
+          value={[breakTime]}
+          onValueChange={handleSliderChange}
+          min={1}
+          max={120}
+          step={1}
+          disabled={!isPaused}
+        />
       </DialogContent>
     </Dialog>
   );
