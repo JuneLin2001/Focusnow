@@ -27,7 +27,7 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
       )}
       {/* TODO:不要寫死55vh */}
       <ScrollArea
-        className={`${hasData ? "max-h-[55vh]" : "max-h-screen"} h-full`}
+        className={`${hasData ? "lg:max-h-[55vh] max-h-[35vh]" : "max-h-screen"} h-full`}
       >
         {hasData ? (
           <>

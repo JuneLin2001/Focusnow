@@ -64,7 +64,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
 
   return (
     <div className="flex flex-col lg:flex-row lg:items-center w-full space-y-4 lg:space-y-0 lg:space-x-4">
-      <div className="flex w-full lg:w-auto items-center space-x-2">
+      <div className="flex justify-center w-full lg:w-auto items-center space-x-2">
         <label className="whitespace-nowrap">篩選方式:</label>
         <select
           value={filterType}
@@ -79,7 +79,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
         </select>
       </div>
 
-      <div className="flex w-full lg:w-auto items-center space-x-2">
+      <div className="flex justify-center  w-full lg:w-auto items-center space-x-2">
         <Button variant="analytics" onClick={handlePrev}>
           <ChevronLeft />
         </Button>
