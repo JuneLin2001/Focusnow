@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import TimerPage from "./pages/TimerPage";
+// import TimerPage from "./pages/TimerPage";
 // import GamePage from "./pages/GamePage";
 import AanalyticsPage from "./pages/AnalyticsPage";
 // import Sidebar from "./components/Sidebar";
@@ -43,7 +43,7 @@ const App: React.FC = () => {
           }
         />
         <Route path="/analytics" element={<AanalyticsPage />} />
-        <Route path="/timer" element={<TimerPage />} />
+        {/* <Route path="/timer" element={<TimerPage />} /> */}
         <Route path="/*" element={<Bounce />} />
       </Routes>
       {/* </ThemeProvider> */}
