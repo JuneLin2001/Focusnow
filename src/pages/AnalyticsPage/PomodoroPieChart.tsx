@@ -42,7 +42,7 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
         label: "數量",
         data: [completedCount, totalCount - completedCount],
         backgroundColor: isDarkMode
-          ? ["#1a7f7f4e", "#992b454e"]
+          ? ["#4bc0c088", "#ff638588"]
           : ["#4bc0c088", "#ff638588"],
       },
     ],
