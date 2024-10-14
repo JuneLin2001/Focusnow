@@ -53,11 +53,19 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   };
 
   const handleNext = () => {
-    if (filterType === "daily") {
+    const today = dayjs();
+
+    if (filterType === "daily" && currentDate.add(1, "day").isBefore(today)) {
       setCurrentDate(currentDate.add(1, "day"));
-    } else if (filterType === "weekly") {
+    } else if (
+      filterType === "weekly" &&
+      currentDate.add(1, "week").isBefore(today)
+    ) {
       setCurrentDate(currentDate.add(1, "week"));
-    } else if (filterType === "monthly") {
+    } else if (
+      filterType === "monthly" &&
+      currentDate.add(1, "month").isBefore(today)
+    ) {
       setCurrentDate(currentDate.add(1, "month"));
     }
   };
@@ -80,7 +88,11 @@ const DateSelector: React.FC<DateSelectorProps> = ({
       </div>
 
       <div className="flex justify-center  w-full lg:w-auto items-center space-x-2">
-        <Button variant="analytics" onClick={handlePrev}>
+        <Button
+          variant="analytics"
+          onClick={handlePrev}
+          disabled={currentDate.isSame(new Date("1900-01-01"))}
+        >
           <ChevronLeft />
         </Button>
         <Popover open={isCalendarOpen} onOpenChange={setCalendarOpen}>
@@ -105,7 +117,11 @@ const DateSelector: React.FC<DateSelectorProps> = ({
             />
           </PopoverContent>
         </Popover>
-        <Button variant="analytics" onClick={handleNext}>
+        <Button
+          variant="analytics"
+          onClick={handleNext}
+          disabled={currentDate.isSame(new Date())}
+        >
           <ChevronRight />
         </Button>
       </div>

@@ -41,7 +41,7 @@ const Bubble: React.FC<BubbleProps> = ({
         onMouseLeave={() => setHovered(false)}
       >
         <Icon />
-        <div className="ml-2">{content}</div>
+        <div className="ml-2 leading-[24px]">{content}</div>
       </Button>
     </Html>
   );

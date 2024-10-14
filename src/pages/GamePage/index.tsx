@@ -7,6 +7,8 @@ import FishModel from "./FishModel";
 import Sign from "./Sign";
 import SignInstructions from "./SignInstructions";
 import FishesCountFetcher from "../../utils/FishesCountFetcher";
+import useAuthStore from "../../store/authStore";
+import { toast } from "react-toastify";
 interface GamePageProps {
   fishesCount: number;
   setFishesCount: (count: number) => void;
@@ -28,6 +30,7 @@ const GamePage: React.FC<GamePageProps> = ({
   const [last30DaysFocusDuration, setLast30DaysFocusDuration] =
     useState<number>(0);
   const [showInstructions, setShowInstructions] = useState(false);
+  const { user } = useAuthStore();
 
   const width = 190;
   const depth = 240;
@@ -71,15 +74,21 @@ const GamePage: React.FC<GamePageProps> = ({
   }, [analyticsList]);
 
   const handleOpen = () => {
-    setShowInstructions(true);
-    setPage("Setting");
-    console.log(pages);
+    if (!user) {
+      toast.error("登入以查看場景資訊");
+    } else {
+      setShowInstructions(true);
+      setPage("Setting");
+      console.log(pages);
+    }
   };
 
   const handleClose = () => {
     setShowInstructions(false);
     setPage(null);
   };
+
+  const penguinCount = filteredAnalytics.length;
 
   return (
     <>
@@ -100,6 +109,7 @@ const GamePage: React.FC<GamePageProps> = ({
           showInstructions={showInstructions}
           last30DaysFocusDuration={last30DaysFocusDuration}
           onClose={handleClose}
+          howManyPenguinYouHave={penguinCount}
         />
 
         {penguinDatas.map((penguinData, index: number) => (

@@ -44,6 +44,7 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
         backgroundColor: isDarkMode
           ? ["#4bc0c088", "#ff638588"]
           : ["#4bc0c088", "#ff638588"],
+        borderWidth: 0,
       },
     ],
   };

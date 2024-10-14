@@ -71,7 +71,7 @@ const AnalyticsPage = () => {
     <div className="flex justify-center items-start h-full box-border mt-20 overflow-auto">
       <Card className="box-border w-full h-full bg-gray-200 bg-opacity-50 p-4 mx-4 max-h-[calc(100vh-100px)]">
         <div className="flex flex-col h-full">
-          <Card className="p-4">
+          <Card className="p-4  mb-2">
             <DateSelector
               filterType={filterType}
               setFilterType={setFilterType}
@@ -116,12 +116,12 @@ const AnalyticsPage = () => {
 
           <div className=" flex lg:hidden flex-grow flex-wrap justify-between mt-1 space-y-4 lg:space-y-0 lg:space-x-4">
             {selectedCard === "pie" && (
-              <Card className="flex-[2] m-2 p-4 h-auto w-auto">
+              <Card className="flex-[2] p-4 h-auto w-auto">
                 <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
               </Card>
             )}
             {selectedCard === "chart" && (
-              <Card className="flex-[4] m-2 p-4 h-auto">
+              <Card className="flex-[4] p-4 h-auto">
                 <ChartDisplay
                   filteredAnalytics={filteredAnalytics}
                   filterType={filterType}
@@ -131,17 +131,17 @@ const AnalyticsPage = () => {
               </Card>
             )}
             {selectedCard === "todos" && (
-              <Card className="flex-[1] m-2 p-4 h-auto">
+              <Card className="flex-[1] p-4 h-auto">
                 <CompletedTodos filteredAnalytics={filteredAnalytics} />
               </Card>
             )}
           </div>
           <div>
-            <div className="hidden lg:flex flex-grow flex-wrap justify-between">
-              <Card className="flex-[2] m-2 p-4 h-auto">
+            <div className="hidden lg:flex flex-grow flex-wrap justify-between gap-2">
+              <Card className="flex-[2]  p-4 h-auto">
                 <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
               </Card>
-              <Card className="flex-[4] m-2 p-4 h-auto">
+              <Card className="flex-[4]  p-4 h-auto">
                 <ChartDisplay
                   filteredAnalytics={filteredAnalytics}
                   filterType={filterType}
@@ -149,7 +149,7 @@ const AnalyticsPage = () => {
                   currentDate={currentDate}
                 />
               </Card>
-              <Card className="flex-[1] m-2 p-4 h-auto">
+              <Card className="flex-[1]  p-4 h-auto">
                 <CompletedTodos filteredAnalytics={filteredAnalytics} />
               </Card>
             </div>
