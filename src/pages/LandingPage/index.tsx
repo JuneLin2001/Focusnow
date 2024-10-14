@@ -31,7 +31,7 @@ import { Progress } from "@/components/ui/progress";
 import usesettingStore from "@/store/settingStore";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import SnowPenguin from "../GamePage/snowPenguin";
+import SnowPenguin from "../GamePage/SnowPenguin";
 import ShowInstructions from "./ShowInstructions";
 
 const LandingPage = () => {
