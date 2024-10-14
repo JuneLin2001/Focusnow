@@ -44,7 +44,7 @@ const TimerPage: React.FC<TimerPageProps> = ({
             <div className="bg-white p-5 rounded shadow-lg">
               <h2 className="text-xl mb-4">操作說明</h2>
               <p className="mb-4">
-                歡迎使用計時器和待辦事項清單！以下是一些操作說明：
+                歡迎使用計時器和Todo List！以下是一些操作說明：
               </p>
               <ul className="list-disc ml-5 mb-4">
                 <li>您可以設定計時器的分鐘數，預設為 25 分鐘。</li>
@@ -56,7 +56,7 @@ const TimerPage: React.FC<TimerPageProps> = ({
                 <li>您可以在完成後重置計時器或繼續添加新任務。</li>
               </ul>
               <p className="mb-4">
-                請記得在計時器運行時，不要忘記完成您的待辦事項哦！
+                請記得在計時器運行時，不要忘記完成您的Todos哦！
               </p>
               <div className="flex justify-center">
                 <button

@@ -84,7 +84,7 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
             </li>
           ))
         ) : (
-          <li className="dark:text-gray-200 text-center">沒有待辦事項</li>
+          <li className="dark:text-gray-200 text-center">沒有Todos</li>
         )}
       </ul>
     </Card>
