@@ -106,6 +106,20 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
 
   const hasData = totalFocusDuration > 0;
 
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    };
+
+    checkDarkMode();
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, { attributes: true });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="text-center h-full flex flex-col justify-between">
       {hasData && (
@@ -113,29 +127,46 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
           總專注時長: {totalFocusDuration} 分鐘
         </h2>
       )}
-      <div className="flex flex-grow justify-center items-center">
+      <div className="flex flex-grow justify-center items-center ">
         {hasData ? (
           <Bar
             data={chartData}
             options={{
               responsive: true,
+              color: isDarkMode ? "white" : "black",
+              scales: {
+                x: {
+                  ticks: {
+                    color: isDarkMode ? "white" : "black",
+                  },
+                  grid: {
+                    color: isDarkMode
+                      ? "rgba(255, 255, 255, 0.2)"
+                      : "rgba(0, 0, 0, 0.1)",
+                  },
+                },
+                y: {
+                  ticks: {
+                    color: isDarkMode ? "white" : "black",
+                  },
+                  grid: {
+                    color: isDarkMode
+                      ? "rgba(255, 255, 255, 0.2)"
+                      : "rgba(0, 0, 0, 0.1)",
+                  },
+                },
+              },
               plugins: {
-                legend: { position: "top" },
-                title: {
-                  display: true,
-                  text: `專注時長（${
-                    filterType === "daily"
-                      ? "每日"
-                      : filterType === "weekly"
-                        ? "每週"
-                        : "每月"
-                  }）`,
+                legend: {
+                  labels: {
+                    color: isDarkMode ? "white" : "black",
+                  },
                 },
               },
             }}
           />
         ) : (
-          <p className="text-gray-500">沒有資料</p>
+          <p className="text-gray-500 dark:text-gray-200">沒有資料</p>
         )}
       </div>
     </div>

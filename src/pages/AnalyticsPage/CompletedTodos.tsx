@@ -66,7 +66,7 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
           </>
         ) : (
           <div className="w-full h-full flex justify-center items-center">
-            <p className="text-gray-500">沒有完成的 Todos</p>
+            <p className="text-gray-500 dark:text-gray-200">沒有完成的 Todos</p>
           </div>
         )}
       </div>

@@ -76,7 +76,7 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
         {hasData ? (
           <Pie data={data} options={options} />
         ) : (
-          <p className="text-gray-500">沒有資料</p>
+          <p className="text-gray-500 dark:text-gray-200">沒有資料</p>
         )}
       </div>
     </div>
