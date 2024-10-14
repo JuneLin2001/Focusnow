@@ -12,12 +12,14 @@ interface SignInstructionsProps {
   showInstructions: boolean;
   last30DaysFocusDuration: number;
   onClose: () => void;
+  howManyPenguinYouHave: number;
 }
 
 const SignInstructions: React.FC<SignInstructionsProps> = ({
   showInstructions,
   last30DaysFocusDuration,
   onClose,
+  howManyPenguinYouHave,
 }) => {
   return (
     <Html>
@@ -28,11 +30,13 @@ const SignInstructions: React.FC<SignInstructionsProps> = ({
           </Button>
         </DialogTrigger>
         <DialogContent>
-          <DialogTitle>操作說明</DialogTitle>
+          <DialogTitle>場景資訊</DialogTitle>
           <DialogDescription variant="sign">
-            您過去 30 天的專注時間總和是 {last30DaysFocusDuration} 分鐘。
+            您過去 30 天累積了 {last30DaysFocusDuration} 分鐘的專注時間。
             <br />
-            一次專注超過 15 分鐘，場景中就會多出一隻企鵝！
+            在最近的 30 天中，每當一次專注超過 15 分鐘，場景中就會增加一隻企鵝！
+            <br />
+            目前你的場景中已有 {howManyPenguinYouHave} 隻企鵝。
           </DialogDescription>
         </DialogContent>
       </Dialog>
