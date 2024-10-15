@@ -325,7 +325,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
               });
             localStorage.removeItem("taskData");
 
-            if (inputMinutes >= 15) {
+            if (inputMinutes >= 15 && pomodoroCompleted) {
               toast.success(
                 "恭喜你完成了15分鐘以上的專注！一隻企鵝來到了你的場景，快去看看吧🐧！"
               );
