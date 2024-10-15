@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import dayjs from "dayjs";
 import { UserAnalytics } from "../../types/type";
 import { useAnalyticsStore } from "../../store/analyticsStore";
@@ -13,6 +13,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const AnalyticsPage = () => {
   const { filteredAnalytics, setFilteredAnalytics } = useAnalyticsStore();
+  const [analyticsData, setAnalyticsData] = useState<UserAnalytics[]>([]);
   const [filterType, setFilterType] = useState<"daily" | "weekly" | "monthly">(
     "daily"
   );
@@ -26,30 +27,43 @@ const AnalyticsPage = () => {
     let start = dayjs();
     let end = dayjs();
 
-    if (filterType === "daily") {
-      start = currentDate.startOf("day");
-      end = currentDate.endOf("day");
-    } else if (filterType === "weekly") {
-      start = currentDate.startOf("week");
-      end = currentDate.endOf("week");
-    } else if (filterType === "monthly") {
-      start = currentDate.startOf("month");
-      end = currentDate.endOf("month");
+    switch (filterType) {
+      case "daily":
+        start = currentDate.startOf("day");
+        end = currentDate.endOf("day");
+        break;
+      case "weekly":
+        start = currentDate.startOf("week");
+        end = currentDate.endOf("week");
+        break;
+      case "monthly":
+        start = currentDate.startOf("month");
+        end = currentDate.endOf("month");
+        break;
+      default:
+        break;
     }
 
     return { start, end };
   }, [filterType, currentDate]);
 
-  const handleDataFetched = useCallback(
+  const filterAnalytics = useCallback(
     (sortedAnalytics: UserAnalytics[]) => {
       const { start, end } = calculateDateRange();
+      console.log(
+        "Current Date Range:",
+        start.format("YYYY-MM-DD"),
+        "to",
+        end.format("YYYY-MM-DD")
+      );
 
       const filteredAllData = sortedAnalytics.filter((analytics) => {
         const analyticsDate = dayjs.unix(analytics.startTime.seconds);
         return (
           analyticsDate.isSame(start, "day") ||
           analyticsDate.isSame(end, "day") ||
-          (analyticsDate.isAfter(start) && analyticsDate.isBefore(end))
+          (analyticsDate.isAfter(start, "day") &&
+            analyticsDate.isBefore(end, "day"))
         );
       });
 
@@ -67,11 +81,25 @@ const AnalyticsPage = () => {
     [calculateDateRange, setFilteredAnalytics]
   );
 
+  const handleDataFetched = useCallback(
+    (sortedAnalytics: UserAnalytics[]) => {
+      setAnalyticsData(sortedAnalytics);
+      filterAnalytics(sortedAnalytics);
+    },
+    [filterAnalytics]
+  );
+
+  useEffect(() => {
+    if (analyticsData.length > 0) {
+      filterAnalytics(analyticsData);
+    }
+  }, [filterType, currentDate, analyticsData, filterAnalytics]);
+
   return (
     <div className="flex justify-center items-start h-full box-border mt-20 overflow-auto">
       <Card className="box-border w-full h-full bg-gray-200 bg-opacity-50 p-4 mx-4 max-h-[calc(100vh-100px)]">
         <div className="flex flex-col h-full">
-          <Card className="p-4  mb-2">
+          <Card className="p-4 mb-2">
             <DateSelector
               filterType={filterType}
               setFilterType={setFilterType}
@@ -114,7 +142,7 @@ const AnalyticsPage = () => {
             </div>
           </Card>
 
-          <div className=" flex lg:hidden flex-grow flex-wrap justify-between mt-1 space-y-4 lg:space-y-0 lg:space-x-4">
+          <div className="flex lg:hidden flex-grow flex-wrap justify-between mt-1 space-y-4 lg:space-y-0 lg:space-x-4">
             {selectedCard === "pie" && (
               <Card className="flex-[2] p-4 h-auto w-auto">
                 <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
@@ -138,7 +166,6 @@ const AnalyticsPage = () => {
           </div>
           <div>
             <div className="hidden lg:flex flex-grow flex-wrap justify-between gap-2">
-              {/* TODO:不要寫死66vh */}
               <Card className="flex-[2] p-4 h-auto min-h-[66vh]">
                 <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
               </Card>

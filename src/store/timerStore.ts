@@ -35,6 +35,7 @@ interface TimerState {
 }
 
 export const useTimerStore = create<TimerState>((set, get) => {
+  const { FishesCount, updateFishesCount } = useFishesCountStore.getState();
   let worker: Worker | null = null;
 
   const initializeWorker = () => {
@@ -332,8 +333,6 @@ export const useTimerStore = create<TimerState>((set, get) => {
             }
 
             if (pomodoroCompleted) {
-              const { FishesCount, updateFishesCount } =
-                useFishesCountStore.getState();
               updateFishesCount(inputMinutes);
               FishesCountFetcher(user, FishesCount);
             }

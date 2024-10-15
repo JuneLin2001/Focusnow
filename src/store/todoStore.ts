@@ -55,7 +55,7 @@ export const useTodoStore = create<TodoState>((set) => ({
       const updatedTodos = state.todos.map((todo) =>
         todo.id === id ? { ...todo, title: newTitle } : todo
       );
-      saveTodosToLocalStorage(updatedTodos); // 更新 Local Storage
+      saveTodosToLocalStorage(updatedTodos);
       return { todos: updatedTodos };
     });
   },
@@ -70,7 +70,7 @@ export const useTodoStore = create<TodoState>((set) => ({
             }
           : todo
       );
-      saveTodosToLocalStorage(updatedTodos); // 更新 Local Storage
+      saveTodosToLocalStorage(updatedTodos);
       return { todos: updatedTodos };
     });
   },

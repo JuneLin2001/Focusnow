@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import localforage from "localforage";
 import { UserAnalytics } from "../types/type";
 
 interface AnalyticsState {
@@ -10,10 +11,8 @@ interface AnalyticsState {
   setAnalyticsList: (data: UserAnalytics[]) => void;
   setFilteredAnalytics: (data: UserAnalytics[]) => void;
   setTotalFocusDuration: (duration: number) => void;
-  setStartDate: (date: string) => void;
-  setEndDate: (date: string) => void;
-  filterByDate: () => void;
   reset: () => void;
+  loadAnalyticsFromDB: () => Promise<void>;
 }
 
 export const useAnalyticsStore = create<AnalyticsState>((set) => ({
@@ -22,50 +21,35 @@ export const useAnalyticsStore = create<AnalyticsState>((set) => ({
   totalFocusDuration: 0,
   startDate: "",
   endDate: "",
-  setAnalyticsList: (data) => {
-    set({ analyticsList: data, filteredAnalytics: data });
+
+  // 儲存 analytics 到 localForage
+  setAnalyticsList: async (data: UserAnalytics[]) => {
+    try {
+      const existingData =
+        (await localforage.getItem<UserAnalytics[]>("analytics")) || [];
+
+      // 比較新資料和現有資料
+      if (JSON.stringify(existingData) !== JSON.stringify(data)) {
+        await localforage.setItem("analytics", data); // 儲存到 localForage
+        set({ analyticsList: data, filteredAnalytics: data }); // 更新狀態
+        console.log("Data saved to localForage");
+      } else {
+        console.log("No changes detected, state not updated.");
+      }
+    } catch (error) {
+      console.error("Error saving analytics:", error);
+    }
   },
-  setFilteredAnalytics: (data) => {
+
+  setFilteredAnalytics: (data: UserAnalytics[]) => {
     set({ filteredAnalytics: data });
   },
-  setTotalFocusDuration: (duration) => {
+
+  setTotalFocusDuration: (duration: number) => {
     set({ totalFocusDuration: duration });
   },
-  setStartDate: (date) => {
-    set({ startDate: date });
-  },
-  setEndDate: (date) => {
-    set({ endDate: date });
-  },
-  filterByDate: () => {
-    set((state) => {
-      if (!state.startDate || !state.endDate) {
-        return {
-          filteredAnalytics: [],
-          totalFocusDuration: 0,
-        };
-      }
 
-      const start = new Date(state.startDate).getTime() / 1000;
-      const end = new Date(state.endDate).getTime() / 1000;
-
-      const filtered = state.analyticsList.filter((analytics) => {
-        const analyticsTime = analytics.startTime.seconds;
-        return analyticsTime >= start && analyticsTime <= end;
-      });
-
-      const totalDuration = filtered.reduce(
-        (acc, analytics) =>
-          acc + (analytics.pomodoroCompleted ? analytics.focusDuration : 0),
-        0
-      );
-
-      return {
-        filteredAnalytics: filtered,
-        totalFocusDuration: totalDuration,
-      };
-    });
-  },
+  // 重置所有狀態
   reset: () => {
     set({
       analyticsList: [],
@@ -74,5 +58,20 @@ export const useAnalyticsStore = create<AnalyticsState>((set) => ({
       startDate: "",
       endDate: "",
     });
+  },
+
+  // 從 localForage 中加載 analytics
+  loadAnalyticsFromDB: async () => {
+    try {
+      const cachedData =
+        await localforage.getItem<UserAnalytics[]>("analytics");
+      if (cachedData && cachedData.length > 0) {
+        set({ analyticsList: cachedData, filteredAnalytics: cachedData });
+      } else {
+        console.warn("No cached data found in localForage.");
+      }
+    } catch (error) {
+      console.error("Error loading analytics from localForage:", error);
+    }
   },
 }));

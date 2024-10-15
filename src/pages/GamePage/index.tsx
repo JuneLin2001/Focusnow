@@ -1,4 +1,4 @@
-import { Suspense, useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import MovingModel from "./MovingModel";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import AnalyticsFetcher from "../../utils/AnalyticsFetcher";
@@ -99,9 +99,7 @@ const GamePage: React.FC<GamePageProps> = ({
   return (
     <>
       <FishesCountFetcher />
-      <Suspense fallback={<div>Loading...</div>}>
-        <AnalyticsFetcher onDataFetched={setAnalyticsList} />
-      </Suspense>
+      <AnalyticsFetcher onDataFetched={setAnalyticsList} />
 
       <group>
         <mesh position={position}>

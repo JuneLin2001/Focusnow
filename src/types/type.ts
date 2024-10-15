@@ -11,6 +11,7 @@ export interface Todos {
 }
 
 export interface UserAnalytics {
+  id: string;
   focusDuration: number;
   pomodoroCompleted: boolean;
   startTime: Timestamp;

@@ -5,7 +5,7 @@ import useAuthStore from "../store/authStore";
 import { useFishesCountStore } from "../store/fishesCountStore";
 
 const FishesCountFetcher: React.FC = () => {
-  const { user } = useAuthStore.getState();
+  const { user } = useAuthStore();
   const { setFishesCount } = useFishesCountStore();
 
   const fetchFishesCount = useCallback(async () => {
