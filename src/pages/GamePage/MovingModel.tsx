@@ -29,14 +29,8 @@ const MovingModel: React.FC<MovingModelProps> = ({
   fishPosition,
   setFishPosition,
 }) => {
-  const modelPaths = [
-    "BBpenguinCenter.glb",
-    // , "fish_low_poly.glb"
-  ];
-
-  const [modelPath] = useState(
-    modelPaths[Math.floor(Math.random() * modelPaths.length)]
-  );
+  const modelPath =
+    todoTitles.length >= 1 ? "bigPenguin.glb" : "BBpenguinCenter.glb";
 
   const { scene } = useGLTF(modelPath);
   const modelRef = useRef<THREE.Group>(null!);
