@@ -1,11 +1,17 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { ModelProps } from "../../types/type";
 import { Color, Mesh, MeshStandardMaterial } from "three";
+import settingStore from "../../store/settingStore";
 
-const SnowPenguin: React.FC<ModelProps> = ({ children, onClick }) => {
+const SnowPenguin: React.FC<
+  ModelProps & {
+    instructionHovered: boolean;
+    setInstructionHovered: (value: boolean) => void;
+  }
+> = ({ children, onClick, instructionHovered, setInstructionHovered }) => {
   const { scene } = useGLTF("snowPenguin.glb");
-  const [hovered, setHovered] = useState(false);
+  const { themeMode } = settingStore();
   const originalColors = useRef<Map<Mesh, Color>>(new Map());
 
   useEffect(() => {
@@ -29,12 +35,14 @@ const SnowPenguin: React.FC<ModelProps> = ({ children, onClick }) => {
                   new Color(material.color.getHex())
                 );
               }
+              const brightnessMultiplier = themeMode === "dark" ? 10 : 0.3;
+
               material.color.set(
-                hovered
+                instructionHovered
                   ? originalColors.current
                       .get(mesh)!
                       .clone()
-                      .multiplyScalar(0.3)
+                      .multiplyScalar(brightnessMultiplier)
                   : originalColors.current.get(mesh)!.clone()
               );
             }
@@ -42,19 +50,19 @@ const SnowPenguin: React.FC<ModelProps> = ({ children, onClick }) => {
         }
       });
 
-      document.body.style.cursor = hovered ? "pointer" : "auto";
+      document.body.style.cursor = instructionHovered ? "pointer" : "auto";
     }
 
     return () => {
       document.body.style.cursor = "auto";
     };
-  }, [scene, hovered]);
+  }, [scene, instructionHovered, themeMode]);
 
   return (
     <group
       onClick={onClick}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
+      onPointerOver={() => setInstructionHovered(true)}
+      onPointerOut={() => setInstructionHovered(false)}
     >
       <primitive object={scene} />
       {children}

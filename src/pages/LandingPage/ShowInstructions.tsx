@@ -1,22 +1,84 @@
-import { Html, Float } from "@react-three/drei";
-import { Lightbulb, ArrowDown } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { useGLTF } from "@react-three/drei";
+import { ModelProps } from "../../types/type";
+import { Float } from "@react-three/drei";
+import { Color, Mesh, MeshStandardMaterial } from "three";
+import settingStore from "../../store/settingStore";
 
-interface ShowInstructionsProps {
-  position: [number, number, number];
-}
+const ShowInstructions: React.FC<
+  ModelProps & {
+    instructionHovered: boolean;
+    setInstructionHovered: (value: boolean) => void;
+  }
+> = ({ children, onClick, instructionHovered, setInstructionHovered }) => {
+  const { scene } = useGLTF("lightBulb.glb");
+  const { themeMode } = settingStore();
+  const originalColors = useRef<Map<Mesh, Color>>(new Map());
 
-const ShowInstructions: React.FC<ShowInstructionsProps> = ({ position }) => {
+  useEffect(() => {
+    if (scene) {
+      scene.traverse((child) => {
+        const mesh = child as Mesh;
+
+        if (mesh.isMesh && mesh.material) {
+          const materials = Array.isArray(mesh.material)
+            ? mesh.material
+            : [mesh.material];
+
+          materials.forEach((material) => {
+            if (material instanceof MeshStandardMaterial) {
+              if (!originalColors.current.has(mesh)) {
+                originalColors.current.set(
+                  mesh,
+                  new Color(material.color.getHex())
+                );
+              }
+
+              const brightnessMultiplier = themeMode === "dark" ? 10 : 0.3;
+
+              material.color.set(
+                instructionHovered
+                  ? originalColors.current
+                      .get(mesh)!
+                      .clone()
+                      .multiplyScalar(brightnessMultiplier)
+                  : originalColors.current.get(mesh)!.clone()
+              );
+            }
+          });
+        }
+      });
+    }
+
+    document.body.style.cursor = instructionHovered ? "pointer" : "auto";
+
+    return () => {
+      document.body.style.cursor = "auto";
+    };
+  }, [scene, instructionHovered, themeMode]);
+
   return (
     <Float
       speed={10} // Animation speed, defaults to 1
       rotationIntensity={0} // XYZ rotation intensity set to 0 for no rotation
       floatIntensity={1} // Up/down float intensity, works like a multiplier with floatingRange, defaults to 1
-      floatingRange={[5, 10]} // Range of y-axis values the object will float within, this allows for Y-axis only floating
+      floatingRange={[0, 10]} // Range of y-axis values the object will float within, this allows for Y-axis only floating
     >
-      <Html position={position} center>
-        <Lightbulb className="w-8 h-8 text-yellow-400 dark:text-white" />
-        <ArrowDown className="w-8 h-8 text-yellow-400 dark:text-white" />
-      </Html>
+      <group
+        onClick={onClick}
+        onPointerOver={() => setInstructionHovered(true)}
+        onPointerOut={() => setInstructionHovered(false)}
+      >
+        <pointLight
+          position={[115, 50, 145]}
+          intensity={2000}
+          distance={70}
+          decay={2}
+          color="yellow"
+        />
+        <primitive object={scene} />
+        {children}
+      </group>
     </Float>
   );
 };

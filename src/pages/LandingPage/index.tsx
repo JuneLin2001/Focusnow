@@ -58,6 +58,7 @@ const LandingPage = () => {
   const [progress, setProgress] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
+  const [instructionHovered, setInstructionHovered] = useState(false);
 
   useEffect(() => {
     const hasSeenInitialInstructions = localStorage.getItem(
@@ -202,8 +203,16 @@ const LandingPage = () => {
         <OceanModel />
         <Analytics />
         <Snowflakes />
-        {page === null && <ShowInstructions position={[114, 45, 143]} />}
-        <SnowPenguin onClick={handleShowInnitialInstructions} />
+        <SnowPenguin
+          instructionHovered={instructionHovered} // 更新為 instructionHovered
+          onClick={handleShowInnitialInstructions}
+          setInstructionHovered={setInstructionHovered} // 傳遞 setInstructionHovered 函數
+        />
+        <ShowInstructions
+          instructionHovered={instructionHovered} // 更新為 instructionHovered
+          onClick={handleShowInnitialInstructions}
+          setInstructionHovered={setInstructionHovered} // 傳遞 setInstructionHovered 函數
+        />
         <GamePage
           fishesCount={fishesCount}
           setFishesCount={updateFishesCount}
