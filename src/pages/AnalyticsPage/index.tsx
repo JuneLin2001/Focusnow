@@ -138,10 +138,11 @@ const AnalyticsPage = () => {
           </div>
           <div>
             <div className="hidden lg:flex flex-grow flex-wrap justify-between gap-2">
-              <Card className="flex-[2]  p-4 h-auto">
+              {/* TODO:不要寫死66vh */}
+              <Card className="flex-[2] p-4 h-auto min-h-[66vh]">
                 <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
               </Card>
-              <Card className="flex-[4]  p-4 h-auto">
+              <Card className="flex-[4] p-4 h-auto">
                 <ChartDisplay
                   filteredAnalytics={filteredAnalytics}
                   filterType={filterType}
@@ -149,7 +150,7 @@ const AnalyticsPage = () => {
                   currentDate={currentDate}
                 />
               </Card>
-              <Card className="flex-[1]  p-4 h-auto">
+              <Card className="flex-[1] p-4 h-auto">
                 <CompletedTodos filteredAnalytics={filteredAnalytics} />
               </Card>
             </div>
