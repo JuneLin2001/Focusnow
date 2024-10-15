@@ -99,14 +99,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
       },
       {
         title: "互動操作",
-        description: (
-          <>
-            <div className="leading-[24px]">
-              現在就使用 Focusnow開始專注吧！
-            </div>
-          </>
-        ),
-
+        description: <>現在就使用 Focusnow開始專注吧！</>,
         targetPosition: [-250, 60, 10] as [number, number, number],
       },
     ],
