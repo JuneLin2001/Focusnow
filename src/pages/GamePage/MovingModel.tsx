@@ -41,7 +41,7 @@ const MovingModel: React.FC<MovingModelProps> = ({
   const [currentPosition, setCurrentPosition] = useState<THREE.Vector3>(
     new THREE.Vector3(
       Math.random() * (maxX - minX) + minX,
-      6,
+      6.5,
       Math.random() * (maxZ - minZ) + minZ
     )
   );
