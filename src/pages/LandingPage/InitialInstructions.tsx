@@ -98,7 +98,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
       },
       {
         title: "互動操作",
-        description: "現在就來使用Focusnow開始專注吧！",
+        description: <>現在就使用 Focusnow開始專注吧！</>,
         targetPosition: [-250, 60, 10] as [number, number, number],
       },
     ],
@@ -141,14 +141,16 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
       {isVisible && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[60]">
           <div className="fixed inset-0 flex justify-center items-center bg-transparent z-40">
-            <div className="bg-white p-5 rounded shadow-lg w-96">
-              <h2 className="text-xl mb-4">{steps[currentStep].title}</h2>
-              <p className="mb-4">{steps[currentStep].description}</p>
+            <div className="bg-white bg-opacity-100 p-5 rounded shadow-lg w-96 h-52 flex flex-col justify-between">
+              <div>
+                <h2 className="text-xl mb-4">{steps[currentStep].title}</h2>
+                <p className="mb-4">{steps[currentStep].description}</p>
+              </div>
 
               <div className="flex justify-between">
                 <Button
                   variant="ghost"
-                  className="disabled:cursor-not-allowed "
+                  className="disabled:cursor-not-allowed"
                   onClick={handlePrevious}
                   disabled={currentStep === 0}
                 >
