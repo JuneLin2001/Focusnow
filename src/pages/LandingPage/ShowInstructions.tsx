@@ -34,7 +34,7 @@ const ShowInstructions: React.FC<
                 );
               }
 
-              const brightnessMultiplier = themeMode === "dark" ? 10 : 0.3;
+              const brightnessMultiplier = themeMode === "dark" ? 50 : 0.3;
 
               material.color.set(
                 instructionHovered
@@ -42,7 +42,7 @@ const ShowInstructions: React.FC<
                       .get(mesh)!
                       .clone()
                       .multiplyScalar(brightnessMultiplier)
-                  : originalColors.current.get(mesh)!.clone()
+                  : originalColors.current.get(mesh)!.clone().multiplyScalar(10)
               );
             }
           });
@@ -71,8 +71,8 @@ const ShowInstructions: React.FC<
       >
         <pointLight
           position={[115, 50, 145]}
-          intensity={2000}
-          distance={70}
+          intensity={5000}
+          distance={60}
           decay={2}
           color="yellow"
         />
