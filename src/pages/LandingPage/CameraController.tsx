@@ -21,8 +21,8 @@ const CameraController: React.FC<CameraControllerProps> = ({
     let duration = 2;
     if (isFirstEntry) {
       duration = 4;
-    } else if (isCompleted) {
-      duration = 3;
+    } else if (!isCompleted) {
+      duration = 2;
     }
 
     gsap.to(camera.position, {

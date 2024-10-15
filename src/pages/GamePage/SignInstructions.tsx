@@ -1,11 +1,9 @@
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Html } from "@react-three/drei";
 
 interface SignInstructionsProps {
@@ -24,11 +22,6 @@ const SignInstructions: React.FC<SignInstructionsProps> = ({
   return (
     <Html>
       <Dialog open={showInstructions} onOpenChange={onClose}>
-        <DialogTrigger asChild>
-          <Button onClick={onClose} className="hidden">
-            Open Instructions
-          </Button>
-        </DialogTrigger>
         <DialogContent>
           <DialogTitle>場景資訊</DialogTitle>
           <DialogDescription variant="sign">

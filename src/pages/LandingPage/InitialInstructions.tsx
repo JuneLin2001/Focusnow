@@ -6,6 +6,7 @@ import {
   FishSymbol,
   ChevronLeft,
   ChevronRight,
+  X,
 } from "lucide-react";
 
 interface InitialInstructionsProps {
@@ -142,21 +143,29 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
       {isVisible && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[60]">
           <div className="fixed inset-0 flex justify-center items-center bg-transparent z-40">
-            <div className="bg-white bg-opacity-100 p-5 rounded shadow-lg w-96 h-52 flex flex-col justify-between">
+            <div className="bg-white bg-opacity-100 p-5 rounded shadow-lg w-96 h-52 flex flex-col justify-between relative">
+              <div className="absolute top-4 right-4">
+                <Button variant="ghost" size="icon" onClick={handleClose}>
+                  <X />
+                </Button>
+              </div>{" "}
               <div>
                 <h2 className="text-xl mb-4">{steps[currentStep].title}</h2>
                 <p className="mb-4">{steps[currentStep].description}</p>
               </div>
-
               <div className="flex justify-between">
-                <Button
-                  variant="ghost"
-                  className="disabled:cursor-not-allowed"
-                  onClick={handlePrevious}
-                  disabled={currentStep === 0}
-                >
-                  {<ChevronLeft />}&nbsp;上一步
-                </Button>
+                {currentStep > 0 ? (
+                  <Button
+                    variant="ghost"
+                    className="disabled:cursor-not-allowed"
+                    onClick={handlePrevious}
+                  >
+                    {<ChevronLeft />}&nbsp;上一步
+                  </Button>
+                ) : (
+                  <div></div>
+                )}
+
                 <Button variant="ghost" onClick={handleNext}>
                   {currentStep < steps.length - 1 ? (
                     <>
