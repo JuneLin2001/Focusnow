@@ -36,7 +36,16 @@ const SignInstructions: React.FC<SignInstructionsProps> = ({
             <br />
             在最近的 30 天中，每當一次專注超過 15 分鐘，場景中就會增加一隻企鵝！
             <br />
-            目前你的場景中已有 {howManyPenguinYouHave} 隻企鵝。
+            你的場景中已有 {howManyPenguinYouHave} 隻企鵝，
+            {howManyPenguinYouHave === 30 ? (
+              <>
+                達到30隻的上限囉！
+                <br />
+                您真是一位很會善用時間專注的人，Focusnow 非常感謝您的使用！
+              </>
+            ) : (
+              ` 還有 ${30 - howManyPenguinYouHave} 隻可以獲得！`
+            )}
           </DialogDescription>
         </DialogContent>
       </Dialog>

@@ -41,10 +41,16 @@ const GamePage: React.FC<GamePageProps> = ({
   const maxZ = position[2] + depth / 2;
 
   const filteredAnalytics = useMemo(() => {
-    return analyticsList.filter(
-      (analytics) =>
-        analytics.focusDuration >= 15 && analytics.pomodoroCompleted
-    );
+    const sortedAnalytics = [...analyticsList].sort((a, b) => {
+      return b.startTime.seconds - a.startTime.seconds;
+    });
+
+    return sortedAnalytics
+      .filter(
+        (analytics) =>
+          analytics.focusDuration >= 15 && analytics.pomodoroCompleted
+      )
+      .slice(0, 30);
   }, [analyticsList]);
 
   const penguinDatas = useMemo(() => {
