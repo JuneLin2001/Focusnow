@@ -127,14 +127,16 @@ const Timer: React.FC<TimerProps> = ({
           </Button>
         </div>
 
-        <div className="absolute top-4 left-4">
+        <div
+          className={`absolute top-4 left-4 transition-all duration-500 ease-in-out transform ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
+        >
           <Button
             variant="timerGhost"
             size="icon"
             onClick={handleOpenSettingsDialog}
           >
             <Settings />
-          </Button>{" "}
+          </Button>
           <TimerDisplay page={page} />
         </div>
 
