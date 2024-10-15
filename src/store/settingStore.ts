@@ -35,7 +35,7 @@ const useSettingStore = create<SettingStore>((set) => ({
       console.log("Document data:", data);
 
       set({
-        isPlaying: data.isPlaying ?? false,
+        isPlaying: data.isPlaying ? true : false,
         bgmSource: data.bgmSource ?? "/yt5s.io - 大自然的白噪音 (320 kbps).mp3",
         themeMode:
           data.themeMode === "light" || data.themeMode === "dark"

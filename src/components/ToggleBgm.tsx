@@ -4,7 +4,8 @@ import useSettingStore from "../store/settingStore";
 import { Volume2, VolumeOff } from "lucide-react";
 
 const ToggleBgm = () => {
-  const { isPlaying, bgmSource, toggleBgm } = useSettingStore();
+  const { isPlaying, bgmSource, toggleBgm, saveUserSettings } =
+    useSettingStore();
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const ToggleBgm = () => {
     }
   }, [bgmSource, isPlaying]);
 
-  const handleToggleBgm = () => {
+  const handleToggleBgm = async () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
@@ -30,7 +31,8 @@ const ToggleBgm = () => {
         });
       }
     }
-    toggleBgm(); // 更新狀態
+    toggleBgm();
+    await saveUserSettings();
   };
 
   return (
