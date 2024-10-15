@@ -66,7 +66,7 @@ const Sign: React.FC<ModelProps> = ({ children, onClick }) => {
       </group>
       {hovered && (
         <Html position={[75, 60, -20]} center>
-          <Card className="w-36 h-10 flex justify-center items-center p-2">
+          <Card className="w-28 h-10 flex justify-center items-center p-2">
             場景資訊
           </Card>
         </Html>

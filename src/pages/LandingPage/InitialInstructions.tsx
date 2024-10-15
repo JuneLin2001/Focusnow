@@ -48,7 +48,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
           <>
             點擊 &nbsp;
             <Button variant="default">
-              <AlarmClock /> Timer
+              <AlarmClock /> <div className="ml-2 leading-[24px]">Timer</div>
             </Button>
             &nbsp; 可以進入番茄鐘頁面
             <br />
@@ -61,9 +61,10 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
         title: "互動操作",
         description: (
           <>
-            登入後點擊 &nbsp;
+            點擊 &nbsp;
             <Button variant="default">
-              <ChartColumn /> Analytics
+              <ChartColumn />{" "}
+              <div className="ml-2 leading-[24px]">Analytics</div>
             </Button>
             &nbsp; 可查看統計資料。
           </>
@@ -89,7 +90,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
             <br />
             可以點擊 &nbsp;
             <Button variant="default">
-              <FishSymbol /> 0
+              <FishSymbol /> <div className="ml-2 leading-[24px]">0</div>
             </Button>
             &nbsp; 放下魚來和企鵝互動。
           </>
@@ -98,7 +99,14 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
       },
       {
         title: "互動操作",
-        description: "現在就來使用Focusnow開始專注吧！",
+        description: (
+          <>
+            <div className="leading-[24px]">
+              現在就使用 Focusnow開始專注吧！
+            </div>
+          </>
+        ),
+
         targetPosition: [-250, 60, 10] as [number, number, number],
       },
     ],
@@ -141,14 +149,16 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
       {isVisible && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[60]">
           <div className="fixed inset-0 flex justify-center items-center bg-transparent z-40">
-            <div className="bg-white p-5 rounded shadow-lg w-96">
-              <h2 className="text-xl mb-4">{steps[currentStep].title}</h2>
-              <p className="mb-4">{steps[currentStep].description}</p>
+            <div className="bg-white bg-opacity-100 p-5 rounded shadow-lg w-96 h-52 flex flex-col justify-between">
+              <div>
+                <h2 className="text-xl mb-4">{steps[currentStep].title}</h2>
+                <p className="mb-4">{steps[currentStep].description}</p>
+              </div>
 
               <div className="flex justify-between">
                 <Button
                   variant="ghost"
-                  className="disabled:cursor-not-allowed "
+                  className="disabled:cursor-not-allowed"
                   onClick={handlePrevious}
                   disabled={currentStep === 0}
                 >
