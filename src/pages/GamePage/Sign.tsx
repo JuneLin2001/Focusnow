@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, Html } from "@react-three/drei";
 import { ModelProps } from "../../types/type";
 import { Color, Mesh, MeshStandardMaterial } from "three";
 import settingStore from "../../store/settingStore";
+import { Card } from "@/components/ui/card";
 
 const Sign: React.FC<ModelProps> = ({ children, onClick }) => {
   const { scene } = useGLTF("sign.glb");
@@ -54,14 +55,23 @@ const Sign: React.FC<ModelProps> = ({ children, onClick }) => {
   }, [scene, hovered, themeMode]);
 
   return (
-    <group
-      onClick={onClick}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-    >
-      <primitive object={scene} />
-      {children}
-    </group>
+    <>
+      <group
+        onClick={onClick}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      >
+        <primitive object={scene} />
+        {children}
+      </group>
+      {hovered && (
+        <Html position={[75, 60, -20]} center>
+          <Card className="w-36 h-10 flex justify-center items-center p-2">
+            場景資訊
+          </Card>
+        </Html>
+      )}
+    </>
   );
 };
 

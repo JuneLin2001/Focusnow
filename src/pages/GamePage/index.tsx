@@ -109,7 +109,7 @@ const GamePage: React.FC<GamePageProps> = ({
           <meshStandardMaterial transparent wireframe />
         </mesh>
 
-        <Sign position={[0, 20, 0]} onClick={handleOpen} />
+        <Sign onClick={handleOpen} />
 
         <SignInstructions
           showInstructions={showInstructions}

@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import {
   Environment,
   Sky,
+  Html,
   // GizmoHelper,
   // GizmoViewport,
 } from "@react-three/drei";
@@ -33,6 +34,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SnowPenguin from "./SnowPenguin";
 import ShowInstructions from "./ShowInstructions";
+import { Card } from "@/components/ui/card";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -204,14 +206,14 @@ const LandingPage = () => {
         <Analytics />
         <Snowflakes />
         <SnowPenguin
-          instructionHovered={instructionHovered} // 更新為 instructionHovered
+          instructionHovered={instructionHovered}
           onClick={handleShowInnitialInstructions}
-          setInstructionHovered={setInstructionHovered} // 傳遞 setInstructionHovered 函數
+          setInstructionHovered={setInstructionHovered}
         />
         <ShowInstructions
-          instructionHovered={instructionHovered} // 更新為 instructionHovered
+          instructionHovered={instructionHovered}
           onClick={handleShowInnitialInstructions}
-          setInstructionHovered={setInstructionHovered} // 傳遞 setInstructionHovered 函數
+          setInstructionHovered={setInstructionHovered}
         />
         <GamePage
           fishesCount={fishesCount}
@@ -250,6 +252,14 @@ const LandingPage = () => {
         {/* <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
           <GizmoViewport labelColor="white" axisHeadScale={1} />
         </GizmoHelper> */}
+
+        {instructionHovered && (
+          <Html position={[115, 70, 145]} center>
+            <Card className="w-36 h-10 flex justify-center items-center p-2">
+              重新觀看說明
+            </Card>
+          </Html>
+        )}
       </Canvas>
       {page === null && <TimerDisplay page={"Timer"} />}
       <ToggleBgm />
