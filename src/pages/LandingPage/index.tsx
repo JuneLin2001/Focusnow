@@ -61,6 +61,7 @@ const LandingPage = () => {
   const [isCompleted, setIsCompleted] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
   const [instructionHovered, setInstructionHovered] = useState(false);
+  const [isFishLoading, setIsFishLoading] = useState(false);
 
   useEffect(() => {
     const hasSeenInitialInstructions = localStorage.getItem(
@@ -104,7 +105,9 @@ const LandingPage = () => {
         const randomZ = Math.random() * (90 - -150) + -150;
         setFishPosition(new THREE.Vector3(randomX, -5.5, randomZ));
 
+        setIsFishLoading(true);
         await updateFishesCount(-1);
+        setIsFishLoading(false);
       } else {
         toast.warning("沒有魚可以放置了，每專注1分鐘可以獲得1條魚！");
       }
@@ -198,6 +201,7 @@ const LandingPage = () => {
             fishesCount={fishesCount}
             fishPosition={fishPosition}
             handleDropFish={handleDropFish}
+            isFishLoading={isFishLoading}
           />
         )}
         <Igloo />
