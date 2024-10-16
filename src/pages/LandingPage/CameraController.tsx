@@ -47,7 +47,7 @@ const CameraController: React.FC<CameraControllerProps> = ({
     <>
       <OrbitControls
         target={lookAtPosition}
-        minPolarAngle={Math.PI / 4}
+        minPolarAngle={Math.PI / 4 - 1}
         maxPolarAngle={Math.PI / 2}
         minDistance={10}
         maxDistance={600}

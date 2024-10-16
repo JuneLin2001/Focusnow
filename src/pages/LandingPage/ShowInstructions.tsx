@@ -72,7 +72,7 @@ const ShowInstructions: React.FC<
         <pointLight
           position={[115, 50, 145]}
           intensity={5000}
-          distance={60}
+          distance={70}
           decay={2}
           color="yellow"
         />

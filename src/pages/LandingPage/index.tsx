@@ -102,7 +102,7 @@ const LandingPage = () => {
       if (fishesCount > 0) {
         const randomX = Math.random() * (175 - -15) + -15;
         const randomZ = Math.random() * (90 - -150) + -150;
-        setFishPosition(new THREE.Vector3(randomX, 6, randomZ));
+        setFishPosition(new THREE.Vector3(randomX, -5.5, randomZ));
 
         await updateFishesCount(-1);
       } else {
