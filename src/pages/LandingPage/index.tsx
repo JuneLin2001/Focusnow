@@ -4,6 +4,7 @@ import {
   Environment,
   Sky,
   Html,
+  Stats,
   // GizmoHelper,
   // GizmoViewport,
 } from "@react-three/drei";
@@ -35,6 +36,7 @@ import "react-toastify/dist/ReactToastify.css";
 import SnowPenguin from "./SnowPenguin";
 import ShowInstructions from "./ShowInstructions";
 import { Card } from "@/components/ui/card";
+import FrameLimiter from "../../utils/FrameLimiter";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -104,7 +106,6 @@ const LandingPage = () => {
         const randomX = Math.random() * (175 - -15) + -15;
         const randomZ = Math.random() * (90 - -150) + -150;
         setFishPosition(new THREE.Vector3(randomX, -5.5, randomZ));
-
         setIsFishLoading(true);
         await updateFishesCount(-1);
         setIsFishLoading(false);
@@ -264,6 +265,8 @@ const LandingPage = () => {
             </Card>
           </Html>
         )}
+        <FrameLimiter fps={100} />
+        <Stats />
       </Canvas>
       {page === null && <TimerDisplay page={"Timer"} />}
       <ToggleBgm />
