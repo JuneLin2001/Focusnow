@@ -1,8 +1,7 @@
 import { create } from "zustand";
-import { doc, updateDoc, increment } from "firebase/firestore"; // 引入 Firestore 函數
-import { db } from "../firebase/firebaseConfig"; // 確保你引入了 Firebase 配置
-import useAuthStore from "./authStore"; // 引入用戶認證 store
-
+import { doc, updateDoc, increment } from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
+import useAuthStore from "./authStore";
 export interface FishesCount {
   FishesCount: number;
 }
@@ -10,7 +9,7 @@ export interface FishesCount {
 interface FishesCountStore {
   FishesCount: number;
   setFishesCount: (count: number) => void;
-  updateFishesCount: (incrementValue: number) => Promise<void>; // 新增方法
+  updateFishesCount: (incrementValue: number) => Promise<void>;
 }
 
 export const useFishesCountStore = create<FishesCountStore>((set) => ({
@@ -19,7 +18,7 @@ export const useFishesCountStore = create<FishesCountStore>((set) => ({
     set((state) => ({ ...state, FishesCount: count })),
 
   updateFishesCount: async (incrementValue: number) => {
-    const { user } = useAuthStore.getState(); // 獲取當前用戶
+    const { user } = useAuthStore.getState();
 
     if (user) {
       try {
@@ -32,12 +31,12 @@ export const useFishesCountStore = create<FishesCountStore>((set) => ({
         );
 
         await updateDoc(fishesCountDocRef, {
-          FishesCount: increment(incrementValue), // 使用 Firestore 的 increment 函數
+          FishesCount: increment(incrementValue),
         });
 
         set((state) => ({
           ...state,
-          FishesCount: state.FishesCount + incrementValue, // 更新 Zustand store 的 FishesCount
+          FishesCount: state.FishesCount + incrementValue,
         }));
 
         console.log("FishesCount updated successfully");

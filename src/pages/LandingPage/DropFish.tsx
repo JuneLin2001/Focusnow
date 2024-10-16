@@ -3,12 +3,14 @@ import { Html } from "@react-three/drei";
 import { Button } from "@/components/ui/button";
 import { FishSymbol } from "lucide-react";
 import * as THREE from "three";
+import { Spinner } from "@/components/ui/spinner";
 
 interface DropFishProps {
   position: [number, number, number];
   fishesCount: number;
   fishPosition: THREE.Vector3 | null;
   handleDropFish: () => void;
+  isFishLoading: boolean;
 }
 
 const DropFish: React.FC<DropFishProps> = ({
@@ -16,6 +18,7 @@ const DropFish: React.FC<DropFishProps> = ({
   fishesCount,
   fishPosition,
   handleDropFish,
+  isFishLoading,
 }) => {
   const [hovered, setHovered] = useState(false);
 
@@ -27,9 +30,20 @@ const DropFish: React.FC<DropFishProps> = ({
         onClick={handleDropFish}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        disabled={fishPosition !== null}
+        disabled={fishPosition !== null || isFishLoading}
       >
-        <FishSymbol /> <div className="ml-2">{fishesCount}</div>
+        {isFishLoading ? (
+          <>
+            <FishSymbol />
+            <div className="ml-2">
+              <Spinner size="small" />
+            </div>
+          </>
+        ) : (
+          <>
+            <FishSymbol /> <div className="ml-2">{fishesCount}</div>
+          </>
+        )}
       </Button>
     </Html>
   );
