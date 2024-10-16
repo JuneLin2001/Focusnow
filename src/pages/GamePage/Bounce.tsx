@@ -11,7 +11,11 @@ import { useEffect, useRef } from "react";
 
 export default function Bounce() {
   return (
-    <Canvas shadows camera={{ position: [0, 5, 10], fov: 25 }}>
+    <Canvas
+      shadows
+      camera={{ position: [0, 5, 10], fov: 25 }}
+      className="touch-none"
+    >
       <ambientLight intensity={0.5} />
 
       <PresentationControls
