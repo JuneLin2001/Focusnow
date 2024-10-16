@@ -44,7 +44,17 @@ const App: React.FC = () => {
         />
         <Route path="/analytics" element={<AanalyticsPage />} />
         {/* <Route path="/timer" element={<TimerPage />} /> */}
-        <Route path="/*" element={<Bounce />} />
+        <Route
+          path="/*"
+          element={
+            <>
+              <Bounce />
+              <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-9xl">
+                error❌
+              </div>
+            </>
+          }
+        />
       </Routes>
       {/* </ThemeProvider> */}
     </>
