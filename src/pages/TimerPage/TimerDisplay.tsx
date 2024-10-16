@@ -43,22 +43,19 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
     if (canvasRef.current) {
       const ctx = canvasRef.current.getContext("2d");
       if (ctx) {
-        // 清除畫布
-        ctx.clearRect(0, 0, pipWindowWidth, pipWindowWidth); // 畫布大小 pipWindowWidth x pipWindowWidth
+        ctx.clearRect(0, 0, pipWindowWidth, pipWindowWidth);
 
-        // 設定背景顏色
-        ctx.fillStyle = themeMode === "dark" ? "#000" : "#fff"; // 背景顏色改回純色
-        ctx.fillRect(0, 0, pipWindowWidth, pipWindowWidth); // 背景填滿 pipWindowWidth x pipWindowWidth
+        ctx.fillStyle = themeMode === "dark" ? "#000" : "#fff";
+        ctx.fillRect(0, 0, pipWindowWidth, pipWindowWidth);
 
-        // 將原點移到圓心（考慮 padding，圓心改為 pipWindowWidth / 2，pipWindowWidth / 2）
         ctx.translate(pipWindowWidth / 2, pipWindowWidth / 2);
 
         ctx.beginPath();
-        ctx.arc(0, 0, pipWindowWidth / 2 - 40, 0, Math.PI * 2); // 大圓環半徑
+        ctx.arc(0, 0, pipWindowWidth / 2 - 40, 0, Math.PI * 2);
 
-        ctx.strokeStyle = "#d6d6d6"; // 底色圓環顏色
-        ctx.lineWidth = 24; // 圓環的寬度
-        ctx.stroke(); // 繪製圓環
+        ctx.strokeStyle = "#d6d6d6";
+        ctx.lineWidth = 24;
+        ctx.stroke();
 
         // 設定文本樣式
         ctx.fillStyle = themeMode === "dark" ? "#fff" : "#000";
@@ -76,7 +73,6 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
 
         ctx.rotate(-Math.PI / 2);
 
-        // 開始繪製圓形，考慮到 padding，半徑改為 (pipWindowWidth / 2 - 40)
         ctx.beginPath();
         ctx.arc(
           0,
@@ -84,15 +80,14 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
           pipWindowWidth / 2 - 40,
           0,
           (Math.PI * 2 * percentage) / 100
-        ); // 半徑改為 (pipWindowWidth / 2 - 40)
+        );
         ctx.strokeStyle = pathColor;
         ctx.lineWidth = 24;
-        ctx.lineCap = "round"; // 設置圓角效果
+        ctx.lineCap = "round";
         ctx.stroke();
 
-        // 還原旋轉
-        ctx.rotate(Math.PI / 2); // 將旋轉恢復到原來的狀態
-        ctx.translate(-pipWindowWidth / 2, -pipWindowWidth / 2); // 將原點移回左上角
+        ctx.rotate(Math.PI / 2);
+        ctx.translate(-pipWindowWidth / 2, -pipWindowWidth / 2);
       }
     }
   }, [themeMode, secondsLeft, percentage, pathColor]);
@@ -185,7 +180,6 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
     };
   }, [drawOnCanvas]);
 
-  // 檢查瀏覽器是否支援 Picture-in-Picture
   const isPiPSupported = document.pictureInPictureEnabled;
 
   return (
@@ -224,15 +218,13 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
       <video ref={videoRef} style={{ display: "none" }} muted playsInline />
 
       <div className="fixed ">
-        {!isPipActive ? (
-          <Button variant="timerGhost" size="icon" onClick={enterPiP}>
-            <PictureInPicture />
-          </Button>
-        ) : (
-          <Button variant="timerGhost" size="icon" onClick={exitPiP}>
-            <PictureInPicture />
-          </Button>
-        )}
+        <Button
+          variant="timerGhost"
+          size="icon"
+          onClick={isPipActive ? exitPiP : enterPiP}
+        >
+          <PictureInPicture />
+        </Button>
       </div>
     </>
   );
