@@ -25,7 +25,7 @@ const GamePage: React.FC<GamePageProps> = ({
   pages,
   setPage,
 }) => {
-  const position: [number, number, number] = useMemo(() => [80, 6, -30], []);
+  const position: [number, number, number] = useMemo(() => [80, -10, -30], []);
   const { analyticsList, setAnalyticsList } = useAnalyticsStore();
   const [last30DaysFocusDuration, setLast30DaysFocusDuration] =
     useState<number>(0);
