@@ -9,6 +9,7 @@ import SignInstructions from "./SignInstructions";
 import FishesCountFetcher from "../../utils/FishesCountFetcher";
 import useAuthStore from "../../store/authStore";
 import { toast } from "react-toastify";
+
 interface GamePageProps {
   fishesCount: number;
   setFishesCount: (count: number) => void;
@@ -26,7 +27,8 @@ const GamePage: React.FC<GamePageProps> = ({
   setPage,
 }) => {
   const position: [number, number, number] = useMemo(() => [80, -10, -30], []);
-  const { analyticsList, setAnalyticsList } = useAnalyticsStore();
+  const { filteredAnalytics, loadAnalyticsFromDB, setAnalyticsList } =
+    useAnalyticsStore();
   const [last30DaysFocusDuration, setLast30DaysFocusDuration] =
     useState<number>(0);
   const [showInstructions, setShowInstructions] = useState(false);
@@ -40,21 +42,30 @@ const GamePage: React.FC<GamePageProps> = ({
   const minZ = position[2] - depth / 2;
   const maxZ = position[2] + depth / 2;
 
-  const filteredAnalytics = useMemo(() => {
-    const sortedAnalytics = [...analyticsList].sort((a, b) => {
+  useEffect(() => {
+    loadAnalyticsFromDB();
+  }, [loadAnalyticsFromDB]);
+
+  const filteredLast30DaysAnalytics = useMemo(() => {
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const sortedAnalytics = [...filteredAnalytics].sort((a, b) => {
       return b.startTime.seconds - a.startTime.seconds;
     });
 
     return sortedAnalytics
       .filter(
         (analytics) =>
-          analytics.focusDuration >= 15 && analytics.pomodoroCompleted
+          analytics.focusDuration >= 15 &&
+          analytics.pomodoroCompleted &&
+          new Date(analytics.startTime.seconds * 1000) >= thirtyDaysAgo
       )
       .slice(0, 30);
-  }, [analyticsList]);
+  }, [filteredAnalytics]);
 
   const penguinDatas = useMemo(() => {
-    return filteredAnalytics.map((analytics) => {
+    return filteredLast30DaysAnalytics.map((analytics) => {
       return {
         date: new Date(analytics.startTime.seconds * 1000).toLocaleDateString(),
         focusDuration: analytics.focusDuration,
@@ -63,12 +74,13 @@ const GamePage: React.FC<GamePageProps> = ({
           .map((todo) => todo.title),
       };
     });
-  }, [filteredAnalytics]);
+  }, [filteredLast30DaysAnalytics]);
 
   useEffect(() => {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    const duration = analyticsList.reduce((total, analytics) => {
+
+    const duration = filteredAnalytics.reduce((total, analytics) => {
       const analyticsDate = new Date(analytics.startTime.seconds * 1000);
       if (analyticsDate >= thirtyDaysAgo && analytics.pomodoroCompleted) {
         return total + analytics.focusDuration;
@@ -77,7 +89,7 @@ const GamePage: React.FC<GamePageProps> = ({
     }, 0);
 
     setLast30DaysFocusDuration(duration);
-  }, [analyticsList]);
+  }, [filteredAnalytics]);
 
   const handleOpen = () => {
     if (!user) {
@@ -94,13 +106,12 @@ const GamePage: React.FC<GamePageProps> = ({
     setPage(null);
   };
 
-  const penguinCount = filteredAnalytics.length;
+  const penguinCount = filteredLast30DaysAnalytics.length;
 
   return (
     <>
       <FishesCountFetcher />
       <AnalyticsFetcher onDataFetched={setAnalyticsList} />
-
       <group>
         <mesh position={position}>
           <boxGeometry args={[width, 5, depth]} />

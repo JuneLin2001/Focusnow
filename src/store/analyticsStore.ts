@@ -22,16 +22,14 @@ export const useAnalyticsStore = create<AnalyticsState>((set) => ({
   startDate: "",
   endDate: "",
 
-  // 儲存 analytics 到 localForage
   setAnalyticsList: async (data: UserAnalytics[]) => {
     try {
       const existingData =
         (await localforage.getItem<UserAnalytics[]>("analytics")) || [];
 
-      // 比較新資料和現有資料
       if (JSON.stringify(existingData) !== JSON.stringify(data)) {
-        await localforage.setItem("analytics", data); // 儲存到 localForage
-        set({ analyticsList: data, filteredAnalytics: data }); // 更新狀態
+        await localforage.setItem("analytics", data);
+        set({ analyticsList: data, filteredAnalytics: data });
         console.log("Data saved to localForage");
       } else {
         console.log("No changes detected, state not updated.");
@@ -49,7 +47,6 @@ export const useAnalyticsStore = create<AnalyticsState>((set) => ({
     set({ totalFocusDuration: duration });
   },
 
-  // 重置所有狀態
   reset: () => {
     set({
       analyticsList: [],
@@ -60,7 +57,6 @@ export const useAnalyticsStore = create<AnalyticsState>((set) => ({
     });
   },
 
-  // 從 localForage 中加載 analytics
   loadAnalyticsFromDB: async () => {
     try {
       const cachedData =
