@@ -1,20 +1,13 @@
 import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
-  Environment,
-  Sky,
   Html,
   // GizmoHelper,
   // GizmoViewport,
 } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
-import Mainland from "../../models/Mainland";
 import GamePage from "../GamePage/index";
-import Igloo from "../../models/Igloo";
-import FloatingIce from "../../models/floatingIce";
-import Analytics from "../../models/AnalyticsCube";
-import OceanModel from "../../models/OceanModel";
 import CameraController from "./CameraController";
 import { DashboardHeader } from "@/components/Header/DashboardHeader";
 import TimerDisplay from "../TimerPage/TimerDisplay";
@@ -23,18 +16,16 @@ import settingStore from "../../store/settingStore";
 import Bubble from "./Bubble";
 import { AlarmClock, ChartColumn } from "lucide-react";
 import InitialInstructions from "./InitialInstructions";
-import Snowflakes from "./Snowflakes";
 import useAuthStore from "../../store/authStore";
 import * as THREE from "three";
-import DropFish from "./DropFish";
+// import DropFish from "./DropFish";
 import ToggleBgm from "@/components/ToggleBgm";
 import { Progress } from "@/components/ui/progress";
 import usesettingStore from "@/store/settingStore";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import SnowPenguin from "./SnowPenguin";
-import ShowInstructions from "./ShowInstructions";
 import { Card } from "@/components/ui/card";
+import AsyncModels from "./AsyncModels";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -190,34 +181,16 @@ const LandingPage = () => {
       />
 
       <Canvas className="z-0">
-        <Environment preset={themeMode === "light" ? "warehouse" : "night"} />
-        {themeMode === "dark" && (
-          <Sky sunPosition={[0, -1, 0]} distance={100000} />
-        )}
-        <Mainland />
-        {page === null && (
-          <DropFish
-            position={[100, 80, 0]}
-            fishesCount={fishesCount}
-            fishPosition={fishPosition}
-            handleDropFish={handleDropFish}
-            isFishLoading={isFishLoading}
-          />
-        )}
-        <Igloo />
-        <FloatingIce />
-        <OceanModel />
-        <Analytics />
-        <Snowflakes />
-        <SnowPenguin
+        <AsyncModels
+          page={page}
           instructionHovered={instructionHovered}
-          onClick={handleShowInnitialInstructions}
+          handleShowInnitialInstructions={handleShowInnitialInstructions}
           setInstructionHovered={setInstructionHovered}
-        />
-        <ShowInstructions
-          instructionHovered={instructionHovered}
-          onClick={handleShowInnitialInstructions}
-          setInstructionHovered={setInstructionHovered}
+          themeMode={themeMode}
+          isFishLoading={isFishLoading}
+          handleDropFish={handleDropFish}
+          fishPosition={fishPosition}
+          fishesCount={fishesCount}
         />
         <GamePage
           fishesCount={fishesCount}
