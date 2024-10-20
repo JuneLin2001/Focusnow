@@ -48,16 +48,10 @@ const AnalyticsPage = () => {
   }, [filterType, currentDate]);
 
   const filterAnalytics = useCallback(
-    (sortedAnalytics: UserAnalytics[]) => {
+    (analyticsList: UserAnalytics[]) => {
       const { start, end } = calculateDateRange();
-      console.log(
-        "Current Date Range:",
-        start.format("YYYY-MM-DD"),
-        "to",
-        end.format("YYYY-MM-DD")
-      );
 
-      const filteredAllData = sortedAnalytics.filter((analytics) => {
+      const filteredAllData = analyticsList.filter((analytics) => {
         const analyticsDate = dayjs.unix(analytics.startTime.seconds);
         return (
           analyticsDate.isSame(start, "day") ||
@@ -82,9 +76,9 @@ const AnalyticsPage = () => {
   );
 
   const handleDataFetched = useCallback(
-    (sortedAnalytics: UserAnalytics[]) => {
-      setAnalyticsData(sortedAnalytics);
-      filterAnalytics(sortedAnalytics);
+    (newAnalytics: UserAnalytics[]) => {
+      setAnalyticsData(newAnalytics);
+      filterAnalytics(newAnalytics);
     },
     [filterAnalytics]
   );

@@ -8,6 +8,13 @@ interface CompletedTodosProps {
   filteredAnalytics: UserAnalytics[];
 }
 
+const convertFirestoreTimestampToDate = (
+  seconds: number,
+  nanoseconds: number
+): Date => {
+  return new Date(seconds * 1000 + Math.floor(nanoseconds / 1000000));
+};
+
 const CompletedTodos: React.FC<CompletedTodosProps> = ({
   filteredAnalytics,
 }) => {
@@ -25,7 +32,6 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
           總共完成了 {completedTodosCount} 個 Todo
         </h2>
       )}
-      {/* TODO:不要寫死55vh */}
       <ScrollArea
         className={`${hasData ? "lg:max-h-[55vh] max-h-[35vh]" : "max-h-screen"} h-full`}
       >
@@ -39,25 +45,36 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
                     className="border border-gray-300 rounded-lg mb-4 bg-gray-100 dark:bg-gray-500 p-4"
                   >
                     <div className="space-y-2">
-                      {analytics.todos.map((todo) => (
-                        <div
-                          key={todo.id}
-                          className="border-b border-gray-300 dark:border-gray-600 py-2 last:border-b-0"
-                        >
-                          <h3 className="font-semibold text-gray-800 dark:text-white">
-                            {todo.title}
-                          </h3>
-                          <p className="text-gray-600 dark:text-gray-400 text-sm">
-                            {`完成時間：${
-                              todo.doneTime
-                                ? dayjs(todo.doneTime.toDate()).format(
-                                    "MM-DD HH:mm"
-                                  )
-                                : "error"
-                            }`}
-                          </p>
-                        </div>
-                      ))}
+                      {analytics.todos.map((todo) => {
+                        const doneTime = todo.doneTime;
+                        const doneTimeDate =
+                          doneTime &&
+                          doneTime.seconds !== undefined &&
+                          doneTime.nanoseconds !== undefined
+                            ? convertFirestoreTimestampToDate(
+                                doneTime.seconds,
+                                doneTime.nanoseconds
+                              )
+                            : null;
+
+                        return (
+                          <div
+                            key={todo.id}
+                            className="border-b border-gray-300 dark:border-gray-600 py-2 last:border-b-0"
+                          >
+                            <h3 className="font-semibold text-gray-800 dark:text-white">
+                              {todo.title}
+                            </h3>
+                            <p className="text-gray-600 dark:text-gray-400 text-sm">
+                              {`完成時間：${
+                                doneTimeDate
+                                  ? dayjs(doneTimeDate).format("MM-DD HH:mm")
+                                  : "未完成"
+                              }`}
+                            </p>
+                          </div>
+                        );
+                      })}
                     </div>
                   </Card>
                 );
