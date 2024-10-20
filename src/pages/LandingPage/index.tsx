@@ -26,7 +26,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Card } from "@/components/ui/card";
 import AsyncModels from "./AsyncModels";
-import Loader from "./Loader"; // 引入 Loader 組件
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -182,8 +181,6 @@ const LandingPage = () => {
       />
 
       <Canvas className="z-0">
-        <Loader progress={progress} />
-
         <AsyncModels
           page={page}
           instructionHovered={instructionHovered}
