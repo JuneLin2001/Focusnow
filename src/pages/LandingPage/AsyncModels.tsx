@@ -17,7 +17,7 @@ interface AsyncModelsProps {
   handleDropFish: () => void;
   isFishLoading: boolean;
   instructionHovered: boolean;
-  handleShowInnitialInstructions: () => void;
+  handleShowInitialInstructions: () => void;
   setInstructionHovered: (value: boolean) => void;
   themeMode: "light" | "dark";
 }
@@ -29,7 +29,7 @@ const AsyncModels: React.FC<AsyncModelsProps> = ({
   handleDropFish,
   isFishLoading,
   instructionHovered,
-  handleShowInnitialInstructions,
+  handleShowInitialInstructions,
   setInstructionHovered,
   themeMode,
 }) => {
@@ -49,12 +49,12 @@ const AsyncModels: React.FC<AsyncModelsProps> = ({
 
       <SnowPenguin
         instructionHovered={instructionHovered}
-        onClick={handleShowInnitialInstructions}
+        onClick={handleShowInitialInstructions}
         setInstructionHovered={setInstructionHovered}
       />
       <ShowInstructions
         instructionHovered={instructionHovered}
-        onClick={handleShowInnitialInstructions}
+        onClick={handleShowInitialInstructions}
         setInstructionHovered={setInstructionHovered}
       />
 

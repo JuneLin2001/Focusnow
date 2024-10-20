@@ -139,7 +139,7 @@ const LandingPage = () => {
     setIsCompleted(true);
   };
 
-  const handleShowInnitialInstructions = () => {
+  const handleShowInitialInstructions = () => {
     setShowInstructions(true);
   };
 
@@ -187,7 +187,7 @@ const LandingPage = () => {
         <AsyncModels
           page={page}
           instructionHovered={instructionHovered}
-          handleShowInnitialInstructions={handleShowInnitialInstructions}
+          handleShowInitialInstructions={handleShowInitialInstructions}
           setInstructionHovered={setInstructionHovered}
           themeMode={themeMode}
           isFishLoading={isFishLoading}
