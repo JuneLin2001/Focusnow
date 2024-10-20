@@ -26,6 +26,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Card } from "@/components/ui/card";
 import AsyncModels from "./AsyncModels";
+import Loader from "./Loader"; // 引入 Loader 組件
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -127,7 +128,7 @@ const LandingPage = () => {
     return (
       <div className="fixed inset-0 flex items-center justify-center h-screen z-50 bg-black bg-opacity-75">
         <div className="w-full max-w-lg px-4">
-          <p className="text-center text-white mb-4">Loading...</p>
+          <p className="text-center text-white mb-4">Loading... {progress}%</p>
           <Progress value={progress} />
         </div>
       </div>
@@ -181,6 +182,8 @@ const LandingPage = () => {
       />
 
       <Canvas className="z-0">
+        <Loader progress={progress} />
+
         <AsyncModels
           page={page}
           instructionHovered={instructionHovered}
