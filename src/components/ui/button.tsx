@@ -34,6 +34,7 @@ const buttonVariants = cva(
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
+        roundedicon: "h-9 w-9 rounded-full",
         timerGhost: "mx-2 my-2",
       },
     },
