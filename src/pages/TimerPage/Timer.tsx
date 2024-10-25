@@ -8,7 +8,7 @@ import { useTimerStore } from "../../store/timerStore";
 import LoginButton from "../../components/Header/LoginButton";
 import { requestNotificationPermission } from "../../utils/NotificationService";
 import { Button } from "@/components/ui/button";
-import SettingsDialog from "../../components/SettingsDialog";
+import SettingsDialog from "./SettingsDialog";
 import {
   ChevronsLeft,
   ChevronsRight,
