@@ -222,7 +222,7 @@ const LoginForm = () => {
               {isRegistering ? "註冊" : "登入"}
             </Button>
           </DialogFooter>
-          <div className="flex items-center my-4">
+          <div className="flex items-center">
             <Separator className="flex-1" />
             <p className="px-4 text-gray-500">Or continue with</p>
             <Separator className="flex-1" />
@@ -231,7 +231,7 @@ const LoginForm = () => {
             使用 Google 登入
           </Button>
           <Button variant="outline" onClick={handleGuestLogin}>
-            使用 訪客 登入
+            使用 訪客帳號 登入
           </Button>
         </DialogContent>
       </Dialog>
