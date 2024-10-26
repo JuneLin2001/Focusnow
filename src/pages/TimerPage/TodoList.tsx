@@ -25,11 +25,11 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
 
   return (
     <Card
-      className={`fixed top-1/2 left-1/2 h-screen max-h-[450px] lg:max-h-[500px] lg:w-[300px] max-w-[500px] w-screen flex flex-col p-5 transition-all duration-500 ease-in-out transform z-30 lg:z-0 
+      className={`fixed top-1/2 left-1/2 h-screen max-h-[500px] lg:max-h-[500px] lg:w-[300px] max-w-[500px] w-screen flex flex-col p-5 transition-all duration-500 ease-in-out transform z-30 lg:z-0 
       ${
         isOpen
           ? "translate-y-[-1050px] lg:translate-y-[-50%] opacity-0"
-          : "translate-y-[-200px] lg:translate-x-[250px] lg:translate-y-[-50%] opacity-100"
+          : "translate-y-[-250px] lg:translate-x-[250px] lg:translate-y-[-50%] opacity-100"
       }
       translate-x-[-50%]`}
     >
