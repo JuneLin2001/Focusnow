@@ -1,8 +1,11 @@
-import { useState } from "react";
+// import { useState } from "react";
 import useAuthStore from "../../store/authStore";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import { useFishesCountStore } from "../../store/fishesCountStore";
-import { LogOut, RefreshCcw } from "lucide-react";
+import {
+  LogOut,
+  // RefreshCcw
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import localforage from "localforage";
 
@@ -16,20 +19,24 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import LoginForm from "./LoginForm";
-import ProfileDialog from "./ProfileDialog";
+// import ProfileDialog from "./ProfileDialog";
 
 const LoginButton = () => {
-  const { user, logout, updateUserProfile } = useAuthStore();
+  const {
+    user,
+    logout,
+    // updateUserProfile
+  } = useAuthStore();
   const resetAnalytics = useAnalyticsStore((state) => state.reset);
   const setFishesCount = useFishesCountStore((state) => state.setFishesCount);
-  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
+  // const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
 
-  const handleOpenProfileDialog = () => {
-    if (!user) {
-      return;
-    }
-    setIsProfileDialogOpen(true);
-  };
+  // const handleOpenProfileDialog = () => {
+  //   if (!user) {
+  //     return;
+  //   }
+  //   setIsProfileDialogOpen(true);
+  // };
 
   const handleLogout = async () => {
     try {
@@ -66,23 +73,22 @@ const LoginButton = () => {
                 {user.email}
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleOpenProfileDialog}>
+              {/* <DropdownMenuItem onClick={handleOpenProfileDialog}>
                 <RefreshCcw />
                 &nbsp; 更新使用者資訊
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut />
                 &nbsp; 登出
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          {/* 使用 ProfileDialog 元件 */}
-          <ProfileDialog
+          {/* <ProfileDialog
             isOpen={isProfileDialogOpen}
             onClose={() => setIsProfileDialogOpen(false)}
             onUpdate={updateUserProfile}
             initialDisplayName={user.displayName || ""}
-          />
+          /> */}
         </>
       ) : (
         <LoginForm />
