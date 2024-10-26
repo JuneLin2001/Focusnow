@@ -116,6 +116,37 @@ const LoginForm = () => {
     }
   };
 
+  const handleGuestLogin = async () => {
+    const guestEmail = "focusnowtest@email.com";
+    const guestPassword = "focusnowtest";
+    try {
+      const result = await signInWithEmailAndPassword(
+        auth,
+        guestEmail,
+        guestPassword
+      );
+      setUser(result.user);
+      hideLogin();
+      await saveTaskDataFromLocalStorage(result.user);
+      setIsDialogOpen(false);
+      toast.success("以訪客身份登入成功！");
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/user-not-found":
+            toast.error("找不到訪客帳號，請聯絡管理員");
+            break;
+          case "auth/wrong-password":
+            toast.error("訪客帳號密碼錯誤，請聯絡管理員");
+            break;
+          default:
+            toast.error("訪客登入失敗，請稍後再試");
+        }
+        console.error("Guest Login error", error);
+      }
+    }
+  };
+
   const saveTaskDataFromLocalStorage = async (user: User) => {
     const taskDataString = localStorage.getItem("taskData");
     if (taskDataString) {
@@ -198,6 +229,9 @@ const LoginForm = () => {
           </div>
           <Button variant="outline" onClick={handleGoogleLogin}>
             使用 Google 登入
+          </Button>
+          <Button variant="outline" onClick={handleGuestLogin}>
+            使用 訪客 登入
           </Button>
         </DialogContent>
       </Dialog>
