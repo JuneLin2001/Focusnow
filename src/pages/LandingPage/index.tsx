@@ -22,8 +22,7 @@ import * as THREE from "three";
 import ToggleBgm from "@/components/ToggleBgm";
 import { Progress } from "@/components/ui/progress";
 import usesettingStore from "@/store/settingStore";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { Card } from "@/components/ui/card";
 import AsyncModels from "./AsyncModels";
 
@@ -166,19 +165,6 @@ const LandingPage = () => {
           {page === "analytics" && <AnalyticsPage />}
         </div>
       )}
-
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={themeMode === "light" ? "light" : "dark"}
-      />
 
       <Canvas className="z-0">
         <AsyncModels

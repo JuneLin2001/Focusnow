@@ -14,9 +14,13 @@ import { OrbitControls } from "@react-three/drei";
 import Bounce from "./pages/GamePage/Bounce";
 import Mainland from "./models/Mainland";
 import { Environment } from "@react-three/drei";
+import { ToastContainer } from "react-toastify";
+import settingStore from "./store/settingStore";
+import "react-toastify/dist/ReactToastify.css";
 
 const App: React.FC = () => {
   const setUser = useAuthStore((state) => state.setUser);
+  const { themeMode } = settingStore();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -28,6 +32,16 @@ const App: React.FC = () => {
 
   return (
     <>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        theme={themeMode === "light" ? "light" : "dark"}
+      />
       <Routes>
         <Route path="/" element={<LandingPage />} />
 

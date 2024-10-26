@@ -20,6 +20,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useTimerStore } from "../../store/timerStore";
 import { saveTaskData } from "../../firebase/firebaseService";
 import useAuthStore from "../../store/authStore";
+import { toast } from "react-toastify";
 
 const LoginForm = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -39,6 +40,7 @@ const LoginForm = () => {
       await saveTaskDataFromLocalStorage(user);
       setIsDialogOpen(false);
     } catch (error) {
+      toast.error("Google 登入失敗，請稍後再試");
       console.error("Google Login error", error);
     }
   };
@@ -54,7 +56,9 @@ const LoginForm = () => {
       hideLogin();
       await saveTaskDataFromLocalStorage(result.user);
       setIsDialogOpen(false);
+      toast.success("註冊成功！");
     } catch (error) {
+      toast.error("註冊失敗，請檢查輸入資料");
       console.error("Registration error", error);
     }
   };
@@ -66,7 +70,9 @@ const LoginForm = () => {
       hideLogin();
       await saveTaskDataFromLocalStorage(result.user);
       setIsDialogOpen(false);
+      toast.success("登入成功！");
     } catch (error) {
+      toast.error("登入失敗，請檢查帳號或密碼");
       console.error("Email Login error", error);
     }
   };
@@ -134,21 +140,23 @@ const LoginForm = () => {
           </div>
           <DialogFooter>
             <Button
-              variant="default"
-              onClick={isRegistering ? handleEmailRegister : handleEmailLogin}
-            >
-              {isRegistering ? "註冊" : "登入"}
-            </Button>
-            <Button
               variant="link"
               onClick={() => setIsRegistering(!isRegistering)}
             >
               {isRegistering ? "已有帳戶？登入" : "還沒有帳戶？註冊"}
             </Button>
-            <Button variant="outline" onClick={handleGoogleLogin}>
-              使用 Google 登入
+
+            <Button
+              variant="default"
+              onClick={isRegistering ? handleEmailRegister : handleEmailLogin}
+            >
+              {isRegistering ? "註冊" : "登入"}
             </Button>
           </DialogFooter>
+          <p>Or continue with</p>
+          <Button variant="outline" onClick={handleGoogleLogin}>
+            使用 Google 登入
+          </Button>
         </DialogContent>
       </Dialog>
     </>
