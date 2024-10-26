@@ -14,43 +14,21 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import LoginForm from "./LoginForm";
-import { toast } from "react-toastify";
+import ProfileDialog from "./ProfileDialog";
 
 const LoginButton = () => {
   const { user, logout, updateUserProfile } = useAuthStore();
   const resetAnalytics = useAnalyticsStore((state) => state.reset);
   const setFishesCount = useFishesCountStore((state) => state.setFishesCount);
   const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
-  const [newDisplayName, setNewDisplayName] = useState("");
 
   const handleOpenProfileDialog = () => {
     if (!user) {
       return;
     }
     setIsProfileDialogOpen(true);
-  };
-
-  const handleProfileUpdate = async () => {
-    try {
-      await updateUserProfile(newDisplayName);
-      toast.success("使用者名稱已更新！");
-      setIsProfileDialogOpen(false);
-      setNewDisplayName("");
-    } catch (error) {
-      toast.error("更新失敗，請稍後再試");
-      console.error("Profile update error", error);
-    }
   };
 
   const handleLogout = async () => {
@@ -98,32 +76,13 @@ const LoginButton = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Dialog
-            open={isProfileDialogOpen}
-            onOpenChange={setIsProfileDialogOpen}
-          >
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>更改使用者名稱</DialogTitle>
-              </DialogHeader>
-              <Input
-                placeholder="新名稱"
-                value={newDisplayName}
-                onChange={(e) => setNewDisplayName(e.target.value)}
-              />
-              <DialogFooter>
-                <Button variant="default" onClick={handleProfileUpdate}>
-                  更新
-                </Button>
-                <Button
-                  variant="link"
-                  onClick={() => setIsProfileDialogOpen(false)}
-                >
-                  取消
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          {/* 使用 ProfileDialog 元件 */}
+          <ProfileDialog
+            isOpen={isProfileDialogOpen}
+            onClose={() => setIsProfileDialogOpen(false)}
+            onUpdate={updateUserProfile}
+            initialDisplayName={user.displayName || ""}
+          />
         </>
       ) : (
         <LoginForm />
