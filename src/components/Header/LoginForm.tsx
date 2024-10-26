@@ -15,12 +15,15 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 import { CircleUser } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useTimerStore } from "../../store/timerStore";
 import { saveTaskData } from "../../firebase/firebaseService";
 import useAuthStore from "../../store/authStore";
 import { toast } from "react-toastify";
+import { FirebaseError } from "firebase/app";
 
 const LoginForm = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -29,21 +32,6 @@ const LoginForm = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const { hideLogin } = useTimerStore();
   const { setUser } = useAuthStore();
-
-  const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      setUser(user);
-      hideLogin();
-      await saveTaskDataFromLocalStorage(user);
-      setIsDialogOpen(false);
-    } catch (error) {
-      toast.error("Google 登入失敗，請稍後再試");
-      console.error("Google Login error", error);
-    }
-  };
 
   const handleEmailRegister = async () => {
     try {
@@ -58,8 +46,22 @@ const LoginForm = () => {
       setIsDialogOpen(false);
       toast.success("註冊成功！");
     } catch (error) {
-      toast.error("註冊失敗，請檢查輸入資料");
-      console.error("Registration error", error);
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/invalid-email":
+            toast.error("無效的電子郵件格式，請重新檢查");
+            break;
+          case "auth/weak-password":
+            toast.error("密碼過於簡單，請至少輸入 6 個字符");
+            break;
+          case "auth/email-already-in-use":
+            toast.error("此電子郵件已被使用");
+            break;
+          default:
+            toast.error("註冊失敗，請稍後再試");
+        }
+        console.error("Registration error", error);
+      }
     }
   };
 
@@ -72,8 +74,45 @@ const LoginForm = () => {
       setIsDialogOpen(false);
       toast.success("登入成功！");
     } catch (error) {
-      toast.error("登入失敗，請檢查帳號或密碼");
-      console.error("Email Login error", error);
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/user-not-found":
+            toast.error("找不到使用者，請檢查帳號或註冊");
+            break;
+          case "auth/wrong-password":
+            toast.error("密碼錯誤，請重新檢查");
+            break;
+          case "auth/invalid-email":
+            toast.error("無效的電子郵件格式，請重新檢查");
+            break;
+          default:
+            toast.error("登入失敗，請稍後再試");
+        }
+        console.error("Email Login error", error);
+      }
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      setUser(user);
+      hideLogin();
+      await saveTaskDataFromLocalStorage(user);
+      setIsDialogOpen(false);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/popup-closed-by-user":
+            toast.error("您已關閉登入彈窗，請再試一次");
+            break;
+          default:
+            toast.error("Google 登入失敗，請稍後再試");
+        }
+        console.error("Google Login error", error);
+      }
     }
   };
 
@@ -123,19 +162,18 @@ const LoginForm = () => {
             <DialogTitle>{isRegistering ? "註冊" : "登入"}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <input
+            <Input
               type="email"
               placeholder="電子郵件"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
+              autoComplete="email"
             />
-            <input
+            <Input
               type="password"
               placeholder="密碼"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
           <DialogFooter>
@@ -153,7 +191,11 @@ const LoginForm = () => {
               {isRegistering ? "註冊" : "登入"}
             </Button>
           </DialogFooter>
-          <p>Or continue with</p>
+          <div className="flex items-center my-4">
+            <Separator className="flex-1" />
+            <p className="px-4 text-gray-500">Or continue with</p>
+            <Separator className="flex-1" />
+          </div>
           <Button variant="outline" onClick={handleGoogleLogin}>
             使用 Google 登入
           </Button>
