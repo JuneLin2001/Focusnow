@@ -106,7 +106,7 @@ const Timer: React.FC<TimerProps> = ({
   return (
     <Card className="z-30 bg-white bg-opacity-60 w-[500px] h-[500px] flex flex-col justify-center items-center bg-cover bg-center relative ">
       <div
-        className={`absolute top-4 right-4 transition-all duration-500 ease-in-out transform ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
+        className={`absolute top-4 right-4 ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
       >
         <Button variant="timerGhost" size="icon" onClick={handleCloseTimerPage}>
           <X />

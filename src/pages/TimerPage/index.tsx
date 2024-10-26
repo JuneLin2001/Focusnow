@@ -84,7 +84,7 @@ const TimerPage: React.FC<TimerPageProps> = ({
             setTargetPosition={setTargetPosition}
             setLookAtPosition={setLookAtPosition}
           />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[240px] z-40 lg:translate-x-[200px] lg:-translate-y-1/2">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[15rem] z-40 lg:translate-x-[12.5rem] lg:-translate-y-1/2">
             <Button
               className="transition-transform "
               variant="timerGhost"
