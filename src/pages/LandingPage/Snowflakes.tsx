@@ -9,7 +9,6 @@ const Snowflakes = () => {
   const textureSize = 64.0;
   const particlesRef = useRef<THREE.Points | null>(null);
 
-  // 創建雪花紋理
   const getTexture = (): THREE.Texture => {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
@@ -42,7 +41,6 @@ const Snowflakes = () => {
     return texture;
   };
 
-  // 使用 useMemo 確保材質僅在必要時創建
   const pointMaterial = useMemo(() => {
     return new THREE.PointsMaterial({
       size: 8,
@@ -54,27 +52,25 @@ const Snowflakes = () => {
   }, []);
 
   useEffect(() => {
-    // 創建雪花粒子
     const createParticles = (): THREE.BufferGeometry => {
       const pointGeometry = new THREE.BufferGeometry();
       const positions = new Float32Array(particleNum * 3);
       const velocities = new Float32Array(particleNum * 3);
 
       for (let i = 0; i < particleNum; i++) {
-        positions[i * 3] = Math.random() * maxRange - minRange; // x
-        positions[i * 3 + 1] = Math.random() * maxRange - minRange; // y
-        positions[i * 3 + 2] = Math.random() * maxRange - minRange; // z
+        positions[i * 3] = Math.random() * maxRange - minRange;
+        positions[i * 3 + 1] = Math.random() * maxRange - minRange;
+        positions[i * 3 + 2] = Math.random() * maxRange - minRange;
 
-        velocities[i * 3] = Math.random() * 0.2 - 0.1; // x velocity
-        velocities[i * 3 + 1] = Math.random() * -0.2; // y velocity (downward)
-        velocities[i * 3 + 2] = Math.random() * 0.2 - 0.1; // z velocity
+        velocities[i * 3] = Math.random() * 0.2 - 0.1;
+        velocities[i * 3 + 1] = Math.random() * -0.2;
+        velocities[i * 3 + 2] = Math.random() * 0.2 - 0.1;
       }
 
       pointGeometry.setAttribute(
         "position",
         new THREE.BufferAttribute(positions, 3)
       );
-      // 將 velocities 作為幾何體的擴展屬性
       pointGeometry.setAttribute(
         "velocity",
         new THREE.BufferAttribute(velocities, 3)
@@ -83,27 +79,24 @@ const Snowflakes = () => {
       return pointGeometry;
     };
 
-    // 創建粒子
     const particles = createParticles();
     particlesRef.current = new THREE.Points(particles, pointMaterial);
 
     return () => {
-      particlesRef.current = null; // 清除參考
+      particlesRef.current = null;
     };
-  }, [minRange, pointMaterial]); // 依賴於 pointMaterial
+  }, [minRange, pointMaterial]);
 
-  // 使用 useFrame 來實現動畫效果
   useFrame(() => {
     if (particlesRef.current) {
       const positions = particlesRef.current.geometry.attributes.position
         .array as Float32Array;
       const velocities = particlesRef.current.geometry.attributes.velocity
-        .array as Float32Array; // 獲取 velocity 屬性
+        .array as Float32Array;
 
       for (let i = 0; i < particleNum; i++) {
-        positions[i * 3 + 1] += velocities[i * 3 + 1]; // 垂直運動
+        positions[i * 3 + 1] += velocities[i * 3 + 1];
 
-        // 重新設定 y 位置
         if (positions[i * 3 + 1] < -minRange) {
           positions[i * 3 + 1] = minRange;
         }

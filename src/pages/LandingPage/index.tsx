@@ -22,8 +22,7 @@ import * as THREE from "three";
 import ToggleBgm from "@/components/ToggleBgm";
 import { Progress } from "@/components/ui/progress";
 import usesettingStore from "@/store/settingStore";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { Card } from "@/components/ui/card";
 import AsyncModels from "./AsyncModels";
 
@@ -127,7 +126,7 @@ const LandingPage = () => {
     return (
       <div className="fixed inset-0 flex items-center justify-center h-screen z-50 bg-black bg-opacity-75">
         <div className="w-full max-w-lg px-4">
-          <p className="text-center text-white mb-4">Loading...</p>
+          <p className="text-center text-white mb-4">Loading... {progress}%</p>
           <Progress value={progress} />
         </div>
       </div>
@@ -138,7 +137,7 @@ const LandingPage = () => {
     setIsCompleted(true);
   };
 
-  const handleShowInnitialInstructions = () => {
+  const handleShowInitialInstructions = () => {
     setShowInstructions(true);
   };
 
@@ -167,24 +166,11 @@ const LandingPage = () => {
         </div>
       )}
 
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={themeMode === "light" ? "light" : "dark"}
-      />
-
       <Canvas className="z-0">
         <AsyncModels
           page={page}
           instructionHovered={instructionHovered}
-          handleShowInnitialInstructions={handleShowInnitialInstructions}
+          handleShowInitialInstructions={handleShowInitialInstructions}
           setInstructionHovered={setInstructionHovered}
           themeMode={themeMode}
           isFishLoading={isFishLoading}

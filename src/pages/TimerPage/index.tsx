@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import Timer from "./Timer.js";
 import TodoList from "./TodoList.js";
 import TimerDisplay from "./TimerDisplay";
+import {
+  ChevronsLeft,
+  ChevronsRight,
+  ChevronsUp,
+  ChevronsDown,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface TimerPageProps {
   page: string | null;
@@ -69,14 +76,35 @@ const TimerPage: React.FC<TimerPageProps> = ({
             </div>
           </div>
         )}
-        <Timer
-          toggleSidebar={toggleSidebar}
-          isOpen={isOpen}
-          page={page}
-          setPage={setPage}
-          setTargetPosition={setTargetPosition}
-          setLookAtPosition={setLookAtPosition}
-        />
+        <div className="w-screen h-screen flex justify-center items-center relative">
+          <Timer
+            isOpen={isOpen}
+            page={page}
+            setPage={setPage}
+            setTargetPosition={setTargetPosition}
+            setLookAtPosition={setLookAtPosition}
+          />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[15rem] z-40 lg:translate-x-[12.5rem] lg:-translate-y-1/2">
+            <Button
+              className="transition-transform "
+              variant="timerGhost"
+              size="icon"
+              onClick={toggleSidebar}
+            >
+              {isOpen ? (
+                <>
+                  <ChevronsRight className="hidden lg:block" />
+                  <ChevronsDown className="block lg:hidden" />
+                </>
+              ) : (
+                <>
+                  <ChevronsLeft className="hidden lg:block" />
+                  <ChevronsUp className="block lg:hidden" />
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
         <TodoList isOpen={isOpen} />
       </div>
     </>

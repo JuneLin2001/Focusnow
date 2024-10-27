@@ -1,130 +1,99 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../firebase/firebaseConfig";
+// import { useState } from "react";
 import useAuthStore from "../../store/authStore";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import { useFishesCountStore } from "../../store/fishesCountStore";
-import { useTimerStore } from "../../store/timerStore"; // 引入 useTimerStore
-import { saveTaskData } from "../../firebase/firebaseService";
-import { CircleUser, LogOut } from "lucide-react";
+import {
+  LogOut,
+  // RefreshCcw
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import localforage from "localforage";
+
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import LoginForm from "./LoginForm";
+// import ProfileDialog from "./ProfileDialog";
 
 const LoginButton = () => {
-  const { user, setUser, logout } = useAuthStore();
+  const {
+    user,
+    logout,
+    // updateUserProfile
+  } = useAuthStore();
   const resetAnalytics = useAnalyticsStore((state) => state.reset);
   const setFishesCount = useFishesCountStore((state) => state.setFishesCount);
-  const { hideLogin } = useTimerStore();
+  // const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
 
-  const handleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      setUser(user);
-
-      hideLogin();
-
-      const taskDataString = localStorage.getItem("taskData");
-      if (taskDataString) {
-        const taskData = JSON.parse(taskDataString);
-        const taskDataToSave = {
-          ...taskData,
-          startTime: {
-            seconds: taskData.startTime.seconds,
-            nanoseconds: 0,
-          },
-          endTime: {
-            seconds: taskData.endTime.seconds,
-            nanoseconds: 0,
-          },
-          todos: taskData.todos.map(
-            (todo: {
-              startTime: { seconds: number };
-              doneTime: { seconds: number };
-            }) => ({
-              ...todo,
-              startTime: {
-                seconds: todo.startTime.seconds,
-                nanoseconds: 0,
-              },
-              doneTime: todo.doneTime
-                ? {
-                    seconds: todo.doneTime.seconds,
-                    nanoseconds: 0,
-                  }
-                : null,
-            })
-          ),
-        };
-
-        await saveTaskData(user, taskDataToSave);
-      }
-    } catch (error) {
-      console.error("Login error", error);
-    }
-  };
+  // const handleOpenProfileDialog = () => {
+  //   if (!user) {
+  //     return;
+  //   }
+  //   setIsProfileDialogOpen(true);
+  // };
 
   const handleLogout = async () => {
     try {
       await logout();
       resetAnalytics();
       setFishesCount(0);
+      localStorage.clear();
+      await localforage.clear();
+      console.log("Successfully logged out and cleared all local data.");
     } catch (error) {
       console.error("Logout error", error);
     }
   };
 
   return (
-    <div className="relative">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="secondary"
-            size="icon"
-            onClick={user ? handleLogout : handleLogin}
-            className="rounded-full flex items-center gap-2"
-          >
-            {user ? (
-              <Avatar>
-                <AvatarImage
-                  src={user.photoURL || ""}
-                  alt={user.displayName || "User"}
-                />
-              </Avatar>
-            ) : (
-              <Avatar>
-                <AvatarFallback>
-                  <CircleUser className="h-5 w-5" />
-                </AvatarFallback>
-              </Avatar>
-            )}
-          </Button>
-        </DropdownMenuTrigger>
-        {user && (
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>
-              {user.displayName}
-              <br />
-              {user.email}
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem onClick={handleLogout}>
-              <LogOut />
-              &nbsp; 登出
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        )}
-      </DropdownMenu>
-    </div>
+    <>
+      {user ? (
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="secondary" size="roundedicon">
+                <Avatar>
+                  <AvatarImage
+                    src={user.photoURL || ""}
+                    alt={user.displayName || "User"}
+                  />
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>
+                {user.displayName}
+                <br />
+                {user.email}
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {/* <DropdownMenuItem onClick={handleOpenProfileDialog}>
+                <RefreshCcw />
+                &nbsp; 更新使用者資訊
+              </DropdownMenuItem> */}
+              <DropdownMenuItem onClick={handleLogout}>
+                <LogOut />
+                &nbsp; 登出
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {/* <ProfileDialog
+            isOpen={isProfileDialogOpen}
+            onClose={() => setIsProfileDialogOpen(false)}
+            onUpdate={updateUserProfile}
+            initialDisplayName={user.displayName || ""}
+          /> */}
+        </>
+      ) : (
+        <LoginForm />
+      )}
+    </>
   );
 };
 

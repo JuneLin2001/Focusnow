@@ -1,7 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import MovingModel from "./MovingModel";
 import { useAnalyticsStore } from "../../store/analyticsStore";
-import AnalyticsFetcher from "../../utils/AnalyticsFetcher";
 import * as THREE from "three";
 import FishModel from "./FishModel";
 import Sign from "./Sign";
@@ -9,6 +8,8 @@ import SignInstructions from "./SignInstructions";
 import FishesCountFetcher from "../../utils/FishesCountFetcher";
 import useAuthStore from "../../store/authStore";
 import { toast } from "react-toastify";
+import AnalyticsFetcher from "../../utils/AnalyticsFetcher";
+
 interface GamePageProps {
   fishesCount: number;
   setFishesCount: (count: number) => void;
@@ -26,7 +27,8 @@ const GamePage: React.FC<GamePageProps> = ({
   setPage,
 }) => {
   const position: [number, number, number] = useMemo(() => [80, -10, -30], []);
-  const { analyticsList, setAnalyticsList } = useAnalyticsStore();
+  const { analyticsList, setAnalyticsList, loadAnalyticsFromDB } =
+    useAnalyticsStore();
   const [last30DaysFocusDuration, setLast30DaysFocusDuration] =
     useState<number>(0);
   const [showInstructions, setShowInstructions] = useState(false);
@@ -79,6 +81,14 @@ const GamePage: React.FC<GamePageProps> = ({
     setLast30DaysFocusDuration(duration);
   }, [analyticsList]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await loadAnalyticsFromDB();
+    };
+
+    fetchData();
+  }, [loadAnalyticsFromDB]);
+
   const handleOpen = () => {
     if (!user) {
       toast.error("登入以查看場景資訊");
@@ -100,7 +110,6 @@ const GamePage: React.FC<GamePageProps> = ({
     <>
       <FishesCountFetcher />
       <AnalyticsFetcher onDataFetched={setAnalyticsList} />
-
       <group>
         <mesh position={position}>
           <boxGeometry args={[width, 5, depth]} />
