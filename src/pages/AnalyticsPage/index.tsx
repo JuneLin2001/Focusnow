@@ -4,7 +4,6 @@ import { UserAnalytics } from "../../types/type";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import DateSelector from "./DateSelector";
 import CompletedTodos from "./CompletedTodos";
-import AnalyticsFetcher from "../../utils/AnalyticsFetcher";
 import PomodoroPieChart from "./PomodoroPieChart";
 import ChartDisplay from "./ChartDisplay";
 import { Card } from "@/components/ui/card";
@@ -13,7 +12,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const AnalyticsPage = () => {
   const { filteredAnalytics, setFilteredAnalytics } = useAnalyticsStore();
-  const [analyticsData, setAnalyticsData] = useState<UserAnalytics[]>([]);
+  const [analyticsData] = useState<UserAnalytics[]>([]);
   const [filterType, setFilterType] = useState<"daily" | "weekly" | "monthly">(
     "daily"
   );
@@ -73,14 +72,6 @@ const AnalyticsPage = () => {
       setTotalFocusDuration(totalDuration);
     },
     [calculateDateRange, setFilteredAnalytics]
-  );
-
-  const handleDataFetched = useCallback(
-    (newAnalytics: UserAnalytics[]) => {
-      setAnalyticsData(newAnalytics);
-      filterAnalytics(newAnalytics);
-    },
-    [filterAnalytics]
   );
 
   useEffect(() => {
@@ -178,7 +169,6 @@ const AnalyticsPage = () => {
           </div>
         </div>
       </Card>
-      <AnalyticsFetcher onDataFetched={handleDataFetched} />
     </div>
   );
 };

@@ -17,6 +17,8 @@ import { Environment } from "@react-three/drei";
 import { ToastContainer } from "react-toastify";
 import settingStore from "./store/settingStore";
 import "react-toastify/dist/ReactToastify.css";
+import { QueryClient, QueryClientProvider } from "react-query";
+const queryClient = new QueryClient();
 
 const App: React.FC = () => {
   const setUser = useAuthStore((state) => state.setUser);
@@ -42,34 +44,36 @@ const App: React.FC = () => {
         draggable
         theme={themeMode === "light" ? "light" : "dark"}
       />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
+      <QueryClientProvider client={queryClient}>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
 
-        <Route
-          path="/game"
-          element={
-            <Canvas>
-              {/* <GamePage /> */}
-              <Environment preset="sunset" />
-              <Mainland position={[-16, 2, 0]} />
-              <OrbitControls />
-            </Canvas>
-          }
-        />
-        <Route path="/analytics" element={<AanalyticsPage />} />
-        {/* <Route path="/timer" element={<TimerPage />} /> */}
-        <Route
-          path="/*"
-          element={
-            <>
-              <Bounce />
-              <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-9xl">
-                error❌
-              </div>
-            </>
-          }
-        />
-      </Routes>
+          <Route
+            path="/game"
+            element={
+              <Canvas>
+                {/* <GamePage /> */}
+                <Environment preset="sunset" />
+                <Mainland position={[-16, 2, 0]} />
+                <OrbitControls />
+              </Canvas>
+            }
+          />
+          <Route path="/analytics" element={<AanalyticsPage />} />
+          {/* <Route path="/timer" element={<TimerPage />} /> */}
+          <Route
+            path="/*"
+            element={
+              <>
+                <Bounce />
+                <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-9xl">
+                  error❌
+                </div>
+              </>
+            }
+          />
+        </Routes>
+      </QueryClientProvider>
       {/* </ThemeProvider> */}
     </>
   );

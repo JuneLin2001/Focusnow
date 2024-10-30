@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import {
-  Html,
-  // GizmoHelper,
-  // GizmoViewport,
-} from "@react-three/drei";
+import { Html } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
 import GamePage from "../GamePage/index";
@@ -18,13 +14,13 @@ import { AlarmClock, ChartColumn } from "lucide-react";
 import InitialInstructions from "./InitialInstructions";
 import useAuthStore from "../../store/authStore";
 import * as THREE from "three";
-// import DropFish from "./DropFish";
 import ToggleBgm from "@/components/ToggleBgm";
 import { Progress } from "@/components/ui/progress";
 import usesettingStore from "@/store/settingStore";
 import { toast } from "react-toastify";
 import { Card } from "@/components/ui/card";
 import AsyncModels from "./AsyncModels";
+import useFetchAnalytics from "../../hooks/useFetchAnalytics"; // 引入 useFetchAnalytics
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -40,7 +36,6 @@ const LandingPage = () => {
   const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
   const { user } = useAuthStore();
   const loadUserSettings = usesettingStore((state) => state.loadUserSettings);
-
   const fishesCount = useFishesCountStore((state) => state.FishesCount);
   const updateFishesCount = useFishesCountStore(
     (state) => state.updateFishesCount
@@ -52,6 +47,9 @@ const LandingPage = () => {
   const [showInstructions, setShowInstructions] = useState(true);
   const [instructionHovered, setInstructionHovered] = useState(false);
   const [isFishLoading, setIsFishLoading] = useState(false);
+
+  // 使用 useFetchAnalytics
+  const { isLoading: isAnalyticsLoading } = useFetchAnalytics();
 
   useEffect(() => {
     const hasSeenInitialInstructions = localStorage.getItem(
@@ -122,12 +120,18 @@ const LandingPage = () => {
     }
   }, [user, loadUserSettings]);
 
-  if (loading) {
+  // 整合 Loading 和分析數據的加載狀態
+  if (loading || isAnalyticsLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center h-screen z-50 bg-black bg-opacity-75">
         <div className="w-full max-w-lg px-4">
-          <p className="text-center text-white mb-4">Loading... {progress}%</p>
-          <Progress value={progress} />
+          <p className="text-center text-white mb-4">
+            Loading... {loading ? progress : 0}%
+          </p>
+          <Progress value={loading ? progress : 0} />
+          {isAnalyticsLoading && (
+            <p className="text-center text-white mt-4">正在加載分析數據...</p>
+          )}
         </div>
       </div>
     );
@@ -212,10 +216,6 @@ const LandingPage = () => {
           lookAtPosition={lookAtPosition}
           isCompleted={isCompleted}
         />
-        {/* <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
-          <GizmoViewport labelColor="white" axisHeadScale={1} />
-        </GizmoHelper> */}
-
         {instructionHovered && (
           <Html position={[115, 70, 145]} center>
             <Card className="w-36 h-10 flex justify-center items-center p-2">

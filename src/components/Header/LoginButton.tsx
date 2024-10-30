@@ -7,7 +7,6 @@ import {
   // RefreshCcw
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import localforage from "localforage";
 
 import {
   DropdownMenu,
@@ -43,9 +42,6 @@ const LoginButton = () => {
       await logout();
       resetAnalytics();
       setFishesCount(0);
-      localStorage.clear();
-      await localforage.clear();
-      console.log("Successfully logged out and cleared all local data.");
     } catch (error) {
       console.error("Logout error", error);
     }

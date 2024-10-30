@@ -8,7 +8,6 @@ import SignInstructions from "./SignInstructions";
 import FishesCountFetcher from "../../utils/FishesCountFetcher";
 import useAuthStore from "../../store/authStore";
 import { toast } from "react-toastify";
-import AnalyticsFetcher from "../../utils/AnalyticsFetcher";
 
 interface GamePageProps {
   fishesCount: number;
@@ -27,8 +26,7 @@ const GamePage: React.FC<GamePageProps> = ({
   setPage,
 }) => {
   const position: [number, number, number] = useMemo(() => [80, -10, -30], []);
-  const { analyticsList, setAnalyticsList, loadAnalyticsFromDB } =
-    useAnalyticsStore();
+  const { analyticsList } = useAnalyticsStore(); // 從 Zustand store 中獲取 analyticsList
   const [last30DaysFocusDuration, setLast30DaysFocusDuration] =
     useState<number>(0);
   const [showInstructions, setShowInstructions] = useState(false);
@@ -81,14 +79,6 @@ const GamePage: React.FC<GamePageProps> = ({
     setLast30DaysFocusDuration(duration);
   }, [analyticsList]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await loadAnalyticsFromDB();
-    };
-
-    fetchData();
-  }, [loadAnalyticsFromDB]);
-
   const handleOpen = () => {
     if (!user) {
       toast.error("登入以查看場景資訊");
@@ -109,7 +99,6 @@ const GamePage: React.FC<GamePageProps> = ({
   return (
     <>
       <FishesCountFetcher />
-      <AnalyticsFetcher onDataFetched={setAnalyticsList} />
       <group>
         <mesh position={position}>
           <boxGeometry args={[width, 5, depth]} />
