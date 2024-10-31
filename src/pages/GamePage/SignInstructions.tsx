@@ -5,6 +5,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Html } from "@react-three/drei";
+import { CircleAlert } from "lucide-react";
 
 interface SignInstructionsProps {
   showInstructions: boolean;
@@ -23,7 +24,14 @@ const SignInstructions: React.FC<SignInstructionsProps> = ({
     <Html>
       <Dialog open={showInstructions} onOpenChange={onClose}>
         <DialogContent>
-          <DialogTitle>場景資訊</DialogTitle>
+          <div className="flex items-center gap-2">
+            <div className="shrink-0 rounded-full bg-blue-50 p-3 dark:bg-blue-900">
+              <CircleAlert className="size-6 text-blue-600 dark:text-blue-200" />
+            </div>
+            <DialogTitle className="flex items-center m-0">
+              場景資訊
+            </DialogTitle>
+          </div>
           <DialogDescription variant="sign">
             您過去 30 天累積了 {last30DaysFocusDuration} 分鐘的專注時間。
             <br />
@@ -34,7 +42,7 @@ const SignInstructions: React.FC<SignInstructionsProps> = ({
               <>
                 達到30隻的上限囉！
                 <br />
-                您真是一位很會善用時間專注的人，Focusnow 非常感謝您的使用！
+                Focusnow 非常感謝您的使用！
               </>
             ) : (
               ` 目前上限是30隻！`
