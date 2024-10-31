@@ -18,10 +18,12 @@ interface TimerState {
   startTime: Timestamp | null;
   endTime: Timestamp | null;
   rotationCount: number;
+  maxRotationCount: number;
   worker: Worker | null;
   setTimer: (minutes: number) => void;
   setInputMinutes: (minutes: number) => void;
   setBreakMinutes: (minutes: number) => void;
+  setMaxRotationCount: (count: number) => void;
   startTimer: () => void;
   resumeTimer: () => void;
   resetTimer: () => void;
@@ -82,7 +84,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
       }));
     }
 
-    if (get().rotationCount >= 4) {
+    if (get().rotationCount >= get().maxRotationCount) {
       set({
         isPaused: true,
         mode: "work",
@@ -120,6 +122,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
     startTime: null,
     endTime: null,
     rotationCount: 0,
+    maxRotationCount: 4,
     showLoginButton: false,
     worker: null,
     updateTitle,
@@ -133,6 +136,8 @@ export const useTimerStore = create<TimerState>((set, get) => {
     setInputMinutes: (minutes) => set({ inputMinutes: minutes }),
 
     setBreakMinutes: (minutes) => set({ breakMinutes: minutes }),
+
+    setMaxRotationCount: (count: number) => set({ maxRotationCount: count }),
 
     startTimer: () => {
       if (!worker) {

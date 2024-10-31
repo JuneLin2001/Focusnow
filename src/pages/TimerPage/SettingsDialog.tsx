@@ -25,7 +25,7 @@ const musicOptions = [
   },
   {
     value:
-      "/yt5s.io - 【白噪音】療癒海浪聲 讓你放空and放鬆 _ 消除疲勞 _ 解壓 _ 舒眠 _ 冥想 _ ASMR _ 讀書 _ 學習幫助 _ 睡眠 _ 放空 │relaxing│sleeping (320 kbps)_1.mp3",
+      "/yt5s.io - 【白噪音】療癒海浪聲 讓你放空and放鬆 _ 消除疲勞 _ 解壓 _ 睡眠 _ 放空 │relaxing│sleeping (320 kbps)_1.mp3",
     label: "【白噪音】療癒海浪聲",
   },
 ];
@@ -36,18 +36,26 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
   isPaused,
 }) => {
   const { isPlaying, toggleBgm, setBgmSource } = useSettingStore();
-  const { breakMinutes, setBreakMinutes } = useTimerStore();
+  const {
+    breakMinutes,
+    maxRotationCount,
+    setBreakMinutes,
+    setMaxRotationCount,
+  } = useTimerStore();
+
   const [selectedMusic, setSelectedMusic] = useState<string>(
     musicOptions[0].value
   );
   const [breakTime, setBreakTime] = useState<number>(breakMinutes);
+  const [rotationCount, setRotationCount] = useState<number>(maxRotationCount); // 新增狀態
 
   useEffect(() => {
     if (open) {
       setSelectedMusic(musicOptions[0].value);
       setBreakTime(breakMinutes);
+      setRotationCount(maxRotationCount); // 設置初始值
     }
-  }, [open, breakMinutes]);
+  }, [open, breakMinutes, maxRotationCount]);
 
   const handleMusicChange = (value: string) => {
     setSelectedMusic(value);
@@ -61,6 +69,11 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
   const handleSliderChange = (value: number[]) => {
     setBreakTime(value[0]);
     setBreakMinutes(value[0]);
+  };
+
+  const handleRotationCountChange = (value: number[]) => {
+    setRotationCount(value[0]); // 更新當前的旋轉次數
+    setMaxRotationCount(value[0]); // 設置最大旋轉次數
   };
 
   return (
@@ -87,6 +100,20 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
           onValueChange={handleSliderChange}
           min={1}
           max={30}
+          step={1}
+          disabled={!isPaused}
+        />
+        <Label className="mt-4">
+          {" "}
+          {isPaused
+            ? `番茄鐘進行輪數：${rotationCount}`
+            : `目前番茄鐘的輪數上限是 ${rotationCount} 輪，專注狀態時不可編輯`}
+        </Label>
+        <DualRangeSlider
+          value={[rotationCount]}
+          onValueChange={handleRotationCountChange}
+          min={1}
+          max={10}
           step={1}
           disabled={!isPaused}
         />
