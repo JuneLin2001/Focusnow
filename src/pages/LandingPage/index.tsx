@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Html } from "@react-three/drei";
+import { Html, useProgress } from "@react-three/drei";
 import TimerPage from "../TimerPage/index";
 import AnalyticsPage from "../AnalyticsPage";
 import GamePage from "../GamePage/index";
@@ -21,6 +21,25 @@ import { toast } from "react-toastify";
 import { Card } from "@/components/ui/card";
 import AsyncModels from "./AsyncModels";
 import useFetchAnalytics from "../../hooks/useFetchAnalytics";
+
+const Loader = () => {
+  const { progress } = useProgress();
+
+  return (
+    <>
+      <Html center>
+        <div className="fixed inset-0 flex items-center justify-center h-screen z-50 bg-black bg-opacity-75">
+          <div className="w-full max-w-lg px-4">
+            <p className="text-center text-white mb-4">
+              Loading... {Math.round(progress)}%
+            </p>
+            <Progress value={progress} />
+          </div>
+        </div>
+      </Html>
+    </>
+  );
+};
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -48,18 +67,13 @@ const LandingPage = () => {
   const [instructionHovered, setInstructionHovered] = useState(false);
   const [isFishLoading, setIsFishLoading] = useState(false);
 
-  const { isLoading: isAnalyticsLoading } = useFetchAnalytics();
+  useFetchAnalytics();
 
   useEffect(() => {
     const hasSeenInitialInstructions = localStorage.getItem(
       "hasSeenInitialInstructions"
     );
-
-    if (hasSeenInitialInstructions === "true") {
-      setShowInstructions(false);
-    } else {
-      setShowInstructions(true);
-    }
+    setShowInstructions(hasSeenInitialInstructions !== "true");
   }, []);
 
   const handleCloseInstructions = () => {
@@ -68,30 +82,12 @@ const LandingPage = () => {
     setPage(null);
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prevProgress) => {
-        if (prevProgress < 100) {
-          return prevProgress + 10;
-        } else {
-          clearInterval(interval);
-          return 100;
-        }
-      });
-    }, 300);
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-  }, []);
-
   const handleDropFish = async () => {
     if (user) {
       if (fishesCount > 0) {
         const randomX = Math.random() * (175 - -15) + -15;
         const randomZ = Math.random() * (90 - -150) + -150;
         setFishPosition(new THREE.Vector3(randomX, -5.5, randomZ));
-
         setIsFishLoading(true);
         await updateFishesCount(-1);
         setIsFishLoading(false);
@@ -119,7 +115,32 @@ const LandingPage = () => {
     }
   }, [user, loadUserSettings]);
 
-  if (loading || isAnalyticsLoading) {
+  const handleComplete = () => {
+    setIsCompleted(true);
+  };
+
+  const handleShowInitialInstructions = () => {
+    setShowInstructions(true);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prevProgress) => {
+        if (prevProgress < 100) {
+          return prevProgress + 10;
+        } else {
+          clearInterval(interval);
+          return 100;
+        }
+      });
+    }, 300);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  }, []);
+
+  if (loading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center h-screen z-50 bg-black bg-opacity-75">
         <div className="w-full max-w-lg px-4">
@@ -131,14 +152,6 @@ const LandingPage = () => {
       </div>
     );
   }
-
-  const handleComplete = () => {
-    setIsCompleted(true);
-  };
-
-  const handleShowInitialInstructions = () => {
-    setShowInstructions(true);
-  };
 
   return (
     <>
@@ -166,17 +179,19 @@ const LandingPage = () => {
       )}
 
       <Canvas className="z-0">
-        <AsyncModels
-          page={page}
-          instructionHovered={instructionHovered}
-          handleShowInitialInstructions={handleShowInitialInstructions}
-          setInstructionHovered={setInstructionHovered}
-          themeMode={themeMode}
-          isFishLoading={isFishLoading}
-          handleDropFish={handleDropFish}
-          fishPosition={fishPosition}
-          fishesCount={fishesCount}
-        />
+        <Suspense fallback={<Loader />}>
+          <AsyncModels
+            page={page}
+            instructionHovered={instructionHovered}
+            handleShowInitialInstructions={handleShowInitialInstructions}
+            setInstructionHovered={setInstructionHovered}
+            themeMode={themeMode}
+            isFishLoading={isFishLoading}
+            handleDropFish={handleDropFish}
+            fishPosition={fishPosition}
+            fishesCount={fishesCount}
+          />
+        </Suspense>
         <GamePage
           fishesCount={fishesCount}
           setFishesCount={updateFishesCount}

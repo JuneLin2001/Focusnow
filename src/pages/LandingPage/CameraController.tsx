@@ -6,7 +6,7 @@ import { OrbitControls } from "@react-three/drei";
 interface CameraControllerProps {
   targetPosition: [number, number, number];
   lookAtPosition?: [number, number, number];
-  isCompleted: boolean;
+  isCompleted?: boolean;
 }
 
 const CameraController: React.FC<CameraControllerProps> = ({
