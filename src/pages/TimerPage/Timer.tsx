@@ -42,6 +42,7 @@ const Timer: React.FC<TimerProps> = ({
     setInputMinutes,
     setTimer,
     showLoginButton,
+    rotationCount,
   } = useTimerStore();
 
   const { themeMode } = settingStore();
@@ -146,6 +147,15 @@ const Timer: React.FC<TimerProps> = ({
           })}
         >
           <div className="flex flex-col justify-center items-center h-full w-full">
+            {!isPaused && (
+              <div
+                className="absolute top-3/4 left-1/2 transform -translate-x-1/2 text-white py-1 px-3 rounded-full text-center"
+                style={{ backgroundColor: pathColor }}
+              >
+                第 {rotationCount + 1} 輪
+              </div>
+            )}
+
             <SettingsDialog
               onClose={handleCloseSettingsDialog}
               open={openSettingsDialog}

@@ -22,7 +22,8 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
   setPage,
   setTargetPosition,
 }) => {
-  const { secondsLeft, inputMinutes, breakMinutes, mode } = useTimerStore();
+  const { secondsLeft, inputMinutes, breakMinutes, mode, rotationCount } =
+    useTimerStore();
   const { themeMode } = settingStore();
   const [isPipActive, setIsPipActive] = useState(false);
 
@@ -76,6 +77,10 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
           0
         );
 
+        ctx.font = `${pipWindowWidth / 16}px Arial`;
+        ctx.fillStyle = themeMode === "dark" ? "#bbb" : "#333";
+        ctx.fillText(`第 ${rotationCount + 1} 輪`, 0, pipWindowWidth / 4);
+
         ctx.rotate(-Math.PI / 2);
 
         ctx.beginPath();
@@ -95,7 +100,7 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
         ctx.translate(-pipWindowWidth / 2, -pipWindowWidth / 2);
       }
     }
-  }, [themeMode, secondsLeft, percentage, pathColor]);
+  }, [themeMode, secondsLeft, rotationCount, percentage, pathColor]);
 
   const enterPiP = useCallback(async () => {
     if (!document.pictureInPictureEnabled) {

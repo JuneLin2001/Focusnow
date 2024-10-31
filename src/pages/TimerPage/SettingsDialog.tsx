@@ -86,7 +86,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
           value={[breakTime]}
           onValueChange={handleSliderChange}
           min={1}
-          max={120}
+          max={30}
           step={1}
           disabled={!isPaused}
         />

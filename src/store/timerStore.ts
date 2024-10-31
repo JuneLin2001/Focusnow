@@ -76,9 +76,11 @@ export const useTimerStore = create<TimerState>((set, get) => {
     const nextMinutes =
       nextMode === "work" ? state.inputMinutes : state.breakMinutes;
 
-    set((prevState) => ({
-      rotationCount: prevState.rotationCount + 1,
-    }));
+    if (state.mode === "break") {
+      set((prevState) => ({
+        rotationCount: prevState.rotationCount + 1,
+      }));
+    }
 
     if (get().rotationCount >= 4) {
       set({
@@ -90,8 +92,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
         rotationCount: 0,
       });
 
-      sendBrowserNotification("計時結束", "恭喜您已完成四輪工作與休息的循環。");
-
+      sendBrowserNotification("計時結束", "恭喜您已完成四輪工作與休息的循環！");
       resetTitle();
       return;
     }
@@ -107,7 +108,6 @@ export const useTimerStore = create<TimerState>((set, get) => {
 
     get().checkEndCondition(true);
     get().startTimer();
-
     updateTitle();
   };
 
