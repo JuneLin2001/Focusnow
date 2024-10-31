@@ -13,9 +13,15 @@ import { toast } from "react-toastify";
 
 interface TimerDisplayProps {
   page: string | null;
+  setPage: (newPage: "timer" | "analytics" | "Setting" | null) => void;
+  setTargetPosition: (position: [number, number, number]) => void;
 }
 
-const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
+const TimerDisplay: React.FC<TimerDisplayProps> = ({
+  page,
+  setPage,
+  setTargetPosition,
+}) => {
   const { secondsLeft, inputMinutes, breakMinutes, mode } = useTimerStore();
   const { themeMode } = settingStore();
   const [isPipActive, setIsPipActive] = useState(false);
@@ -57,7 +63,6 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
         ctx.lineWidth = 24;
         ctx.stroke();
 
-        // 設定文本樣式
         ctx.fillStyle = themeMode === "dark" ? "#fff" : "#000";
         ctx.font = `${pipWindowWidth / 8}px Arial`;
         ctx.textAlign = "center";
@@ -180,8 +185,6 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
     };
   }, [drawOnCanvas]);
 
-  const isPiPSupported = document.pictureInPictureEnabled;
-
   return (
     <>
       <canvas
@@ -191,8 +194,14 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ page }) => {
         style={{ display: "none" }}
       />
 
-      {!isPipActive && !isPiPSupported ? (
-        <Card className="fixed bottom-40 right-6 p-4 bg-white opacity-80 z-10 w-36">
+      {page === null && percentage < 100 ? (
+        <Card
+          className="fixed bottom-40 right-6 p-4 bg-white opacity-80 z-10 w-36 cursor-pointer"
+          onClick={() => {
+            setTargetPosition([-50, 12, -150]);
+            setPage("timer");
+          }}
+        >
           <CircularProgressbarWithChildren
             value={percentage}
             styles={buildStyles({
