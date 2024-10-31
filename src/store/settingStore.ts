@@ -59,7 +59,6 @@ const useSettingStore = create<SettingStore>((set) => ({
   saveUserSettings: async () => {
     const user = useAuthStore.getState().user;
     if (!user || !user.uid) {
-      console.error("User is not logged in or user.uid is missing");
       return;
     }
 
