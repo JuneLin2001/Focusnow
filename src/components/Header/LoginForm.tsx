@@ -35,11 +35,17 @@ const LoginForm = () => {
 
   const handleEmailRegister = async () => {
     try {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        toast.error("電子郵件格式不正確，請重新檢查");
+        return;
+      }
       const result = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
+
       setUser(result.user);
       hideLogin();
       await saveTaskDataFromLocalStorage(result.user);
@@ -49,7 +55,7 @@ const LoginForm = () => {
       if (error instanceof FirebaseError) {
         switch (error.code) {
           case "auth/invalid-email":
-            toast.error("無效的電子郵件格式，請重新檢查");
+            toast.error("電子郵件格式不正確，請重新檢查");
             break;
           case "auth/weak-password":
             toast.error("密碼過於簡單，請至少輸入 6 個字符");
@@ -83,7 +89,7 @@ const LoginForm = () => {
             toast.error("密碼錯誤，請重新檢查");
             break;
           case "auth/invalid-email":
-            toast.error("無效的電子郵件格式，請重新檢查");
+            toast.error("電子郵件格式不正確，請重新檢查");
             break;
           default:
             toast.error("登入失敗，請稍後再試");
