@@ -11,7 +11,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const AnalyticsPage = () => {
   const { filteredAnalytics, setFilteredAnalytics, analyticsList } =
-    useAnalyticsStore(); // 直接獲取快取資料
+    useAnalyticsStore();
   const [filterType, setFilterType] = useState<"daily" | "weekly" | "monthly">(
     "daily"
   );
@@ -46,7 +46,7 @@ const AnalyticsPage = () => {
   }, [filterType, currentDate]);
 
   const filterAnalytics = useCallback(() => {
-    if (!analyticsList || analyticsList.length === 0) return; // 確保資料存在
+    if (!analyticsList || analyticsList.length === 0) return;
     const { start, end } = calculateDateRange();
 
     const filteredAllData = analyticsList.filter((analytics) => {
@@ -59,7 +59,6 @@ const AnalyticsPage = () => {
       );
     });
 
-    // 按日期排序資料（假設從新到舊排列）
     const sortedData = filteredAllData.sort((a, b) =>
       dayjs.unix(b.startTime.seconds).diff(dayjs.unix(a.startTime.seconds))
     );

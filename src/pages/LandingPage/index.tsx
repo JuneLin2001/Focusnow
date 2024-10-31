@@ -20,7 +20,7 @@ import usesettingStore from "@/store/settingStore";
 import { toast } from "react-toastify";
 import { Card } from "@/components/ui/card";
 import AsyncModels from "./AsyncModels";
-import useFetchAnalytics from "../../hooks/useFetchAnalytics"; // 引入 useFetchAnalytics
+import useFetchAnalytics from "../../hooks/useFetchAnalytics";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -48,7 +48,6 @@ const LandingPage = () => {
   const [instructionHovered, setInstructionHovered] = useState(false);
   const [isFishLoading, setIsFishLoading] = useState(false);
 
-  // 使用 useFetchAnalytics
   const { isLoading: isAnalyticsLoading } = useFetchAnalytics();
 
   useEffect(() => {
@@ -120,7 +119,6 @@ const LandingPage = () => {
     }
   }, [user, loadUserSettings]);
 
-  // 整合 Loading 和分析數據的加載狀態
   if (loading || isAnalyticsLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center h-screen z-50 bg-black bg-opacity-75">
@@ -129,9 +127,6 @@ const LandingPage = () => {
             Loading... {loading ? progress : 0}%
           </p>
           <Progress value={loading ? progress : 0} />
-          {isAnalyticsLoading && (
-            <p className="text-center text-white mt-4">正在加載分析數據...</p>
-          )}
         </div>
       </div>
     );
@@ -224,7 +219,11 @@ const LandingPage = () => {
           </Html>
         )}
       </Canvas>
-      {page === null && <TimerDisplay page={"Timer"} />}
+      <TimerDisplay
+        page={page}
+        setPage={setPage}
+        setTargetPosition={setTargetPosition}
+      />
       <ToggleBgm />
       <InitialInstructions
         showInstructions={showInstructions}
