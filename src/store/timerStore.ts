@@ -3,9 +3,9 @@ import { Timestamp } from "firebase/firestore";
 import { saveTaskData } from "../firebase/firebaseService";
 import useAuthStore from "./authStore";
 import { useTodoStore } from "./todoStore";
-import { sendBrowserNotification } from "../utils/NotificationService";
+import { sendBrowserNotification } from "../utils/notificationService";
 import { useFishesCountStore } from "./fishesCountStore";
-import FishesCountFetcher from "../utils/FishesCountFetcher";
+import FishesCountFetcher from "../utils/fishesCountFetcher";
 import { WorkerResponse } from "../types/type";
 import { toast } from "react-toastify";
 

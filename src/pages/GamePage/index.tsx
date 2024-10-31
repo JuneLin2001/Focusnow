@@ -5,7 +5,7 @@ import * as THREE from "three";
 import FishModel from "./FishModel";
 import Sign from "./Sign";
 import SignInstructions from "./SignInstructions";
-import FishesCountFetcher from "../../utils/FishesCountFetcher";
+import FishesCountFetcher from "../../utils/fishesCountFetcher";
 import useAuthStore from "../../store/authStore";
 import { toast } from "react-toastify";
 
@@ -26,7 +26,7 @@ const GamePage: React.FC<GamePageProps> = ({
   setPage,
 }) => {
   const position: [number, number, number] = useMemo(() => [80, -10, -30], []);
-  const { analyticsList } = useAnalyticsStore(); // 從 Zustand store 中獲取 analyticsList
+  const { analyticsList } = useAnalyticsStore();
   const [last30DaysFocusDuration, setLast30DaysFocusDuration] =
     useState<number>(0);
   const [showInstructions, setShowInstructions] = useState(false);

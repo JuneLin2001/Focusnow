@@ -6,7 +6,7 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 import { useTimerStore } from "../../store/timerStore";
 import LoginButton from "../../components/Header/LoginButton";
-import { requestNotificationPermission } from "../../utils/NotificationService";
+import { requestNotificationPermission } from "../../utils/notificationService";
 import { Button } from "@/components/ui/button";
 import SettingsDialog from "./SettingsDialog";
 import { Plus, Minus, Settings, X } from "lucide-react";
