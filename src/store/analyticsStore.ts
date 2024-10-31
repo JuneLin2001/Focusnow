@@ -7,7 +7,7 @@ interface AnalyticsState {
   totalFocusDuration: number;
   startDate: string;
   endDate: string;
-  setAnalyticsList: (data: UserAnalytics[]) => void; // 新增 setAnalyticsList
+  setAnalyticsList: (data: UserAnalytics[]) => void;
   setFilteredAnalytics: (data: UserAnalytics[]) => void;
   setTotalFocusDuration: (duration: number) => void;
   reset: () => void;
@@ -21,7 +21,7 @@ export const useAnalyticsStore = create<AnalyticsState>((set) => ({
   endDate: "",
 
   setAnalyticsList: (data: UserAnalytics[]) => {
-    set({ analyticsList: data, filteredAnalytics: data }); // 設定 analyticsList 和 filteredAnalytics
+    set({ analyticsList: data, filteredAnalytics: data });
   },
 
   setFilteredAnalytics: (data: UserAnalytics[]) => {
