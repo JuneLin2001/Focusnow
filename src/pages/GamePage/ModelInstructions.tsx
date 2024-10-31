@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-
+import { Info } from "lucide-react";
 interface ModelInstructionsProps {
   date: string;
   todoTitles: string[];
@@ -29,7 +29,14 @@ const ModelInstructions: React.FC<ModelInstructionsProps> = ({
       <Dialog open={open} onOpenChange={onClose}>
         <DialogTrigger asChild></DialogTrigger>
         <DialogContent>
-          <DialogTitle>詳細資料</DialogTitle>
+          <div className="flex items-center gap-2">
+            <div className="rounded-full bg-blue-50 p-3 dark:bg-blue-900">
+              <Info className="size-6 text-blue-600 dark:text-blue-200" />
+            </div>
+            <DialogTitle className="flex items-center m-0">
+              詳細資料
+            </DialogTitle>
+          </div>{" "}
           <DialogDescription variant="sign">
             {`這隻企鵝是你在 ${date} 專注了 ${focusDuration} 分鐘，而來到這裡的`}
             <br />

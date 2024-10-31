@@ -5,7 +5,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Html } from "@react-three/drei";
-import { CircleAlert } from "lucide-react";
+import { Info } from "lucide-react";
 
 interface SignInstructionsProps {
   showInstructions: boolean;
@@ -25,8 +25,8 @@ const SignInstructions: React.FC<SignInstructionsProps> = ({
       <Dialog open={showInstructions} onOpenChange={onClose}>
         <DialogContent>
           <div className="flex items-center gap-2">
-            <div className="shrink-0 rounded-full bg-blue-50 p-3 dark:bg-blue-900">
-              <CircleAlert className="size-6 text-blue-600 dark:text-blue-200" />
+            <div className="rounded-full bg-blue-50 p-3 dark:bg-blue-900">
+              <Info className="size-6 text-blue-600 dark:text-blue-200" />
             </div>
             <DialogTitle className="flex items-center m-0">
               場景資訊
