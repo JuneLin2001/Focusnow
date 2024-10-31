@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TimerInstruction from "./TimerInstruction";
+import { toast } from "react-toastify";
 
 interface TimerPageProps {
   page: string | null;
@@ -28,8 +29,18 @@ const TimerPage: React.FC<TimerPageProps> = ({
 
   useEffect(() => {
     const hasSeenInstructions = localStorage.getItem("hasSeenInstructions");
-    if (!hasSeenInstructions) {
+
+    if (hasSeenInstructions === null) {
       setShowInstructions(true);
+    } else {
+      const isBoolean =
+        hasSeenInstructions === "true" || hasSeenInstructions === "false";
+      if (!isBoolean) {
+        toast.error("Invalid value for hasSeenInstructions");
+        setShowInstructions(false);
+      } else {
+        setShowInstructions(hasSeenInstructions === "false");
+      }
     }
   }, []);
 
