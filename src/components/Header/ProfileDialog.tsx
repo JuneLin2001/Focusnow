@@ -1,11 +1,4 @@
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "react-toastify";
@@ -30,7 +23,7 @@ const ProfileDialog = ({
       await onUpdate(newDisplayName);
       toast.success("使用者名稱已更新！");
       onClose();
-      setNewDisplayName(""); // 清空顯示名稱
+      setNewDisplayName("");
     } catch (error) {
       toast.error("更新失敗，請稍後再試");
       console.error("Profile update error", error);
@@ -38,26 +31,29 @@ const ProfileDialog = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>更改使用者名稱</DialogTitle>
-        </DialogHeader>
-        <Input
-          placeholder="新名稱"
-          value={newDisplayName}
-          onChange={(e) => setNewDisplayName(e.target.value)}
-        />
-        <DialogFooter>
-          <Button variant="default" onClick={handleProfileUpdate}>
-            更新
-          </Button>
-          <Button variant="link" onClick={onClose}>
-            取消
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    isOpen && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+        <div className="bg-white dark:bg-black/30 rounded-lg shadow-lg max-w-md w-full p-6">
+          <div className="mb-4 text-lg font-semibold dark:text-white">
+            更改使用者名稱
+          </div>
+          <Input
+            placeholder="新名稱"
+            value={newDisplayName}
+            onChange={(e) => setNewDisplayName(e.target.value)}
+            className="mb-4"
+          />
+          <div className="flex justify-end gap-2">
+            <Button variant="timerGhost" onClick={onClose}>
+              取消
+            </Button>
+            <Button variant="timerGhost" onClick={handleProfileUpdate}>
+              更新
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
   );
 };
 
