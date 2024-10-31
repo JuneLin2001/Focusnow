@@ -75,7 +75,6 @@ const AnalyticsPage = () => {
     setTotalFocusDuration(totalDuration);
   }, [calculateDateRange, setFilteredAnalytics, analyticsList]);
 
-  // 確保在快取資料改變時進行篩選
   useEffect(() => {
     filterAnalytics();
   }, [filterType, currentDate, filterAnalytics]);

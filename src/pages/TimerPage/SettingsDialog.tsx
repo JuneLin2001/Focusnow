@@ -47,13 +47,13 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
     musicOptions[0].value
   );
   const [breakTime, setBreakTime] = useState<number>(breakMinutes);
-  const [rotationCount, setRotationCount] = useState<number>(maxRotationCount); // 新增狀態
+  const [rotationCount, setRotationCount] = useState<number>(maxRotationCount);
 
   useEffect(() => {
     if (open) {
       setSelectedMusic(musicOptions[0].value);
       setBreakTime(breakMinutes);
-      setRotationCount(maxRotationCount); // 設置初始值
+      setRotationCount(maxRotationCount);
     }
   }, [open, breakMinutes, maxRotationCount]);
 
@@ -72,8 +72,8 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
   };
 
   const handleRotationCountChange = (value: number[]) => {
-    setRotationCount(value[0]); // 更新當前的旋轉次數
-    setMaxRotationCount(value[0]); // 設置最大旋轉次數
+    setRotationCount(value[0]);
+    setMaxRotationCount(value[0]);
   };
 
   return (

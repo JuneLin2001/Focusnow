@@ -1,4 +1,3 @@
-// Model.tsx
 import React from "react";
 import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";

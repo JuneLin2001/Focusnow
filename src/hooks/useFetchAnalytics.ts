@@ -31,20 +31,19 @@ const useFetchAnalytics = () => {
           ...doc.data(),
         })) as UserAnalytics[];
 
-        setAnalyticsList(data); // 更新 Zustand 狀態
-        setIsLoading(false); // 完成加載
+        setAnalyticsList(data);
+        setIsLoading(false);
       },
       (error) => {
         console.error("Error fetching analytics:", error);
-        setIsLoading(false); // 發生錯誤時也停止加載
+        setIsLoading(false);
       }
     );
 
-    // 清除訂閱
     return () => unsubscribe();
   }, [user, setAnalyticsList]);
 
-  return { isLoading }; // 回傳 isLoading 狀態
+  return { isLoading };
 };
 
 export default useFetchAnalytics;

@@ -1,5 +1,3 @@
-// src/types/types.ts
-
 import { Timestamp } from "firebase/firestore";
 
 export interface Todos {
