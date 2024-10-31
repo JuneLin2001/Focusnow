@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 import settingStore from "./store/settingStore";
 import "react-toastify/dist/ReactToastify.css";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
@@ -73,6 +74,7 @@ const App: React.FC = () => {
             }
           />
         </Routes>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
       {/* </ThemeProvider> */}
     </>

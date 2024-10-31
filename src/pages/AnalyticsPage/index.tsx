@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
 import dayjs from "dayjs";
-import { UserAnalytics } from "../../types/type";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import DateSelector from "./DateSelector";
 import CompletedTodos from "./CompletedTodos";
@@ -11,8 +10,8 @@ import { ChartPie, ChartColumn, ListChecks } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const AnalyticsPage = () => {
-  const { filteredAnalytics, setFilteredAnalytics } = useAnalyticsStore();
-  const [analyticsData] = useState<UserAnalytics[]>([]);
+  const { filteredAnalytics, setFilteredAnalytics, analyticsList } =
+    useAnalyticsStore(); // 直接獲取快取資料
   const [filterType, setFilterType] = useState<"daily" | "weekly" | "monthly">(
     "daily"
   );
@@ -46,39 +45,36 @@ const AnalyticsPage = () => {
     return { start, end };
   }, [filterType, currentDate]);
 
-  const filterAnalytics = useCallback(
-    (analyticsList: UserAnalytics[]) => {
-      const { start, end } = calculateDateRange();
+  const filterAnalytics = useCallback(() => {
+    if (!analyticsList || analyticsList.length === 0) return; // 確保資料存在
+    const { start, end } = calculateDateRange();
 
-      const filteredAllData = analyticsList.filter((analytics) => {
-        const analyticsDate = dayjs.unix(analytics.startTime.seconds);
-        return (
-          analyticsDate.isSame(start, "day") ||
-          analyticsDate.isSame(end, "day") ||
-          (analyticsDate.isAfter(start, "day") &&
-            analyticsDate.isBefore(end, "day"))
-        );
-      });
+    const filteredAllData = analyticsList.filter((analytics) => {
+      const analyticsDate = dayjs.unix(analytics.startTime.seconds);
+      return (
+        analyticsDate.isSame(start, "day") ||
+        analyticsDate.isSame(end, "day") ||
+        (analyticsDate.isAfter(start, "day") &&
+          analyticsDate.isBefore(end, "day"))
+      );
+    });
 
-      setFilteredAnalytics(filteredAllData);
+    setFilteredAnalytics(filteredAllData);
 
-      const totalDuration = filteredAllData.reduce((acc, analytics) => {
-        if (analytics.pomodoroCompleted) {
-          return acc + analytics.focusDuration;
-        }
-        return acc;
-      }, 0);
+    const totalDuration = filteredAllData.reduce((acc, analytics) => {
+      if (analytics.pomodoroCompleted) {
+        return acc + analytics.focusDuration;
+      }
+      return acc;
+    }, 0);
 
-      setTotalFocusDuration(totalDuration);
-    },
-    [calculateDateRange, setFilteredAnalytics]
-  );
+    setTotalFocusDuration(totalDuration);
+  }, [calculateDateRange, setFilteredAnalytics, analyticsList]);
 
+  // 確保在快取資料改變時進行篩選
   useEffect(() => {
-    if (analyticsData.length > 0) {
-      filterAnalytics(analyticsData);
-    }
-  }, [filterType, currentDate, analyticsData, filterAnalytics]);
+    filterAnalytics();
+  }, [filterType, currentDate, filterAnalytics]);
 
   return (
     <div className="flex justify-center items-start h-full box-border mt-20 overflow-auto">
@@ -91,7 +87,7 @@ const AnalyticsPage = () => {
               currentDate={currentDate}
               setCurrentDate={setCurrentDate}
             />
-            <div className="my-4 lg:hidden ">
+            <div className="my-4 lg:hidden">
               <ToggleGroup
                 type="single"
                 defaultValue="pie"
