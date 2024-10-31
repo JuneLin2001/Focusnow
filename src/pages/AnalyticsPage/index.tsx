@@ -59,7 +59,12 @@ const AnalyticsPage = () => {
       );
     });
 
-    setFilteredAnalytics(filteredAllData);
+    // 按日期排序資料（假設從新到舊排列）
+    const sortedData = filteredAllData.sort((a, b) =>
+      dayjs.unix(b.startTime.seconds).diff(dayjs.unix(a.startTime.seconds))
+    );
+
+    setFilteredAnalytics(sortedData);
 
     const totalDuration = filteredAllData.reduce((acc, analytics) => {
       if (analytics.pomodoroCompleted) {
