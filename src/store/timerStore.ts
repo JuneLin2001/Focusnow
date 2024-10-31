@@ -188,7 +188,6 @@ export const useTimerStore = create<TimerState>((set, get) => {
     },
 
     resetTimer: () => {
-      console.log("Reset timer");
       const { mode, startTime } = get();
 
       worker?.postMessage({ action: "stop" });
@@ -320,7 +319,6 @@ export const useTimerStore = create<TimerState>((set, get) => {
       if (user) {
         saveTaskData(user, taskData)
           .then(() => {
-            console.log("Task data saved successfully");
             todos
               .filter((todo) => todo.completed)
               .forEach((todo) => {
@@ -346,7 +344,6 @@ export const useTimerStore = create<TimerState>((set, get) => {
             console.error("Error saving task data: ", error);
           });
       } else {
-        console.log("User is not logged in");
         localStorage.setItem("taskData", JSON.stringify(taskData));
         todos
           .filter((todo) => todo.completed)

@@ -22,8 +22,6 @@ export async function saveTaskData(user: User, taskData: TaskData) {
 
   try {
     const userId = user.uid;
-    console.log("User ID:", userId);
-
     const taskDataWithTimestamps: TaskData = {
       ...taskData,
       startTime: convertToTimestamp(taskData.startTime),
@@ -37,7 +35,6 @@ export async function saveTaskData(user: User, taskData: TaskData) {
 
     const analyticsCollection = collection(db, `users/${userId}/analytics`);
     const docRef = await addDoc(analyticsCollection, taskDataWithTimestamps);
-
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);

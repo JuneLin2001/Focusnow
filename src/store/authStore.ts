@@ -46,7 +46,6 @@ const useAuthStore = create<AuthState>((set) => ({
               photoURL: user.photoURL || defaultPhotoURL,
             },
           });
-          console.log("User logged in (new record created):", user);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);

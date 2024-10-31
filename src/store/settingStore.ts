@@ -32,8 +32,6 @@ const useSettingStore = create<SettingStore>((set) => ({
 
     if (docSnap.exists()) {
       const data = docSnap.data();
-      console.log("Document data:", data);
-
       set({
         isPlaying: data.isPlaying ? true : false,
         bgmSource: data.bgmSource ?? "/yt5s.io - 大自然的白噪音 (320 kbps).mp3",
@@ -43,7 +41,6 @@ const useSettingStore = create<SettingStore>((set) => ({
             : "light",
       });
     } else {
-      console.log("Document does not exist");
       const defaultSettings = {
         isPlaying: false,
         bgmSource:

@@ -38,15 +38,9 @@ export const useFishesCountStore = create<FishesCountStore>((set) => ({
           ...state,
           FishesCount: state.FishesCount + incrementValue,
         }));
-
-        console.log("FishesCount updated successfully");
       } catch (error) {
         console.error("Error updating Firestore fishes count:", error);
       }
-    } else {
-      console.log(
-        "User is not logged in, cannot update FishesCount in Firestore."
-      );
     }
   },
 }));

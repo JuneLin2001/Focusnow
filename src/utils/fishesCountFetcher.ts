@@ -25,7 +25,6 @@ const FishesCountFetcher: React.FC = () => {
           const fishesCount = fishesCountData?.FishesCount;
           if (fishesCount !== undefined) {
             setFishesCount(fishesCount);
-            console.log("FishesCount:", fishesCount);
           } else {
             console.error("FishesCount field is missing in the document");
             await setDoc(

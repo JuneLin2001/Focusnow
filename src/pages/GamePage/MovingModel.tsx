@@ -18,7 +18,6 @@ interface MovingModelProps {
 }
 
 const MovingModel: React.FC<MovingModelProps> = ({
-  id,
   minX,
   maxX,
   minZ,
@@ -118,7 +117,6 @@ const MovingModel: React.FC<MovingModelProps> = ({
   });
 
   const handlePointerDown = () => {
-    console.log(`Model with id ${id} clicked!`);
     setIsFollowing((prev) => !prev);
     setOpenDialog(true);
   };
