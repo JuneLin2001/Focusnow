@@ -123,7 +123,11 @@ const Timer: React.FC<TimerProps> = ({
         >
           <Settings />
         </Button>
-        <TimerDisplay page={page} />
+        <TimerDisplay
+          page={page}
+          setPage={setPage}
+          setTargetPosition={setTargetPosition}
+        />
       </div>
 
       <div

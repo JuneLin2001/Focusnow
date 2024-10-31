@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Timer from "./Timer.js";
 import TodoList from "./TodoList.js";
-import TimerDisplay from "./TimerDisplay";
 import {
   ChevronsLeft,
   ChevronsRight,
@@ -44,7 +43,6 @@ const TimerPage: React.FC<TimerPageProps> = ({
 
   return (
     <>
-      <TimerDisplay page={"Timer"} />
       <div className="z-30 ">
         {showInstructions && (
           <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-40">
