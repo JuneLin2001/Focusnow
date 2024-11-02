@@ -130,6 +130,7 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
         }
       } catch (error) {
         console.error("Error entering Picture-in-Picture mode", error);
+        toast.error("請檢查瀏覽器是否支援Picture-in-Picture 模式");
       }
     }
   }, [isPipActive]);
@@ -141,25 +142,30 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
         setIsPipActive(false);
       } catch (error) {
         console.error("Error exiting Picture-in-Picture mode", error);
+        toast.error("Picture-in-Picture 模式");
       }
     }
   }, []);
 
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden || page !== "timer") {
-        enterPiP();
-      } else {
-        exitPiP();
-      }
-    };
+  // useEffect(() => {
+  //   const handleVisibilityChange = () => {
+  //     if (
+  //       document.hidden ||
+  //       document.pictureInPictureEnabled ||
+  //       page !== "timer"
+  //     ) {
+  //       enterPiP();
+  //     } else {
+  //       exitPiP();
+  //     }
+  //   };
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+  //   document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [enterPiP, exitPiP, page]);
+  //   return () => {
+  //     document.removeEventListener("visibilitychange", handleVisibilityChange);
+  //   };
+  // }, [enterPiP, exitPiP, isPipActive, page]);
 
   useEffect(() => {
     const pipHandler = () => {

@@ -276,7 +276,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
       const endTime = Timestamp.now();
 
       if (pomodoroCompleted) {
-        const currentRotation = get().rotationCount;
+        const currentRotation = get().rotationCount + 1;
         sendBrowserNotification(
           mode === "break"
             ? `第 ${currentRotation} 輪工作時間結束！`

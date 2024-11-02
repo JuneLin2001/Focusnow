@@ -161,6 +161,7 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
                   labels: {
                     color: isDarkMode ? "white" : "black",
                   },
+                  onClick: () => {},
                 },
               },
             }}
