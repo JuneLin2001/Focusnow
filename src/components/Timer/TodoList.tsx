@@ -25,6 +25,7 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
 
   return (
     <Card
+      id="todo-list"
       className={`fixed left-1/2 top-1/2 z-30 flex h-[500px] w-screen max-w-[500px] transform flex-col bg-white bg-opacity-60 p-5 transition-all duration-500 ease-in-out lg:z-0 lg:max-w-[350px] ${
         isOpen
           ? "translate-y-[-1050px] opacity-0 lg:-translate-y-1/2"

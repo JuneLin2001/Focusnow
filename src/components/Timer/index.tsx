@@ -6,10 +6,10 @@ import {
   ChevronsRight,
   ChevronsUp,
   ChevronsDown,
+  Lightbulb,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TimerInstruction from "./TimerInstruction.js";
-import { toast } from "react-toastify";
 
 interface TimerPageProps {
   page: string | null;
@@ -24,40 +24,36 @@ const TimerPage: React.FC<TimerPageProps> = ({
   setTargetPosition,
   setLookAtPosition,
 }) => {
-  const [showInstructions, setShowInstructions] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [runTour, setRunTour] = useState<boolean>(false);
 
   useEffect(() => {
-    const hasSeenInstructions = localStorage.getItem("hasSeenInstructions");
-
-    if (hasSeenInstructions === null) {
-      setShowInstructions(true);
-    } else {
-      const isBoolean =
-        hasSeenInstructions === "true" || hasSeenInstructions === "false";
-      if (!isBoolean) {
-        toast.error("Invalid value for hasSeenInstructions");
-        setShowInstructions(false);
-      } else {
-        setShowInstructions(hasSeenInstructions === "false");
-      }
-    }
+    // 直接啟動導覽
+    setRunTour(true);
   }, []);
 
   const handleCloseInstructions = () => {
-    setShowInstructions(false);
-    localStorage.setItem("hasSeenInstructions", "true");
+    setRunTour(false);
   };
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleStartTour = () => {
+    setRunTour(true);
+    console.log("Joyride started:", runTour);
+  };
+
   return (
     <>
       <div className="z-30">
-        {showInstructions && (
-          <TimerInstruction handleCloseInstructions={handleCloseInstructions} />
+        {runTour && (
+          <TimerInstruction
+            handleCloseInstructions={handleCloseInstructions}
+            runTour={runTour}
+            setRunTour={setRunTour}
+          />
         )}
         <div className="relative flex h-screen w-screen items-center justify-center">
           <Timer
@@ -67,8 +63,12 @@ const TimerPage: React.FC<TimerPageProps> = ({
             setTargetPosition={setTargetPosition}
             setLookAtPosition={setLookAtPosition}
           />
-          <div className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-60 transform lg:-translate-y-1/2 lg:translate-x-[12.5rem]">
+          <div
+            id="timer-button"
+            className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-60 transform lg:-translate-y-1/2 lg:translate-x-[12.5rem]"
+          >
             <Button
+              id="toggle-sidebar"
               className="transition-transform"
               variant="timerGhost"
               size="icon"
@@ -87,8 +87,19 @@ const TimerPage: React.FC<TimerPageProps> = ({
               )}
             </Button>
           </div>
+          <div className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-60 transform lg:-translate-y-48 lg:translate-x-[12.5rem]">
+            <Button
+              className="p-2"
+              variant="timerGhost"
+              onClick={handleStartTour}
+            >
+              <Lightbulb />
+            </Button>
+          </div>
         </div>
-        <TodoList isOpen={isOpen} />
+        <div className="absolute right-0 top-0 z-20">
+          <TodoList isOpen={isOpen} />
+        </div>
       </div>
     </>
   );
