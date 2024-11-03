@@ -8,7 +8,7 @@ import {
   ChevronsDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import TimerInstruction from "./TimerInstruction";
+import TimerInstruction from "./TimerInstruction.js";
 import { toast } from "react-toastify";
 
 interface TimerPageProps {
@@ -55,11 +55,11 @@ const TimerPage: React.FC<TimerPageProps> = ({
 
   return (
     <>
-      <div className="z-30 ">
+      <div className="z-30">
         {showInstructions && (
           <TimerInstruction handleCloseInstructions={handleCloseInstructions} />
         )}
-        <div className="w-screen h-screen flex justify-center items-center relative">
+        <div className="relative flex h-screen w-screen items-center justify-center">
           <Timer
             isOpen={isOpen}
             page={page}
@@ -67,9 +67,9 @@ const TimerPage: React.FC<TimerPageProps> = ({
             setTargetPosition={setTargetPosition}
             setLookAtPosition={setLookAtPosition}
           />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[15rem] z-40 lg:translate-x-[12.5rem] lg:-translate-y-1/2">
+          <div className="absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-[15rem] transform lg:-translate-y-1/2 lg:translate-x-[12.5rem]">
             <Button
-              className="transition-transform "
+              className="transition-transform"
               variant="timerGhost"
               size="icon"
               onClick={toggleSidebar}

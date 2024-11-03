@@ -6,11 +6,11 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
   handleCloseInstructions,
 }) => {
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-40">
-      <div className="bg-white p-5 rounded shadow-lg">
-        <h2 className="text-xl mb-4">操作說明</h2>
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-gray-800 bg-opacity-50">
+      <div className="rounded bg-white p-5 shadow-lg">
+        <h2 className="mb-4 text-xl">操作說明</h2>
         <p className="mb-4">歡迎使用計時器和Todo List！以下是一些操作說明：</p>
-        <ul className="list-disc ml-5 mb-4">
+        <ul className="mb-4 ml-5 list-disc">
           <li>您可以設定計時器的分鐘數，預設為 25 分鐘。</li>
           <li>點擊顯示的時間可以進入編輯模式，調整計時分鐘數。</li>
           <li>使用「+」和「-」按鈕可快速增加或減少 5 分鐘。</li>
@@ -22,7 +22,7 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
         <p className="mb-4">請記得在計時器運行時，不要忘記完成您的Todos哦！</p>
         <div className="flex justify-center">
           <button
-            className="bg-blue-500 text-white p-2 rounded"
+            className="rounded bg-blue-500 p-2 text-white"
             onClick={handleCloseInstructions}
           >
             不再顯示

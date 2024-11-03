@@ -5,7 +5,7 @@ import {
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useTimerStore } from "../../store/timerStore";
-import LoginButton from "../../components/Header/LoginButton";
+import LoginButton from "../Header/LoginButton";
 import { requestNotificationPermission } from "../../utils/notificationService";
 import { Button } from "@/components/ui/button";
 import SettingsDialog from "./SettingsDialog";
@@ -105,9 +105,9 @@ const Timer: React.FC<TimerProps> = ({
         : "#009b00";
 
   return (
-    <Card className="z-30 bg-white bg-opacity-60 w-[500px] h-[500px] flex flex-col justify-center items-center bg-cover bg-center relative ">
+    <Card className="relative z-30 flex h-[500px] w-[500px] flex-col items-center justify-center bg-white bg-opacity-60 bg-cover bg-center">
       <div
-        className={`absolute top-4 right-4 ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
+        className={`absolute right-4 top-4 ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
       >
         <Button variant="timerGhost" size="icon" onClick={handleCloseTimerPage}>
           <X />
@@ -115,7 +115,7 @@ const Timer: React.FC<TimerProps> = ({
       </div>
 
       <div
-        className={`absolute top-4 left-4 transition-all duration-500 ease-in-out transform ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
+        className={`absolute left-4 top-4 transform transition-all duration-500 ease-in-out ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
       >
         <Button
           variant="timerGhost"
@@ -132,7 +132,7 @@ const Timer: React.FC<TimerProps> = ({
       </div>
 
       <div
-        className={`transition-all duration-500 ease-in-out transform ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
+        className={`transform transition-all duration-500 ease-in-out ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
       >
         <CircularProgressbarWithChildren
           value={
@@ -146,10 +146,10 @@ const Timer: React.FC<TimerProps> = ({
             trailColor: "#d6d6d6",
           })}
         >
-          <div className="flex flex-col justify-center items-center h-full w-full">
+          <div className="flex h-full w-full flex-col items-center justify-center">
             {!isPaused && (
               <div
-                className="absolute top-3/4 left-1/2 transform -translate-x-1/2 text-white py-1 px-3 rounded-full text-center"
+                className="absolute left-1/2 top-3/4 -translate-x-1/2 transform rounded-full px-3 py-1 text-center text-white"
                 style={{ backgroundColor: pathColor }}
               >
                 第 {rotationCount + 1} 輪
@@ -181,12 +181,12 @@ const Timer: React.FC<TimerProps> = ({
                     value={`${Math.floor(secondsLeft / 60)}`}
                     onChange={handleInputChange}
                     disabled={!isPaused}
-                    className="text-5xl border-4 border-black w-24 bg-transparent focus:outline-none text-center dark:text-gray-200"
+                    className="w-24 border-4 border-black bg-transparent text-center text-5xl focus:outline-none dark:text-gray-200"
                     onBlur={handleInputBlur}
                   />
                 ) : (
                   <div
-                    className="text-5xl cursor-pointer"
+                    className="cursor-pointer text-5xl"
                     onClick={handleInputClick}
                   >
                     {`${Math.floor(secondsLeft / 60)}:${
@@ -227,9 +227,9 @@ const Timer: React.FC<TimerProps> = ({
         </div>
       </div>
       {showLoginButton && (
-        <div className="flex justify-center items-center bg-gray-800 bg-opacity-50 fixed inset-0">
-          <div className="bg-white p-5 rounded shadow-lg flex flex-col items-center ">
-            <h2 className="text-xl mb-4">請登入以保存數據</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="flex flex-col items-center rounded bg-white p-5 shadow-lg">
+            <h2 className="mb-4 text-xl">請登入以保存數據</h2>
             <LoginButton />
           </div>
         </div>

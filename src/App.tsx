@@ -2,15 +2,15 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 // import TimerPage from "./pages/TimerPage";
 // import GamePage from "./pages/GamePage";
-import AanalyticsPage from "./pages/AnalyticsPage";
-import LandingPage from "./pages/LandingPage";
+import AanalyticsPage from "./components/Analytics";
+import LandingPage from "./components/LandingPage";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import useAuthStore from "./store/authStore";
 import { auth } from "./firebase/firebaseConfig";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import Bounce from "./pages/GamePage/Bounce";
+import Bounce from "./components/Game/Bounce";
 import Mainland from "./models/Mainland";
 import { Environment } from "@react-three/drei";
 import { ToastContainer } from "react-toastify";
@@ -59,7 +59,7 @@ const App: React.FC = () => {
           element={
             <>
               <Bounce />
-              <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-9xl">
+              <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-9xl">
                 error❌
               </div>
             </>

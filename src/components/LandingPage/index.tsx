@@ -1,12 +1,12 @@
 import { useState, useEffect, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Html, useProgress } from "@react-three/drei";
-import TimerPage from "../TimerPage/index";
-import AnalyticsPage from "../AnalyticsPage";
-import GamePage from "../GamePage/index";
+import Timer from "../Timer/index";
+import AnalyticsPage from "../Analytics";
+import GamePage from "../Game/index";
 import CameraController from "./CameraController";
 import { DashboardHeader } from "@/components/Header/DashboardHeader";
-import TimerDisplay from "../TimerPage/TimerDisplay";
+import TimerDisplay from "../Timer/TimerDisplay";
 import { useFishesCountStore } from "@/store/fishesCountStore";
 import settingStore from "../../store/settingStore";
 import Bubble from "./Bubble";
@@ -28,9 +28,9 @@ const Loader = () => {
   return (
     <>
       <Html center>
-        <div className="fixed inset-0 flex items-center justify-center h-screen z-50 bg-black bg-opacity-75">
+        <div className="fixed inset-0 z-50 flex h-screen items-center justify-center bg-black bg-opacity-75">
           <div className="w-full max-w-lg px-4">
-            <p className="text-center text-white mb-4">
+            <p className="mb-4 text-center text-white">
               Loading... {Math.round(progress)}%
             </p>
             <Progress value={progress} />
@@ -57,7 +57,7 @@ const LandingPage = () => {
   const loadUserSettings = usesettingStore((state) => state.loadUserSettings);
   const fishesCount = useFishesCountStore((state) => state.FishesCount);
   const updateFishesCount = useFishesCountStore(
-    (state) => state.updateFishesCount
+    (state) => state.updateFishesCount,
   );
 
   const [loading, setLoading] = useState(true);
@@ -71,7 +71,7 @@ const LandingPage = () => {
 
   useEffect(() => {
     const hasSeenInitialInstructions = localStorage.getItem(
-      "hasSeenInitialInstructions"
+      "hasSeenInitialInstructions",
     );
     setShowInstructions(hasSeenInitialInstructions !== "true");
   }, []);
@@ -142,9 +142,9 @@ const LandingPage = () => {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center h-screen z-50 bg-black bg-opacity-75">
+      <div className="fixed inset-0 z-50 flex h-screen items-center justify-center bg-black bg-opacity-75">
         <div className="w-full max-w-lg px-4">
-          <p className="text-center text-white mb-4">
+          <p className="mb-4 text-center text-white">
             Loading... {loading ? progress : 0}%
           </p>
           <Progress value={loading ? progress : 0} />
@@ -165,9 +165,9 @@ const LandingPage = () => {
       {page === null ? (
         ""
       ) : (
-        <div className="fixed z-10 w-full h-full">
+        <div className="fixed z-10 size-full">
           {page === "timer" && (
-            <TimerPage
+            <Timer
               page={"Timer"}
               setPage={setPage}
               setTargetPosition={setTargetPosition}
@@ -227,7 +227,7 @@ const LandingPage = () => {
         />
         {instructionHovered && (
           <Html position={[115, 70, 145]} center>
-            <Card className="w-36 h-10 flex justify-center items-center p-2">
+            <Card className="flex h-10 w-36 items-center justify-center p-2">
               重新觀看說明
             </Card>
           </Html>

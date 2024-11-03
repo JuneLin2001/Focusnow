@@ -1,7 +1,7 @@
 import { Environment, Sky } from "@react-three/drei";
 import Mainland from "../../models/Mainland";
 import Igloo from "../../models/Igloo";
-import FloatingIce from "../../models/FloatingIce";
+import FloatingIce from "../../models/floatingIce";
 import OceanModel from "../../models/OceanModel";
 import Analytics from "../../models/AnalyticsCube";
 import Snowflakes from "./Snowflakes";

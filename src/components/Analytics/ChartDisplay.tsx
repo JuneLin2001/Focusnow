@@ -82,7 +82,7 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
 
       return allDates;
     },
-    [filterType]
+    [filterType],
   );
 
   useEffect(() => {
@@ -121,13 +121,13 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
   }, []);
 
   return (
-    <div className="text-center h-full flex flex-col justify-between">
+    <div className="flex h-full flex-col justify-between text-center">
       {hasData && (
-        <h2 className="text-lg font-semibold mb-2">
+        <h2 className="mb-2 text-lg font-semibold">
           總專注時長: {totalFocusDuration} 分鐘
         </h2>
       )}
-      <div className="flex flex-grow justify-center items-center ">
+      <div className="flex flex-grow items-center justify-center">
         {hasData ? (
           <Bar
             data={chartData}
