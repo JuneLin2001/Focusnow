@@ -5,7 +5,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Html } from "@react-three/drei";
-import { Info } from "lucide-react";
+import { Info, Heart } from "lucide-react";
 
 interface SignInstructionsProps {
   showInstructions: boolean;
@@ -25,9 +25,15 @@ const SignInstructions: React.FC<SignInstructionsProps> = ({
       <Dialog open={showInstructions} onOpenChange={onClose}>
         <DialogContent>
           <div className="flex items-center gap-2">
-            <div className="rounded-full bg-blue-50 p-3 dark:bg-blue-900">
-              <Info className="size-6 text-blue-600 dark:text-blue-200" />
-            </div>
+            {howManyPenguinYouHave === 30 ? (
+              <div className="rounded-full bg-red-50 p-3 dark:bg-blue-900">
+                <Heart className="size-6 text-red-600 dark:text-red-200" />
+              </div>
+            ) : (
+              <div className="rounded-full bg-blue-50 p-3 dark:bg-blue-900">
+                <Info className="size-6 text-blue-600 dark:text-blue-200" />{" "}
+              </div>
+            )}
             <DialogTitle className="m-0 flex items-center">
               場景資訊
             </DialogTitle>
