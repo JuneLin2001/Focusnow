@@ -10,7 +10,7 @@ interface CompletedTodosProps {
 
 const convertFirestoreTimestampToDate = (
   seconds: number,
-  nanoseconds: number
+  nanoseconds: number,
 ): Date => {
   return new Date(seconds * 1000 + Math.floor(nanoseconds / 1000000));
 };
@@ -20,7 +20,7 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
 }) => {
   const completedTodosCount = filteredAnalytics.reduce(
     (acc, analytics) => acc + analytics.todos.length,
-    0
+    0,
   );
 
   const hasData = completedTodosCount > 0;
@@ -28,12 +28,12 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
   return (
     <>
       {hasData && (
-        <h2 className="font-semibold mb-2 text-gray-800 dark:text-white pb-2">
+        <h2 className="mb-2 pb-2 font-semibold text-gray-800 dark:text-white">
           總共完成了 {completedTodosCount} 個 Todo
         </h2>
       )}
       <ScrollArea
-        className={`${hasData ? "lg:max-h-[55vh] max-h-[35vh]" : "max-h-screen"} h-full`}
+        className={`${hasData ? "max-h-[35vh] lg:max-h-[55vh]" : "max-h-screen"} h-full`}
       >
         {hasData ? (
           <>
@@ -42,7 +42,7 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
                 return (
                   <Card
                     key={index}
-                    className="border border-gray-300 rounded-lg mb-4 bg-gray-100 dark:bg-gray-500 p-4"
+                    className="mb-4 rounded-lg border border-gray-300 bg-gray-100 p-4 dark:bg-gray-500"
                   >
                     <div className="space-y-2">
                       {analytics.todos.map((todo) => {
@@ -53,19 +53,19 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
                           doneTime.nanoseconds !== undefined
                             ? convertFirestoreTimestampToDate(
                                 doneTime.seconds,
-                                doneTime.nanoseconds
+                                doneTime.nanoseconds,
                               )
                             : null;
 
                         return (
                           <div
                             key={todo.id}
-                            className="border-b border-gray-300 dark:border-gray-600 py-2 last:border-b-0"
+                            className="border-b border-gray-300 py-2 last:border-b-0 dark:border-gray-600"
                           >
                             <h3 className="font-semibold text-gray-800 dark:text-white">
                               {todo.title}
                             </h3>
-                            <p className="text-gray-600 dark:text-gray-400 text-sm">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               {`完成時間：${
                                 doneTimeDate
                                   ? dayjs(doneTimeDate).format("MM-DD HH:mm")
@@ -83,7 +83,7 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
             })}
           </>
         ) : (
-          <div className="w-full h-full flex justify-center items-center">
+          <div className="flex size-full items-center justify-center">
             <p className="text-gray-500 dark:text-gray-200">沒有完成的 Todos</p>
           </div>
         )}

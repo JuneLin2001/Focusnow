@@ -71,15 +71,15 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   };
 
   return (
-    <div className="flex flex-col lg:flex-row lg:items-center w-full space-y-4 lg:space-y-0 lg:space-x-4">
-      <div className="flex justify-center w-full lg:w-auto items-center space-x-2">
+    <div className="flex w-full flex-col space-y-4 lg:flex-row lg:items-center lg:space-x-4 lg:space-y-0">
+      <div className="flex w-full items-center justify-center space-x-2 lg:w-auto">
         <label className="whitespace-nowrap">篩選方式:</label>
         <select
           value={filterType}
           onChange={(e) =>
             setFilterType(e.target.value as "daily" | "weekly" | "monthly")
           }
-          className="w-auto dark:shadow-[4px_4px_4px_rgba(255,255,255,0.2)] bg-white dark:bg-black dark:border-gray-600 text-black dark:text-white rounded p-2"
+          className="w-auto rounded bg-white p-2 text-black dark:border-gray-600 dark:bg-black dark:text-white dark:shadow-[4px_4px_4px_rgba(255,255,255,0.2)]"
         >
           <option value="daily">每日</option>
           <option value="weekly">每週</option>
@@ -87,7 +87,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
         </select>
       </div>
 
-      <div className="flex justify-center  w-full lg:w-auto items-center space-x-2">
+      <div className="flex w-full items-center justify-center space-x-2 lg:w-auto">
         <Button
           variant="analytics"
           onClick={handlePrev}

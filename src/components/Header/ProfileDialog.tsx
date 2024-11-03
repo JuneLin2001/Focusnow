@@ -33,7 +33,7 @@ const ProfileDialog = ({
   return (
     isOpen && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
-        <div className="bg-white dark:bg-black/30 rounded-lg shadow-lg max-w-md w-full p-6">
+        <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-black/30">
           <div className="mb-4 text-lg font-semibold dark:text-white">
             更改使用者名稱
           </div>

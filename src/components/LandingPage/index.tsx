@@ -14,7 +14,7 @@ import { AlarmClock, ChartColumn } from "lucide-react";
 import InitialInstructions from "./InitialInstructions";
 import useAuthStore from "../../store/authStore";
 import * as THREE from "three";
-import ToggleBgm from "@/components/ToggleBgm";
+import ToggleBgm from "./ToggleBgm";
 import { Progress } from "@/components/ui/progress";
 import usesettingStore from "@/store/settingStore";
 import { toast } from "react-toastify";

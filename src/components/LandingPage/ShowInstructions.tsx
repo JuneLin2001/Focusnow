@@ -30,7 +30,7 @@ const ShowInstructions: React.FC<
               if (!originalColors.current.has(mesh)) {
                 originalColors.current.set(
                   mesh,
-                  new Color(material.color.getHex())
+                  new Color(material.color.getHex()),
                 );
               }
 
@@ -42,7 +42,10 @@ const ShowInstructions: React.FC<
                       .get(mesh)!
                       .clone()
                       .multiplyScalar(brightnessMultiplier)
-                  : originalColors.current.get(mesh)!.clone().multiplyScalar(10)
+                  : originalColors.current
+                      .get(mesh)!
+                      .clone()
+                      .multiplyScalar(10),
               );
             }
           });
@@ -59,10 +62,10 @@ const ShowInstructions: React.FC<
 
   return (
     <Float
-      speed={10} // Animation speed, defaults to 1
-      rotationIntensity={0} // XYZ rotation intensity set to 0 for no rotation
-      floatIntensity={1} // Up/down float intensity, works like a multiplier with floatingRange, defaults to 1
-      floatingRange={[0, 10]} // Range of y-axis values the object will float within, this allows for Y-axis only floating
+      speed={10}
+      rotationIntensity={0}
+      floatIntensity={1}
+      floatingRange={[0, 10]}
     >
       <group
         onClick={onClick}

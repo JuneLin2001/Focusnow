@@ -105,7 +105,7 @@ const Timer: React.FC<TimerProps> = ({
         : "#009b00";
 
   return (
-    <Card className="relative z-30 flex h-[500px] w-[500px] flex-col items-center justify-center bg-white bg-opacity-60 bg-cover bg-center">
+    <Card className="relative z-30 flex size-[500px] flex-col items-center justify-center bg-white bg-opacity-60 bg-cover bg-center">
       <div
         className={`absolute right-4 top-4 ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
       >
@@ -146,7 +146,7 @@ const Timer: React.FC<TimerProps> = ({
             trailColor: "#d6d6d6",
           })}
         >
-          <div className="flex h-full w-full flex-col items-center justify-center">
+          <div className="flex size-full flex-col items-center justify-center">
             {!isPaused && (
               <div
                 className="absolute left-1/2 top-3/4 -translate-x-1/2 transform rounded-full px-3 py-1 text-center text-white"

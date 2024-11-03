@@ -28,7 +28,7 @@ const SignInstructions: React.FC<SignInstructionsProps> = ({
             <div className="rounded-full bg-blue-50 p-3 dark:bg-blue-900">
               <Info className="size-6 text-blue-600 dark:text-blue-200" />
             </div>
-            <DialogTitle className="flex items-center m-0">
+            <DialogTitle className="m-0 flex items-center">
               場景資訊
             </DialogTitle>
           </div>

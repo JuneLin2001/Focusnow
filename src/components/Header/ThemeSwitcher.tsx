@@ -29,12 +29,12 @@ const ThemeSwitcher = () => {
   }, []);
 
   return (
-    <div className="flex items-center gap-2 ">
+    <div className="flex items-center gap-2">
       <Button variant="link" size="header" onClick={toggleTheme}>
         {isDarkMode ? (
-          <Moon className="w-6 h-6 text-gray-50" />
+          <Moon className="size-6 text-gray-50" />
         ) : (
-          <Sun className="w-6 h-6 text-black" />
+          <Sun className="size-6 text-black" />
         )}
       </Button>
       <Switch

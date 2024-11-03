@@ -29,7 +29,7 @@ const Sign: React.FC<ModelProps> = ({ children, onClick }) => {
               if (!originalColors.current.has(mesh)) {
                 originalColors.current.set(
                   mesh,
-                  new Color(material.color.getHex())
+                  new Color(material.color.getHex()),
                 );
               }
               const brightnessMultiplier = themeMode === "dark" ? 10 : 0.3;
@@ -39,7 +39,7 @@ const Sign: React.FC<ModelProps> = ({ children, onClick }) => {
                       .get(mesh)!
                       .clone()
                       .multiplyScalar(brightnessMultiplier)
-                  : originalColors.current.get(mesh)!.clone()
+                  : originalColors.current.get(mesh)!.clone(),
               );
             }
           });
@@ -66,7 +66,7 @@ const Sign: React.FC<ModelProps> = ({ children, onClick }) => {
       </group>
       {hovered && (
         <Html position={[75, 60, -20]} center>
-          <Card className="w-28 h-10 flex justify-center items-center p-2">
+          <Card className="flex h-10 w-28 items-center justify-center p-2">
             場景資訊
           </Card>
         </Html>

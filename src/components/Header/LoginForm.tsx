@@ -43,7 +43,7 @@ const LoginForm = () => {
       const result = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
 
       setUser(result.user);
@@ -129,7 +129,7 @@ const LoginForm = () => {
       const result = await signInWithEmailAndPassword(
         auth,
         guestEmail,
-        guestPassword
+        guestPassword,
       );
       setUser(result.user);
       hideLogin();
@@ -171,7 +171,7 @@ const LoginForm = () => {
             doneTime: todo.doneTime
               ? { seconds: todo.doneTime.seconds, nanoseconds: 0 }
               : null,
-          })
+          }),
         ),
       };
 
@@ -188,7 +188,7 @@ const LoginForm = () => {
       >
         <Avatar>
           <AvatarFallback>
-            <CircleUser className="h-5 w-5" />
+            <CircleUser className="size-5" />
           </AvatarFallback>
         </Avatar>
       </Button>

@@ -74,7 +74,7 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
             secondsLeft % 60 < 10 ? "0" + (secondsLeft % 60) : secondsLeft % 60
           }`,
           0,
-          0
+          0,
         );
 
         ctx.font = `${pipWindowWidth / 16}px Arial`;
@@ -89,7 +89,7 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
           0,
           pipWindowWidth / 2 - 40,
           0,
-          (Math.PI * 2 * percentage) / 100
+          (Math.PI * 2 * percentage) / 100,
         );
         ctx.strokeStyle = pathColor;
         ctx.lineWidth = 24;
@@ -207,7 +207,7 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
 
       {page === null && percentage < 100 ? (
         <Card
-          className="fixed bottom-40 right-6 p-4 bg-white opacity-80 z-10 w-36 cursor-pointer"
+          className="fixed bottom-40 right-6 z-10 w-36 cursor-pointer bg-white p-4 opacity-80"
           onClick={() => {
             setTargetPosition([-50, 12, -150]);
             setPage("timer");
@@ -221,7 +221,7 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
               trailColor: "#d6d6d6",
             })}
             strokeWidth={10}
-            className="w-full h-full"
+            className="size-full"
           >
             <div>
               <h3 className="text-xl">
@@ -237,7 +237,7 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
 
       <video ref={videoRef} style={{ display: "none" }} muted playsInline />
 
-      <div className="fixed ">
+      <div className="fixed">
         <Button
           variant="timerGhost"
           size="icon"

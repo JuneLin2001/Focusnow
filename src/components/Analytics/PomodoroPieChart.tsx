@@ -13,7 +13,7 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
   filteredAnalytics,
 }) => {
   const completedCount = filteredAnalytics.filter(
-    (analytics) => analytics.pomodoroCompleted
+    (analytics) => analytics.pomodoroCompleted,
   ).length;
 
   const totalCount = filteredAnalytics.length;
@@ -65,13 +65,13 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
   const hasData = totalCount > 0;
 
   return (
-    <div className="text-center h-full flex flex-col justify-between">
+    <div className="flex h-full flex-col justify-between text-center">
       {hasData && (
-        <h2 className="text-lg font-semibold mb-2">
+        <h2 className="mb-2 text-lg font-semibold">
           完成率: {completionRate.toFixed(2)}%
         </h2>
       )}
-      <div className="w-full h-full flex-1 flex justify-center items-center">
+      <div className="flex size-full flex-1 items-center justify-center">
         {hasData ? (
           <Pie data={data} options={options} />
         ) : (

@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import useSettingStore from "../store/settingStore";
+import { Button } from "../../components/ui/button";
+import useSettingStore from "../../store/settingStore";
 import { Volume2, VolumeOff } from "lucide-react";
 
 const ToggleBgm = () => {
@@ -37,11 +37,11 @@ const ToggleBgm = () => {
 
   return (
     <>
-      <div className="fixed bottom-10 right-10 flex items-center justify-center z-10">
+      <div className="fixed bottom-10 right-10 z-10 flex items-center justify-center">
         <Button
           variant="outline"
           onClick={handleToggleBgm}
-          className="w-12 h-12 flex items-center justify-center rounded-full shadow-lg"
+          className="flex size-12 items-center justify-center rounded-full shadow-lg"
         >
           {isPlaying ? <Volume2 /> : <VolumeOff />}
         </Button>

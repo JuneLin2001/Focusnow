@@ -27,9 +27,9 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
     <Card
       className={`fixed left-1/2 top-1/2 z-30 flex h-[500px] w-screen max-w-[500px] transform flex-col bg-white bg-opacity-60 p-5 transition-all duration-500 ease-in-out lg:z-0 lg:max-w-[350px] ${
         isOpen
-          ? "translate-y-[-1050px] opacity-0 lg:translate-y-[-50%]"
-          : "translate-y-[-250px] opacity-100 lg:translate-x-[250px] lg:translate-y-[-50%]"
-      } translate-x-[-50%]`}
+          ? "translate-y-[-1050px] opacity-0 lg:-translate-y-1/2"
+          : "translate-y-[-250px] opacity-100 lg:-translate-y-1/2 lg:translate-x-[250px]"
+      } -translate-x-1/2`}
     >
       <CardTitle className="mb-4 text-xl text-gray-800 dark:text-white">
         Todo List
@@ -60,7 +60,7 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
                 type="checkbox"
                 checked={todo.completed}
                 onChange={() => toggleComplete(todo.id)}
-                className="mr-2 h-6 w-6"
+                className="mr-2 size-6"
               />
               <input
                 type="text"

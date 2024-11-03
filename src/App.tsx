@@ -1,18 +1,12 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-// import TimerPage from "./pages/TimerPage";
-// import GamePage from "./pages/GamePage";
 import AanalyticsPage from "./components/Analytics";
 import LandingPage from "./components/LandingPage";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import useAuthStore from "./store/authStore";
 import { auth } from "./firebase/firebaseConfig";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import Bounce from "./components/Game/Bounce";
-import Mainland from "./models/Mainland";
-import { Environment } from "@react-three/drei";
+import Bounce from "./components/Game/BounceModel";
 import { ToastContainer } from "react-toastify";
 import settingStore from "./store/settingStore";
 import "react-toastify/dist/ReactToastify.css";
@@ -40,20 +34,7 @@ const App: React.FC = () => {
       />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-
-        <Route
-          path="/game"
-          element={
-            <Canvas>
-              {/* <GamePage /> */}
-              <Environment preset="sunset" />
-              <Mainland position={[-16, 2, 0]} />
-              <OrbitControls />
-            </Canvas>
-          }
-        />
         <Route path="/analytics" element={<AanalyticsPage />} />
-        {/* <Route path="/timer" element={<TimerPage />} /> */}
         <Route
           path="/*"
           element={

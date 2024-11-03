@@ -26,8 +26,8 @@ export function DashboardHeader({
   handleAnalyticsClick,
 }: DashboardHeaderProps) {
   return (
-    <header className="fixed w-full h-16 bg-gray-200 dark:bg-gray-900 shadow-md z-50 flex items-center px-4 md:px-8 transition-colors duration-300">
-      <div className="relative flex-grow flex items-center ">
+    <header className="fixed z-50 flex h-16 w-full items-center bg-gray-200 px-4 shadow-md transition-colors duration-300 dark:bg-gray-900 md:px-8">
+      <div className="relative flex flex-grow items-center">
         <div className="flex items-center md:hidden">
           <Sheet>
             <SheetTrigger asChild>
@@ -37,13 +37,13 @@ export function DashboardHeader({
                 className="shrink-0"
                 onClick={() => setPage("Setting")}
               >
-                <Menu className="h-6 w-6" />
+                <Menu className="size-6" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="bg-white dark:bg-gray-900 p-6">
+            <SheetContent side="left" className="bg-white p-6 dark:bg-gray-900">
               <nav className="flex flex-col items-center gap-4 text-lg font-medium">
-                <SheetTitle className="text-2xl font-bold ml-2">
+                <SheetTitle className="ml-2 text-2xl font-bold">
                   Focusnow
                 </SheetTitle>
 
@@ -60,7 +60,7 @@ export function DashboardHeader({
                         handleAnalyticsClick();
                       }
                     }}
-                    className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                    className="transition-colors duration-200"
                   >
                     {page}
                   </Button>
@@ -82,7 +82,7 @@ export function DashboardHeader({
           </Button>
         </div>
 
-        <div className="hidden md:flex md:items-center  md:justify-start">
+        <div className="hidden md:flex md:items-center md:justify-start">
           <Button
             variant="header"
             onClick={() => {
@@ -93,7 +93,7 @@ export function DashboardHeader({
             className="cursor-pointer"
           >
             <img src={WebsiteLogo} alt="logo" className="h-10 w-auto" />
-            <p className="text-2xl font-bold ml-2">Focusnow</p>
+            <p className="ml-2 text-2xl font-bold">Focusnow</p>
           </Button>
 
           <nav className="flex gap-2 text-base font-semibold">
@@ -110,14 +110,14 @@ export function DashboardHeader({
                     handleAnalyticsClick();
                   }
                 }}
-                className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white transition-colors duration-200"
+                className="text-gray-600 transition-colors duration-200 dark:text-gray-300 dark:hover:text-white"
               >
                 {page}
               </Button>
             ))}
           </nav>
         </div>
-        <div className="flex gap-4 ml-auto">
+        <div className="ml-auto flex gap-4">
           <ThemeSwitcher />
           <LoginButton />
         </div>

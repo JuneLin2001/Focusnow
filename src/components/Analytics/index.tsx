@@ -13,12 +13,12 @@ const AnalyticsPage = () => {
   const { filteredAnalytics, setFilteredAnalytics, analyticsList } =
     useAnalyticsStore();
   const [filterType, setFilterType] = useState<"daily" | "weekly" | "monthly">(
-    "daily"
+    "daily",
   );
   const [totalFocusDuration, setTotalFocusDuration] = useState<number>(0);
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [selectedCard, setSelectedCard] = useState<"pie" | "chart" | "todos">(
-    "pie"
+    "pie",
   );
 
   const calculateDateRange = useCallback(() => {
@@ -60,7 +60,7 @@ const AnalyticsPage = () => {
     });
 
     const sortedData = filteredAllData.sort((a, b) =>
-      dayjs.unix(b.startTime.seconds).diff(dayjs.unix(a.startTime.seconds))
+      dayjs.unix(b.startTime.seconds).diff(dayjs.unix(a.startTime.seconds)),
     );
 
     setFilteredAnalytics(sortedData);
@@ -80,10 +80,10 @@ const AnalyticsPage = () => {
   }, [filterType, currentDate, filterAnalytics]);
 
   return (
-    <div className="flex justify-center items-start h-full box-border mt-20 overflow-auto">
-      <Card className="box-border w-full h-full bg-gray-200 bg-opacity-50 p-4 mx-4 max-h-[calc(100vh-100px)]">
-        <div className="flex flex-col h-full">
-          <Card className="p-4 mb-2">
+    <div className="mt-20 box-border flex h-full items-start justify-center overflow-auto">
+      <Card className="mx-4 box-border size-full max-h-[calc(100vh-100px)] bg-gray-200 bg-opacity-50 p-4">
+        <div className="flex h-full flex-col">
+          <Card className="mb-2 p-4">
             <DateSelector
               filterType={filterType}
               setFilterType={setFilterType}
@@ -97,7 +97,7 @@ const AnalyticsPage = () => {
                 onValueChange={(value) =>
                   setSelectedCard(value as "pie" | "chart" | "todos")
                 }
-                className="flex flex-row space-x-4 justify-between"
+                className="flex flex-row justify-between space-x-4"
               >
                 <ToggleGroupItem value="pie" aria-label="Toggle pie chart">
                   <div className="flex items-center space-x-2">
@@ -126,14 +126,14 @@ const AnalyticsPage = () => {
             </div>
           </Card>
 
-          <div className="flex lg:hidden flex-grow flex-wrap justify-between mt-1 space-y-4 lg:space-y-0 lg:space-x-4">
+          <div className="mt-1 flex flex-grow flex-wrap justify-between space-y-4 lg:hidden lg:space-x-4 lg:space-y-0">
             {selectedCard === "pie" && (
-              <Card className="flex-[2] p-4 h-auto w-auto">
+              <Card className="size-auto flex-[2] p-4">
                 <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
               </Card>
             )}
             {selectedCard === "chart" && (
-              <Card className="flex-[4] p-4 h-auto">
+              <Card className="h-auto flex-[4] p-4">
                 <ChartDisplay
                   filteredAnalytics={filteredAnalytics}
                   filterType={filterType}
@@ -143,17 +143,17 @@ const AnalyticsPage = () => {
               </Card>
             )}
             {selectedCard === "todos" && (
-              <Card className="flex-[1] p-4 h-auto">
+              <Card className="h-auto flex-[1] p-4">
                 <CompletedTodos filteredAnalytics={filteredAnalytics} />
               </Card>
             )}
           </div>
           <div>
-            <div className="hidden lg:flex flex-grow flex-wrap justify-between gap-2">
-              <Card className="flex-[2] p-4 h-auto min-h-[66vh]">
+            <div className="hidden flex-grow flex-wrap justify-between gap-2 lg:flex">
+              <Card className="h-auto min-h-[66vh] flex-[2] p-4">
                 <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
               </Card>
-              <Card className="flex-[4] p-4 h-auto">
+              <Card className="h-auto flex-[4] p-4">
                 <ChartDisplay
                   filteredAnalytics={filteredAnalytics}
                   filterType={filterType}
@@ -161,7 +161,7 @@ const AnalyticsPage = () => {
                   currentDate={currentDate}
                 />
               </Card>
-              <Card className="flex-[1] p-4 h-auto">
+              <Card className="h-auto flex-[1] p-4">
                 <CompletedTodos filteredAnalytics={filteredAnalytics} />
               </Card>
             </div>
