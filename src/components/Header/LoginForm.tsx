@@ -14,16 +14,18 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import { Input } from "@/components/ui/input";
+} from "../../components/ui/dialog";
+import { Separator } from "../../components/ui/separator";
+import { Input } from "../../components/ui/input";
 import { CircleUser } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "../../components/ui/avatar";
 import { useTimerStore } from "../../store/timerStore";
 import { saveTaskData } from "../../firebase/firebaseService";
 import useAuthStore from "../../store/authStore";
 import { toast } from "react-toastify";
 import { FirebaseError } from "firebase/app";
+import googleLogo from "../../assets/icons/icons8-google.svg";
+import guestLogo from "../../assets/icons/user-round-x.svg";
 
 const LoginForm = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -233,12 +235,26 @@ const LoginForm = () => {
             <p className="px-4 text-gray-500">Or continue with</p>
             <Separator className="flex-1" />
           </div>
-          <Button variant="outline" onClick={handleGoogleLogin}>
-            使用 Google 登入
-          </Button>
-          <Button variant="outline" onClick={handleGuestLogin}>
-            使用 訪客帳號 登入
-          </Button>
+          <div className="flex flex-col gap-4">
+            <Button
+              className="flex items-center justify-center space-x-2"
+              variant="outline"
+              onClick={handleGoogleLogin}
+            >
+              &nbsp; &nbsp; &nbsp; &nbsp;
+              <img src={googleLogo} alt="logo" className="h-6" />
+              <span className="align-middle">使用 Google 帳號登入</span>
+            </Button>
+
+            <Button
+              className="flex items-center justify-center space-x-2"
+              variant="outline"
+              onClick={handleGuestLogin}
+            >
+              <img src={guestLogo} alt="logo" className="h-6 dark:invert" />
+              <span className="align-middle">使用訪客帳號登入</span>
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </>
