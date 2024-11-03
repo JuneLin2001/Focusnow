@@ -140,18 +140,18 @@ const LandingPage = () => {
     }, 3000);
   }, []);
 
-  if (loading) {
-    return (
-      <div className="fixed inset-0 z-50 flex h-screen items-center justify-center bg-black bg-opacity-75">
-        <div className="w-full max-w-lg px-4">
-          <p className="mb-4 text-center text-white">
-            Loading... {loading ? progress : 0}%
-          </p>
-          <Progress value={loading ? progress : 0} />
-        </div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="fixed inset-0 z-50 flex h-screen items-center justify-center bg-black bg-opacity-75">
+  //       <div className="w-full max-w-lg px-4">
+  //         <p className="mb-4 text-center text-white">
+  //           Loading... {loading ? progress : 0}%
+  //         </p>
+  //         <Progress value={loading ? progress : 0} />
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>

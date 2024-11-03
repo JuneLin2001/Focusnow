@@ -24,11 +24,10 @@ const TimerPage: React.FC<TimerPageProps> = ({
   setTargetPosition,
   setLookAtPosition,
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isSideBarOpen, setIsSideBarOpen] = useState<boolean>(false);
   const [runTour, setRunTour] = useState<boolean>(false);
 
   useEffect(() => {
-    // 直接啟動導覽
     setRunTour(true);
   }, []);
 
@@ -37,12 +36,12 @@ const TimerPage: React.FC<TimerPageProps> = ({
   };
 
   const toggleSidebar = () => {
-    setIsOpen(!isOpen);
+    setIsSideBarOpen(!isSideBarOpen);
   };
 
   const handleStartTour = () => {
     setRunTour(true);
-    console.log("Joyride started:", runTour);
+    setIsSideBarOpen(true);
   };
 
   return (
@@ -57,7 +56,7 @@ const TimerPage: React.FC<TimerPageProps> = ({
         )}
         <div className="relative flex h-screen w-screen items-center justify-center">
           <Timer
-            isOpen={isOpen}
+            isSideBarOpen={isSideBarOpen}
             page={page}
             setPage={setPage}
             setTargetPosition={setTargetPosition}
@@ -74,15 +73,15 @@ const TimerPage: React.FC<TimerPageProps> = ({
               size="icon"
               onClick={toggleSidebar}
             >
-              {isOpen ? (
-                <>
-                  <ChevronsRight className="hidden lg:block" />
-                  <ChevronsDown className="block lg:hidden" />
-                </>
-              ) : (
+              {isSideBarOpen ? (
                 <>
                   <ChevronsLeft className="hidden lg:block" />
                   <ChevronsUp className="block lg:hidden" />
+                </>
+              ) : (
+                <>
+                  <ChevronsRight className="hidden lg:block" />
+                  <ChevronsDown className="block lg:hidden" />
                 </>
               )}
             </Button>
@@ -98,7 +97,7 @@ const TimerPage: React.FC<TimerPageProps> = ({
           </div>
         </div>
         <div className="absolute right-0 top-0 z-20">
-          <TodoList isOpen={isOpen} />
+          <TodoList isSideBarOpen={isSideBarOpen} />
         </div>
       </div>
     </>

@@ -13,9 +13,10 @@ import { Plus, Minus, Settings, X } from "lucide-react";
 import settingStore from "../../store/settingStore";
 import { Card } from "@/components/ui/card";
 import TimerDisplay from "./TimerDisplay";
+import { toast } from "react-toastify";
 
 interface TimerProps {
-  isOpen: boolean;
+  isSideBarOpen: boolean;
   page: string | null;
   setPage: (newPage: "timer" | "analytics" | "Setting" | null) => void;
   setTargetPosition: (position: [number, number, number]) => void;
@@ -23,7 +24,7 @@ interface TimerProps {
 }
 
 const Timer: React.FC<TimerProps> = ({
-  isOpen,
+  isSideBarOpen,
   page,
   setPage,
   setTargetPosition,
@@ -49,7 +50,23 @@ const Timer: React.FC<TimerProps> = ({
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    requestNotificationPermission();
+    const sendBrowserNotification = (title: string, message: string) => {
+      if (Notification.permission === "granted") {
+        new Notification(title, { body: message });
+      } else if (Notification.permission !== "denied") {
+        toast.info("請允許瀏覽器通知以啟用此功能。");
+        requestNotificationPermission().then((granted) => {
+          if (granted) {
+            new Notification(title, { body: message });
+          } else {
+            console.warn("通知權限未被授予。");
+          }
+        });
+      } else {
+        console.warn("通知權限未被授予，且已被拒絕。");
+      }
+    };
+    sendBrowserNotification("提醒", "這是你的通知訊息");
   }, []);
 
   const handleStartTimer = () => {
@@ -107,7 +124,7 @@ const Timer: React.FC<TimerProps> = ({
   return (
     <Card className="relative z-30 flex size-[500px] flex-col items-center justify-center bg-white bg-opacity-60 bg-cover bg-center">
       <div
-        className={`absolute right-4 top-4 ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
+        className={`absolute right-4 top-4 ${isSideBarOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
       >
         <Button variant="timerGhost" size="icon" onClick={handleCloseTimerPage}>
           <X />
@@ -115,9 +132,10 @@ const Timer: React.FC<TimerProps> = ({
       </div>
 
       <div
-        className={`absolute left-4 top-4 transform transition-all duration-500 ease-in-out ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
+        className={`absolute left-4 top-4 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
       >
         <Button
+          id="settings-button"
           variant="timerGhost"
           size="icon"
           onClick={handleOpenSettingsDialog}
@@ -132,7 +150,7 @@ const Timer: React.FC<TimerProps> = ({
       </div>
 
       <div
-        className={`transform transition-all duration-500 ease-in-out ${isOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
+        className={`transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
       >
         <CircularProgressbarWithChildren
           value={
@@ -162,6 +180,7 @@ const Timer: React.FC<TimerProps> = ({
               isPaused={isPaused}
             />
             <div
+              id="edit-timer"
               className={`flex items-center ${isPaused ? "w-5/6 justify-between" : "w-full justify-center"}`}
             >
               {isPaused && (
@@ -174,7 +193,7 @@ const Timer: React.FC<TimerProps> = ({
                   <Minus />
                 </Button>
               )}
-              <div className="flex items-center justify-center">
+              <div id="set-timer" className="flex items-center justify-center">
                 {isEditing ? (
                   <input
                     type="text"
@@ -212,7 +231,11 @@ const Timer: React.FC<TimerProps> = ({
         </CircularProgressbarWithChildren>
         <div className="mt-5 flex justify-center">
           {isPaused ? (
-            <Button variant="default" onClick={handleStartTimer}>
+            <Button
+              id="start-timer"
+              variant="default"
+              onClick={handleStartTimer}
+            >
               開始
             </Button>
           ) : mode === "break" ? (

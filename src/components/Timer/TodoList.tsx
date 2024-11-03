@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
-const TodoList = ({ isOpen }: { isOpen: boolean }) => {
+interface TodoListProps {
+  isSideBarOpen: boolean;
+}
+
+const TodoList: React.FC<TodoListProps> = ({ isSideBarOpen }) => {
   const [newTodoTitle, setNewTodoTitle] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -27,9 +31,9 @@ const TodoList = ({ isOpen }: { isOpen: boolean }) => {
     <Card
       id="todo-list"
       className={`fixed left-1/2 top-1/2 z-30 flex h-[500px] w-screen max-w-[500px] transform flex-col bg-white bg-opacity-60 p-5 transition-all duration-500 ease-in-out lg:z-0 lg:max-w-[350px] ${
-        isOpen
-          ? "translate-y-[-1050px] opacity-0 lg:-translate-y-1/2"
-          : "translate-y-[-250px] opacity-100 lg:-translate-y-1/2 lg:translate-x-[250px]"
+        isSideBarOpen
+          ? "translate-y-[-250px] opacity-100 lg:-translate-y-1/2 lg:translate-x-[250px]"
+          : "translate-y-[-1050px] opacity-0 lg:-translate-y-1/2"
       } -translate-x-1/2`}
     >
       <CardTitle className="mb-4 text-xl text-gray-800 dark:text-white">

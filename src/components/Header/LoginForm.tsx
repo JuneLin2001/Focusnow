@@ -97,6 +97,7 @@ const LoginForm = () => {
       const user = result.user;
       setUser(user);
       hideLogin();
+      toast.success("Google 登入成功！");
       await saveTaskDataFromLocalStorage(user);
       setIsDialogOpen(false);
     } catch (error) {
