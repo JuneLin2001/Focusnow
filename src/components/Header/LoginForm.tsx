@@ -17,7 +17,7 @@ import {
 } from "../../components/ui/dialog";
 import { Separator } from "../../components/ui/separator";
 import { Input } from "../../components/ui/input";
-import { CircleUser } from "lucide-react";
+import { CircleUser, Eye, EyeOff } from "lucide-react";
 import { Avatar, AvatarFallback } from "../../components/ui/avatar";
 import { useTimerStore } from "../../store/timerStore";
 import { saveTaskData } from "../../firebase/firebaseService";
@@ -32,6 +32,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { hideLogin } = useTimerStore();
   const { setUser } = useAuthStore();
 
@@ -42,6 +43,11 @@ const LoginForm = () => {
         toast.error("電子郵件格式不正確，請重新檢查");
         return;
       }
+      if (!password || password.length < 6) {
+        toast.error("密碼至少需要 6 個字符");
+        return;
+      }
+
       const result = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -59,16 +65,12 @@ const LoginForm = () => {
           case "auth/invalid-email":
             toast.error("電子郵件格式不正確，請重新檢查");
             break;
-          case "auth/weak-password":
-            toast.error("密碼過於簡單，請至少輸入 6 個字符");
-            break;
           case "auth/email-already-in-use":
             toast.error("此電子郵件已被使用");
             break;
           default:
             toast.error("註冊失敗，請稍後再試");
         }
-        console.error("Registration error", error);
       }
     }
   };
@@ -83,20 +85,7 @@ const LoginForm = () => {
       toast.success("登入成功！");
     } catch (error) {
       if (error instanceof FirebaseError) {
-        switch (error.code) {
-          case "auth/user-not-found":
-            toast.error("找不到使用者，請檢查帳號或註冊");
-            break;
-          case "auth/wrong-password":
-            toast.error("密碼錯誤，請重新檢查");
-            break;
-          case "auth/invalid-email":
-            toast.error("電子郵件格式不正確，請重新檢查");
-            break;
-          default:
-            toast.error("登入失敗，請稍後再試");
-        }
-        console.error("Email Login error", error);
+        toast.error("電子郵件或密碼錯誤");
       }
     }
   };
@@ -119,7 +108,6 @@ const LoginForm = () => {
           default:
             toast.error("Google 登入失敗，請稍後再試");
         }
-        console.error("Google Login error", error);
       }
     }
   };
@@ -150,7 +138,6 @@ const LoginForm = () => {
           default:
             toast.error("訪客登入失敗，請稍後再試");
         }
-        console.error("Guest Login error", error);
       }
     }
   };
@@ -208,12 +195,21 @@ const LoginForm = () => {
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
             />
-            <Input
-              type="password"
-              placeholder="密碼"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="relative">
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="密碼"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                className="absolute right-2 top-1/2 -translate-y-1/2 transform"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <Eye /> : <EyeOff />}
+              </button>
+            </div>
           </div>
           <DialogFooter>
             <Button
