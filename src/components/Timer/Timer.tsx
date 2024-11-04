@@ -13,8 +13,9 @@ import { Plus, Minus, Settings, X } from "lucide-react";
 import settingStore from "../../store/settingStore";
 import { Card } from "@/components/ui/card";
 import TimerDisplay from "./TimerDisplay";
-import { toast } from "react-toastify";
 import PipButton from "./PipButton";
+import { toast } from "react-toastify";
+import useSettingStore from "../../store/settingStore";
 
 interface TimerProps {
   isSideBarOpen: boolean;
@@ -47,31 +48,29 @@ const Timer: React.FC<TimerProps> = ({
     rotationCount,
   } = useTimerStore();
 
+  const hasSeenTimerInstruction = useSettingStore(
+    (state) => state.hasSeenTimerInstruction,
+  );
+
   const { themeMode } = settingStore();
   const [isEditing, setIsEditing] = useState(false);
 
-  // const sendBrowserNotification = (title: string, message: string) => {
-  //   if (Notification.permission === "granted") {
-  //     new Notification(title, { body: message });
-  //   } else if (Notification.permission !== "denied") {
-  //     toast.info("請允許瀏覽器通知以啟用此功能。");
-  //     requestNotificationPermission().then((granted) => {
-  //       if (granted) {
-  //         new Notification(title, { body: message });
-  //       } else {
-  //         toast.warn("通知權限未被授予。");
-  //       }
-  //     });
-  //   } else {
-  //     toast.warn("通知權限未被授予，且已被拒絕。");
-  //   }
-  // };
+  useEffect(() => {
+    if (!hasSeenTimerInstruction) {
+      toast.info("開啟通知權限以獲得完整功能。");
+    }
 
-  // useEffect(() => {
-  //   sendBrowserNotification("提醒", "這是你的通知訊息");
-  // }, []);
+    const requestPermission = async () => {
+      const granted = await requestNotificationPermission();
+      if (granted && !hasSeenTimerInstruction) {
+        toast.success("通知權限已獲得。");
+      } else if (!granted) {
+        toast.error("未獲得通知權限。");
+      }
+    };
 
-  // TODO:修瀏覽器通知
+    requestPermission();
+  }, [hasSeenTimerInstruction]);
 
   const handleStartTimer = () => {
     startTimer();
