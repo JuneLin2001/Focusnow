@@ -14,6 +14,7 @@ import settingStore from "../../store/settingStore";
 import { Card } from "@/components/ui/card";
 import TimerDisplay from "./TimerDisplay";
 import { toast } from "react-toastify";
+import PipButton from "./PipButton";
 
 interface TimerProps {
   isSideBarOpen: boolean;
@@ -142,6 +143,7 @@ const Timer: React.FC<TimerProps> = ({
         >
           <Settings />
         </Button>
+        <PipButton />
         <TimerDisplay
           page={page}
           setPage={setPage}

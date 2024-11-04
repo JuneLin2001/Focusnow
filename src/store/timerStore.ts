@@ -20,6 +20,8 @@ interface TimerState {
   rotationCount: number;
   maxRotationCount: number;
   worker: Worker | null;
+  canvasRef: React.RefObject<HTMLCanvasElement> | null;
+  setCanvasRef: (ref: React.RefObject<HTMLCanvasElement>) => void;
   setTimer: (minutes: number) => void;
   setInputMinutes: (minutes: number) => void;
   setBreakMinutes: (minutes: number) => void;
@@ -125,6 +127,8 @@ export const useTimerStore = create<TimerState>((set, get) => {
     maxRotationCount: 4,
     showLoginButton: false,
     worker: null,
+    canvasRef: null,
+    setCanvasRef: (ref) => set({ canvasRef: ref }),
     updateTitle,
     resetTitle,
 
@@ -147,7 +151,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
       const currentMinutes =
         get().mode === "work" ? get().inputMinutes : get().breakMinutes;
       const endTime = Timestamp.fromMillis(
-        now.toMillis() + currentMinutes * 60 * 1000
+        now.toMillis() + currentMinutes * 60 * 1000,
       );
 
       set({
@@ -219,7 +223,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
         if (!state.isPaused) {
           const now = Timestamp.now();
           const newEndTime = Timestamp.fromMillis(
-            now.toMillis() + newSecondsLeft * 1000
+            now.toMillis() + newSecondsLeft * 1000,
           );
           worker?.postMessage({
             action: "start",
@@ -233,7 +237,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
           inputMinutes: newMinutes,
           endTime: state.startTime
             ? Timestamp.fromMillis(
-                state.startTime.toMillis() + newSecondsLeft * 1000
+                state.startTime.toMillis() + newSecondsLeft * 1000,
               )
             : null,
         };
@@ -248,7 +252,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
         if (!state.isPaused) {
           const now = Timestamp.now();
           const newEndTime = Timestamp.fromMillis(
-            now.toMillis() + newSecondsLeft * 1000
+            now.toMillis() + newSecondsLeft * 1000,
           );
           worker?.postMessage({
             action: "start",
@@ -262,7 +266,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
           inputMinutes: newMinutes,
           endTime: state.startTime
             ? Timestamp.fromMillis(
-                state.startTime.toMillis() + newSecondsLeft * 1000
+                state.startTime.toMillis() + newSecondsLeft * 1000,
               )
             : null,
         };
@@ -281,7 +285,7 @@ export const useTimerStore = create<TimerState>((set, get) => {
           mode === "break"
             ? `第 ${currentRotation} 輪工作時間結束！`
             : `第 ${currentRotation} 輪休息時間結束！`,
-          mode === "break" ? "切換到休息模式！" : "切換到工作模式"
+          mode === "break" ? "切換到休息模式！" : "切換到工作模式",
         );
 
         updateTitle();
@@ -324,14 +328,14 @@ export const useTimerStore = create<TimerState>((set, get) => {
               .forEach((todo) => {
                 removeTodo(todo.id);
                 toast.success(
-                  `你完成的Todo 「 ${todo.title} 」 已經儲存成功！`
+                  `你完成的Todo 「 ${todo.title} 」 已經儲存成功！`,
                 );
               });
             localStorage.removeItem("taskData");
 
             if (inputMinutes >= 15 && pomodoroCompleted) {
               toast.success(
-                "恭喜你完成了15分鐘以上的專注！一隻企鵝來到了你的場景，快去看看吧🐧！"
+                "恭喜你完成了15分鐘以上的專注！一隻企鵝來到了你的場景，快去看看吧🐧！",
               );
             }
 

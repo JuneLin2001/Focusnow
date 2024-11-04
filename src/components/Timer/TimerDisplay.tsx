@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback, useState } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import { useTimerStore } from "../../store/timerStore";
 import {
   CircularProgressbarWithChildren,
@@ -6,11 +6,7 @@ import {
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import settingStore from "../../store/settingStore";
-import { Button } from "@/components/ui/button";
-import { PictureInPicture } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { toast } from "react-toastify";
-
 interface TimerDisplayProps {
   page: string | null;
   setPage: (newPage: "timer" | "analytics" | "Setting" | null) => void;
@@ -22,11 +18,16 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
   setPage,
   setTargetPosition,
 }) => {
-  const { secondsLeft, inputMinutes, breakMinutes, mode, rotationCount } =
-    useTimerStore();
-  const { themeMode } = settingStore();
-  const [isPipActive, setIsPipActive] = useState(false);
+  const {
+    secondsLeft,
+    inputMinutes,
+    breakMinutes,
+    mode,
+    rotationCount,
+    setCanvasRef,
+  } = useTimerStore();
 
+  const { themeMode } = settingStore();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -45,6 +46,10 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
         : "#009b00";
 
   const pipWindowWidth = 360;
+
+  useEffect(() => {
+    setCanvasRef(canvasRef);
+  }, [setCanvasRef]);
 
   const drawOnCanvas = useCallback(() => {
     if (canvasRef.current) {
@@ -79,7 +84,10 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
 
         ctx.font = `${pipWindowWidth / 16}px Arial`;
         ctx.fillStyle = themeMode === "dark" ? "#bbb" : "#333";
-        ctx.fillText(`第 ${rotationCount + 1} 輪`, 0, pipWindowWidth / 4);
+
+        if (percentage < 100) {
+          ctx.fillText(`第 ${rotationCount + 1} 輪`, 0, pipWindowWidth / 4);
+        }
 
         ctx.rotate(-Math.PI / 2);
 
@@ -101,85 +109,6 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
       }
     }
   }, [themeMode, secondsLeft, rotationCount, percentage, pathColor]);
-
-  const enterPiP = useCallback(async () => {
-    if (!document.pictureInPictureEnabled) {
-      toast.error("您的瀏覽器不支援進入 Picture-in-Picture 模式");
-      return;
-    }
-
-    if (isPipActive) {
-      return;
-    }
-
-    if (canvasRef.current && videoRef.current) {
-      try {
-        const stream = canvasRef.current.captureStream();
-        videoRef.current.srcObject = stream;
-
-        await new Promise<void>((resolve) => {
-          videoRef.current!.onloadedmetadata = () => resolve();
-        });
-
-        if (document.body.contains(videoRef.current)) {
-          await videoRef.current.play();
-          await videoRef.current.requestPictureInPicture();
-          setIsPipActive(true);
-        } else {
-          throw new Error("Video element is not in the document");
-        }
-      } catch (error) {
-        console.error("Error entering Picture-in-Picture mode", error);
-        toast.error("請檢查瀏覽器是否支援Picture-in-Picture 模式");
-      }
-    }
-  }, [isPipActive]);
-
-  const exitPiP = useCallback(async () => {
-    if (document.pictureInPictureElement) {
-      try {
-        await document.exitPictureInPicture();
-        setIsPipActive(false);
-      } catch (error) {
-        console.error("Error exiting Picture-in-Picture mode", error);
-        toast.error("Picture-in-Picture 模式");
-      }
-    }
-  }, []);
-
-  // useEffect(() => {
-  //   const handleVisibilityChange = () => {
-  //     if (
-  //       document.hidden ||
-  //       document.pictureInPictureEnabled ||
-  //       page !== "timer"
-  //     ) {
-  //       enterPiP();
-  //     } else {
-  //       exitPiP();
-  //     }
-  //   };
-
-  //   document.addEventListener("visibilitychange", handleVisibilityChange);
-
-  //   return () => {
-  //     document.removeEventListener("visibilitychange", handleVisibilityChange);
-  //   };
-  // }, [enterPiP, exitPiP, isPipActive, page]);
-
-  useEffect(() => {
-    const pipHandler = () => {
-      setIsPipActive(!!document.pictureInPictureElement);
-    };
-
-    document.addEventListener("enterpictureinpicture", pipHandler);
-    document.addEventListener("leavepictureinpicture", pipHandler);
-
-    return () => {
-      document.removeEventListener("enterpictureinpicture", pipHandler);
-      document.removeEventListener("leavepictureinpicture", pipHandler);
-    };
-  }, []);
 
   useEffect(() => {
     let animationFrameId: number;
@@ -236,16 +165,6 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
       ) : null}
 
       <video ref={videoRef} style={{ display: "none" }} muted playsInline />
-
-      <div className="fixed">
-        <Button
-          variant="timerGhost"
-          size="icon"
-          onClick={isPipActive ? exitPiP : enterPiP}
-        >
-          <PictureInPicture />
-        </Button>
-      </div>
     </>
   );
 };
