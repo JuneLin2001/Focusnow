@@ -50,25 +50,28 @@ const Timer: React.FC<TimerProps> = ({
   const { themeMode } = settingStore();
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    const sendBrowserNotification = (title: string, message: string) => {
-      if (Notification.permission === "granted") {
-        new Notification(title, { body: message });
-      } else if (Notification.permission !== "denied") {
-        toast.info("請允許瀏覽器通知以啟用此功能。");
-        requestNotificationPermission().then((granted) => {
-          if (granted) {
-            new Notification(title, { body: message });
-          } else {
-            console.warn("通知權限未被授予。");
-          }
-        });
-      } else {
-        console.warn("通知權限未被授予，且已被拒絕。");
-      }
-    };
-    sendBrowserNotification("提醒", "這是你的通知訊息");
-  }, []);
+  // const sendBrowserNotification = (title: string, message: string) => {
+  //   if (Notification.permission === "granted") {
+  //     new Notification(title, { body: message });
+  //   } else if (Notification.permission !== "denied") {
+  //     toast.info("請允許瀏覽器通知以啟用此功能。");
+  //     requestNotificationPermission().then((granted) => {
+  //       if (granted) {
+  //         new Notification(title, { body: message });
+  //       } else {
+  //         toast.warn("通知權限未被授予。");
+  //       }
+  //     });
+  //   } else {
+  //     toast.warn("通知權限未被授予，且已被拒絕。");
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   sendBrowserNotification("提醒", "這是你的通知訊息");
+  // }, []);
+
+  // TODO:修瀏覽器通知
 
   const handleStartTimer = () => {
     startTimer();
@@ -125,7 +128,7 @@ const Timer: React.FC<TimerProps> = ({
   return (
     <Card className="relative z-30 flex size-[500px] flex-col items-center justify-center bg-white bg-opacity-60 bg-cover bg-center">
       <div
-        className={`absolute right-4 top-4 ${isSideBarOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
+        className={`absolute right-4 top-4 ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
       >
         <Button variant="timerGhost" size="icon" onClick={handleCloseTimerPage}>
           <X />
@@ -133,7 +136,7 @@ const Timer: React.FC<TimerProps> = ({
       </div>
 
       <div
-        className={`absolute left-4 top-4 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
+        className={`absolute left-4 top-4 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
       >
         <Button
           id="settings-button"
@@ -152,7 +155,7 @@ const Timer: React.FC<TimerProps> = ({
       </div>
 
       <div
-        className={`transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-100" : "opacity-0"} lg:opacity-100`}
+        className={`transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
       >
         <CircularProgressbarWithChildren
           value={

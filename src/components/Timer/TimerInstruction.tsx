@@ -1,16 +1,26 @@
-import React from "react";
-import Joyride, { Step, CallBackProps, Placement } from "react-joyride";
+import Joyride, {
+  CallBackProps,
+  EVENTS,
+  Events,
+  STATUS,
+  Step,
+  Placement,
+} from "react-joyride";
 
 interface TimerInstructionProps {
   handleCloseInstructions: () => void;
   runTour: boolean;
   setRunTour: (run: boolean) => void;
+  isSideBarOpen: boolean;
+  setIsSideBarOpen: (isOpen: boolean) => void;
 }
 
 const TimerInstruction: React.FC<TimerInstructionProps> = ({
   handleCloseInstructions,
   runTour,
   setRunTour,
+  isSideBarOpen,
+  setIsSideBarOpen,
 }) => {
   const commonStepProps = {
     placement: "top" as Placement,
@@ -20,16 +30,17 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
     spotlightClicks: true,
     disableScrolling: true,
   };
+
   const steps: Step[] = [
     {
       target: "#toggle-sidebar",
-      content: "點擊這裡以控制側邊欄開啟與關閉。",
+      content: "點擊這裡以控制Todo List的開啟與關閉。",
       ...commonStepProps,
     },
     {
       target: "#todo-list",
-      content: "這是您的待辦事項列表。",
-      ...commonStepProps,
+      content: "這是Todo-List部分。",
+      placement: window.innerWidth < 1024 ? "center" : "left",
     },
     {
       target: "#set-timer",
@@ -48,36 +59,48 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
     },
     {
       target: "#start-timer",
-      content: "計時完成時，將會顯示瀏覽器通知，您可以在完成後重置計時器。",
-      ...commonStepProps,
-    },
-
-    {
-      target: "#start-timer",
       content: "點擊「開始」以啟動計時器，計時器將開始倒數。",
       ...commonStepProps,
     },
   ];
 
   const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status } = data;
-    if (status === "finished" || status === "skipped") {
+    const { index, status, type } = data;
+
+    if (([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status)) {
       setRunTour(false);
       handleCloseInstructions();
+    } else if (
+      ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as Events[]).includes(type)
+    ) {
+      if (index === 0) {
+        setIsSideBarOpen(true);
+        setRunTour(true);
+      } else if (index === 1) {
+        setTimeout(() => {
+          if (isSideBarOpen) {
+            setRunTour(true);
+            setIsSideBarOpen(false);
+          } else {
+            setRunTour(true);
+          }
+        }, 100);
+      } else {
+        setIsSideBarOpen(false);
+      }
     }
   };
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-gray-800 bg-opacity-50">
-      <Joyride
-        steps={steps}
-        run={runTour}
-        continuous
-        showSkipButton
-        showProgress
-        callback={handleJoyrideCallback}
-      />
-    </div>
+    <Joyride
+      steps={steps}
+      run={runTour}
+      continuous
+      showSkipButton
+      showProgress
+      callback={handleJoyrideCallback}
+      disableOverlayClose={true}
+    />
   );
 };
 
