@@ -7,6 +7,7 @@ import Joyride, {
   Placement,
 } from "react-joyride";
 import { useTimerStore } from "../../store/timerStore";
+import settingStore from "../../store/settingStore";
 
 interface TimerInstructionProps {
   handleCloseInstructions: () => void;
@@ -24,6 +25,7 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
   setIsSideBarOpen,
 }) => {
   const { isPaused, mode } = useTimerStore();
+  const { themeMode } = settingStore();
 
   const commonStepProps = {
     placement: "top" as Placement,
@@ -143,6 +145,13 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
       showProgress
       callback={handleJoyrideCallback}
       disableOverlayClose={true}
+      styles={{
+        options: {
+          arrowColor: "#e3ffeb",
+          primaryColor: themeMode === "light" ? "#3b82f6" : "#000",
+          zIndex: 1000,
+        },
+      }}
     />
   );
 };
