@@ -9,36 +9,41 @@ import * as THREE from "three";
 import { ModelProps } from "../../types/type";
 import { useEffect, useRef } from "react";
 
-export default function Bounce() {
+export default function ErrorPage() {
   return (
-    <Canvas
-      shadows
-      camera={{ position: [0, 5, 10], fov: 25 }}
-      className="touch-none"
-    >
-      <ambientLight intensity={0.5} />
-
-      <PresentationControls
-        global
-        config={{ mass: 2, tension: 500 }}
-        snap={{ mass: 4, tension: 1500 }}
-        rotation={[0, 1, 0]}
-        polar={[-Math.PI / 3, Math.PI / 3]}
-        azimuth={[-Math.PI / 1.4, Math.PI / 2]}
+    <>
+      <Canvas
+        shadows
+        camera={{ position: [0, 5, 10], fov: 25 }}
+        className="touch-none"
       >
-        <BounceModel position={[1, -1, 0]} />
-      </PresentationControls>
-      <ContactShadows
-        position={[0, -1.4, 0]}
-        opacity={0.75}
-        scale={10}
-        blur={3}
-        far={4}
-      />
-      <ambientLight intensity={0.5} />
+        <ambientLight intensity={0.5} />
 
-      <Environment preset="city" />
-    </Canvas>
+        <PresentationControls
+          global
+          config={{ mass: 2, tension: 500 }}
+          snap={{ mass: 4, tension: 1500 }}
+          rotation={[0, 1, 0]}
+          polar={[-Math.PI / 3, Math.PI / 3]}
+          azimuth={[-Math.PI / 1.4, Math.PI / 2]}
+        >
+          <BounceModel position={[1, -1, 0]} />
+        </PresentationControls>
+        <ContactShadows
+          position={[0, -1.4, 0]}
+          opacity={0.75}
+          scale={10}
+          blur={3}
+          far={4}
+        />
+        <ambientLight intensity={0.5} />
+
+        <Environment preset="city" />
+      </Canvas>
+      <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-9xl">
+        error❌
+      </div>
+    </>
   );
 }
 

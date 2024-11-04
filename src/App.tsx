@@ -6,7 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import useAuthStore from "./store/authStore";
 import { auth } from "./firebase/firebaseConfig";
-import Bounce from "./components/Game/BounceModel";
+import ErrorPage from "./components/LandingPage/ErrorPage";
 import { ToastContainer } from "react-toastify";
 import settingStore from "./store/settingStore";
 import "react-toastify/dist/ReactToastify.css";
@@ -35,17 +35,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/analytics" element={<AanalyticsPage />} />
-        <Route
-          path="/*"
-          element={
-            <>
-              <Bounce />
-              <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-9xl">
-                error❌
-              </div>
-            </>
-          }
-        />
+        <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </>
   );
