@@ -1,6 +1,6 @@
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Html, useProgress } from "@react-three/drei";
+import { Html } from "@react-three/drei";
 import Timer from "../Timer/index";
 import AnalyticsPage from "../Analytics";
 import GamePage from "../Game/index";
@@ -15,31 +15,12 @@ import InitialInstructions from "./InitialInstructions";
 import useAuthStore from "../../store/authStore";
 import * as THREE from "three";
 import ToggleBgm from "./ToggleBgm";
-import { Progress } from "@/components/ui/progress";
 import usesettingStore from "@/store/settingStore";
 import { toast } from "react-toastify";
 import { Card } from "@/components/ui/card";
 import AsyncModels from "./AsyncModels";
 import useFetchAnalytics from "../../hooks/useFetchAnalytics";
-
-const Loader = () => {
-  const { progress } = useProgress();
-
-  return (
-    <>
-      <Html center>
-        <div className="fixed inset-0 z-50 flex h-screen items-center justify-center bg-black bg-opacity-75">
-          <div className="w-full max-w-lg px-4">
-            <p className="mb-4 text-center text-white">
-              Loading... {Math.round(progress)}%
-            </p>
-            <Progress value={progress} />
-          </div>
-        </div>
-      </Html>
-    </>
-  );
-};
+import Loader from "./Loader";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -61,7 +42,6 @@ const LandingPage = () => {
   );
 
   const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
   const [instructionHovered, setInstructionHovered] = useState(false);
@@ -110,9 +90,19 @@ const LandingPage = () => {
   };
 
   useEffect(() => {
-    if (user) {
-      loadUserSettings(user.uid);
-    }
+    const hasSeenInitialInstructions = localStorage.getItem(
+      "hasSeenInitialInstructions",
+    );
+    setShowInstructions(hasSeenInitialInstructions !== "true");
+
+    const loadData = async () => {
+      if (user) {
+        await loadUserSettings(user.uid);
+      }
+      setLoading(false);
+    };
+
+    loadData();
   }, [user, loadUserSettings]);
 
   const handleComplete = () => {
@@ -123,36 +113,9 @@ const LandingPage = () => {
     setShowInstructions(true);
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prevProgress) => {
-        if (prevProgress < 100) {
-          return prevProgress + 10;
-        } else {
-          clearInterval(interval);
-          return 100;
-        }
-      });
-    }, 300);
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-  }, []);
-
-  // if (loading) {
-  //   return (
-  //     <div className="fixed inset-0 z-50 flex h-screen items-center justify-center bg-black bg-opacity-75">
-  //       <div className="w-full max-w-lg px-4">
-  //         <p className="mb-4 text-center text-white">
-  //           Loading... {loading ? progress : 0}%
-  //         </p>
-  //         <Progress value={loading ? progress : 0} />
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <>
       <DashboardHeader
@@ -179,19 +142,17 @@ const LandingPage = () => {
       )}
 
       <Canvas className="z-0">
-        <Suspense fallback={<Loader />}>
-          <AsyncModels
-            page={page}
-            instructionHovered={instructionHovered}
-            handleShowInitialInstructions={handleShowInitialInstructions}
-            setInstructionHovered={setInstructionHovered}
-            themeMode={themeMode}
-            isFishLoading={isFishLoading}
-            handleDropFish={handleDropFish}
-            fishPosition={fishPosition}
-            fishesCount={fishesCount}
-          />
-        </Suspense>
+        <AsyncModels
+          page={page}
+          instructionHovered={instructionHovered}
+          handleShowInitialInstructions={handleShowInitialInstructions}
+          setInstructionHovered={setInstructionHovered}
+          themeMode={themeMode}
+          isFishLoading={isFishLoading}
+          handleDropFish={handleDropFish}
+          fishPosition={fishPosition}
+          fishesCount={fishesCount}
+        />
         <GamePage
           fishesCount={fishesCount}
           setFishesCount={updateFishesCount}
