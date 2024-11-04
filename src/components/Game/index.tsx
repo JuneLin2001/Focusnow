@@ -3,8 +3,8 @@ import MovingModel from "./MovingModel";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import * as THREE from "three";
 import FishModel from "./FishModel";
-import Sign from "./Sign";
-import SignInstructions from "./SignInstructions";
+import Sign from "./Sign/Sign";
+import SignInstructions from "./Sign/SignInstructions";
 import FishesCountFetcher from "../../utils/fishesCountFetcher";
 import useAuthStore from "../../store/authStore";
 import { toast } from "react-toastify";
@@ -46,7 +46,7 @@ const GamePage: React.FC<GamePageProps> = ({
     return sortedAnalytics
       .filter(
         (analytics) =>
-          analytics.focusDuration >= 15 && analytics.pomodoroCompleted
+          analytics.focusDuration >= 15 && analytics.pomodoroCompleted,
       )
       .slice(0, 30);
   }, [analyticsList]);

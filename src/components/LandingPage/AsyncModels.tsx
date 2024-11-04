@@ -5,7 +5,7 @@ import FloatingIce from "../../models/floatingIce";
 import OceanModel from "../../models/OceanModel";
 import Analytics from "../../models/AnalyticsCube";
 import Snowflakes from "./Snowflakes";
-import SnowPenguin from "./SnowPenguin";
+import SnowPenguin from "../Game/SnowPenguin";
 import ShowInstructions from "./ShowInstructions";
 import DropFish from "./DropFish";
 import * as THREE from "three";
