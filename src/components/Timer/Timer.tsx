@@ -235,23 +235,13 @@ const Timer: React.FC<TimerProps> = ({
           </div>
         </CircularProgressbarWithChildren>
         <div className="mt-5 flex justify-center">
-          {isPaused ? (
-            <Button
-              id="start-timer"
-              variant="default"
-              onClick={handleStartTimer}
-            >
-              開始
-            </Button>
-          ) : mode === "break" ? (
-            <Button variant="reset" onClick={resetTimer}>
-              跳過休息
-            </Button>
-          ) : (
-            <Button variant="reset" onClick={resetTimer}>
-              放棄
-            </Button>
-          )}
+          <Button
+            id={isPaused ? "start-timer" : "reset-timer"}
+            variant={isPaused ? "default" : "reset"}
+            onClick={isPaused ? handleStartTimer : resetTimer}
+          >
+            {isPaused ? "開始" : mode === "break" ? "跳過休息" : "放棄"}
+          </Button>
         </div>
       </div>
       {showLoginButton && (

@@ -6,6 +6,7 @@ import Joyride, {
   Step,
   Placement,
 } from "react-joyride";
+import { useTimerStore } from "../../store/timerStore";
 
 interface TimerInstructionProps {
   handleCloseInstructions: () => void;
@@ -22,6 +23,8 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
   isSideBarOpen,
   setIsSideBarOpen,
 }) => {
+  const { isPaused, mode } = useTimerStore();
+
   const commonStepProps = {
     placement: "top" as Placement,
     hideCloseButton: true,
@@ -40,26 +43,64 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
     {
       target: "#todo-list",
       content: "這是Todo-List部分。",
+      ...commonStepProps,
       placement: window.innerWidth < 1024 ? "center" : "left",
     },
     {
-      target: "#set-timer",
-      content: "您可以點擊設定計時器的分鐘數，預設為 25 分鐘。",
+      target: "#new-todo",
+      content: "可以在這裡輸入並新增Todos",
       ...commonStepProps,
     },
     {
+      target: "#todo-list",
+      content: "完成的項目在計時完成時會被一併記錄到統計資料。",
+      ...commonStepProps,
+      placement: window.innerWidth < 1024 ? "center" : "left",
+    },
+    {
       target: "#edit-timer",
-      content: "使用「+」和「-」按鈕可快速增加或減少 5 分鐘。",
+      content: isPaused ? (
+        <div>
+          點擊時間可設定計時器的分鐘數，
+          <br />
+          使用「+」和「-」按鈕可快速增加或減少 5 分鐘。
+        </div>
+      ) : (
+        <div>開始計時的時候不能修改時間</div>
+      ),
       ...commonStepProps,
     },
     {
       target: "#settings-button",
-      content: "這是設定按鈕。",
+      content: (
+        <div>
+          點設定按鈕可以設定背景音樂、休息時間
+          <br />
+          和進行的輪數。
+        </div>
+      ),
       ...commonStepProps,
     },
     {
-      target: "#start-timer",
-      content: "點擊「開始」以啟動計時器，計時器將開始倒數。",
+      target: "#pip-button",
+      content: <div>點擊這裡可以開啟或關閉子母畫面模式。</div>,
+      ...commonStepProps,
+    },
+    {
+      target: isPaused ? "#start-timer" : "#reset-timer",
+      content: (
+        <div>
+          {mode === "work" ? (
+            <>
+              點擊「開始」即可啟動計時器，
+              <br />
+              計時啟動時僅能中斷，無法暫停。
+            </>
+          ) : (
+            "點擊可跳過休息階段"
+          )}
+        </div>
+      ),
       ...commonStepProps,
     },
   ];
@@ -67,16 +108,18 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { index, status, type } = data;
 
+    console.log(index);
+
     if (([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status)) {
       setRunTour(false);
       handleCloseInstructions();
     } else if (
       ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as Events[]).includes(type)
     ) {
-      if (index === 0) {
+      if (index <= 2) {
         setIsSideBarOpen(true);
         setRunTour(true);
-      } else if (index === 1) {
+      } else if (index >= 3) {
         setTimeout(() => {
           if (isSideBarOpen) {
             setRunTour(true);

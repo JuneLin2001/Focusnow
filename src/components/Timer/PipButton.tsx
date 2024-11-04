@@ -67,6 +67,7 @@ const PipButton = () => {
   return (
     <div>
       <Button
+        id="pip-button"
         variant="timerGhost"
         size="icon"
         onClick={isPipActive ? exitPiP : enterPiP}

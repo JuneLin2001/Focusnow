@@ -40,7 +40,7 @@ const TodoList: React.FC<TodoListProps> = ({ isSideBarOpen }) => {
         Todo List
       </CardTitle>
 
-      <div className="mb-4 flex w-full">
+      <div id="new-todo" className="mb-4 flex w-full">
         <Input
           type="text"
           value={newTodoTitle}
