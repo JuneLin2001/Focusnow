@@ -1,14 +1,16 @@
 import { Environment, Sky } from "@react-three/drei";
-import Mainland from "../../models/Mainland";
-import Igloo from "../../models/Igloo";
-import FloatingIce from "../../models/floatingIce";
-import OceanModel from "../../models/OceanModel";
-import Analytics from "../../models/AnalyticsCube";
 import Snowflakes from "./Snowflakes";
 import SnowPenguin from "../Game/SnowPenguin";
 import ShowInstructions from "./ShowInstructions";
 import DropFish from "./DropFish";
 import * as THREE from "three";
+import {
+  Mainland,
+  FloatingIce,
+  OceanModel,
+  Igloo,
+  AnalyticsCube,
+} from "@/components/LandingPage/StaticModels";
 
 interface AsyncModelsProps {
   page: "timer" | "analytics" | "game" | "Setting" | null;
@@ -44,7 +46,7 @@ const AsyncModels: React.FC<AsyncModelsProps> = ({
       <Igloo />
       <FloatingIce />
       <OceanModel />
-      <Analytics />
+      <AnalyticsCube />
       <Snowflakes />
 
       <SnowPenguin

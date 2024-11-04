@@ -65,8 +65,8 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
         ctx.beginPath();
         ctx.arc(0, 0, pipWindowWidth / 2 - 40, 0, Math.PI * 2);
 
-        ctx.strokeStyle = "#d6d6d6";
-        ctx.lineWidth = 24;
+        (ctx.strokeStyle = themeMode === "light" ? "#d6d6d6" : "#686868"),
+          (ctx.lineWidth = 24);
         ctx.stroke();
 
         ctx.fillStyle = themeMode === "dark" ? "#fff" : "#000";

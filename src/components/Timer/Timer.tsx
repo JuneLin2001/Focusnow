@@ -165,7 +165,7 @@ const Timer: React.FC<TimerProps> = ({
           styles={buildStyles({
             textColor: themeMode === "dark" ? "#e5e7eb" : "#000",
             pathColor: pathColor,
-            trailColor: "#d6d6d6",
+            trailColor: themeMode === "light" ? "#d6d6d6" : "#686868",
           })}
         >
           <div className="flex size-full flex-col items-center justify-center">
