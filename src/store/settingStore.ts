@@ -7,9 +7,11 @@ interface SettingStore {
   isPlaying: boolean;
   bgmSource: string;
   themeMode: "light" | "dark";
+  hasSeenTimerInstruction: boolean;
   toggleBgm: () => void;
   setBgmSource: (source: string) => void;
   setThemeMode: (mode: "light" | "dark") => void;
+  setHasSeenTimerInstruction: (seen: boolean) => void;
   loadUserSettings: (userId: string) => Promise<void>;
   saveUserSettings: () => Promise<void>;
 }
@@ -19,12 +21,16 @@ const useSettingStore = create<SettingStore>((set) => ({
   bgmSource:
     "/yt5s.io - 大自然的白噪音 1小時｜森林鳥鳴聲，身心放鬆，平靜學習輔助 (320 kbps).mp3",
   themeMode: "light",
+  hasSeenTimerInstruction: false,
 
   toggleBgm: () => set((state) => ({ isPlaying: !state.isPlaying })),
 
   setBgmSource: (source: string) => set({ bgmSource: source }),
 
   setThemeMode: (mode: "light" | "dark") => set({ themeMode: mode }),
+
+  setHasSeenTimerInstruction: (seen: boolean) =>
+    set({ hasSeenTimerInstruction: seen }),
 
   loadUserSettings: async (userId: string) => {
     const settingsRef = doc(db, "users", userId, "settings", "userSettings");
@@ -39,6 +45,7 @@ const useSettingStore = create<SettingStore>((set) => ({
           data.themeMode === "light" || data.themeMode === "dark"
             ? data.themeMode
             : "light",
+        hasSeenTimerInstruction: data.hasSeenTimerInstruction ?? false,
       });
     } else {
       const defaultSettings = {
@@ -46,6 +53,7 @@ const useSettingStore = create<SettingStore>((set) => ({
         bgmSource:
           "/yt5s.io - 大自然的白噪音 1小時｜森林鳥鳴聲，身心放鬆，平靜學習輔助 (320 kbps).mp3",
         themeMode: "light" as "light" | "dark",
+        hasSeenTimerInstruction: false,
       };
 
       await setDoc(settingsRef, defaultSettings);
@@ -65,6 +73,7 @@ const useSettingStore = create<SettingStore>((set) => ({
       isPlaying: state.isPlaying,
       bgmSource: state.bgmSource,
       themeMode: state.themeMode,
+      hasSeenTimerInstruction: state.hasSeenTimerInstruction,
     };
 
     await setDoc(settingsRef, settingsData);

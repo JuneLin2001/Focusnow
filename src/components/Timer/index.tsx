@@ -4,6 +4,7 @@ import TodoList from "./TodoList.js";
 import TimerInstruction from "./TimerInstruction";
 import ToggleTodoList from "./ToggleTodoList";
 import StartTimerInstruction from "./StartTimerInstruction";
+import useSettingStore from "../../store/settingStore";
 
 interface TimerPageProps {
   page: string | null;
@@ -20,15 +21,21 @@ const TimerPage: React.FC<TimerPageProps> = ({
 }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState<boolean>(false);
   const [runTour, setRunTour] = useState<boolean>(false);
+  const hasSeenTimerInstruction = useSettingStore(
+    (state) => state.hasSeenTimerInstruction,
+  );
 
   useEffect(() => {
-    setRunTour(true);
-  }, []);
+    if (!hasSeenTimerInstruction) {
+      setRunTour(true);
+    }
+  }, [hasSeenTimerInstruction]);
 
-  const handleCloseInstructions = () => {
+  const handleCloseInstructions = async () => {
     setRunTour(false);
+    useSettingStore.getState().setHasSeenTimerInstruction(true);
+    await useSettingStore.getState().saveUserSettings();
   };
-
   const toggleSidebar = () => {
     setIsSideBarOpen(!isSideBarOpen);
   };
