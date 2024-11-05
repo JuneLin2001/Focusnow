@@ -3,6 +3,12 @@ import { useTimerStore } from "../../store/timerStore";
 import LoginButton from "../Header/LoginButton";
 import { requestNotificationPermission } from "../../utils/notificationService";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Settings, X } from "lucide-react";
 import PipButton from "./PipButton";
 import { toast } from "react-toastify";
@@ -66,33 +72,41 @@ const Timer: React.FC<TimerProps> = ({
   return (
     <>
       <div
-        className={`absolute right-4 top-4 ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
+        className={`absolute right-4 top-4 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
       >
         <Button variant="timerGhost" size="icon" onClick={handleCloseTimerPage}>
           <X />
         </Button>
       </div>
       <div
-        className={`absolute left-4 top-4 ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
+        className={`absolute left-4 top-4 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
       >
-        <Button
-          id="settings-button"
-          variant="timerGhost"
-          size="icon"
-          onClick={handleOpenSettingsDialog}
-        >
-          <Settings />
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                id="settings-button"
+                variant="timerGhost"
+                size="icon"
+                onClick={handleOpenSettingsDialog}
+              >
+                <Settings />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>設定</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
-      <TimerProgressBar />
       <div
-        className={`absolute left-4 top-12 ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
+        className={`absolute left-4 top-12 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
       >
         <PipButton />
       </div>
       <div
         className={`${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
-      ></div>
+      >
+        <TimerProgressBar />
+      </div>
       {showLoginButton && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
           <div className="flex flex-col items-center rounded bg-white p-5 shadow-lg">

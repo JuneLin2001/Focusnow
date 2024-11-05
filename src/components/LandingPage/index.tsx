@@ -189,7 +189,7 @@ const LandingPage = () => {
         {instructionHovered && (
           <Html position={[115, 70, 145]} center>
             <Card className="flex h-10 w-36 items-center justify-center p-2">
-              重新觀看說明
+              觀看場景說明
             </Card>
           </Html>
         )}

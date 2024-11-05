@@ -122,6 +122,11 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
       ...commonStepProps,
       spotlightClicks: false,
     },
+    {
+      target: "#start-timer-instruction",
+      content: <div>點擊這裡可以重新觀看說明。</div>,
+      ...commonStepProps,
+    },
   ];
 
   const handleJoyrideCallback = (data: CallBackProps) => {
@@ -171,6 +176,12 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
           primaryColor: themeMode === "light" ? "#3b82f6" : "#000",
           zIndex: 1000,
         },
+      }}
+      locale={{
+        back: "上一步",
+        last: "完成",
+        next: "下一步",
+        skip: "跳過",
       }}
     />
   );

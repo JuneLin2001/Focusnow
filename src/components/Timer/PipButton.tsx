@@ -1,5 +1,11 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { PictureInPicture } from "lucide-react";
 import { toast } from "react-toastify";
 import { useTimerStore } from "../../store/timerStore";
@@ -66,15 +72,24 @@ const PipButton = () => {
 
   return (
     <>
-      <Button
-        id="pip-button"
-        variant="timerGhost"
-        size="icon"
-        onClick={isPipActive ? exitPiP : enterPiP}
-        className="mt-2"
-      >
-        <PictureInPicture />
-      </Button>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              id="pip-button"
+              variant="timerGhost"
+              size="icon"
+              onClick={isPipActive ? exitPiP : enterPiP}
+              className="mt-2"
+            >
+              <PictureInPicture />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            {isPipActive ? "退出子母畫面模式" : "進入子母畫面模式"}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <video ref={videoRef} style={{ display: "none" }} muted playsInline />
     </>
   );
