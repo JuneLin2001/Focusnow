@@ -44,13 +44,25 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
     },
     {
       target: "#todo-list",
-      content: "這是Todo-List部分。",
+      content: (
+        <>
+          這是Todo-List部分。
+          <br />
+          可以在這邊進行新增、編輯或刪除
+        </>
+      ),
       ...commonStepProps,
       placement: window.innerWidth < 1024 ? "center" : "left",
     },
     {
       target: "#new-todo",
-      content: "可以在這裡輸入並新增Todos",
+      content: (
+        <>
+          可以在這裡輸入並新增Todos，
+          <br />
+          可以點擊「+」或是使用「Enter」來新增。
+        </>
+      ),
       ...commonStepProps,
     },
     {
@@ -62,24 +74,24 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
     {
       target: "#edit-timer",
       content: isPaused ? (
-        <div>
+        <>
           點擊時間可設定計時器的分鐘數，
           <br />
           使用「+」和「-」按鈕可快速增加或減少 5 分鐘。
-        </div>
+        </>
       ) : (
-        <div>開始計時的時候不能修改時間</div>
+        <>開始計時的時候不能修改時間</>
       ),
       ...commonStepProps,
     },
     {
       target: "#settings-button",
       content: (
-        <div>
+        <>
           點設定按鈕可以設定背景音樂、休息時間
           <br />
           和進行的輪數。
-        </div>
+        </>
       ),
       ...commonStepProps,
     },
@@ -96,22 +108,24 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
             <>
               點擊「開始」即可啟動計時器，
               <br />
-              計時啟動時僅能中斷，無法暫停。
+              計時啟動時僅能「中斷」，無法暫停。
             </>
           ) : (
-            "點擊可跳過休息階段"
+            <>
+              點擊可跳過休息階段，
+              <br />
+              跳過後將會重置當前輪數並回到工作階段。
+            </>
           )}
         </div>
       ),
       ...commonStepProps,
+      spotlightClicks: false,
     },
   ];
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { index, status, type } = data;
-
-    console.log(index);
-
     if (([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status)) {
       setRunTour(false);
       handleCloseInstructions();
@@ -132,6 +146,12 @@ const TimerInstruction: React.FC<TimerInstructionProps> = ({
         }, 100);
       } else {
         setIsSideBarOpen(false);
+      }
+    }
+
+    if (type === EVENTS.STEP_BEFORE) {
+      if (index <= 3) {
+        setIsSideBarOpen(true);
       }
     }
   };

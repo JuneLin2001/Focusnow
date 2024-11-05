@@ -5,6 +5,7 @@ import TimerInstruction from "./TimerInstruction";
 import ToggleTodoList from "./ToggleTodoList";
 import StartTimerInstruction from "./StartTimerInstruction";
 import useSettingStore from "../../store/settingStore";
+import { Card } from "@/components/ui/card";
 
 interface TimerPageProps {
   page: string | null;
@@ -57,20 +58,23 @@ const TimerPage: React.FC<TimerPageProps> = ({
         />
       )}
       <div className="relative flex h-screen w-screen items-center justify-center">
-        <Timer
-          isSideBarOpen={isSideBarOpen}
-          page={page}
-          setPage={setPage}
-          setTargetPosition={setTargetPosition}
-          setLookAtPosition={setLookAtPosition}
-        />
+        <Card className="relative z-30 flex size-[500px] flex-col items-center justify-center bg-white bg-opacity-60 bg-cover bg-center">
+          <Timer
+            isSideBarOpen={isSideBarOpen}
+            page={page}
+            setPage={setPage}
+            setTargetPosition={setTargetPosition}
+            setLookAtPosition={setLookAtPosition}
+          />
+          <StartTimerInstruction
+            isSideBarOpen={isSideBarOpen}
+            handleStartTour={handleStartTour}
+          />
+        </Card>
+
         <ToggleTodoList
           toggleSidebar={toggleSidebar}
           isSideBarOpen={isSideBarOpen}
-        />
-        <StartTimerInstruction
-          isSideBarOpen={isSideBarOpen}
-          handleStartTour={handleStartTour}
         />
       </div>
       <TodoList isSideBarOpen={isSideBarOpen} />

@@ -65,17 +65,18 @@ const PipButton = () => {
   }, [setIsPipActive]);
 
   return (
-    <div>
+    <>
       <Button
         id="pip-button"
         variant="timerGhost"
         size="icon"
         onClick={isPipActive ? exitPiP : enterPiP}
+        className="mt-2"
       >
         <PictureInPicture />
       </Button>
       <video ref={videoRef} style={{ display: "none" }} muted playsInline />
-    </div>
+    </>
   );
 };
 

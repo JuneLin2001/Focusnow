@@ -11,14 +11,17 @@ const StartTimerInstruction: React.FC<StartTimerInstructionProps> = ({
   handleStartTour,
 }) => {
   return (
-    <div>
-      <div
-        className={`absolute left-1/2 top-1/2 z-50 -translate-x-1/2 ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
+    <div
+      className={`absolute left-4 top-20 z-50 ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
+    >
+      <Button
+        variant="timerGhost"
+        size="icon"
+        onClick={handleStartTour}
+        className="mt-4"
       >
-        <Button className="p-2" variant="timerGhost" onClick={handleStartTour}>
-          <Lightbulb />
-        </Button>
-      </div>
+        <Lightbulb />
+      </Button>
     </div>
   );
 };
