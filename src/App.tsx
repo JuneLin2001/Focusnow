@@ -1,6 +1,4 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
-import AanalyticsPage from "./components/Analytics";
 import LandingPage from "./components/LandingPage";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
@@ -11,7 +9,7 @@ import { ToastContainer } from "react-toastify";
 import settingStore from "./store/settingStore";
 import "react-toastify/dist/ReactToastify.css";
 
-const App: React.FC = () => {
+const App = () => {
   const setUser = useAuthStore((state) => state.setUser);
   const { themeMode } = settingStore();
 
@@ -34,7 +32,6 @@ const App: React.FC = () => {
       />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/analytics" element={<AanalyticsPage />} />
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </>
