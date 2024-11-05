@@ -6,7 +6,7 @@ import AnalyticsPage from "../Analytics";
 import GamePage from "../Game/index";
 import CameraController from "./CameraController";
 import { DashboardHeader } from "@/components/Header/DashboardHeader";
-import TimerDisplay from "../Timer/TimerDisplay";
+import TimerDisplayInSide from "../Timer/TimerDisplayInSide";
 import { useFishesCountStore } from "@/store/fishesCountStore";
 import settingStore from "../../store/settingStore";
 import Bubble from "./Bubble";
@@ -194,7 +194,7 @@ const LandingPage = () => {
           </Html>
         )}
       </Canvas>
-      <TimerDisplay
+      <TimerDisplayInSide
         page={page}
         setPage={setPage}
         setTargetPosition={setTargetPosition}

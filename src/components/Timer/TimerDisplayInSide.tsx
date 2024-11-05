@@ -7,13 +7,13 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 import settingStore from "../../store/settingStore";
 import { Card } from "@/components/ui/card";
-interface TimerDisplayProps {
+interface TimerDisplayInSideProps {
   page: string | null;
   setPage: (newPage: "timer" | "analytics" | "Setting" | null) => void;
   setTargetPosition: (position: [number, number, number]) => void;
 }
 
-const TimerDisplay: React.FC<TimerDisplayProps> = ({
+const TimerDisplayInSide: React.FC<TimerDisplayInSideProps> = ({
   page,
   setPage,
   setTargetPosition,
@@ -65,8 +65,8 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
         ctx.beginPath();
         ctx.arc(0, 0, pipWindowWidth / 2 - 40, 0, Math.PI * 2);
 
-        (ctx.strokeStyle = themeMode === "light" ? "#d6d6d6" : "#686868"),
-          (ctx.lineWidth = 24);
+        ctx.strokeStyle = themeMode === "light" ? "#d6d6d6" : "#686868";
+        ctx.lineWidth = 24;
         ctx.stroke();
 
         ctx.fillStyle = themeMode === "dark" ? "#fff" : "#000";
@@ -169,4 +169,4 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
   );
 };
 
-export default TimerDisplay;
+export default TimerDisplayInSide;

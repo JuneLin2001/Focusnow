@@ -4,7 +4,6 @@ import LoginButton from "../Header/LoginButton";
 import { requestNotificationPermission } from "../../utils/notificationService";
 import { Button } from "@/components/ui/button";
 import { Settings, X } from "lucide-react";
-import TimerDisplay from "./TimerDisplay";
 import PipButton from "./PipButton";
 import { toast } from "react-toastify";
 import useSettingStore from "../../store/settingStore";
@@ -20,7 +19,6 @@ interface TimerProps {
 
 const Timer: React.FC<TimerProps> = ({
   isSideBarOpen,
-  page,
   setPage,
   setTargetPosition,
   setLookAtPosition,
@@ -91,11 +89,6 @@ const Timer: React.FC<TimerProps> = ({
         className={`absolute left-4 top-12 ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
       >
         <PipButton />
-        <TimerDisplay
-          page={page}
-          setPage={setPage}
-          setTargetPosition={setTargetPosition}
-        />
       </div>
       <div
         className={`${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
