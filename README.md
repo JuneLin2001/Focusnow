@@ -31,15 +31,15 @@ A pomodoro website with a 3D scene and a penguin-themed mini-game.
 
 ### Tech Stack
 
-- Built with **React** and **TypeScript** to ensure prop type safety for improved stability.
-- Utilized **Tailwind CSS** for fast UI development.
-- Employed **Shadcn-ui** to maintain design consistency.
-- Database powered by **Firestore** for reliable data storage and accessibility.
-- State management handled with **Zustand** for efficient and easy state management.
-- Created 3D models using **Blender**, allowing easily customizable visual elements.
-- Added WebGL features via **Three.js** and **React Three Fiber** to deliver 3D graphics.
-- Supported **Picture-in-Picture** mode, allowing users to multitask and enhancing their productivity.
-- Integrated **Firebase Authentication** with Google third-party login for seamless user access.
+- Built with `React` and `TypeScript` to ensure prop type safety for improved stability.
+- Utilized `Tailwind CSS` for fast UI development.
+- Employed `Shadcn-ui` to maintain design consistency.
+- Database powered by `Firestore` for reliable data storage and accessibility.
+- State management handled with `Zustand` for efficient and easy state management.
+- Created 3D models using `Blender`, allowing easily customizable visual elements.
+- Added WebGL features via `Three.js` and `React Three Fiber` to deliver 3D graphics.
+- Supported `Picture-in-Picture` mode, allowing users to multitask and enhancing their productivity.
+- Integrated `Firebase Authentication` with Google third-party login for seamless user access.
 
 ## Screenshots
 
@@ -61,7 +61,7 @@ A pomodoro website with a 3D scene and a penguin-themed mini-game.
   
 ## Contact
 
-- **Author**: [Yen-Chun,Lin](https://github.com/JuneLin2001)
+- Author: [Yen-Chun,Lin](https://github.com/JuneLin2001)
 - 📫 Feel free to reach me out yenchunlin2001@gmail.com  
 - 🐞 Found an issue? Report it here on [GitHub Issues](https://github.com/JuneLin2001/Focusnow/issues)
 
