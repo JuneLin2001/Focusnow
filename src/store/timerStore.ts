@@ -323,15 +323,17 @@ export const useTimerStore = create<TimerState>((set, get) => {
       if (user) {
         saveTaskData(user, taskData)
           .then(() => {
-            todos
-              .filter((todo) => todo.completed)
-              .forEach((todo) => {
-                removeTodo(todo.id);
-                toast.success(
-                  `你完成的Todo 「 ${todo.title} 」 已經儲存成功！`,
-                );
-              });
-            localStorage.removeItem("taskData");
+            if (pomodoroCompleted) {
+              todos
+                .filter((todo) => todo.completed)
+                .forEach((todo) => {
+                  removeTodo(todo.id);
+                  toast.success(
+                    `你完成的Todo 「 ${todo.title} 」 已經儲存成功！`,
+                  );
+                });
+              localStorage.removeItem("taskData");
+            }
 
             if (inputMinutes >= 15 && pomodoroCompleted) {
               toast.success(
