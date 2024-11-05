@@ -69,7 +69,7 @@ const TimerDisplayInSide: React.FC<TimerDisplayInSideProps> = ({
         ctx.lineWidth = 24;
         ctx.stroke();
 
-        ctx.fillStyle = themeMode === "dark" ? "#fff" : "#000";
+        ctx.fillStyle = themeMode === "dark" ? "#fff" : "#1f1f1f";
         ctx.font = `${pipWindowWidth / 8}px Arial`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
