@@ -45,6 +45,11 @@ const TodoList: React.FC<TodoListProps> = ({ isSideBarOpen }) => {
           type="text"
           value={newTodoTitle}
           onChange={(e) => setNewTodoTitle(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleAddTodo();
+            }
+          }}
           className="flex-grow overflow-hidden overflow-ellipsis whitespace-nowrap rounded border p-2 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
           placeholder={errorMessage ? errorMessage : "New Todo"}
         />
