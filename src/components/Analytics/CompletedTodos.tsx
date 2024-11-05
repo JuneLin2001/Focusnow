@@ -26,24 +26,21 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
   const hasData = completedTodosCount > 0;
 
   return (
-    <>
-      {hasData && (
-        <h2 className="mb-2 pb-2 font-semibold text-gray-800 dark:text-white">
-          總共完成了 {completedTodosCount} 個 Todo
-        </h2>
-      )}
-      <ScrollArea
-        className={`${hasData ? "max-h-[35vh] lg:max-h-[55vh]" : "max-h-screen"} h-full`}
-      >
+    <div className="flex h-full flex-col">
+      <div className="justify-between text-center">
+        {hasData && (
+          <h2 className="mt-4 text-lg font-semibold">
+            總共完成了 {completedTodosCount} 個 Todo
+          </h2>
+        )}
+      </div>
+      <ScrollArea className="h-full">
         {hasData ? (
-          <>
+          <div className="flex h-[calc(90vh-12rem)] flex-col p-4">
             {filteredAnalytics.map((analytics, index) => {
               if (analytics.todos.length > 0) {
                 return (
-                  <Card
-                    key={index}
-                    className="mb-4 rounded-lg border border-gray-300 bg-gray-100 p-4 dark:bg-gray-500"
-                  >
+                  <Card key={index} className="mb-2 flex w-full p-4">
                     <div className="space-y-2">
                       {analytics.todos.map((todo) => {
                         const doneTime = todo.doneTime;
@@ -62,7 +59,8 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
                             key={todo.id}
                             className="border-b border-gray-300 py-2 last:border-b-0 dark:border-gray-600"
                           >
-                            <h3 className="font-semibold text-gray-800 dark:text-white">
+                            {/* TODO:不要使用w-40，用相對的寬度 */}
+                            <h3 className="w-full min-w-40 max-w-40 truncate font-semibold text-gray-800 dark:text-white">
                               {todo.title}
                             </h3>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -81,14 +79,14 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
               }
               return null;
             })}
-          </>
+          </div>
         ) : (
-          <div className="flex size-full items-center justify-center">
+          <div className="flex items-center justify-center">
             <p className="text-gray-500 dark:text-gray-200">沒有完成的 Todos</p>
           </div>
         )}
       </ScrollArea>
-    </>
+    </div>
   );
 };
 

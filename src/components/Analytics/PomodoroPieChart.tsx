@@ -67,11 +67,11 @@ const PomodoroPieChart: React.FC<PomodoroPieChartProps> = ({
   return (
     <div className="flex h-full flex-col justify-between text-center">
       {hasData && (
-        <h2 className="mb-2 text-lg font-semibold">
+        <h2 className="mt-2 text-lg font-semibold">
           完成率: {completionRate.toFixed(2)}%
         </h2>
       )}
-      <div className="flex size-full flex-1 items-center justify-center">
+      <div className="m-2 flex basis-full items-center justify-center">
         {hasData ? (
           <Pie data={data} options={options} />
         ) : (

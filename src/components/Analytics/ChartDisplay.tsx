@@ -121,13 +121,13 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
   }, []);
 
   return (
-    <div className="flex h-full flex-col justify-between text-center">
+    <div className="flex size-full flex-col justify-between text-center">
       {hasData && (
-        <h2 className="mb-2 text-lg font-semibold">
+        <h2 className="mt-4 text-lg font-semibold">
           總專注時長: {totalFocusDuration} 分鐘
         </h2>
       )}
-      <div className="flex flex-grow items-center justify-center">
+      <div className="m-2 flex basis-full items-center justify-center">
         {hasData ? (
           <Bar
             data={chartData}

@@ -79,11 +79,36 @@ const AnalyticsPage = () => {
     filterAnalytics();
   }, [filterType, currentDate, filterAnalytics]);
 
+  const renderContent = () => (
+    <>
+      <Card
+        className={`basis-full lg:basis-2/6 ${selectedCard === "pie" ? "" : "hidden lg:flex"}`}
+      >
+        <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
+      </Card>
+      <Card
+        className={`basis-full lg:basis-3/6 ${selectedCard === "chart" ? "" : "hidden lg:flex"}`}
+      >
+        <ChartDisplay
+          filteredAnalytics={filteredAnalytics}
+          filterType={filterType}
+          totalFocusDuration={totalFocusDuration}
+          currentDate={currentDate}
+        />
+      </Card>
+      <Card
+        className={`basis-full lg:basis-1/6 ${selectedCard === "todos" ? "" : "hidden lg:flex"}`}
+      >
+        <CompletedTodos filteredAnalytics={filteredAnalytics} />
+      </Card>
+    </>
+  );
+
   return (
     <div className="mt-20 box-border flex h-full items-start justify-center overflow-auto">
       <Card className="mx-4 box-border size-full max-h-[calc(100vh-100px)] bg-gray-200 bg-opacity-50 p-4">
         <div className="flex h-full flex-col">
-          <Card className="mb-2 p-4">
+          <Card className="mb-2 h-44 p-4 lg:h-[4.5rem]">
             <DateSelector
               filterType={filterType}
               setFilterType={setFilterType}
@@ -126,45 +151,8 @@ const AnalyticsPage = () => {
             </div>
           </Card>
 
-          <div className="mt-1 flex flex-grow flex-wrap justify-between space-y-4 lg:hidden lg:space-x-4 lg:space-y-0">
-            {selectedCard === "pie" && (
-              <Card className="size-auto flex-[2] p-4">
-                <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
-              </Card>
-            )}
-            {selectedCard === "chart" && (
-              <Card className="h-auto flex-[4] p-4">
-                <ChartDisplay
-                  filteredAnalytics={filteredAnalytics}
-                  filterType={filterType}
-                  totalFocusDuration={totalFocusDuration}
-                  currentDate={currentDate}
-                />
-              </Card>
-            )}
-            {selectedCard === "todos" && (
-              <Card className="h-auto flex-[1] p-4">
-                <CompletedTodos filteredAnalytics={filteredAnalytics} />
-              </Card>
-            )}
-          </div>
-          <div>
-            <div className="hidden flex-grow flex-wrap justify-between gap-2 lg:flex">
-              <Card className="h-auto min-h-[66vh] flex-[2] p-4">
-                <PomodoroPieChart filteredAnalytics={filteredAnalytics} />
-              </Card>
-              <Card className="h-auto flex-[4] p-4">
-                <ChartDisplay
-                  filteredAnalytics={filteredAnalytics}
-                  filterType={filterType}
-                  totalFocusDuration={totalFocusDuration}
-                  currentDate={currentDate}
-                />
-              </Card>
-              <Card className="h-auto flex-[1] p-4">
-                <CompletedTodos filteredAnalytics={filteredAnalytics} />
-              </Card>
-            </div>
+          <div className="flex flex-grow flex-nowrap justify-between lg:space-x-4 lg:space-y-0">
+            {renderContent()}
           </div>
         </div>
       </Card>
