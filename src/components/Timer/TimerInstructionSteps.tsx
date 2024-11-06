@@ -55,7 +55,7 @@ const TimerInstructionSteps = (): Step[] => {
           <br />
           使用「+」和「-」可快速增加或減少 5 分鐘，
           <br />
-          專注時間下限是 1 分鐘，上限是 120 分鐘。
+          專注時間最短是 1 分鐘，最長是 120 分鐘。
         </>
       ) : (
         <>開始計時的時候不能修改時間</>
@@ -81,12 +81,14 @@ const TimerInstructionSteps = (): Step[] => {
     {
       target: isPaused ? "#start-timer" : "#reset-timer",
       content: (
-        <div>
+        <>
           {mode === "work" ? (
             <>
               點擊「開始」即可啟動番茄鐘，
               <br />
-              啟動後僅能「中斷」，無法暫停。
+              啟動後會有三秒的倒數緩衝期，
+              <br />
+              三秒後僅能「中斷」，無法暫停。
             </>
           ) : (
             <>
@@ -95,14 +97,20 @@ const TimerInstructionSteps = (): Step[] => {
               跳過後將會重置當前輪數並回到工作階段。
             </>
           )}
-        </div>
+        </>
       ),
       ...commonStepProps,
       spotlightClicks: false,
     },
     {
       target: "#start-timer-instruction",
-      content: <div>點擊這裡可以重新觀看說明。</div>,
+      content: (
+        <>
+          說明就到這邊告一段落！
+          <br />
+          點擊這裡可以重新觀看說明。
+        </>
+      ),
       ...commonStepProps,
     },
   ];

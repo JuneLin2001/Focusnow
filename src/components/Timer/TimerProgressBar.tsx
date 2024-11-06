@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   CircularProgressbarWithChildren,
   buildStyles,
@@ -27,10 +27,30 @@ const TimerProgressBar = () => {
 
   const { themeMode } = settingStore();
   const [isEditing, setIsEditing] = useState(false);
+  const [gracePeriodTimeLeft, setGracePeriodTimeLeft] = useState(0);
+  const [isCountingDown, setIsCountingDown] = useState(false);
+
+  useEffect(() => {
+    if (gracePeriodTimeLeft > 0) {
+      const interval = setInterval(() => {
+        setGracePeriodTimeLeft((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    } else if (gracePeriodTimeLeft === 0 && isCountingDown) {
+      startTimer();
+      setIsCountingDown(false);
+    }
+  }, [gracePeriodTimeLeft, isCountingDown, startTimer]);
 
   const handleStartTimer = () => {
-    startTimer();
+    setGracePeriodTimeLeft(3);
+    setIsCountingDown(true);
     setIsEditing(false);
+  };
+
+  const handleCancelCountdown = () => {
+    setGracePeriodTimeLeft(0);
+    setIsCountingDown(false);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,10 +162,23 @@ const TimerProgressBar = () => {
       <div className="mt-5 flex justify-center">
         <Button
           id={isPaused ? "start-timer" : "reset-timer"}
-          variant={isPaused ? "default" : "reset"}
-          onClick={isPaused ? handleStartTimer : resetTimer}
+          variant={isPaused || isCountingDown ? "default" : "reset"}
+          onClick={
+            isCountingDown
+              ? handleCancelCountdown
+              : isPaused
+                ? handleStartTimer
+                : resetTimer
+          }
+          className={isCountingDown ? "bg-red-500" : ""}
         >
-          {isPaused ? "開始" : mode === "break" ? "跳過休息" : "中斷"}
+          {isCountingDown
+            ? `開始 ( ${gracePeriodTimeLeft} s )`
+            : isPaused
+              ? "開始"
+              : mode === "break"
+                ? "跳過休息"
+                : "中斷"}
         </Button>
       </div>
     </>
