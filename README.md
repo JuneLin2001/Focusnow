@@ -21,8 +21,7 @@
 - Scene supports light/dark mode switching, allowing users to choose which one they want.
 
 > [!NOTE]
-> Some browsers do not support picture-in-picture mode. We recommend using Chrome for the best experience.
-> 
+> Some browsers do not support picture-in-picture mode. We recommend using `Chrome` for the best experience.  
 > You can check [here](https://developer.mozilla.org/en-US/docs/Web/API/Picture-in-Picture_API#browser_compatibility) for browser compatibility for picture-in-picture mode.
 
 

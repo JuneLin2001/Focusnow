@@ -17,7 +17,7 @@
 - 場景支援明亮/暗黑模式切換，兩種模式隨您選擇。
   
 > [!NOTE]
-> 部分瀏覽器不支援子母畫面模式，建議使用 Chrome 來獲得最佳體驗。  
+> 部分瀏覽器不支援子母畫面模式，建議使用 `Chrome` 來獲得最佳體驗。  
 > 可以在[這裡](https://developer.mozilla.org/en-US/docs/Web/API/Picture-in-Picture_API#browser_compatibility)查看支援子母畫面的瀏覽器。
 
 ## 使用技術
