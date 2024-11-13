@@ -1,5 +1,4 @@
-![Logo](https://i.imgur.com/dmvHjJo.png)
-
+[![Logo](https://i.imgur.com/dmvHjJo.png)](https://focus-46561.web.app/)
 <div align="center">
 
 [English](../README.md) · [繁體中文](./README_zh-TW.md)
