@@ -67,7 +67,7 @@ const TimerProgressBar = () => {
   };
 
   const handleInputClick = () => {
-    if (isPaused) {
+    if (isPaused && !isCountingDown) {
       setIsEditing(true);
     }
   };
@@ -111,9 +111,9 @@ const TimerProgressBar = () => {
 
           <div
             id="edit-timer"
-            className={`flex items-center ${isPaused ? "w-5/6 justify-between" : "w-full justify-center"}`}
+            className={`flex items-center ${isPaused && !isCountingDown ? "w-5/6 justify-between" : "w-full justify-center"}`}
           >
-            {isPaused && (
+            {isPaused && !isCountingDown && (
               <Button
                 variant="timerGhost"
                 size="timerGhost"
@@ -135,7 +135,7 @@ const TimerProgressBar = () => {
                 />
               ) : (
                 <div
-                  className="cursor-pointer text-5xl"
+                  className={`${isPaused && !isCountingDown ? "cursor-pointer" : "cursor-default"} text-5xl`}
                   onClick={handleInputClick}
                 >
                   {`${Math.floor(secondsLeft / 60)}:${
@@ -146,7 +146,7 @@ const TimerProgressBar = () => {
                 </div>
               )}
             </div>
-            {isPaused && (
+            {isPaused && !isCountingDown && (
               <Button
                 variant="timerGhost"
                 size="timerGhost"
@@ -170,10 +170,10 @@ const TimerProgressBar = () => {
                 ? handleStartTimer
                 : resetTimer
           }
-          className={isCountingDown ? "bg-red-500" : ""}
+          className={isCountingDown ? "bg-red-500 hover:bg-red-700/90" : ""}
         >
           {isCountingDown
-            ? `開始 ( ${gracePeriodTimeLeft} s )`
+            ? `準備開始 ( ${gracePeriodTimeLeft} s )`
             : isPaused
               ? "開始"
               : mode === "break"
