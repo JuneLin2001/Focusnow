@@ -74,7 +74,7 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
                             {`完成時間：${
                               doneTimeDate
                                 ? dayjs(doneTimeDate).format("MM-DD HH:mm")
-                                : "未完成"
+                                : "載入失敗"
                             }`}
                           </p>
                         </div>
