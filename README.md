@@ -51,8 +51,15 @@
 
 ## Screenshots
 
+### 3D scenes
 ![Scene](./screenshots/685wGIF.gif)
+
+### Pomodoro Timer and Todo List
 ![Timer](./screenshots/Timer.gif)
+
+### Picture-in-picture mode
+![Picture-in-picture](./screenshots/pipGIF.gif)
+
 
 ## Run Locally
 

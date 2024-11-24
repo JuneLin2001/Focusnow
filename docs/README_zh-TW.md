@@ -45,8 +45,15 @@
 
 ## 網站截圖
 
+### 3D 場景
 ![Scene](./../screenshots/685wGIF.gif)
+
+### 番茄鐘與 Todo List
 ![Timer](./../screenshots/Timer.gif)
+
+### 子母畫面模式
+![Picture-in-picture](./../screenshots/pipGIF.gif)
+
 
 ## 本地運行
 
