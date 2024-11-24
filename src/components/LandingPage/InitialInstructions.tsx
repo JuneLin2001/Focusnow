@@ -1,13 +1,7 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  AlarmClock,
-  ChartColumn,
-  FishSymbol,
-  ChevronLeft,
-  ChevronRight,
-  X,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import steps from "./InitialInstructionsSteps";
 
 interface InitialInstructionsProps {
   showInstructions: boolean;
@@ -25,88 +19,6 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
   const [isVisible, setIsVisible] = useState(showInstructions);
   const [currentStep, setCurrentStep] = useState(0);
 
-  const steps = useMemo(
-    () => [
-      {
-        title: "場景介紹",
-        description: (
-          <>
-            歡迎來到Focusnow！
-            <br />
-            這是一個番茄鐘結合3D養成遊戲的網站。
-          </>
-        ),
-        targetPosition: [-50, 12, -1500] as [number, number, number],
-      },
-      {
-        title: "功能介紹",
-        description: "可以透過移動鏡頭來自由探索場景。",
-        targetPosition: [-100, 60, 10] as [number, number, number],
-      },
-      {
-        title: "互動操作",
-        description: (
-          <>
-            點擊 &nbsp;
-            <Button variant="default">
-              <AlarmClock /> <div className="ml-2 leading-[24px]">Timer</div>
-            </Button>
-            &nbsp; 可以進入番茄鐘頁面
-            <br />
-            在登入後能將資料儲存在資料庫。
-          </>
-        ),
-        targetPosition: [-100, 60, 10] as [number, number, number],
-      },
-      {
-        title: "互動操作",
-        description: (
-          <>
-            點擊 &nbsp;
-            <Button variant="default">
-              <ChartColumn />{" "}
-              <div className="ml-2 leading-[24px]">Analytics</div>
-            </Button>
-            &nbsp; 可查看統計資料。
-          </>
-        ),
-        targetPosition: [-100, 60, 10] as [number, number, number],
-      },
-      {
-        title: "互動操作",
-        description: (
-          <>
-            點擊告示牌可以看到最近30天的專注分鐘數
-            <br />
-            一次專注15分鐘以上，場景中就會多出一隻可互動的企鵝。
-          </>
-        ),
-        targetPosition: [-100, 60, 10] as [number, number, number],
-      },
-      {
-        title: "互動操作",
-        description: (
-          <>
-            完成專注時，每專注1分鐘能獲得1條魚
-            <br />
-            可以點擊 &nbsp;
-            <Button variant="default">
-              <FishSymbol /> <div className="ml-2 leading-[24px]">0</div>
-            </Button>
-            &nbsp; 放下魚來和企鵝互動。
-          </>
-        ),
-        targetPosition: [-100, 60, 10] as [number, number, number],
-      },
-      {
-        title: "互動操作",
-        description: <>現在就使用 Focusnow開始專注吧！</>,
-        targetPosition: [-250, 60, 10] as [number, number, number],
-      },
-    ],
-    [],
-  );
-
   useEffect(() => {
     setIsVisible(showInstructions);
     setCurrentStep(0);
@@ -116,7 +28,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
     if (isVisible && steps[currentStep]) {
       setTargetPosition(steps[currentStep].targetPosition);
     }
-  }, [currentStep, isVisible, setTargetPosition, steps]);
+  }, [currentStep, isVisible, setTargetPosition]);
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
