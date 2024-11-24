@@ -1,44 +1,37 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import useSettingStore from "../../store/settingStore";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const ThemeSwitcher = () => {
-  const { setThemeMode, saveUserSettings } = useSettingStore();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { themeMode, setThemeMode, saveUserSettings } = useSettingStore();
 
   const toggleTheme = async () => {
-    const newThemeMode = !isDarkMode ? "dark" : "light";
-    setIsDarkMode(!isDarkMode);
+    const newThemeMode = themeMode === "dark" ? "light" : "dark";
     setThemeMode(newThemeMode);
     await saveUserSettings();
   };
 
   useEffect(() => {
-    if (isDarkMode) {
+    if (themeMode === "dark") {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
-  }, [isDarkMode]);
-
-  useEffect(() => {
-    const currentTheme = useSettingStore.getState().themeMode;
-    setIsDarkMode(currentTheme === "dark");
-  }, []);
+  }, [themeMode]);
 
   return (
     <div className="flex items-center gap-2">
       <Button variant="link" size="header" onClick={toggleTheme}>
-        {isDarkMode ? (
+        {themeMode === "dark" ? (
           <Moon className="size-6 text-gray-50" />
         ) : (
           <Sun className="size-6 text-black" />
         )}
       </Button>
       <Switch
-        checked={isDarkMode}
+        checked={themeMode === "dark"}
         onCheckedChange={toggleTheme}
         className="bg-gray-200 dark:bg-gray-800"
       />
