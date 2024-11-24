@@ -31,12 +31,7 @@ export function DashboardHeader({
         <div className="flex items-center md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button
-                variant="header"
-                size="icon"
-                className="shrink-0"
-                onClick={() => setPage("Setting")}
-              >
+              <Button variant="header" size="icon" className="shrink-0">
                 <Menu className="size-6" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
