@@ -33,3 +33,7 @@ dist-ssr
 
 # TypeScript Cache
 *.tsbuildinfo
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
