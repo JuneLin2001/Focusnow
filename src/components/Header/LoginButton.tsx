@@ -15,6 +15,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import LoginForm from "./LoginForm";
 import { useState } from "react";
 import ProfileDialog from "./ProfileDialog";
+import { toast } from "react-toastify";
 
 const LoginButton = () => {
   const { user, logout, updateUserProfile } = useAuthStore();
@@ -29,6 +30,14 @@ const LoginButton = () => {
       setFishesCount(0);
     } catch (error) {
       console.error("Logout error", error);
+    }
+  };
+
+  const handleUpdateUserInfo = () => {
+    if (user?.displayName === "訪客帳號") {
+      toast.error("訪客帳號無法更改使用者名稱");
+    } else {
+      setIsDialogOpen(true);
     }
   };
 
@@ -54,7 +63,7 @@ const LoginButton = () => {
                 {user.email}
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setIsDialogOpen(true)}>
+              <DropdownMenuItem onClick={handleUpdateUserInfo}>
                 <RefreshCcw />
                 &nbsp; 更新使用者資訊
               </DropdownMenuItem>
