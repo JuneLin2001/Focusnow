@@ -6,7 +6,7 @@ import FishModel from "./FishModel";
 import Sign from "./Sign/Sign";
 import SignInstructions from "./Sign/SignInstructions";
 import FishesCountFetcher from "../../utils/fishesCountFetcher";
-import useAuthStore from "../../store/authStore";
+import { useAuthStore } from "../../store/authStore";
 import { toast } from "react-toastify";
 
 interface GamePageProps {

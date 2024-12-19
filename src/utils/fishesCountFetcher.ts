@@ -1,7 +1,7 @@
 import { useEffect, useCallback } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
-import useAuthStore from "../store/authStore";
+import { useAuthStore } from "../store/authStore";
 import { useFishesCountStore } from "../store/fishesCountStore";
 
 const FishesCountFetcher: React.FC = () => {
@@ -16,7 +16,7 @@ const FishesCountFetcher: React.FC = () => {
           "users",
           user.uid,
           "fishesCount",
-          "fishesCount"
+          "fishesCount",
         );
         const fishesCountDoc = await getDoc(fishesCountDocRef);
 
@@ -30,7 +30,7 @@ const FishesCountFetcher: React.FC = () => {
             await setDoc(
               fishesCountDocRef,
               { FishesCount: 0 },
-              { merge: true }
+              { merge: true },
             );
             setFishesCount(0);
           }

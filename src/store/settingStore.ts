@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
-import useAuthStore from "./authStore";
+import { useAuthStore } from "./authStore";
 
 interface SettingStore {
   isPlaying: boolean;

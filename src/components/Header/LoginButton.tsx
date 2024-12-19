@@ -1,4 +1,4 @@
-import useAuthStore from "../../store/authStore";
+import { useAuthStore } from "../../store/authStore";
 import { useAnalyticsStore } from "../../store/analyticsStore";
 import { useFishesCountStore } from "../../store/fishesCountStore";
 import { LogOut, RefreshCcw } from "lucide-react";

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
-import useAuthStore from "./authStore";
+import { useAuthStore } from "./authStore";
 export interface FishesCount {
   FishesCount: number;
 }
@@ -27,7 +27,7 @@ export const useFishesCountStore = create<FishesCountStore>((set) => ({
           "users",
           user.uid,
           "fishesCount",
-          "fishesCount"
+          "fishesCount",
         );
 
         await updateDoc(fishesCountDocRef, {

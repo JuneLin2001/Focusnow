@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { Timestamp } from "firebase/firestore";
 import { saveTaskData } from "../firebase/firebaseService";
-import useAuthStore from "./authStore";
+import { useAuthStore } from "./authStore";
 import { useTodoStore } from "./todoStore";
 import { sendBrowserNotification } from "../utils/notificationService";
 import { useFishesCountStore } from "./fishesCountStore";

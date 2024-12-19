@@ -12,7 +12,7 @@ import settingStore from "../../store/settingStore";
 import Bubble from "./Bubble";
 import { AlarmClock, ChartColumn } from "lucide-react";
 import InitialInstructions from "./InitialInstructions";
-import useAuthStore from "../../store/authStore";
+import { useAuthStore } from "../../store/authStore";
 import * as THREE from "three";
 import ToggleBgm from "./ToggleBgm";
 import usesettingStore from "@/store/settingStore";

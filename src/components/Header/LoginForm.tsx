@@ -21,7 +21,7 @@ import { CircleUser, Eye, EyeOff } from "lucide-react";
 import { Avatar, AvatarFallback } from "../../components/ui/avatar";
 import { useTimerStore } from "../../store/timerStore";
 import { saveTaskData } from "../../firebase/firebaseService";
-import useAuthStore from "../../store/authStore";
+import { useAuthStore } from "../../store/authStore";
 import { toast } from "react-toastify";
 import { FirebaseError } from "firebase/app";
 import googleLogo from "../../assets/icons/icons8-google.svg";

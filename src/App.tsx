@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
-import useAuthStore from "./store/authStore";
+import { useAuthStore } from "./store/authStore";
 import { auth } from "./firebase/firebaseConfig";
 import ErrorPage from "./components/LandingPage/ErrorPage";
 import { ToastContainer } from "react-toastify";

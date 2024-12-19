@@ -15,7 +15,7 @@ interface AuthState {
   updateUserProfile: (displayName: string) => Promise<void>;
 }
 
-const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   setUser: async (user) => {
     if (user) {
@@ -79,5 +79,3 @@ const useAuthStore = create<AuthState>((set) => ({
 onAuthStateChanged(auth, (user) => {
   useAuthStore.getState().setUser(user);
 });
-
-export default useAuthStore;

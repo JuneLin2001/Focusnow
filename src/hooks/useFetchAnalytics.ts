@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { db } from "../firebase/firebaseConfig";
 import { collection, onSnapshot } from "firebase/firestore";
 import { UserAnalytics } from "../types/type";
-import useAuthStore from "../store/authStore";
+import { useAuthStore } from "../store/authStore";
 import { useAnalyticsStore } from "../store/analyticsStore";
 
 const useFetchAnalytics = () => {
@@ -20,7 +20,7 @@ const useFetchAnalytics = () => {
       db,
       "users",
       user.uid,
-      "analytics"
+      "analytics",
     );
 
     const unsubscribe = onSnapshot(
@@ -37,7 +37,7 @@ const useFetchAnalytics = () => {
       (error) => {
         console.error("Error fetching analytics:", error);
         setIsLoading(false);
-      }
+      },
     );
 
     return () => unsubscribe();
