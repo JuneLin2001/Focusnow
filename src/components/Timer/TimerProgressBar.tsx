@@ -72,7 +72,7 @@ const TimerProgressBar = () => {
     }
   };
 
-  const handleInputBlur = () => {
+  const handleEditEnd = () => {
     setIsEditing(false);
   };
 
@@ -131,7 +131,12 @@ const TimerProgressBar = () => {
                   onChange={handleInputChange}
                   disabled={!isPaused}
                   className="w-24 border-4 border-black bg-transparent text-center text-5xl focus:outline-none dark:text-gray-200"
-                  onBlur={handleInputBlur}
+                  onBlur={handleEditEnd}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleEditEnd();
+                    }
+                  }}
                 />
               ) : (
                 <div
