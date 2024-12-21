@@ -22,13 +22,13 @@ devices.forEach((device) => {
       isMobile: device.isMobile,
     });
 
-    test("Initial Instructions", async ({ page }) => {
+    test("Timer Instructions", async ({ page }) => {
       await navigateToTimerPage(page, device);
 
-      const InitialInstructions = page.getByText(
+      const TimerInstructions = page.getByText(
         "點擊這裡以控制 Todo List 的開啟與關閉。",
       );
-      await expect(InitialInstructions).toBeVisible();
+      await expect(TimerInstructions).toBeVisible();
 
       const NextStep = page.locator('[data-test-id="button-primary"]');
       const PreviousStep = page.locator('[data-test-id="button-back"]');
