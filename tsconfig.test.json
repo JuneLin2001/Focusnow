@@ -22,7 +22,7 @@
     /* Path resolution */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*", "./tests/*"]
+      "@/*": ["./tests/*"]
     }
   },
   "include": ["tests"]

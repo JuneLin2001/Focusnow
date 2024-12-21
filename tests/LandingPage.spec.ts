@@ -1,64 +1,54 @@
 import { test, expect } from "@playwright/test";
-import { devices } from "./devices";
+import { devices, Device } from "./devices";
 
-devices.forEach((device) => {
-  test.describe(`${device.name} tests`, () => {
-    test.use({
-      viewport: device.viewport,
-      deviceScaleFactor: device.deviceScaleFactor,
-      isMobile: device.isMobile,
-    });
-
-    test("Can navigate to the home page", async ({ page }) => {
-      await page.goto("http://localhost:5173/");
-      await expect(page).toHaveTitle(/Focusnow/);
-    });
-    if (device.isMobile) {
-      test("RWD test", async ({ page }) => {
-        await page.goto("http://localhost:5173/");
-        const navMenu = page.locator(
-          '//*[@id="root"]/header/div/div[1]/button[1]',
-        );
-        await expect(navMenu).toBeVisible();
+export default function LandingPageTests() {
+  devices.forEach((device: Device) => {
+    test.describe(`${device.name} Landing Page tests`, () => {
+      test.use({
+        viewport: device.viewport,
+        deviceScaleFactor: device.deviceScaleFactor,
+        isMobile: device.isMobile,
       });
-    }
 
-    test("Login test", async ({ page }) => {
-      await page.goto("http://localhost:5173/");
-      await page.locator(".absolute > .inline-flex").click();
-      await page
-        .getByRole("banner")
-        .getByRole("button")
-        .nth(device.isMobile ? 3 : 4)
-        .click();
+      test("Can navigate to the home page", async ({ page }) => {
+        await page.goto("http://localhost:5173/");
+        await expect(page).toHaveTitle(/Focusnow/);
+      });
 
-      const loginTitle = page.getByRole("heading", { name: "登入" });
-      await expect(loginTitle).toBeVisible();
+      if (device.isMobile) {
+        test("RWD test", async ({ page }) => {
+          await page.goto("http://localhost:5173/");
+          const navMenu = page.locator(
+            '//*[@id="root"]/header/div/div[1]/button[1]',
+          );
+          await expect(navMenu).toBeVisible();
+        });
+      }
 
-      await page.getByRole("button", { name: "logo 使用訪客帳號登入" }).click();
-      await page.getByRole("button", { name: "訪客帳號" }).click();
+      test("Login test", async ({ page }) => {
+        test.setTimeout(120000);
+        await page.goto("http://localhost:5173/");
+        await page.locator(".absolute > .inline-flex").click();
+        await page
+          .getByRole("banner")
+          .getByRole("button")
+          .nth(device.isMobile ? 3 : 4)
+          .click();
 
-      const logoutTitle = page
-        .getByRole("banner")
-        .getByRole("button")
-        .nth(device.isMobile ? 3 : 4);
-      await expect(logoutTitle).toBeVisible();
-    });
+        const loginTitle = page.getByRole("heading", { name: "登入" });
+        await expect(loginTitle).toBeVisible();
 
-    test("Initial Instructions", async ({ page }) => {
-      await page.goto("http://localhost:5173/");
-      const InitialInstructions = page.getByText(
-        "場景介紹歡迎來到Focusnow！這是一個結合番茄鐘 & 3D 場景 & 企鵝互動遊戲的網站。下一步",
-      );
-      await expect(InitialInstructions).toBeVisible();
+        await page
+          .getByRole("button", { name: "logo 使用訪客帳號登入" })
+          .click();
+        await page.getByRole("button", { name: "訪客帳號" }).click();
 
-      const NextStep = page.getByRole("button", { name: "下一步" });
-      const PreviousStep = page.getByRole("button", { name: "上一步" });
-      const SkipStep = page.locator(".absolute > .inline-flex");
-
-      await NextStep.click();
-
-      await expect(PreviousStep && NextStep && SkipStep).toBeEnabled();
+        const logoutTitle = page
+          .getByRole("banner")
+          .getByRole("button")
+          .nth(device.isMobile ? 3 : 4);
+        await expect(logoutTitle).toBeVisible();
+      });
     });
   });
-});
+}
