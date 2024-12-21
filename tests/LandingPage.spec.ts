@@ -32,17 +32,33 @@ devices.forEach((device) => {
         .nth(device.isMobile ? 3 : 4)
         .click();
 
-      const loginButton = page.getByRole("heading", { name: "登入" });
-      await expect(loginButton).toBeVisible();
+      const loginTitle = page.getByRole("heading", { name: "登入" });
+      await expect(loginTitle).toBeVisible();
 
       await page.getByRole("button", { name: "logo 使用訪客帳號登入" }).click();
       await page.getByRole("button", { name: "訪客帳號" }).click();
 
-      const logoutButton = page
+      const logoutTitle = page
         .getByRole("banner")
         .getByRole("button")
         .nth(device.isMobile ? 3 : 4);
-      await expect(logoutButton).toBeVisible();
+      await expect(logoutTitle).toBeVisible();
+    });
+
+    test("Initial Instructions", async ({ page }) => {
+      await page.goto("http://localhost:5173/");
+      const InitialInstructions = page.getByText(
+        "場景介紹歡迎來到Focusnow！這是一個結合番茄鐘 & 3D 場景 & 企鵝互動遊戲的網站。下一步",
+      );
+      await expect(InitialInstructions).toBeVisible();
+
+      const NextStep = page.getByRole("button", { name: "下一步" });
+      const PreviousStep = page.getByRole("button", { name: "上一步" });
+      const SkipStep = page.locator(".absolute > .inline-flex");
+
+      await NextStep.click();
+
+      await expect(PreviousStep && NextStep && SkipStep).toBeEnabled();
     });
   });
 });
