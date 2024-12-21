@@ -1,4 +1,11 @@
-export const devices = [
+export interface Device {
+  name: string;
+  viewport: { width: number; height: number };
+  deviceScaleFactor: number;
+  isMobile: boolean;
+}
+
+export const devices: Device[] = [
   {
     name: "Desktop",
     viewport: { width: 1920, height: 1080 },
