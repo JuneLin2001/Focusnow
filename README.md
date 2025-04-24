@@ -71,10 +71,9 @@ npm run dev
 ```
 
 ## Roadmap
-- [x] Guest Login.
-- [x] User guide.
 - [ ] Website changelog.
 - [ ] More game mechanics.
+- [ ] Migrate to Next.js.
   
 ## Contact
 
