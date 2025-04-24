@@ -130,7 +130,7 @@ const TimerProgressBar = () => {
                   value={`${Math.floor(secondsLeft / 60)}`}
                   onChange={handleInputChange}
                   disabled={!isPaused}
-                  className="w-24 border-4 border-black bg-transparent text-center text-5xl focus:outline-none dark:text-gray-200"
+                  className="w-24 border-4 border-black bg-transparent text-center text-5xl focus:outline-hidden dark:text-gray-200"
                   onBlur={handleInputBlur}
                 />
               ) : (

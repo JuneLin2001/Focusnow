@@ -151,7 +151,7 @@ const AnalyticsPage = () => {
             </div>
           </Card>
 
-          <div className="flex flex-grow flex-nowrap justify-between lg:space-x-4 lg:space-y-0">
+          <div className="flex grow flex-nowrap justify-between lg:space-x-4 lg:space-y-0">
             {renderContent()}
           </div>
         </div>

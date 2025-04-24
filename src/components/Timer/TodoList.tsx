@@ -50,7 +50,7 @@ const TodoList: React.FC<TodoListProps> = ({ isSideBarOpen }) => {
               handleAddTodo();
             }
           }}
-          className="flex-grow overflow-hidden overflow-ellipsis whitespace-nowrap rounded border p-2 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          className="grow overflow-hidden text-ellipsis whitespace-nowrap rounded border p-2 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
           placeholder={errorMessage ? errorMessage : "New Todo"}
         />
         <Button
@@ -62,7 +62,7 @@ const TodoList: React.FC<TodoListProps> = ({ isSideBarOpen }) => {
         </Button>
       </div>
 
-      <ul className="w-full flex-grow overflow-y-auto">
+      <ul className="w-full grow overflow-y-auto">
         {todos.length > 0 ? (
           todos.map((todo) => (
             <li key={todo.id} className="mb-2 flex w-full items-center">
@@ -76,11 +76,11 @@ const TodoList: React.FC<TodoListProps> = ({ isSideBarOpen }) => {
                 type="text"
                 value={todo.title}
                 onChange={(e) => editTodoTitle(todo.id, e.target.value)}
-                className={`w-full flex-grow bg-white bg-opacity-0 p-1 text-xl leading-5 ${
+                className={`w-full grow bg-white bg-opacity-0 p-1 text-xl leading-5 ${
                   todo.completed
                     ? "text-gray-500 line-through dark:text-gray-400"
                     : "text-gray-800 dark:text-white"
-                } overflow-hidden overflow-ellipsis whitespace-nowrap`}
+                } overflow-hidden text-ellipsis whitespace-nowrap`}
               />
               <Button
                 variant="reset"

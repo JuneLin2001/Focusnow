@@ -27,7 +27,7 @@ export function DashboardHeader({
 }: DashboardHeaderProps) {
   return (
     <header className="fixed z-50 flex h-16 w-full items-center bg-gray-200 px-4 shadow-md transition-colors duration-300 dark:bg-gray-900 md:px-8">
-      <div className="relative flex flex-grow items-center">
+      <div className="relative flex grow items-center">
         <div className="flex items-center md:hidden">
           <Sheet>
             <SheetTrigger asChild>

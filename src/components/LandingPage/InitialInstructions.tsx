@@ -53,7 +53,7 @@ const InitialInstructions: React.FC<InitialInstructionsProps> = ({
   return (
     <>
       {isVisible && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black bg-opacity-50">
           <div className="fixed inset-0 z-40 flex items-center justify-center bg-transparent">
             <div className="relative flex h-52 w-96 flex-col justify-between rounded bg-white bg-opacity-100 p-5 shadow-lg">
               <div className="absolute right-4 top-4">
