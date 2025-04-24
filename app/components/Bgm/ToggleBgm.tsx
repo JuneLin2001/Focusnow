@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
-import { Button } from "../../components/ui/button";
-import useSettingStore from "../../store/settingStore";
+import { Button } from "@/components/ui/button";
+import { useSettingStore } from "@/store/settingStore";
 import { Volume2, VolumeOff } from "lucide-react";
 
 const ToggleBgm = () => {

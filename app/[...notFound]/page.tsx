@@ -1,3 +1,5 @@
+"use client";
+
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import {
   PresentationControls,
@@ -6,7 +8,7 @@ import {
 } from "@react-three/drei";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as THREE from "three";
-import { ModelProps } from "../../types/type";
+import { ModelProps } from "@/types/type";
 import { useEffect, useRef } from "react";
 
 export default function ErrorPage() {
@@ -21,8 +23,6 @@ export default function ErrorPage() {
 
         <PresentationControls
           global
-          config={{ mass: 2, tension: 500 }}
-          snap={{ mass: 4, tension: 1500 }}
           rotation={[0, 1, 0]}
           polar={[-Math.PI / 3, Math.PI / 3]}
           azimuth={[-Math.PI / 1.4, Math.PI / 2]}

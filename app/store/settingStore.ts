@@ -16,7 +16,7 @@ interface SettingStore {
   saveUserSettings: () => Promise<void>;
 }
 
-const useSettingStore = create<SettingStore>((set) => ({
+export const useSettingStore = create<SettingStore>((set) => ({
   isPlaying: false,
   bgmSource:
     "/yt5s.io - 大自然的白噪音 1小時｜森林鳥鳴聲，身心放鬆，平靜學習輔助 (320 kbps).mp3",
@@ -79,5 +79,3 @@ const useSettingStore = create<SettingStore>((set) => ({
     await setDoc(settingsRef, settingsData);
   },
 }));
-
-export default useSettingStore;

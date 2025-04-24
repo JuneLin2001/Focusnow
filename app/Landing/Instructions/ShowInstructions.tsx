@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
-import { ModelProps } from "../../types/type";
+import { ModelProps } from "@/types/type";
 import { Float } from "@react-three/drei";
 import { Color, Mesh, MeshStandardMaterial } from "three";
-import settingStore from "../../store/settingStore";
+import { useSettingStore } from "@/store/settingStore";
 
 const ShowInstructions: React.FC<
   ModelProps & {
@@ -12,7 +12,7 @@ const ShowInstructions: React.FC<
   }
 > = ({ children, onClick, instructionHovered, setInstructionHovered }) => {
   const { scene } = useGLTF("lightBulb.glb");
-  const { themeMode } = settingStore();
+  const { themeMode } = useSettingStore();
   const originalColors = useRef<Map<Mesh, Color>>(new Map());
 
   useEffect(() => {

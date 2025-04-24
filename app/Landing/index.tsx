@@ -1,26 +1,24 @@
 import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
-import Timer from "../Timer/index";
-import AnalyticsPage from "../Analytics";
-import GamePage from "../Game/index";
+import Timer from "@/components/Timer/index";
+import AnalyticsPage from "@/components/Analytics";
+import GamePage from "@/components/Game/index";
 import CameraController from "./CameraController";
 import { DashboardHeader } from "@/components/Header/DashboardHeader";
-import TimerDisplayInSide from "../Timer/TimerDisplayInSide";
+import TimerDisplayInSide from "@/components/Timer/TimerDisplayInSide";
 import { useFishesCountStore } from "@/store/fishesCountStore";
-import settingStore from "../../store/settingStore";
-import Bubble from "./Bubble";
+import {AsyncModels,Bubble} from "./Models";
 import { AlarmClock, ChartColumn } from "lucide-react";
-import InitialInstructions from "./InitialInstructions";
-import useAuthStore from "../../store/authStore";
+import InitialInstructions from "./Instructions/InitialInstructions";
+import useAuthStore from "@/store/authStore";
 import * as THREE from "three";
-import ToggleBgm from "./ToggleBgm";
-import usesettingStore from "@/store/settingStore";
+import ToggleBgm from "../components/Bgm/ToggleBgm";
+import {useSettingStore} from "@/store/settingStore";
 import { toast } from "react-toastify";
 import { Card } from "@/components/ui/card";
-import AsyncModels from "./AsyncModels";
-import useFetchAnalytics from "../../hooks/useFetchAnalytics";
-import Loader from "./Loader";
+import useFetchAnalytics from "@/hooks/useFetchAnalytics";
+import Loader from "../components/Loader";
 
 const LandingPage = () => {
   const [targetPosition, setTargetPosition] = useState<
@@ -32,10 +30,10 @@ const LandingPage = () => {
   const [page, setPage] = useState<
     "timer" | "analytics" | "game" | "Setting" | null
   >(null);
-  const { themeMode } = settingStore();
+  const { themeMode } = useSettingStore();
   const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
   const { user } = useAuthStore();
-  const loadUserSettings = usesettingStore((state) => state.loadUserSettings);
+  const loadUserSettings = useSettingStore((state) => state.loadUserSettings);
   const fishesCount = useFishesCountStore((state) => state.FishesCount);
   const updateFishesCount = useFishesCountStore(
     (state) => state.updateFishesCount,

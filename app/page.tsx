@@ -1,17 +1,17 @@
 "use client";
 
-import LandingPage from "./components/LandingPage";
+import Landing from "@/Landing";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import useAuthStore from "./store/authStore";
 import { auth } from "./firebase/firebaseConfig";
 import { ToastContainer } from "react-toastify";
-import settingStore from "./store/settingStore";
+import {useSettingStore} from "./store/settingStore";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   const setUser = useAuthStore((state) => state.setUser);
-  const { themeMode } = settingStore();
+  const { themeMode } = useSettingStore();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -30,7 +30,7 @@ export default function Home() {
         draggable
         theme={themeMode === "light" ? "light" : "dark"}
       />
-      <LandingPage />
+      <Landing />
     </>
   );
 }
