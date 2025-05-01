@@ -4,8 +4,8 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 import { Plus, Minus } from "lucide-react";
-import settingStore from "../../store/settingStore";
-import { useTimerStore } from "../../store/timerStore";
+import { useSettingStore } from "@/store/settingStore";
+import { useTimerStore } from "@/store/timerStore";
 import { Button } from "@/components/ui/button";
 import "react-circular-progressbar/dist/styles.css";
 
@@ -25,7 +25,7 @@ const TimerProgressBar = () => {
     rotationCount,
   } = useTimerStore();
 
-  const { themeMode } = settingStore();
+  const { themeMode } = useSettingStore();
   const [isEditing, setIsEditing] = useState(false);
   const [gracePeriodTimeLeft, setGracePeriodTimeLeft] = useState(0);
   const [isCountingDown, setIsCountingDown] = useState(false);
@@ -102,7 +102,7 @@ const TimerProgressBar = () => {
         <div className="flex size-full flex-col items-center justify-center">
           {!isPaused && (
             <div
-              className="absolute left-1/2 top-3/4 -translate-x-1/2 transform rounded-full px-3 py-1 text-center text-white"
+              className="absolute top-3/4 left-1/2 -translate-x-1/2 transform rounded-full px-3 py-1 text-center text-white"
               style={{ backgroundColor: pathColor }}
             >
               第 {rotationCount + 1} 輪

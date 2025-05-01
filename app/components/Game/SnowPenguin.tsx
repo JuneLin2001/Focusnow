@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { ModelProps } from "../../types/type";
 import { Color, Mesh, MeshStandardMaterial } from "three";
-import settingStore from "../../store/settingStore";
+import { useSettingStore } from "@/store/settingStore";
 
 const SnowPenguin: React.FC<
   ModelProps & {
@@ -11,7 +11,7 @@ const SnowPenguin: React.FC<
   }
 > = ({ children, onClick, instructionHovered, setInstructionHovered }) => {
   const { scene } = useGLTF("snowPenguin.glb");
-  const { themeMode } = settingStore();
+  const { themeMode } = useSettingStore();
   const originalColors = useRef<Map<Mesh, Color>>(new Map());
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const SnowPenguin: React.FC<
               if (!originalColors.current.has(mesh)) {
                 originalColors.current.set(
                   mesh,
-                  new Color(material.color.getHex())
+                  new Color(material.color.getHex()),
                 );
               }
               const brightnessMultiplier = themeMode === "dark" ? 10 : 0.3;
@@ -43,7 +43,7 @@ const SnowPenguin: React.FC<
                       .get(mesh)!
                       .clone()
                       .multiplyScalar(brightnessMultiplier)
-                  : originalColors.current.get(mesh)!.clone()
+                  : originalColors.current.get(mesh)!.clone(),
               );
             }
           });

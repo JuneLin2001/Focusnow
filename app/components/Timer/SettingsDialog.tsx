@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import useSettingStore from "../../store/settingStore";
-import { useTimerStore } from "../../store/timerStore";
+import { useSettingStore } from "@/store/settingStore";
+import { useTimerStore } from "@/store/timerStore";
 import { DualRangeSlider } from "@/components/ui/dual-range-slider";
 
 interface SettingsDialogProps {
@@ -44,7 +44,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
   } = useTimerStore();
 
   const [selectedMusic, setSelectedMusic] = useState<string>(
-    musicOptions[0].value
+    musicOptions[0].value,
   );
   const [breakTime, setBreakTime] = useState<number>(breakMinutes);
   const [rotationCount, setRotationCount] = useState<number>(maxRotationCount);

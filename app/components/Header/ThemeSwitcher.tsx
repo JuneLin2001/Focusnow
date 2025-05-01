@@ -1,9 +1,8 @@
 "use client";
 
-
 import { useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
-import useSettingStore from "../../store/settingStore";
+import { useSettingStore } from "@/store/settingStore";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {

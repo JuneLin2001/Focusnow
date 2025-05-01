@@ -1,11 +1,11 @@
 import { useRef, useEffect, useCallback } from "react";
-import { useTimerStore } from "../../store/timerStore";
+import { useTimerStore } from "@/store/timerStore";
 import {
   CircularProgressbarWithChildren,
   buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import settingStore from "../../store/settingStore";
+import { useSettingStore } from "@/store/settingStore";
 import { Card } from "@/components/ui/card";
 interface TimerDisplayInSideProps {
   page: string | null;
@@ -27,8 +27,8 @@ const TimerDisplayInSide: React.FC<TimerDisplayInSideProps> = ({
     setCanvasRef,
   } = useTimerStore();
 
-  const { themeMode } = settingStore();
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { themeMode } = useSettingStore();
+  const canvasRef = useRef<HTMLCanvasElement>(null!);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const percentage =
@@ -48,7 +48,7 @@ const TimerDisplayInSide: React.FC<TimerDisplayInSideProps> = ({
   const pipWindowWidth = 360;
 
   useEffect(() => {
-    setCanvasRef(canvasRef);
+    return setCanvasRef(canvasRef);
   }, [setCanvasRef]);
 
   const drawOnCanvas = useCallback(() => {
@@ -136,7 +136,7 @@ const TimerDisplayInSide: React.FC<TimerDisplayInSideProps> = ({
 
       {page === null && percentage < 100 ? (
         <Card
-          className="fixed bottom-40 right-6 z-10 w-36 cursor-pointer bg-white p-4 opacity-80"
+          className="fixed right-6 bottom-40 z-10 w-36 cursor-pointer bg-white p-4 opacity-80"
           onClick={() => {
             setTargetPosition([-50, 12, -150]);
             setPage("timer");

@@ -4,7 +4,7 @@ import TodoList from "./TodoList";
 // import TimerInstruction from "./TimerInstruction";
 import ToggleTodoList from "./ToggleTodoList";
 import StartTimerInstruction from "./StartTimerInstruction";
-import useSettingStore from "../../store/settingStore";
+import { useSettingStore } from "@/store/settingStore";
 import { Card } from "@/components/ui/card";
 
 interface TimerPageProps {
@@ -58,7 +58,7 @@ const TimerPage: React.FC<TimerPageProps> = ({
         />
       )} */}
       <div className="relative flex h-screen w-screen items-center justify-center">
-        <Card className="relative z-30 flex size-[500px] flex-col items-center justify-center bg-white bg-opacity-60 bg-cover bg-center">
+        <Card className="bg-opacity-60 relative z-30 flex size-[500px] flex-col items-center justify-center bg-white bg-cover bg-center">
           <Timer
             isSideBarOpen={isSideBarOpen}
             page={page}

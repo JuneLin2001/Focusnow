@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { useGLTF, Html } from "@react-three/drei";
-import { ModelProps } from "../../../types/type";
+import { ModelProps } from "@/types/type";
 import { Color, Mesh, MeshStandardMaterial } from "three";
-import settingStore from "../../../store/settingStore";
+import { useSettingStore } from "@/store/settingStore";
 import { Card } from "@/components/ui/card";
 
 const Sign: React.FC<ModelProps> = ({ children, onClick }) => {
   const { scene } = useGLTF("sign.glb");
   const [hovered, setHovered] = useState(false);
   const originalColors = useRef<Map<Mesh, Color>>(new Map());
-  const { themeMode } = settingStore();
+  const { themeMode } = useSettingStore();
 
   useEffect(() => {
     if (scene) {

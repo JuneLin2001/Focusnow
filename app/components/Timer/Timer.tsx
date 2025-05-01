@@ -12,7 +12,7 @@ import {
 import { Settings, X } from "lucide-react";
 import PipButton from "./PipButton";
 import { toast } from "react-toastify";
-import useSettingStore from "../../store/settingStore";
+import { useSettingStore } from "../../store/settingStore";
 import SettingsDialog from "./SettingsDialog";
 import TimerProgressBar from "./TimerProgressBar";
 interface TimerProps {
@@ -72,14 +72,14 @@ const Timer: React.FC<TimerProps> = ({
   return (
     <>
       <div
-        className={`absolute right-4 top-4 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
+        className={`absolute top-4 right-4 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
       >
         <Button variant="timerGhost" size="icon" onClick={handleCloseTimerPage}>
           <X />
         </Button>
       </div>
       <div
-        className={`absolute left-4 top-4 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
+        className={`absolute top-4 left-4 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
       >
         <TooltipProvider>
           <Tooltip>
@@ -98,7 +98,7 @@ const Timer: React.FC<TimerProps> = ({
         </TooltipProvider>
       </div>
       <div
-        className={`absolute left-4 top-12 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
+        className={`absolute top-12 left-4 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
       >
         <PipButton />
       </div>
@@ -108,7 +108,7 @@ const Timer: React.FC<TimerProps> = ({
         <TimerProgressBar />
       </div>
       {showLoginButton && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+        <div className="bg-opacity-50 fixed inset-0 flex items-center justify-center bg-gray-800">
           <div className="flex flex-col items-center rounded bg-white p-5 shadow-lg">
             <h2 className="mb-4 text-xl">請登入以保存數據</h2>
             <LoginButton />
