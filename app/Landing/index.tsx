@@ -5,16 +5,15 @@ import Timer from "@/components/Timer/index";
 import AnalyticsPage from "@/components/Analytics";
 import GamePage from "@/components/Game/index";
 import CameraController from "./CameraController";
-import { DashboardHeader } from "@/components/Header/DashboardHeader";
+import { DashboardHeader } from "@/components/Header";
 import TimerDisplayInSide from "@/components/Timer/TimerDisplayInSide";
 import { useFishesCountStore } from "@/store/fishesCountStore";
-import {AsyncModels,Bubble} from "./Models";
+import { AsyncModels, Bubble } from "./Models";
 import { AlarmClock, ChartColumn } from "lucide-react";
 import InitialInstructions from "./Instructions/InitialInstructions";
 import useAuthStore from "@/store/authStore";
 import * as THREE from "three";
-import ToggleBgm from "../components/Bgm/ToggleBgm";
-import {useSettingStore} from "@/store/settingStore";
+import { useSettingStore } from "@/store/settingStore";
 import { toast } from "react-toastify";
 import { Card } from "@/components/ui/card";
 import useFetchAnalytics from "@/hooks/useFetchAnalytics";
@@ -197,7 +196,6 @@ const LandingPage = () => {
         setPage={setPage}
         setTargetPosition={setTargetPosition}
       />
-      <ToggleBgm />
       <InitialInstructions
         showInstructions={showInstructions}
         handleCloseInstructions={handleCloseInstructions}
