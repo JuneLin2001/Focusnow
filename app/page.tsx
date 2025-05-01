@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import useAuthStore from "./store/authStore";
 import { auth } from "./firebase/firebaseConfig";
 import { ToastContainer } from "react-toastify";
-import {useSettingStore} from "./store/settingStore";
+import { useSettingStore } from "./store/settingStore";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
