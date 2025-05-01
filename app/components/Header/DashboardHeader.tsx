@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import LoginButton from "./LoginButton";
-import WebsiteLogo from "../../assets/icons/globePenguin.svg";
+import WebsiteLogo from "@/assets/icons/globePenguin.svg";
 import ThemeSwitcher from "./ThemeSwitcher";
+import Image from "next/image";
 
 interface DashboardHeaderProps {
   pages: string[];
@@ -28,7 +29,7 @@ export function DashboardHeader({
   handleAnalyticsClick,
 }: DashboardHeaderProps) {
   return (
-    <header className="fixed z-50 flex h-16 w-full items-center bg-gray-200 px-4 shadow-md transition-colors duration-300 dark:bg-gray-900 md:px-8">
+    <header className="fixed z-50 flex h-16 w-full items-center bg-gray-200 px-4 shadow-md transition-colors duration-300 md:px-8 dark:bg-gray-900">
       <div className="relative flex grow items-center">
         <div className="flex items-center md:hidden">
           <Sheet>
@@ -75,7 +76,13 @@ export function DashboardHeader({
             }}
             className="cursor-pointer"
           >
-            <img src={WebsiteLogo} alt="logo" className="h-10 w-auto" />
+            <Image
+              width={40}
+              height={40}
+              src={WebsiteLogo}
+              alt="logo"
+              className="h-10 w-auto"
+            />
           </Button>
         </div>
 
@@ -89,7 +96,13 @@ export function DashboardHeader({
             }}
             className="cursor-pointer"
           >
-            <img src={WebsiteLogo} alt="logo" className="h-10 w-auto" />
+            <Image
+              width={40}
+              height={40}
+              src={WebsiteLogo}
+              alt="logo"
+              className="h-10 w-auto"
+            />
             <p className="ml-2 text-2xl font-bold">Focusnow</p>
           </Button>
 
