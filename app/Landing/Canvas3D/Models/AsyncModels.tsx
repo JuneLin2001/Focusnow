@@ -1,7 +1,7 @@
 import { Environment, Sky } from "@react-three/drei";
 import Snowflakes from "./Snowflakes";
 import SnowPenguin from "@/components/Game/SnowPenguin";
-import ShowInstructions from "../Instructions/ShowInstructions";
+import ShowInstructions from "../../Instructions/ShowInstructions";
 import DropFish from "@/components/Game/DropFish";
 import * as THREE from "three";
 import {
