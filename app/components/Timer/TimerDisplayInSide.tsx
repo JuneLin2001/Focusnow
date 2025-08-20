@@ -7,17 +7,12 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 import { useSettingStore } from "@/store/settingStore";
 import { Card } from "@/components/ui/card";
-interface TimerDisplayInSideProps {
-  page: string | null;
-  setPage: (newPage: "timer" | "analytics" | "Setting" | null) => void;
-  setTargetPosition: (position: [number, number, number]) => void;
-}
+import usePageStore from "@/store/usePageStore";
+import usePageNavigation from "@/hooks/usePageNavigation";
 
-const TimerDisplayInSide: React.FC<TimerDisplayInSideProps> = ({
-  page,
-  setPage,
-  setTargetPosition,
-}) => {
+const TimerDisplayInSide = () => {
+  const { page } = usePageStore();
+  const { handleTimerPageClick } = usePageNavigation();
   const {
     secondsLeft,
     inputMinutes,
@@ -138,8 +133,7 @@ const TimerDisplayInSide: React.FC<TimerDisplayInSideProps> = ({
         <Card
           className="fixed right-6 bottom-40 z-10 w-36 cursor-pointer bg-white p-4 opacity-80"
           onClick={() => {
-            setTargetPosition([-50, 12, -150]);
-            setPage("timer");
+            handleTimerPageClick();
           }}
         >
           <CircularProgressbarWithChildren

@@ -12,25 +12,19 @@ import {
 import { Settings, X } from "lucide-react";
 import PipButton from "./PipButton";
 import { toast } from "react-toastify";
-import { useSettingStore } from "../../store/settingStore";
+import { useSettingStore } from "@/store/settingStore";
 import SettingsDialog from "./SettingsDialog";
 import TimerProgressBar from "./TimerProgressBar";
+import usePageNavigation from "@/hooks/usePageNavigation";
+
 interface TimerProps {
   isSideBarOpen: boolean;
-  page: string | null;
-  setPage: (newPage: "timer" | "analytics" | "Setting" | null) => void;
-  setTargetPosition: (position: [number, number, number]) => void;
-  setLookAtPosition: (position: [number, number, number]) => void;
 }
 
-const Timer: React.FC<TimerProps> = ({
-  isSideBarOpen,
-  setPage,
-  setTargetPosition,
-  setLookAtPosition,
-}) => {
+const Timer: React.FC<TimerProps> = ({ isSideBarOpen }) => {
   const { showLoginButton } = useTimerStore();
   const { isPaused } = useTimerStore();
+  const { handleRootPageClick } = usePageNavigation();
 
   const hasSeenTimerInstruction = useSettingStore(
     (state) => state.hasSeenTimerInstruction,
@@ -64,9 +58,7 @@ const Timer: React.FC<TimerProps> = ({
   };
 
   const handleCloseTimerPage = () => {
-    setPage(null);
-    setTargetPosition([-250, 60, 10]);
-    setLookAtPosition([0, 0, 0]);
+    handleRootPageClick();
   };
 
   return (

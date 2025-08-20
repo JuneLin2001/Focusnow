@@ -1,5 +1,5 @@
 // import Joyride, { CallBackProps, EVENTS, Events, STATUS } from "react-joyride";
-// import settingStore from "../../store/settingStore";
+// import {useSettingStore} from "@/store/settingStore";
 // import TimerInstructionSteps from "./TimerInstructionSteps";
 
 // interface TimerInstructionProps {
@@ -17,7 +17,7 @@
 //   isSideBarOpen,
 //   setIsSideBarOpen,
 // }) => {
-//   const { themeMode } = settingStore();
+//   const { themeMode } = useSettingStore();
 
 //   const handleJoyrideCallback = (data: CallBackProps) => {
 //     const { index, status, type } = data;

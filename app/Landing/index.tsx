@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Timer from "@/components/Timer";
 import AnalyticsPage from "@/components/Analytics";
 import { DashboardHeader } from "@/components/Header";
@@ -10,20 +10,17 @@ import TimerDisplayInSide from "@/components/Timer/TimerDisplayInSide";
 import useAuthStore from "@/store/authStore";
 // import * as THREE from "three";
 import { useSettingStore } from "@/store/settingStore";
-import { toast } from "react-toastify";
-import useFetchAnalytics from "@/hooks/useFetchAnalytics";
 import Canvas3D from "./Canvas3D";
+// import usePageNavigation from "@/hooks/usePageNavigation";
+import usePageStore from "@/store/usePageStore";
 
 const LandingPage = () => {
-  const [targetPosition, setTargetPosition] = useState<
-    [number, number, number]
-  >([-250, 60, 10]);
-  const [lookAtPosition, setLookAtPosition] = useState<
-    [number, number, number]
-  >([0, 0, 0]);
-  const [page, setPage] = useState<
-    "timer" | "analytics" | "game" | "Setting" | null
-  >(null);
+  // const {
+  //   handleTimerPageClick,
+  //   handleAnalyticsClick,
+  // } = usePageNavigation();
+  const { page } = usePageStore();
+
   // const { themeMode } = useSettingStore();
   // const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
   const { user } = useAuthStore();
@@ -31,8 +28,6 @@ const LandingPage = () => {
   // const { fishesCount,updateFishesCount } = useFishesCountStore();
   // const [isCompleted, setIsCompleted] = useState(false);
   // const [showInstructions, setShowInstructions] = useState(true);
-
-  useFetchAnalytics();
 
   // useEffect(() => {
   //   const hasSeenInitialInstructions = localStorage.getItem(
@@ -46,16 +41,6 @@ const LandingPage = () => {
   //   localStorage.setItem("hasSeenInitialInstructions", "true");
   //   setPage(null);
   // };
-
-  const handleAnalyticsClick = () => {
-    if (user) {
-      setPage("analytics");
-      setTargetPosition([-105, 25, 100]);
-      setLookAtPosition([250, 0, 0]);
-    } else {
-      toast.error("尚未登入");
-    }
-  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -73,32 +58,15 @@ const LandingPage = () => {
 
   return (
     <>
-      <DashboardHeader
-        pages={["Timer", "Analytics"]}
-        setPage={setPage}
-        setTargetPosition={setTargetPosition}
-        setLookAtPosition={setLookAtPosition}
-        handleAnalyticsClick={handleAnalyticsClick}
-      />
+      <DashboardHeader />
       {page !== null && (
         <div className="fixed z-10 size-full">
-          {page === "timer" && (
-            <Timer
-              page={"Timer"}
-              setPage={setPage}
-              setTargetPosition={setTargetPosition}
-              setLookAtPosition={setLookAtPosition}
-            />
-          )}
+          {page === "timer" && <Timer />}
           {page === "analytics" && <AnalyticsPage />}
         </div>
       )}
       <Canvas3D />
-      <TimerDisplayInSide
-        page={page}
-        setPage={setPage}
-        setTargetPosition={setTargetPosition}
-      />
+      <TimerDisplayInSide />
       {/* <InitialInstructions
         showInstructions={showInstructions}
         handleCloseInstructions={handleCloseInstructions}

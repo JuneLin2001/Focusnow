@@ -13,12 +13,13 @@ import WebsiteLogo from "@/assets/icons/globePenguin.svg";
 import ThemeSwitcher from "./ThemeSwitcher";
 import Image from "next/image";
 import usePageNavigation from "@/hooks/usePageNavigation";
+import type { Page } from "@/types/page";
 
 export function DashboardHeader() {
   const { handleRootPageClick, handleTimerPageClick, handleAnalyticsClick } =
     usePageNavigation();
 
-  const pages = ["Timer", "Analytics"];
+  const pages: Page[] = ["timer", "analytics"];
 
   return (
     <header className="fixed z-50 flex h-16 w-full items-center bg-gray-200 px-4 shadow-md transition-colors duration-300 md:px-8 dark:bg-gray-900">
@@ -42,9 +43,9 @@ export function DashboardHeader() {
                     variant="header"
                     key={page}
                     onClick={() => {
-                      if (page === "Timer") {
+                      if (page === "timer") {
                         handleTimerPageClick();
-                      } else if (page === "Analytics") {
+                      } else if (page === "analytics") {
                         handleAnalyticsClick();
                       }
                     }}
@@ -98,9 +99,9 @@ export function DashboardHeader() {
                 variant="header"
                 key={page}
                 onClick={() => {
-                  if (page === "Timer") {
+                  if (page === "timer") {
                     handleTimerPageClick();
-                  } else if (page === "Analytics") {
+                  } else if (page === "analytics") {
                     handleAnalyticsClick();
                   }
                 }}
