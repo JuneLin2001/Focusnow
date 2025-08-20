@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Timer from "@/components/Timer/index";
+import Timer from "@/components/Timer";
 import AnalyticsPage from "@/components/Analytics";
 import { DashboardHeader } from "@/components/Header";
 import TimerDisplayInSide from "@/components/Timer/TimerDisplayInSide";
@@ -28,7 +28,7 @@ const LandingPage = () => {
   const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
   const { user } = useAuthStore();
   const loadUserSettings = useSettingStore((state) => state.loadUserSettings);
-  const fishesCount = useFishesCountStore((state) => state.FishesCount);
+  const { fishesCount } = useFishesCountStore();
   const updateFishesCount = useFishesCountStore(
     (state) => state.updateFishesCount,
   );
@@ -38,18 +38,18 @@ const LandingPage = () => {
 
   useFetchAnalytics();
 
-  useEffect(() => {
-    const hasSeenInitialInstructions = localStorage.getItem(
-      "hasSeenInitialInstructions",
-    );
-    setShowInstructions(hasSeenInitialInstructions !== "true");
-  }, []);
+  // useEffect(() => {
+  //   const hasSeenInitialInstructions = localStorage.getItem(
+  //     "hasSeenInitialInstructions",
+  //   );
+  //   setShowInstructions(hasSeenInitialInstructions !== "true");
+  // }, []);
 
-  const handleCloseInstructions = () => {
-    setShowInstructions(false);
-    localStorage.setItem("hasSeenInitialInstructions", "true");
-    setPage(null);
-  };
+  // const handleCloseInstructions = () => {
+  //   setShowInstructions(false);
+  //   localStorage.setItem("hasSeenInitialInstructions", "true");
+  //   setPage(null);
+  // };
 
   const handleAnalyticsClick = () => {
     if (user) {
@@ -62,11 +62,6 @@ const LandingPage = () => {
   };
 
   useEffect(() => {
-    const hasSeenInitialInstructions = localStorage.getItem(
-      "hasSeenInitialInstructions",
-    );
-    setShowInstructions(hasSeenInitialInstructions !== "true");
-
     const loadData = async () => {
       if (user) {
         await loadUserSettings(user.uid);
@@ -80,10 +75,6 @@ const LandingPage = () => {
     setIsCompleted(true);
   };
 
-  const handleShowInitialInstructions = () => {
-    setShowInstructions(true);
-  };
-
   return (
     <>
       <DashboardHeader
@@ -93,9 +84,7 @@ const LandingPage = () => {
         setLookAtPosition={setLookAtPosition}
         handleAnalyticsClick={handleAnalyticsClick}
       />
-      {page === null ? (
-        ""
-      ) : (
+      {/* {page !== null ? (
         <div className="fixed z-10 size-full">
           {page === "timer" && (
             <Timer
@@ -107,19 +96,21 @@ const LandingPage = () => {
           )}
           {page === "analytics" && <AnalyticsPage />}
         </div>
-      )}
+      ) : (
+        ""
+      )} */}
       <Canvas3D />
       <TimerDisplayInSide
         page={page}
         setPage={setPage}
         setTargetPosition={setTargetPosition}
       />
-      <InitialInstructions
+      {/* <InitialInstructions
         showInstructions={showInstructions}
         handleCloseInstructions={handleCloseInstructions}
         setTargetPosition={setTargetPosition}
         handleComplete={handleComplete}
-      />
+      /> */}
     </>
   );
 };

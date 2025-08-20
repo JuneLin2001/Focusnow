@@ -2,20 +2,20 @@ import { create } from "zustand";
 import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import useAuthStore from "./authStore";
-export interface FishesCount {
-  FishesCount: number;
+export interface fishesCount {
+  fishesCount: number;
 }
 
 interface FishesCountStore {
-  FishesCount: number;
+  fishesCount: number;
   setFishesCount: (count: number) => void;
   updateFishesCount: (incrementValue: number) => Promise<void>;
 }
 
 export const useFishesCountStore = create<FishesCountStore>((set) => ({
-  FishesCount: 0,
+  fishesCount: 0,
   setFishesCount: (count: number) =>
-    set((state) => ({ ...state, FishesCount: count })),
+    set((state) => ({ ...state, fishesCount: count })),
 
   updateFishesCount: async (incrementValue: number) => {
     const { user } = useAuthStore.getState();
@@ -27,16 +27,16 @@ export const useFishesCountStore = create<FishesCountStore>((set) => ({
           "users",
           user.uid,
           "fishesCount",
-          "fishesCount"
+          "fishesCount",
         );
 
         await updateDoc(fishesCountDocRef, {
-          FishesCount: increment(incrementValue),
+          fishesCount: increment(incrementValue),
         });
 
         set((state) => ({
           ...state,
-          FishesCount: state.FishesCount + incrementValue,
+          fishesCount: state.fishesCount + incrementValue,
         }));
       } catch (error) {
         console.error("Error updating Firestore fishes count:", error);

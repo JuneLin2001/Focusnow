@@ -17,17 +17,17 @@ interface TodoState {
   toggleComplete: (id: string) => void;
 }
 
-const loadTodosFromLocalStorage = () => {
-  const storedTodos = localStorage.getItem("todos");
-  return storedTodos ? JSON.parse(storedTodos) : [];
-};
+// const loadTodosFromLocalStorage = () => {
+//   const storedTodos = localStorage.getItem("todos");
+//   return storedTodos ? JSON.parse(storedTodos) : [];
+// };
 
-const saveTodosToLocalStorage = (todos: Todo[]) => {
-  localStorage.setItem("todos", JSON.stringify(todos));
-};
+// const saveTodosToLocalStorage = (todos: Todo[]) => {
+//   localStorage.setItem("todos", JSON.stringify(todos));
+// };
 
 export const useTodoStore = create<TodoState>((set) => ({
-  todos: loadTodosFromLocalStorage(),
+  todos: [],
   addTodo: (title) => {
     const newTodo = {
       id: Date.now().toString(),
@@ -39,23 +39,23 @@ export const useTodoStore = create<TodoState>((set) => ({
 
     set((state) => {
       const updatedTodos = [...state.todos, newTodo];
-      saveTodosToLocalStorage(updatedTodos);
+      // saveTodosToLocalStorage(updatedTodos);
       return { todos: updatedTodos };
     });
   },
   removeTodo: (id) => {
     set((state) => {
       const updatedTodos = state.todos.filter((todo) => todo.id !== id);
-      saveTodosToLocalStorage(updatedTodos);
+      // saveTodosToLocalStorage(updatedTodos);
       return { todos: updatedTodos };
     });
   },
   editTodoTitle: (id, newTitle) => {
     set((state) => {
       const updatedTodos = state.todos.map((todo) =>
-        todo.id === id ? { ...todo, title: newTitle } : todo
+        todo.id === id ? { ...todo, title: newTitle } : todo,
       );
-      saveTodosToLocalStorage(updatedTodos);
+      // saveTodosToLocalStorage(updatedTodos);
       return { todos: updatedTodos };
     });
   },
@@ -68,9 +68,9 @@ export const useTodoStore = create<TodoState>((set) => ({
               completed: !todo.completed,
               doneTime: !todo.completed ? Timestamp.now() : null,
             }
-          : todo
+          : todo,
       );
-      saveTodosToLocalStorage(updatedTodos);
+      // saveTodosToLocalStorage(updatedTodos);
       return { todos: updatedTodos };
     });
   },

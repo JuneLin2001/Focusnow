@@ -14,96 +14,74 @@ import { useSettingStore } from "@/store/settingStore";
 import { toast } from "react-toastify";
 import { Card } from "@/components/ui/card";
 import useFetchAnalytics from "@/hooks/useFetchAnalytics";
-
-const [targetPosition, setTargetPosition] = useState<[number, number, number]>([
-  -250, 60, 10,
-]);
-const [lookAtPosition, setLookAtPosition] = useState<[number, number, number]>([
-  0, 0, 0,
-]);
-const [page, setPage] = useState<
-  "timer" | "analytics" | "game" | "Setting" | null
->(null);
-const { themeMode } = useSettingStore();
-const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
-const { user } = useAuthStore();
-const loadUserSettings = useSettingStore((state) => state.loadUserSettings);
-const fishesCount = useFishesCountStore((state) => state.FishesCount);
-const updateFishesCount = useFishesCountStore(
-  (state) => state.updateFishesCount,
-);
-
-const [isCompleted, setIsCompleted] = useState(false);
-const [showInstructions, setShowInstructions] = useState(true);
-const [instructionHovered, setInstructionHovered] = useState(false);
-const [isFishLoading, setIsFishLoading] = useState(false);
-
-useFetchAnalytics();
-
-useEffect(() => {
-  const hasSeenInitialInstructions = localStorage.getItem(
-    "hasSeenInitialInstructions",
-  );
-  setShowInstructions(hasSeenInitialInstructions !== "true");
-}, []);
-
-const handleCloseInstructions = () => {
-  setShowInstructions(false);
-  localStorage.setItem("hasSeenInitialInstructions", "true");
-  setPage(null);
-};
-
-const handleDropFish = async () => {
-  if (user) {
-    if (fishesCount > 0) {
-      const randomX = Math.random() * (175 - -15) + -15;
-      const randomZ = Math.random() * (90 - -150) + -150;
-      setFishPosition(new THREE.Vector3(randomX, -5.5, randomZ));
-      setIsFishLoading(true);
-      await updateFishesCount(-1);
-      setIsFishLoading(false);
-    } else {
-      toast.warning("沒有魚可以放置了，每專注1分鐘可以獲得1條魚！");
-    }
-  } else {
-    toast.error("尚未登入");
-  }
-};
-
-const handleAnalyticsClick = () => {
-  if (user) {
-    setPage("analytics");
-    setTargetPosition([-105, 25, 100]);
-    setLookAtPosition([250, 0, 0]);
-  } else {
-    toast.error("尚未登入");
-  }
-};
-
-useEffect(() => {
-  const hasSeenInitialInstructions = localStorage.getItem(
-    "hasSeenInitialInstructions",
-  );
-  setShowInstructions(hasSeenInitialInstructions !== "true");
-
-  const loadData = async () => {
-    if (user) {
-      await loadUserSettings(user.uid);
-    }
-  };
-
-  loadData();
-}, [user, loadUserSettings]);
-
-const handleComplete = () => {
-  setIsCompleted(true);
-};
-
-const handleShowInitialInstructions = () => {
-  setShowInstructions(true);
-};
+import useDropFish from "@/hooks/useDropFish";
+import useAnalyticsPageClick from "@/hooks/useAnalyticsPageClick";
 
 const Canvas3D = () => {
+  const { handleDropFish } = useDropFish();
+  const { handleAnalyticsClick } = useAnalyticsPageClick();
+
+  const [targetPosition, setTargetPosition] = useState<
+    [number, number, number]
+  >([-250, 60, 10]);
+  const [lookAtPosition, setLookAtPosition] = useState<
+    [number, number, number]
+  >([0, 0, 0]);
+  const [page, setPage] = useState<
+    "timer" | "analytics" | "game" | "Setting" | null
+  >(null);
+  const { themeMode } = useSettingStore();
+  const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
+  const { user } = useAuthStore();
+  const loadUserSettings = useSettingStore((state) => state.loadUserSettings);
+  const { fishesCount } = useFishesCountStore();
+  const updateFishesCount = useFishesCountStore(
+    (state) => state.updateFishesCount,
+  );
+
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(true);
+  const [instructionHovered, setInstructionHovered] = useState(false);
+  const [isFishLoading, setIsFishLoading] = useState(false);
+
+  useFetchAnalytics();
+
+  useEffect(() => {
+    const hasSeenInitialInstructions = localStorage.getItem(
+      "hasSeenInitialInstructions",
+    );
+    setShowInstructions(hasSeenInitialInstructions !== "true");
+
+    const loadData = async () => {
+      if (user) {
+        await loadUserSettings(user.uid);
+      }
+    };
+
+    loadData();
+  }, [user, loadUserSettings]);
+
+  const handleComplete = () => {
+    setIsCompleted(true);
+  };
+
+  const handleShowInitialInstructions = () => {
+    setShowInstructions(true);
+  };
+
+  useEffect(() => {
+    const hasSeenInitialInstructions = localStorage.getItem(
+      "hasSeenInitialInstructions",
+    );
+    setShowInstructions(hasSeenInitialInstructions !== "true");
+  }, []);
+
+  const handleCloseInstructions = () => {
+    setShowInstructions(false);
+    localStorage.setItem("hasSeenInitialInstructions", "true");
+    setPage(null);
+  };
+
   return (
     <Canvas className="z-0">
       <AsyncModels

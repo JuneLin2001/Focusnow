@@ -10,7 +10,7 @@ import { useSettingStore } from "./store/settingStore";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
-  const setUser = useAuthStore((state) => state.setUser);
+  const { setUser } = useAuthStore();
   const { themeMode } = useSettingStore();
 
   useEffect(() => {
