@@ -17,7 +17,6 @@ interface AsyncModelsProps {
   fishesCount: number;
   fishPosition: THREE.Vector3 | null;
   handleDropFish: () => void;
-  isFishLoading: boolean;
   instructionHovered: boolean;
   handleShowInitialInstructions: () => void;
   setInstructionHovered: (value: boolean) => void;
@@ -28,7 +27,6 @@ const AsyncModels: React.FC<AsyncModelsProps> = ({
   fishesCount,
   fishPosition,
   handleDropFish,
-  isFishLoading,
   instructionHovered,
   handleShowInitialInstructions,
   setInstructionHovered,
@@ -67,7 +65,6 @@ const AsyncModels: React.FC<AsyncModelsProps> = ({
           fishesCount={fishesCount}
           fishPosition={fishPosition}
           handleDropFish={handleDropFish}
-          isFishLoading={isFishLoading}
         />
       )}
     </>

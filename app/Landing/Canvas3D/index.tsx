@@ -26,23 +26,18 @@ const Canvas3D = () => {
   const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
   const { user } = useAuthStore();
   const loadUserSettings = useSettingStore((state) => state.loadUserSettings);
-  const { fishesCount } = useFishesCountStore();
-  const updateFishesCount = useFishesCountStore(
-    (state) => state.updateFishesCount,
-  );
-
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [showInstructions, setShowInstructions] = useState(true);
+  const { fishesCount, updateFishesCount } = useFishesCountStore();
+  // const [showInstructions, setShowInstructions] = useState(true);
   const [instructionHovered, setInstructionHovered] = useState(false);
-  const [isFishLoading, setIsFishLoading] = useState(false);
+  // const [isFishLoading, setIsFishLoading] = useState(false);
 
   useFetchAnalytics();
 
   useEffect(() => {
-    const hasSeenInitialInstructions = localStorage.getItem(
-      "hasSeenInitialInstructions",
-    );
-    setShowInstructions(hasSeenInitialInstructions !== "true");
+    // const hasSeenInitialInstructions = localStorage.getItem(
+    //   "hasSeenInitialInstructions",
+    // );
+    // setShowInstructions(hasSeenInitialInstructions !== "true");
 
     const loadData = async () => {
       if (user) {
@@ -58,15 +53,16 @@ const Canvas3D = () => {
   // };
 
   const handleShowInitialInstructions = () => {
-    setShowInstructions(true);
+    return;
+    // setShowInstructions(true);
   };
 
-  useEffect(() => {
-    const hasSeenInitialInstructions = localStorage.getItem(
-      "hasSeenInitialInstructions",
-    );
-    setShowInstructions(hasSeenInitialInstructions !== "true");
-  }, []);
+  // useEffect(() => {
+  //   const hasSeenInitialInstructions = localStorage.getItem(
+  //     "hasSeenInitialInstructions",
+  //   );
+  //   setShowInstructions(hasSeenInitialInstructions !== "true");
+  // }, []);
 
   // const handleCloseInstructions = () => {
   //   setShowInstructions(false);
@@ -81,7 +77,6 @@ const Canvas3D = () => {
         handleShowInitialInstructions={handleShowInitialInstructions}
         setInstructionHovered={setInstructionHovered}
         themeMode={themeMode}
-        isFishLoading={isFishLoading}
         handleDropFish={handleDropFish}
         fishPosition={fishPosition}
         fishesCount={fishesCount}
@@ -109,7 +104,7 @@ const Canvas3D = () => {
           onClick={handleAnalyticsClick}
         />
       )}
-      <CameraController isCompleted={isCompleted} />
+      <CameraController />
       {instructionHovered && (
         <Html position={[115, 70, 145]} center>
           <Card className="flex h-10 w-36 items-center justify-center p-2">

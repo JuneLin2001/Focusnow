@@ -10,7 +10,7 @@ interface DropFishProps {
   fishesCount: number;
   fishPosition: THREE.Vector3 | null;
   handleDropFish: () => void;
-  isFishLoading: boolean;
+  isFishLoading?: boolean;
 }
 
 const DropFish: React.FC<DropFishProps> = ({
@@ -18,7 +18,7 @@ const DropFish: React.FC<DropFishProps> = ({
   fishesCount,
   fishPosition,
   handleDropFish,
-  isFishLoading,
+  isFishLoading = false,
 }) => {
   const [hovered, setHovered] = useState(false);
 

@@ -8,7 +8,9 @@ interface CameraControllerProps {
   isCompleted?: boolean;
 }
 
-const CameraController: React.FC<CameraControllerProps> = ({ isCompleted }) => {
+const CameraController: React.FC<CameraControllerProps> = ({
+  isCompleted = false,
+}) => {
   const { camera } = useThree();
   const { targetPosition, lookAtPosition } = useSceneStore();
   const [isFirstEntry, setIsFirstEntry] = useState(true);
