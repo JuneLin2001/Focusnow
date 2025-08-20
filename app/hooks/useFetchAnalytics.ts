@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { db } from "../firebase/firebaseConfig";
 import { collection, onSnapshot } from "firebase/firestore";
@@ -20,7 +22,7 @@ const useFetchAnalytics = () => {
       db,
       "users",
       user.uid,
-      "analytics"
+      "analytics",
     );
 
     const unsubscribe = onSnapshot(
@@ -37,7 +39,7 @@ const useFetchAnalytics = () => {
       (error) => {
         console.error("Error fetching analytics:", error);
         setIsLoading(false);
-      }
+      },
     );
 
     return () => unsubscribe();

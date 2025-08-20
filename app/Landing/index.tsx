@@ -5,10 +5,10 @@ import Timer from "@/components/Timer";
 import AnalyticsPage from "@/components/Analytics";
 import { DashboardHeader } from "@/components/Header";
 import TimerDisplayInSide from "@/components/Timer/TimerDisplayInSide";
-import { useFishesCountStore } from "@/store/fishesCountStore";
-import InitialInstructions from "./Instructions/InitialInstructions";
+// import { useFishesCountStore } from "@/store/fishesCountStore";
+// import InitialInstructions from "./Instructions/InitialInstructions";
 import useAuthStore from "@/store/authStore";
-import * as THREE from "three";
+// import * as THREE from "three";
 import { useSettingStore } from "@/store/settingStore";
 import { toast } from "react-toastify";
 import useFetchAnalytics from "@/hooks/useFetchAnalytics";
@@ -24,17 +24,13 @@ const LandingPage = () => {
   const [page, setPage] = useState<
     "timer" | "analytics" | "game" | "Setting" | null
   >(null);
-  const { themeMode } = useSettingStore();
-  const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
+  // const { themeMode } = useSettingStore();
+  // const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
   const { user } = useAuthStore();
-  const loadUserSettings = useSettingStore((state) => state.loadUserSettings);
-  const { fishesCount } = useFishesCountStore();
-  const updateFishesCount = useFishesCountStore(
-    (state) => state.updateFishesCount,
-  );
-
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [showInstructions, setShowInstructions] = useState(true);
+  const { loadUserSettings } = useSettingStore();
+  // const { fishesCount,updateFishesCount } = useFishesCountStore();
+  // const [isCompleted, setIsCompleted] = useState(false);
+  // const [showInstructions, setShowInstructions] = useState(true);
 
   useFetchAnalytics();
 
@@ -71,9 +67,9 @@ const LandingPage = () => {
     loadData();
   }, [user, loadUserSettings]);
 
-  const handleComplete = () => {
-    setIsCompleted(true);
-  };
+  // const handleComplete = () => {
+  //   setIsCompleted(true);
+  // };
 
   return (
     <>
@@ -84,7 +80,7 @@ const LandingPage = () => {
         setLookAtPosition={setLookAtPosition}
         handleAnalyticsClick={handleAnalyticsClick}
       />
-      {/* {page !== null ? (
+      {page !== null && (
         <div className="fixed z-10 size-full">
           {page === "timer" && (
             <Timer
@@ -96,9 +92,7 @@ const LandingPage = () => {
           )}
           {page === "analytics" && <AnalyticsPage />}
         </div>
-      ) : (
-        ""
-      )} */}
+      )}
       <Canvas3D />
       <TimerDisplayInSide
         page={page}
