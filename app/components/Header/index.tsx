@@ -12,22 +12,14 @@ import LoginButton from "./LoginButton";
 import WebsiteLogo from "@/assets/icons/globePenguin.svg";
 import ThemeSwitcher from "./ThemeSwitcher";
 import Image from "next/image";
+import usePageNavigation from "@/hooks/usePageNavigation";
 
-interface DashboardHeaderProps {
-  pages: string[];
-  setPage: (newPage: "timer" | "analytics" | "Setting" | null) => void;
-  setTargetPosition: (position: [number, number, number]) => void;
-  setLookAtPosition: (position: [number, number, number]) => void;
-  handleAnalyticsClick: () => void;
-}
+export function DashboardHeader() {
+  const { handleRootPageClick, handleTimerPageClick, handleAnalyticsClick } =
+    usePageNavigation();
 
-export function DashboardHeader({
-  pages,
-  setPage,
-  setTargetPosition,
-  setLookAtPosition,
-  handleAnalyticsClick,
-}: DashboardHeaderProps) {
+  const pages = ["Timer", "Analytics"];
+
   return (
     <header className="fixed z-50 flex h-16 w-full items-center bg-gray-200 px-4 shadow-md transition-colors duration-300 md:px-8 dark:bg-gray-900">
       <div className="relative flex grow items-center">
@@ -51,9 +43,7 @@ export function DashboardHeader({
                     key={page}
                     onClick={() => {
                       if (page === "Timer") {
-                        setTargetPosition([-50, 12, -150]);
-                        setLookAtPosition([0, 0, 0]);
-                        setPage("timer");
+                        handleTimerPageClick();
                       } else if (page === "Analytics") {
                         handleAnalyticsClick();
                       }
@@ -70,9 +60,7 @@ export function DashboardHeader({
           <Button
             variant="header"
             onClick={() => {
-              setPage(null);
-              setTargetPosition([-250, 60, 10]);
-              setLookAtPosition([0, 0, 0]);
+              handleRootPageClick();
             }}
             className="cursor-pointer"
           >
@@ -90,9 +78,7 @@ export function DashboardHeader({
           <Button
             variant="header"
             onClick={() => {
-              setPage(null);
-              setTargetPosition([-250, 60, 10]);
-              setLookAtPosition([0, 0, 0]);
+              handleRootPageClick();
             }}
             className="cursor-pointer"
           >
@@ -113,9 +99,7 @@ export function DashboardHeader({
                 key={page}
                 onClick={() => {
                   if (page === "Timer") {
-                    setTargetPosition([-50, 12, -150]);
-                    setLookAtPosition([0, 0, 0]);
-                    setPage("timer");
+                    handleTimerPageClick();
                   } else if (page === "Analytics") {
                     handleAnalyticsClick();
                   }
