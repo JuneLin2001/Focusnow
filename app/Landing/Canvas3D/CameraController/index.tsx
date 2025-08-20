@@ -2,19 +2,15 @@ import { useEffect, useState } from "react";
 import { useThree } from "@react-three/fiber";
 import gsap from "gsap";
 import { OrbitControls } from "@react-three/drei";
+import useSceneStore from "@/store/useSceneStore";
 
 interface CameraControllerProps {
-  targetPosition: [number, number, number];
-  lookAtPosition?: [number, number, number];
   isCompleted?: boolean;
 }
 
-const CameraController: React.FC<CameraControllerProps> = ({
-  targetPosition,
-  lookAtPosition = targetPosition,
-  isCompleted,
-}) => {
+const CameraController: React.FC<CameraControllerProps> = ({ isCompleted }) => {
   const { camera } = useThree();
+  const { targetPosition, lookAtPosition } = useSceneStore();
   const [isFirstEntry, setIsFirstEntry] = useState(true);
 
   useEffect(() => {

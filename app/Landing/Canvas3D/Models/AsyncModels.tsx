@@ -11,9 +11,9 @@ import {
   Igloo,
   AnalyticsCube,
 } from "./StaticModels";
+import usePageStore from "@/store/usePageStore";
 
 interface AsyncModelsProps {
-  page: "timer" | "analytics" | "game" | "Setting" | null;
   fishesCount: number;
   fishPosition: THREE.Vector3 | null;
   handleDropFish: () => void;
@@ -25,7 +25,6 @@ interface AsyncModelsProps {
 }
 
 const AsyncModels: React.FC<AsyncModelsProps> = ({
-  page,
   fishesCount,
   fishPosition,
   handleDropFish,
@@ -35,6 +34,8 @@ const AsyncModels: React.FC<AsyncModelsProps> = ({
   setInstructionHovered,
   themeMode,
 }) => {
+  const { page } = usePageStore();
+
   return (
     <>
       <Environment preset={themeMode === "light" ? "warehouse" : "night"} />

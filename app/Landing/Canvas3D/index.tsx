@@ -11,25 +11,17 @@ import { AlarmClock, ChartColumn } from "lucide-react";
 import useAuthStore from "@/store/authStore";
 import * as THREE from "three";
 import { useSettingStore } from "@/store/settingStore";
-import { toast } from "react-toastify";
 import { Card } from "@/components/ui/card";
 import useFetchAnalytics from "@/hooks/useFetchAnalytics";
 import useDropFish from "@/hooks/useDropFish";
-import useAnalyticsPageClick from "@/hooks/useAnalyticsPageClick";
+import usePageNavigation from "@/hooks/usePageNavigation";
+import usePageStore from "@/store/usePageStore";
 
 const Canvas3D = () => {
   const { handleDropFish } = useDropFish();
-  const { handleAnalyticsClick } = useAnalyticsPageClick();
+  const { handleTimerPageClick, handleAnalyticsClick } = usePageNavigation();
+  const { page } = usePageStore();
 
-  const [targetPosition, setTargetPosition] = useState<
-    [number, number, number]
-  >([-250, 60, 10]);
-  const [lookAtPosition, setLookAtPosition] = useState<
-    [number, number, number]
-  >([0, 0, 0]);
-  const [page, setPage] = useState<
-    "timer" | "analytics" | "game" | "Setting" | null
-  >(null);
   const { themeMode } = useSettingStore();
   const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
   const { user } = useAuthStore();
@@ -61,9 +53,9 @@ const Canvas3D = () => {
     loadData();
   }, [user, loadUserSettings]);
 
-  const handleComplete = () => {
-    setIsCompleted(true);
-  };
+  // const handleComplete = () => {
+  //   setIsCompleted(true);
+  // };
 
   const handleShowInitialInstructions = () => {
     setShowInstructions(true);
@@ -76,16 +68,15 @@ const Canvas3D = () => {
     setShowInstructions(hasSeenInitialInstructions !== "true");
   }, []);
 
-  const handleCloseInstructions = () => {
-    setShowInstructions(false);
-    localStorage.setItem("hasSeenInitialInstructions", "true");
-    setPage(null);
-  };
+  // const handleCloseInstructions = () => {
+  //   setShowInstructions(false);
+  //   localStorage.setItem("hasSeenInitialInstructions", "true");
+  //   setPage(null);
+  // };
 
   return (
     <Canvas className="z-0">
       <AsyncModels
-        page={page}
         instructionHovered={instructionHovered}
         handleShowInitialInstructions={handleShowInitialInstructions}
         setInstructionHovered={setInstructionHovered}
@@ -101,18 +92,13 @@ const Canvas3D = () => {
         handleDropFish={handleDropFish}
         fishPosition={fishPosition}
         setFishPosition={setFishPosition}
-        setPage={setPage}
       />
       {page === null && (
         <Bubble
           Icon={AlarmClock}
           content="Timer"
           position={[-20, 40, -100]}
-          onClick={() => {
-            setTargetPosition([-50, 12, -150]);
-            setLookAtPosition([0, 0, 0]);
-            setPage("timer");
-          }}
+          onClick={handleTimerPageClick}
         />
       )}
       {page === null && (
@@ -123,11 +109,7 @@ const Canvas3D = () => {
           onClick={handleAnalyticsClick}
         />
       )}
-      <CameraController
-        targetPosition={targetPosition}
-        lookAtPosition={lookAtPosition}
-        isCompleted={isCompleted}
-      />
+      <CameraController isCompleted={isCompleted} />
       {instructionHovered && (
         <Html position={[115, 70, 145]} center>
           <Card className="flex h-10 w-36 items-center justify-center p-2">
