@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { useTodoStore } from "../../store/todoStore";
+import { useTodoStore } from "../../../store/todoStore";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
-interface TodoListProps {
+interface TodoListCardProps {
   isSideBarOpen: boolean;
 }
 
-const TodoList: React.FC<TodoListProps> = ({ isSideBarOpen }) => {
+const TodoListCard: React.FC<TodoListCardProps> = ({ isSideBarOpen }) => {
   const [newTodoTitle, setNewTodoTitle] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -30,9 +30,9 @@ const TodoList: React.FC<TodoListProps> = ({ isSideBarOpen }) => {
   return (
     <Card
       id="todo-list"
-      className={`fixed left-1/2 top-1/2 z-30 flex h-[500px] w-screen max-w-[500px] transform flex-col bg-white bg-opacity-60 p-5 transition-all duration-500 ease-in-out lg:z-0 lg:max-w-[350px] ${
+      className={`bg-opacity-60 fixed top-1/2 left-1/2 z-30 flex h-[500px] w-screen max-w-[500px] transform flex-col bg-white p-5 transition-all duration-500 ease-in-out lg:z-0 lg:max-w-[350px] ${
         isSideBarOpen
-          ? "translate-y-[-250px] opacity-100 lg:-translate-y-1/2 lg:translate-x-[250px]"
+          ? "translate-y-[-250px] opacity-100 lg:translate-x-[250px] lg:-translate-y-1/2"
           : "translate-y-[-1050px] opacity-0 lg:-translate-y-1/2"
       } -translate-x-1/2`}
     >
@@ -50,7 +50,7 @@ const TodoList: React.FC<TodoListProps> = ({ isSideBarOpen }) => {
               handleAddTodo();
             }
           }}
-          className="grow overflow-hidden text-ellipsis whitespace-nowrap rounded border p-2 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          className="grow overflow-hidden rounded border p-2 text-ellipsis whitespace-nowrap dark:border-gray-600 dark:bg-gray-700 dark:text-white"
           placeholder={errorMessage ? errorMessage : "New Todo"}
         />
         <Button
@@ -76,7 +76,7 @@ const TodoList: React.FC<TodoListProps> = ({ isSideBarOpen }) => {
                 type="text"
                 value={todo.title}
                 onChange={(e) => editTodoTitle(todo.id, e.target.value)}
-                className={`w-full grow bg-white bg-opacity-0 p-1 text-xl leading-5 ${
+                className={`bg-opacity-0 w-full grow bg-white p-1 text-xl leading-5 ${
                   todo.completed
                     ? "text-gray-500 line-through dark:text-gray-400"
                     : "text-gray-800 dark:text-white"
@@ -99,4 +99,4 @@ const TodoList: React.FC<TodoListProps> = ({ isSideBarOpen }) => {
   );
 };
 
-export default TodoList;
+export default TodoListCard;

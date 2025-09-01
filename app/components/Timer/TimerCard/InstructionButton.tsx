@@ -6,19 +6,24 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { toast } from "react-toastify";
 
-interface StartTimerInstructionProps {
+interface InstructionButtonProps {
   isSideBarOpen: boolean;
-  handleStartTour: () => void;
 }
 
-const StartTimerInstruction: React.FC<StartTimerInstructionProps> = ({
+const InstructionButton: React.FC<InstructionButtonProps> = ({
   isSideBarOpen,
-  handleStartTour,
 }) => {
+  const handleStartTour = () => {
+    toast.warning("React Joyride 暫時不支援 React 19");
+    // setRunTour(true);
+    // setIsSideBarOpen(true);
+  };
+
   return (
     <div
-      className={`absolute left-4 top-20 z-50 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
+      className={`absolute top-20 left-4 z-50 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
     >
       <TooltipProvider>
         <Tooltip>
@@ -40,4 +45,4 @@ const StartTimerInstruction: React.FC<StartTimerInstructionProps> = ({
   );
 };
 
-export default StartTimerInstruction;
+export default InstructionButton;

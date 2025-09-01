@@ -8,9 +8,13 @@ import {
 } from "@/components/ui/tooltip";
 import { PictureInPicture } from "lucide-react";
 import { toast } from "react-toastify";
-import { useTimerStore } from "../../store/timerStore";
+import { useTimerStore } from "../../../store/timerStore";
 
-const PipButton = () => {
+interface PipButtonProps {
+  isSideBarOpen: boolean;
+}
+
+const PipButton: React.FC<PipButtonProps> = ({ isSideBarOpen }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPipActive, setIsPipActive] = useState(false);
   const { canvasRef } = useTimerStore();
@@ -71,7 +75,9 @@ const PipButton = () => {
   }, [setIsPipActive]);
 
   return (
-    <>
+    <div
+      className={`absolute top-12 left-4 transform transition-all duration-500 ease-in-out ${isSideBarOpen ? "opacity-0" : "opacity-100"} lg:opacity-100`}
+    >
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -91,7 +97,7 @@ const PipButton = () => {
         </Tooltip>
       </TooltipProvider>
       <video ref={videoRef} style={{ display: "none" }} muted playsInline />
-    </>
+    </div>
   );
 };
 
