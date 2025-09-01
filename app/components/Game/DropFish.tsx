@@ -41,7 +41,8 @@ const DropFish: React.FC<DropFishProps> = ({
           </>
         ) : (
           <>
-            <FishSymbol /> <div className="ml-2">{fishesCount}</div>
+            <FishSymbol />
+            <div className="ml-2">{fishesCount}</div>
           </>
         )}
       </Button>

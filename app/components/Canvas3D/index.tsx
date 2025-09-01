@@ -9,29 +9,21 @@ import { useFishesCountStore } from "@/store/fishesCountStore";
 import { AsyncModels, Bubble } from "./Models";
 import { AlarmClock, ChartColumn } from "lucide-react";
 import useAuthStore from "@/store/authStore";
-import * as THREE from "three";
 import { useSettingStore } from "@/store/settingStore";
 import { Card } from "@/components/ui/card";
-import useFetchAnalytics from "@/hooks/useFetchAnalytics";
 import useDropFish from "@/hooks/useDropFish";
 import usePageNavigation from "@/hooks/usePageNavigation";
 import usePageStore from "@/store/usePageStore";
 
 const Canvas3D = () => {
-  const { handleDropFish } = useDropFish();
+  const { handleDropFish, fishPosition, setFishPosition } = useDropFish();
   const { handleTimerPageClick, handleAnalyticsClick } = usePageNavigation();
   const { page } = usePageStore();
-
   const { themeMode } = useSettingStore();
-  const [fishPosition, setFishPosition] = useState<THREE.Vector3 | null>(null);
   const { user } = useAuthStore();
   const loadUserSettings = useSettingStore((state) => state.loadUserSettings);
   const { fishesCount, updateFishesCount } = useFishesCountStore();
-  // const [showInstructions, setShowInstructions] = useState(true);
   const [instructionHovered, setInstructionHovered] = useState(false);
-  // const [isFishLoading, setIsFishLoading] = useState(false);
-
-  useFetchAnalytics();
 
   useEffect(() => {
     // const hasSeenInitialInstructions = localStorage.getItem(

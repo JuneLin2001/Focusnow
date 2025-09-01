@@ -31,6 +31,9 @@ const useDropFish = () => {
 
   return {
     handleDropFish,
+    fishPosition,
+    setFishPosition,
+    isFishLoading,
   };
 };
 
