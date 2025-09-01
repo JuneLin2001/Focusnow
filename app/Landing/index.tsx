@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import Timer from "@/components/Timer";
 import AnalyticsPage from "@/components/Analytics";
-import { DashboardHeader } from "@/components/Header";
 import TimerDisplayInSide from "@/components/Timer/TimerDisplayInSide";
 // import { useFishesCountStore } from "@/store/fishesCountStore";
 // import InitialInstructions from "./Instructions/InitialInstructions";
@@ -58,7 +57,6 @@ const LandingPage = () => {
 
   return (
     <>
-      <DashboardHeader />
       {page !== null && (
         <div className="fixed z-10 size-full">
           {page === "timer" && <Timer />}

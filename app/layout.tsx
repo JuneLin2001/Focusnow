@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import AnalyticsDataInitializer from "@/components/Initializer/AnalyticsDataInitializer";
+import { DashboardHeader } from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AnalyticsDataInitializer />
+        <DashboardHeader />
         {children}
       </body>
     </html>

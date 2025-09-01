@@ -37,7 +37,6 @@ export function DashboardHeader() {
                 <SheetTitle className="ml-2 text-2xl font-bold">
                   Focusnow
                 </SheetTitle>
-
                 {pages.map((page) => (
                   <Button
                     variant="header"
