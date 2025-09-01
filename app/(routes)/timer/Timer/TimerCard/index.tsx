@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 import { useTimerStore } from "@/store/timerStore";
 import LoginButton from "@/components/Auth/LoginButton";
@@ -46,10 +48,9 @@ const TimerCard: React.FC<TimerCardProps> = ({ isSideBarOpen }) => {
   };
 
   return (
-    <div className="relative flex h-screen w-screen items-center justify-center">
+    <div className="absolute inset-0 flex items-center justify-center">
       <Card className="bg-opacity-60 relative z-30 flex size-[500px] flex-col items-center justify-center bg-white bg-cover bg-center">
         <Settings isSideBarOpen={isSideBarOpen} />
-
         <CloseTimerButton
           handleCloseTimerPage={handleCloseTimerPage}
           isSideBarOpen={isSideBarOpen}

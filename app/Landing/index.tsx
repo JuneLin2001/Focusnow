@@ -1,15 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import Timer from "@/components/Timer";
-import AnalyticsPage from "@/components/Analytics";
-import TimerDisplayInSide from "@/components/Timer/TimerDisplayInSide";
 // import { useFishesCountStore } from "@/store/fishesCountStore";
 // import InitialInstructions from "./Instructions/InitialInstructions";
 import useAuthStore from "@/store/authStore";
 // import * as THREE from "three";
 import { useSettingStore } from "@/store/settingStore";
-import Canvas3D from "./Canvas3D";
 // import usePageNavigation from "@/hooks/usePageNavigation";
 import usePageStore from "@/store/usePageStore";
 
@@ -57,14 +53,12 @@ const LandingPage = () => {
 
   return (
     <>
-      {page !== null && (
+      {/* {page !== null && (
         <div className="fixed z-10 size-full">
           {page === "timer" && <Timer />}
           {page === "analytics" && <AnalyticsPage />}
         </div>
-      )}
-      <Canvas3D />
-      <TimerDisplayInSide />
+      )} */}
       {/* <InitialInstructions
         showInstructions={showInstructions}
         handleCloseInstructions={handleCloseInstructions}

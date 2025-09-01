@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useEffect, useCallback } from "react";
 import { useTimerStore } from "@/store/timerStore";
 import {
@@ -10,7 +12,7 @@ import { Card } from "@/components/ui/card";
 import usePageStore from "@/store/usePageStore";
 import usePageNavigation from "@/hooks/usePageNavigation";
 
-const TimerDisplayInSide = () => {
+const TimerDisplayPanel = () => {
   const { page } = usePageStore();
   const { handleTimerPageClick } = usePageNavigation();
   const {
@@ -163,4 +165,4 @@ const TimerDisplayInSide = () => {
   );
 };
 
-export default TimerDisplayInSide;
+export default TimerDisplayPanel;

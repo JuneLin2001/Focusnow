@@ -1,7 +1,6 @@
-import {
-  // useEffect  ,
-  useState,
-} from "react";
+"use client";
+
+import { useState } from "react";
 // import TimerInstruction from "./TimerInstruction";
 // import { useSettingStore } from "@/store/settingStore";
 import TimerCard from "./TimerCard";

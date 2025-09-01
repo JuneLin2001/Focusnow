@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { PictureInPicture } from "lucide-react";
 import { toast } from "react-toastify";
-import { useTimerStore } from "../../../store/timerStore";
+import { useTimerStore } from "@/store/timerStore";
 
 interface PipButtonProps {
   isSideBarOpen: boolean;
