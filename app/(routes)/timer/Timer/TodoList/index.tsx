@@ -12,12 +12,11 @@ const TodoList: React.FC<TodoListProps> = ({
 }) => {
   return (
     <>
-      <TodoListCard isSideBarOpen={isSideBarOpen} />
-
       <ToggleTodoList
         toggleSidebar={toggleSidebar}
         isSideBarOpen={isSideBarOpen}
       />
+      <TodoListCard isSideBarOpen={isSideBarOpen} />
     </>
   );
 };
