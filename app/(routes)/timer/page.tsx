@@ -1,7 +1,9 @@
+"use client";
+
 import Timer from "./Timer";
 
-const page = () => {
+const TimerPage = () => {
   return <Timer />;
 };
 
-export default page;
+export default TimerPage;
