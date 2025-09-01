@@ -1,17 +1,25 @@
 "use client";
 
-import Landing from "@/Landing";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import useAuthStore from "./store/authStore";
 import { auth } from "./firebase/firebaseConfig";
-import { ToastContainer } from "react-toastify";
 import { useSettingStore } from "./store/settingStore";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
-  const { setUser } = useAuthStore();
-  const { themeMode } = useSettingStore();
+  const { user, setUser } = useAuthStore();
+  const { loadUserSettings } = useSettingStore();
+
+  useEffect(() => {
+    const loadData = async () => {
+      if (user) {
+        await loadUserSettings(user.uid);
+      }
+    };
+
+    loadData();
+  }, [user, loadUserSettings]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -21,16 +29,5 @@ export default function Home() {
     return () => unsubscribe();
   }, [setUser]);
 
-  return (
-    <>
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        closeOnClick
-        draggable
-        theme={themeMode === "light" ? "light" : "dark"}
-      />
-      <Landing />
-    </>
-  );
+  return null;
 }

@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import AnalyticsDataInitializer from "@/components/Initializer/AnalyticsDataInitializer";
+import {
+  AnalyticsDataInitializer,
+  ToastInitializer,
+} from "@/components/Initializer";
 import { DashboardHeader } from "@/components/Header";
-import Canva3D from "@/Landing/Canvas3D";
+import Canva3D from "@/components/Canvas3D";
 import TimerDisplayPanel from "@/components/Panel/TimerDisplayPanel";
 
 export const metadata: Metadata = {
@@ -20,6 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AnalyticsDataInitializer />
+        <ToastInitializer />
         <DashboardHeader />
         <TimerDisplayPanel />
         {children}
