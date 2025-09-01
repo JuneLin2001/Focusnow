@@ -1,4 +1,4 @@
-import { TimerPageInitializer } from "@/components/Initializer";
+import TimerPageInitializer from "@/components/Initializer/TimerPageInitializer";
 
 export default function TimerLayout({
   children,

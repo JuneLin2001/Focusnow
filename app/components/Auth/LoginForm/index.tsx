@@ -103,6 +103,7 @@ const LoginForm = () => {
       setIsDialogOpen(false);
     } catch (error) {
       if (error instanceof FirebaseError) {
+        console.log(error);
         switch (error.code) {
           case "auth/popup-closed-by-user":
             toast.error("您已關閉登入彈窗，請再試一次");

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useCallback, useEffect } from "react";
 import dayjs from "dayjs";
 import { useAnalyticsStore } from "../../store/analyticsStore";
@@ -105,8 +107,8 @@ const AnalyticsPage = () => {
   );
 
   return (
-    <div className="mt-20 box-border flex h-full items-start justify-center overflow-auto">
-      <Card className="mx-4 box-border size-full max-h-[calc(100vh-100px)] bg-gray-200 bg-opacity-50 p-4">
+    <div className="absolute inset-0 z-10 mt-20 box-border flex items-start justify-center overflow-auto">
+      <Card className="bg-opacity-50 mx-4 box-border size-full max-h-[calc(100vh-100px)] bg-gray-200 p-4">
         <div className="flex h-full flex-col">
           <Card className="mb-2 h-44 p-4 lg:h-[4.5rem]">
             <DateSelector
@@ -151,7 +153,7 @@ const AnalyticsPage = () => {
             </div>
           </Card>
 
-          <div className="flex grow flex-nowrap justify-between lg:space-x-4 lg:space-y-0">
+          <div className="flex grow flex-nowrap justify-between lg:space-y-0 lg:space-x-4">
             {renderContent()}
           </div>
         </div>

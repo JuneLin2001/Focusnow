@@ -29,6 +29,7 @@ const usePageNavigation = () => {
   const handleAnalyticsClick = () => {
     if (user) {
       setPage("analytics");
+      router.push("/analytics");
       setTargetPosition([-105, 25, 100]);
       setLookAtPosition([250, 0, 0]);
     } else {

@@ -1,9 +1,5 @@
-"use client";
-
 import Timer from "./Timer";
 
-const TimerPage = () => {
+export default function TimerPage() {
   return <Timer />;
-};
-
-export default TimerPage;
+}
