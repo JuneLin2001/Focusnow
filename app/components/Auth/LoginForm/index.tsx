@@ -6,26 +6,27 @@ import {
   signInWithEmailAndPassword,
   User,
 } from "firebase/auth";
-import { auth } from "../../firebase/firebaseConfig";
-import { Button } from "../ui/button";
+import { auth } from "@/firebase/firebaseConfig";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "../../components/ui/dialog";
-import { Separator } from "../../components/ui/separator";
-import { Input } from "../../components/ui/input";
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 import { CircleUser, Eye, EyeOff } from "lucide-react";
-import { Avatar, AvatarFallback } from "../../components/ui/avatar";
-import { useTimerStore } from "../../store/timerStore";
-import { saveTaskData } from "../../firebase/firebaseService";
-import useAuthStore from "../../store/authStore";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useTimerStore } from "@/store/timerStore";
+import { saveTaskData } from "@/firebase/firebaseService";
+import useAuthStore from "@/store/authStore";
 import { toast } from "react-toastify";
 import { FirebaseError } from "firebase/app";
-import googleLogo from "../../assets/icons/icons8-google.svg";
-import guestLogo from "../../assets/icons/user-round-x.svg";
+import googleLogo from "@/assets/icons/icons8-google.svg";
+import guestLogo from "@/assets/icons/user-round-x.svg";
+import Image from "next/image";
 
 const LoginForm = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -205,7 +206,7 @@ const LoginForm = () => {
               />
               <button
                 type="button"
-                className="absolute right-2 top-1/2 -translate-y-1/2 transform"
+                className="absolute top-1/2 right-2 -translate-y-1/2 transform"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <Eye /> : <EyeOff />}
@@ -239,7 +240,7 @@ const LoginForm = () => {
               onClick={handleGoogleLogin}
             >
               &nbsp; &nbsp; &nbsp; &nbsp;
-              <img src={googleLogo} alt="logo" className="h-6" />
+              <Image src={googleLogo} alt="logo" className="h-6" />
               <span className="align-middle">使用 Google 帳號登入</span>
             </Button>
 
@@ -248,7 +249,7 @@ const LoginForm = () => {
               variant="outline"
               onClick={handleGuestLogin}
             >
-              <img src={guestLogo} alt="logo" className="h-6 dark:invert" />
+              <Image src={guestLogo} alt="logo" className="h-6 dark:invert" />
               <span className="align-middle">使用訪客帳號登入</span>
             </Button>
           </div>

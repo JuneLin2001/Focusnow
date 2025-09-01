@@ -1,8 +1,8 @@
 "use client";
 
-import useAuthStore from "../../store/authStore";
-import { useAnalyticsStore } from "../../store/analyticsStore";
-import { useFishesCountStore } from "../../store/fishesCountStore";
+import useAuthStore from "@/store/authStore";
+import { useAnalyticsStore } from "@/store/analyticsStore";
+import { useFishesCountStore } from "@/store/fishesCountStore";
 import { LogOut, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,9 +14,9 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import LoginForm from "./LoginForm";
+import LoginForm from "@/components/Auth/LoginForm";
 import { useState } from "react";
-import ProfileDialog from "./ProfileDialog";
+import ProfileDialog from "@/components/Header/ProfileDialog";
 
 const LoginButton = () => {
   const { user, logout, updateUserProfile } = useAuthStore();

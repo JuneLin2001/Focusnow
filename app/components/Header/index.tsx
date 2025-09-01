@@ -8,7 +8,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
-import LoginButton from "./LoginButton";
+import LoginButton from "../Auth/LoginButton";
 import WebsiteLogo from "@/assets/icons/globePenguin.svg";
 import ThemeSwitcher from "./ThemeSwitcher";
 import Image from "next/image";
