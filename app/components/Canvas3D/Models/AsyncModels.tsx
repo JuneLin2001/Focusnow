@@ -11,7 +11,7 @@ import {
   Igloo,
   AnalyticsCube,
 } from "./StaticModels";
-import usePageStore from "@/store/usePageStore";
+import { usePathname } from "next/navigation";
 
 interface AsyncModelsProps {
   fishesCount: number;
@@ -32,7 +32,8 @@ const AsyncModels: React.FC<AsyncModelsProps> = ({
   setInstructionHovered,
   themeMode,
 }) => {
-  const { page } = usePageStore();
+  const pathname = usePathname();
+  const isRootPage = pathname === "/";
 
   return (
     <>
@@ -59,7 +60,7 @@ const AsyncModels: React.FC<AsyncModelsProps> = ({
         setInstructionHovered={setInstructionHovered}
       />
 
-      {page === null && (
+      {isRootPage && (
         <DropFish
           position={[100, 80, 0]}
           fishesCount={fishesCount}

@@ -9,11 +9,10 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 import { useSettingStore } from "@/store/settingStore";
 import { Card } from "@/components/ui/card";
-import usePageStore from "@/store/usePageStore";
 import usePageNavigation from "@/hooks/usePageNavigation";
+import { usePathname } from "next/navigation";
 
 const TimerDisplayPanel = () => {
-  const { page } = usePageStore();
   const { handleTimerPageClick } = usePageNavigation();
   const {
     secondsLeft,
@@ -25,6 +24,10 @@ const TimerDisplayPanel = () => {
   } = useTimerStore();
 
   const { themeMode } = useSettingStore();
+
+  const pathname = usePathname();
+  const isRootPage = pathname === "/";
+
   const canvasRef = useRef<HTMLCanvasElement>(null!);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -131,7 +134,7 @@ const TimerDisplayPanel = () => {
         style={{ display: "none" }}
       />
 
-      {page === null && percentage < 100 ? (
+      {isRootPage && percentage < 100 ? (
         <Card
           className="fixed right-6 bottom-40 z-10 w-36 cursor-pointer bg-white p-4 opacity-80"
           onClick={() => {

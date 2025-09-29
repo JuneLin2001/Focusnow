@@ -13,17 +13,19 @@ import { useSettingStore } from "@/store/settingStore";
 import { Card } from "@/components/ui/card";
 import useDropFish from "@/hooks/useDropFish";
 import usePageNavigation from "@/hooks/usePageNavigation";
-import usePageStore from "@/store/usePageStore";
+import { usePathname } from "next/navigation";
 
 const Canvas3D = () => {
   const { handleDropFish, fishPosition, setFishPosition } = useDropFish();
   const { handleTimerPageClick, handleAnalyticsClick } = usePageNavigation();
-  const { page } = usePageStore();
   const { themeMode } = useSettingStore();
   const { user } = useAuthStore();
   const loadUserSettings = useSettingStore((state) => state.loadUserSettings);
   const { fishesCount, updateFishesCount } = useFishesCountStore();
   const [instructionHovered, setInstructionHovered] = useState(false);
+
+  const pathname = usePathname();
+  const isRootPage = pathname === "/";
 
   useEffect(() => {
     // const hasSeenInitialInstructions = localStorage.getItem(
@@ -80,21 +82,21 @@ const Canvas3D = () => {
         fishPosition={fishPosition}
         setFishPosition={setFishPosition}
       />
-      {page === null && (
-        <Bubble
-          Icon={AlarmClock}
-          content="Timer"
-          position={[-20, 40, -100]}
-          onClick={handleTimerPageClick}
-        />
-      )}
-      {page === null && (
-        <Bubble
-          Icon={ChartColumn}
-          content="Analytics"
-          position={[-70, 40, 110]}
-          onClick={handleAnalyticsClick}
-        />
+      {isRootPage && (
+        <>
+          <Bubble
+            Icon={AlarmClock}
+            content="Timer"
+            position={[-20, 40, -100]}
+            onClick={handleTimerPageClick}
+          />
+          <Bubble
+            Icon={ChartColumn}
+            content="Analytics"
+            position={[-70, 40, 110]}
+            onClick={handleAnalyticsClick}
+          />
+        </>
       )}
       <CameraController />
       {instructionHovered && (

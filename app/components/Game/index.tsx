@@ -8,7 +8,6 @@ import SignInstructions from "./Sign/SignInstructions";
 import FishesCountFetcher from "../../utils/fishesCountFetcher";
 import useAuthStore from "../../store/authStore";
 import { toast } from "react-toastify";
-import usePageStore from "@/store/usePageStore";
 
 interface GamePageProps {
   fishesCount: number;
@@ -28,7 +27,6 @@ const GamePage: React.FC<GamePageProps> = ({
     useState<number>(0);
   const [showInstructions, setShowInstructions] = useState(false);
   const { user } = useAuthStore();
-  const { setPage } = usePageStore();
 
   const width = 190;
   const depth = 240;
@@ -82,13 +80,11 @@ const GamePage: React.FC<GamePageProps> = ({
       toast.error("登入以查看場景資訊");
     } else {
       setShowInstructions(true);
-      setPage("setting");
     }
   };
 
   const handleClose = () => {
     setShowInstructions(false);
-    setPage(null);
   };
 
   const penguinCount = filteredAnalytics.length;
