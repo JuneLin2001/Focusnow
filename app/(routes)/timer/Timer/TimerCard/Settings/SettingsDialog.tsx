@@ -6,8 +6,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useSettingStore } from "@/store/settingStore";
 import { useTimerStore } from "@/store/timerStore";
 import { DualRangeSlider } from "@/components/ui/dual-range-slider";
 
@@ -17,25 +15,11 @@ interface SettingsDialogProps {
   isPaused: boolean;
 }
 
-const musicOptions = [
-  {
-    value:
-      "/yt5s.io - 大自然的白噪音 1小時｜森林鳥鳴聲，身心放鬆，平靜學習輔助 (320 kbps).mp3",
-    label: "【白噪音】大自然",
-  },
-  {
-    value:
-      "/yt5s.io - 【白噪音】療癒海浪聲 讓你放空and放鬆 _ 消除疲勞 _ 解壓 _ 睡眠 _ 放空 │relaxing│sleeping (320 kbps)_1.mp3",
-    label: "【白噪音】療癒海浪聲",
-  },
-];
-
 const SettingsDialog: React.FC<SettingsDialogProps> = ({
   open,
   onClose,
   isPaused,
 }) => {
-  const { isPlaying, toggleBgm, setBgmSource } = useSettingStore();
   const {
     breakMinutes,
     maxRotationCount,
@@ -43,28 +27,15 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
     setMaxRotationCount,
   } = useTimerStore();
 
-  const [selectedMusic, setSelectedMusic] = useState<string>(
-    musicOptions[0].value,
-  );
   const [breakTime, setBreakTime] = useState<number>(breakMinutes);
   const [rotationCount, setRotationCount] = useState<number>(maxRotationCount);
 
   useEffect(() => {
     if (open) {
-      setSelectedMusic(musicOptions[0].value);
       setBreakTime(breakMinutes);
       setRotationCount(maxRotationCount);
     }
   }, [open, breakMinutes, maxRotationCount]);
-
-  const handleMusicChange = (value: string) => {
-    setSelectedMusic(value);
-    setBgmSource(value);
-    if (isPlaying) {
-      toggleBgm();
-    }
-    toggleBgm();
-  };
 
   const handleSliderChange = (value: number[]) => {
     setBreakTime(value[0]);
@@ -81,15 +52,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
       <DialogTrigger asChild></DialogTrigger>
       <DialogContent>
         <DialogTitle>設定</DialogTitle>
-        <Label>選擇播放的背景音樂：</Label>
-        <RadioGroup value={selectedMusic} onValueChange={handleMusicChange}>
-          {musicOptions.map((music) => (
-            <div key={music.value}>
-              <RadioGroupItem value={music.value} id={music.value} />
-              <Label htmlFor={music.value}>{music.label}</Label>
-            </div>
-          ))}
-        </RadioGroup>
         <Label className="mt-4">
           {isPaused
             ? `設定休息時間為 ${breakTime} 分鐘`
