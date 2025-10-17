@@ -48,7 +48,7 @@ export function DashboardHeader() {
                         handleAnalyticsClick();
                       }
                     }}
-                    className="transition-colors duration-200"
+                    className="capitalize transition-colors duration-200"
                   >
                     {page}
                   </Button>
@@ -104,7 +104,7 @@ export function DashboardHeader() {
                     handleAnalyticsClick();
                   }
                 }}
-                className="text-gray-600 transition-colors duration-200 dark:text-gray-300 dark:hover:text-white"
+                className="text-gray-600 capitalize transition-colors duration-200 dark:text-gray-300 dark:hover:text-white"
               >
                 {page}
               </Button>
