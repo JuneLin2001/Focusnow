@@ -63,7 +63,7 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <p className="w-full max-w-44 truncate text-ellipsis font-semibold text-gray-800 dark:text-white">
+                                <p className="w-full max-w-44 truncate font-semibold text-ellipsis text-gray-800 dark:text-white">
                                   {todo.title}
                                 </p>
                               </TooltipTrigger>
@@ -86,7 +86,7 @@ const CompletedTodos: React.FC<CompletedTodosProps> = ({
             )}
           </div>
         ) : (
-          <div className="flex size-full flex-col justify-center text-center">
+          <div className="flex h-[calc(90vh-12rem)] flex-col justify-center text-center">
             <p className="text-gray-500 dark:text-gray-200">沒有完成的 Todos</p>
           </div>
         )}
